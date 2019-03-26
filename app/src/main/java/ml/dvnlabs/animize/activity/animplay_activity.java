@@ -14,6 +14,8 @@ import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.adapter.playlist_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.RequestHandler;
+import ml.dvnlabs.animize.driver.util.APINetworkRequest;
+import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.loader.animplay_loader;
 import ml.dvnlabs.animize.model.play_model;
 import ml.dvnlabs.animize.model.playlist_model;
@@ -185,6 +187,7 @@ public class animplay_activity extends AppCompatActivity implements LoaderManage
         synopsis_bdy = (ExpandableLayout) findViewById(R.id.synopsis_body);
         playlist_bdy = (ExpandableLayout)findViewById(R.id.playlist_body);
         syn = (TextView)findViewById(R.id.synop_play);
+        playlist_models = new ArrayList<>();
         notbuffering();
     }
 
@@ -248,12 +251,16 @@ public class animplay_activity extends AppCompatActivity implements LoaderManage
             isXpandPlaylist = false;
         }else{
             isInit = false;
-            ply.setVisibility(View.VISIBLE);
+
             //synopsis_bdy.setVisibility(View.VISIBLE);
             more_imgplay.setImageResource(R.drawable.ic_expand_collapse);
             isXpandPlaylist = true;
+            if(playlist_models.isEmpty()){
+                ply.setVisibility(View.VISIBLE);
+                getPL();
+            }
 
-            getSupportLoaderManager().initLoader(1,null,this);
+            //getSupportLoaderManager().initLoader(1,null,this);
             playlist_bdy.expand();
         }
 
@@ -398,7 +405,7 @@ public class animplay_activity extends AppCompatActivity implements LoaderManage
         RecyclerView rv = (RecyclerView)findViewById(R.id.playlist_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         rv.setLayoutManager(layoutManager);
-        playlist_models = new ArrayList<>();
+
         try{
             for (int i = 0;i<playlist.length();i++){
                 JSONObject object=playlist.getJSONObject(i);
@@ -485,7 +492,44 @@ public class animplay_activity extends AppCompatActivity implements LoaderManage
         }
 
     }
+    private void getPL(){
+        try{
+            String url_play = Api.url_playlist_play+pkg_anim;
+            APINetworkRequest getpl = new APINetworkRequest(this,playlist_getter,url_play,CODE_GET_REQUEST,null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    //PLAYLIST JSON PARSER
+    private void pl_json_parser(String data){
+        try {
+            JSONObject object = new JSONObject(data);
+            if (!object.getBoolean("error")) {
+                ply.setVisibility(View.GONE);
+                setplaylist(object.getJSONArray("anim"));
+            }
+        } catch (JSONException e) {
 
+            e.printStackTrace();
+        }
+
+    }
+    FetchDataListener playlist_getter = new FetchDataListener() {
+        @Override
+        public void onFetchComplete(String data) {
+            pl_json_parser(data);
+        }
+
+        @Override
+        public void onFetchFailure(String msg) {
+            Log.e("URL:",msg);
+        }
+
+        @Override
+        public void onFetchStart() {
+
+        }
+    };
     @Override
     public Loader<String> onCreateLoader(int id,Bundle args){
     String urli;
@@ -493,11 +537,13 @@ public class animplay_activity extends AppCompatActivity implements LoaderManage
         urli = Api.api_animplay+idanim;
         return new animplay_loader(this,urli,null,CODE_GET_REQUEST);
     }
+    /*
     else{
         urli = Api.url_playlist_play+pkg_anim;
         return new animplay_loader(this,urli,null,CODE_GET_REQUEST);
+    } */
+    return null;
     }
-}
 
 @Override
     public void onLoadFinished(Loader<String> loader,String data){
@@ -512,10 +558,11 @@ public class animplay_activity extends AppCompatActivity implements LoaderManage
             if(isInit){
                 show_video(object.getJSONArray("anim"));
             }
+            /*
             if(isXpandPlaylist){
                 ply.setVisibility(View.GONE);
                 setplaylist(object.getJSONArray("anim"));
-            }
+            }*/
 
 
 

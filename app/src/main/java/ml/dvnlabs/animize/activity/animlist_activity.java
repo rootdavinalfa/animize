@@ -13,6 +13,7 @@ import ml.dvnlabs.animize.database.model.userland;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
+import ml.dvnlabs.animize.fragment.animize;
 import ml.dvnlabs.animize.fragment.global;
 import ml.dvnlabs.animize.fragment.profile;
 import ml.dvnlabs.animize.fragment.search;
@@ -158,6 +159,31 @@ public class animlist_activity extends AppCompatActivity   {
         }
         videolistisDisplayed = false;
     }
+    public void display_more(){
+        close_video_list();
+        close_search();
+        header.setVisibility(View.GONE);
+        //int count = getSupportFragmentManager().getBackStackEntryCount();
+        //Log.e("COUNTED+:",String.valueOf(count));
+        animize se = animize.newInstance();
+        global.addFragment(getSupportFragmentManager(),se,R.id.animize_fragment,"FRAGMENT_OTHER");
+        videolistisDisplayed = false;
+    }
+
+    public void close_more(){
+        // Get the FragmentManager.
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // Check to see if the fragment is already showing.
+        animize simpleFragment = (animize) fragmentManager
+                .findFragmentById(R.id.animize_fragment);
+        if (simpleFragment != null) {
+            // Create and commit the transaction to remove the fragment.
+            FragmentTransaction fragmentTransaction =
+                    fragmentManager.beginTransaction();
+            fragmentTransaction.remove(simpleFragment).commit();
+        }
+        videolistisDisplayed = false;
+    }
     public void close_profile(){
         // Get the FragmentManager.
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -178,13 +204,14 @@ public class animlist_activity extends AppCompatActivity   {
         tapBarMenu.toggle();
     }
 
-    @OnClick({ R.id.menubar_play, R.id.menubar_user,R.id.menubar_search})
+    @OnClick({ R.id.menubar_play, R.id.menubar_user,R.id.menubar_search,R.id.menubar_more})
         public void onMenuItemClick(View view) {
         // Add the SimpleFragment.
 
             tapBarMenu.close();
             switch (view.getId()) {
                 case R.id.menubar_play:
+                    close_more();
                     close_search();
                     close_profile();
                     display_video_list();
@@ -192,16 +219,26 @@ public class animlist_activity extends AppCompatActivity   {
                     //Log.i("TAG", "Item 1 selected");
                     break;
                 case R.id.menubar_user:
+                    close_more();
                     close_video_list();
                     close_profile();
                     header.setVisibility(View.VISIBLE);
                     //Log.i("TAG", "Item 2 selected");
                     break;
                 case R.id.menubar_search:
+                    close_more();
                     close_video_list();
                     close_profile();
                     header.setVisibility(View.VISIBLE);
                     display_search();
+                    break;
+                case R.id.menubar_more:
+                    close_profile();
+                    close_search();
+                    close_video_list();
+                    display_more();
+                    header.setVisibility(View.GONE);
+                    break;
 
             }
         }
