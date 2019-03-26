@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Animize</string>
+    <string name="login_username_txt">メール</string>
+    <string name="login_password_txt">パスワード</string>
+    <string name="btn_login">ローグイン</string>
+    <string name="btn_register">登録</string>
+    <string name="list_view_episode">第 :</string>
+    <string name="loadingtxt">Loading</string>
+    <string name="loading_error">エラー、試してください</string>
+    <string name="btn_retry">再試行</string>
+    <string name="string_of">話,から</string>
+    <string name="rating_text">レート:</string>
+    <string name="episode_text">第</string>
+    <string name="search_text">何か探してものがありますか？</string>
+    <string name="datalinkerror">データリンクをエラー</string>
+    <string name="search_anime">アニメを探す</string>
+    <string name="no_title_provided">あなたは既知のタイトルを入力しなければなりません！</string>
+    <string name="play_synopsis">筋書き</string>
+    <string name="play_playlist">このシーリーズがもっと</string>
+</resources>
