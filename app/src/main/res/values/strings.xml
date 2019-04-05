@@ -13,11 +13,14 @@
     <string name="episode_text">Episode</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_text">What do you want to search?</string>
     <string name="datalinkerror">Data-Link Error</string>
     <string name="search_anime">Search Anime...</string>
     <string name="no_title_provided">You must enter known title!</string>
     <string name="play_synopsis">Synopsis</string>
     <string name="play_playlist">More on this series...</string>
+    <string name="text_register">Register</string>
+    <string name="txt_regist_name">Name</string>
+    <string name="regist_community">Please read carefully the Term Of Service.Take a concern if you check the box,you deserve to follow our community guidelines</string>
+    <string name="cb_tos">I consent to hereby obedient the T.O.S</string>
 </resources>

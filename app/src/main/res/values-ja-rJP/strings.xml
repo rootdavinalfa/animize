@@ -18,4 +18,8 @@
     <string name="no_title_provided">あなたは既知のタイトルを入力しなければなりません！</string>
     <string name="play_synopsis">筋書き</string>
     <string name="play_playlist">このシーリーズがもっと</string>
+    <string name="text_register">Register</string>
+    <string name="txt_regist_name">Name</string>
+    <string name="regist_community">Please read carefully the Term Of Service.Take a concern if you check the box,you deserve to follow our community guidelines</string>
+    <string name="cb_tos">I consent to hereby obedient the T.O.S</string>
 </resources>

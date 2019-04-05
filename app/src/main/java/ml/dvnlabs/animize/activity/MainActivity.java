@@ -95,10 +95,6 @@ private void initializa(){
         container = (RelativeLayout) findViewById(R.id.mainScreen);
         avLoadingIndicatorView = (AVLoadingIndicatorView)findViewById(R.id.loading_login);
         avLoadingIndicatorView.hide();
-
-        anim = (AnimationDrawable) container.getBackground();
-        anim.setEnterFadeDuration(2500);
-        anim.setExitFadeDuration(1000);
         email_tf = (EditText)findViewById(R.id.login_userfield);
         password_tf = (EditText)findViewById(R.id.login_passwordfield);
     }
@@ -142,7 +138,7 @@ private void initializa(){
         String tok;
         @Override
         public void onFetchComplete(String data) {
-            //avLoadingIndicatorView.hide();
+            avLoadingIndicatorView.hide();
             Log.e(TAG,data);
             json_login(data);
 

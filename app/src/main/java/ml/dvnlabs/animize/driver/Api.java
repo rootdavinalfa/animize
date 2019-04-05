@@ -1,16 +1,17 @@
 package ml.dvnlabs.animize.driver;
 
 public class Api {
-    public static final String url_base = "https://api.dvnlabs.ml/animize/Api.php?apicall=";
-    public static final String api_animlist = url_base+"getAnimList";
-    public static final String api_animplay = url_base+"getAnimPlay&id_anim=";
+    private static final String url_base = "https://api.dvnlabs.ml/animize/";
+    public static final String api_animlist = url_base+"anim/list/all";
+    public static final String api_animplay = url_base+"anim/detail/play/";
     public static final String url_video = "http://api.dvnlabs.ml/animize/video/json.php?id=";
-    public static final String url_search =url_base+"search_anim&name=";
-    public static final String url_page = url_base+"getAnimListpage&page=";
-    public static final String url_playlist_play = url_base+"getanimplaylist&pkg=";
-    public static final String url_createuser = url_base+"createuser";
-    public static final String url_loginuser = url_base+"loginusr";
-    public static final String url_decode_login = url_base+"logindecode";
+    public static final String url_search =url_base+"anim/search/name=";
+    public static final String url_page = url_base+"anim/list/page/";
+    public static final String url_playlist_play = url_base+"anim/detail/playlist/";
+    public static final String url_createuser = url_base+"user/create";
+    public static final String url_loginuser = url_base+"user/login/";
+    public static final String url_decode_login = url_base+"user/login/decode";
+
 
 
 
