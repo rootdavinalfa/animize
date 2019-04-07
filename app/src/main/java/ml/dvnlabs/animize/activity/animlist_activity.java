@@ -64,7 +64,8 @@ public class animlist_activity extends AppCompatActivity   {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_animlist_activity);
+        setContentView(R.layout.dashboard_activity);
+        /*
         header = (LinearLayout) findViewById(R.id.header_animize);
         btn_profile = (ImageView) findViewById(R.id.btn_profile);
         //SHOW header
@@ -77,7 +78,7 @@ public class animlist_activity extends AppCompatActivity   {
                 profile_btn();
             }
         });
-
+*/
 
 
     }
