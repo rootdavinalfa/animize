@@ -32,13 +32,13 @@
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:keepScreenOn="true"
             android:label=""
-            android:parentActivityName=".activity.animlist_activity">
+            android:parentActivityName=".activity.dashboard_activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ml.dvnlabs.animize.activity.animlist_activity" />
+                android:value="ml.dvnlabs.animize.activity.dashboard_activity" />
         </activity>
         <activity
-            android:name=".activity.animlist_activity"
+            android:name=".activity.dashboard_activity"
             android:configChanges="orientation|keyboard"
             android:label=""
             android:parentActivityName=".activity.MainActivity"

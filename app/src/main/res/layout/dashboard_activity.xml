@@ -1,57 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/graylight">
+    android:background="@color/graylight"
+    android:orientation="vertical">
+
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/graylight">
+        android:layout_height="wrap_content"
+        android:background="@color/graylight"
+        android:orientation="vertical"
+        >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="110dp"
             android:background="@color/colorPrimaryDark">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp">
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
                     <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:fontFamily="@font/slackey"
-                            android:layout_marginStart="5dp"
-                            android:textColor="@color/design_default_color_secondary"
-                            android:layout_width="wrap_content"
-                            android:layout_height="50dp"
-                            android:text="@string/app_name"
-                            android:textSize="40sp"
-                            android:layout_alignParentStart="true"
-                            />
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="@drawable/layoutrippleeffect"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="50dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/slackey"
+                            android:text="@string/app_name"
+                            android:textColor="@color/design_default_color_secondary"
+                            android:textSize="40sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="@drawable/layoutrippleeffect">
+
+                        <TextView
                             android:id="@+id/dash_profile_text"
-                            android:layout_width="120dp"
+                            android:layout_width="140dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="10dp"
                             android:ellipsize="marquee"
                             android:singleLine="true"
                             android:text="John Doe"
+                            android:textAlignment="textEnd"
                             android:textColor="@color/design_default_color_background"
                             android:textSize="20sp"
                             android:textStyle="bold" />
@@ -59,27 +69,30 @@
 
 
                 </LinearLayout>
+
                 <LinearLayout
+                    android:id="@+id/dash_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="7dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="7dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/roundbutton"
                     android:clickable="true"
                     android:focusable="true"
-                    android:orientation="horizontal"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginEnd="7dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="match_parent"
-                    android:background="@drawable/roundbutton"
                     android:foreground="@drawable/ripple_forrounded"
-                    android:layout_height="40dp">
+                    android:orientation="horizontal">
+
                     <RelativeLayout
                         android:layout_width="40dp"
                         android:layout_height="40dp">
 
                         <ImageView
-                            android:padding="7dp"
-                            android:layout_alignParentStart="true"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
+                            android:layout_alignParentStart="true"
+                            android:padding="7dp"
                             android:src="@drawable/ic_search" />
 
                     </RelativeLayout>
@@ -98,19 +111,37 @@
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
+    <FrameLayout
+        android:layout_above="@id/DashnavigationView"
+        android:layout_below="@id/header"
+        android:id="@+id/search_fragment"
+        android:name="ml.dvnlabs.animize.search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_search">
+
+    </FrameLayout>
+    <FrameLayout
+        android:layout_above="@id/DashnavigationView"
+        android:layout_below="@id/header"
+        android:id="@+id/home_fragment"
+        android:name="ml.dvnlabs.animize.animize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_home">
+
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigationView"
+        android:id="@+id/DashnavigationView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-        android:layout_marginStart="0dp"
-        android:foreground="@drawable/layoutrippleeffect"
+        android:layout_height="45dp"
         android:background="@color/colorPrimaryDark"
-        android:layout_alignParentBottom="true"
+        android:foreground="@drawable/layoutrippleeffect"
         app:itemIconTint="@drawable/nav_color_state"
         app:itemTextColor="@drawable/nav_color_state"
-        app:menu="@menu/dash_bottom_nav">
+        app:menu="@menu/dash_bottom_nav"
+        android:layout_alignParentBottom="true">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 </RelativeLayout>

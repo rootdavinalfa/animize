@@ -3,17 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="6dp"
-    app:cardUseCompatPadding="true"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:contentPadding="5dp">
+    app:cardBackgroundColor="@color/colorPrimary"
+    app:cardCornerRadius="2dp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:orientation="vertical">
 
         <ImageView
@@ -35,6 +36,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:textColor="@color/design_default_color_background"
                     android:id="@+id/srctitle_video_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -49,6 +51,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:textColor="@color/design_default_color_background"
                         android:id="@+id/srcid_anime"
                         android:layout_width="195dp"
                         android:layout_height="wrap_content"
@@ -57,6 +60,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:textColor="@color/design_default_color_background"
                         android:id="@+id/srcepisode_view"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"

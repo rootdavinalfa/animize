@@ -1,27 +1,18 @@
 package ml.dvnlabs.animize.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.AsyncTaskLoader;
-import androidx.loader.content.Loader;
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.app.AppController;
-import ml.dvnlabs.animize.checker.checkNetwork;
 import ml.dvnlabs.animize.database.LoginInternalDBHelper;
 import ml.dvnlabs.animize.database.model.userland;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
-import ml.dvnlabs.animize.loader.decode_loader;
-import ml.dvnlabs.animize.loader.login_loader;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -32,23 +23,12 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request.Method;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.RequestFuture;
-import com.android.volley.toolbox.StringRequest;
 import com.wang.avi.AVLoadingIndicatorView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity{
     private String id_users,name_users,emails;
@@ -171,7 +151,7 @@ private void error_auth(){
                 token = object.getString("jwt");
                 tokeen = token;
                 login_step2();
-                //Intent intent = new Intent(MainActivity.this,animlist_activity.class);
+                //Intent intent = new Intent(MainActivity.this,dashboard_activity.class);
                 //intent.putExtra("token",token);
                 //startActivity(intent);
             }
@@ -318,7 +298,7 @@ private void error_auth(){
             intent.putExtra("email",emails);
             intent.putExtra("token",tokeen);
             startActivity(intent);*/
-            Intent intent = new Intent(MainActivity.this,animlist_activity.class);
+            Intent intent = new Intent(MainActivity.this, dashboard_activity.class);
             //intent.putExtra("token",tokeen);
             startActivity(intent);
 

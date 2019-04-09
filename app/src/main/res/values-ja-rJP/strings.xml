@@ -22,4 +22,6 @@
     <string name="txt_regist_name">Name</string>
     <string name="regist_community">Please read carefully the Term Of Service.Take a concern if you check the box,you deserve to follow our community guidelines</string>
     <string name="cb_tos">I consent to hereby obedient the T.O.S</string>
+    <string name="disclaimer">これはファンサブであり、販売用ではありません。\nこのアプリで販売するすべてのアイテムは、アニメリストとは関係ありません。\n生産会社を支持する。</string>
+    <string name="search_not_provided">Please provide Keyword</string>
 </resources>

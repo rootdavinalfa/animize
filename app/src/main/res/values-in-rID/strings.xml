@@ -22,4 +22,6 @@
     <string name="txt_regist_name">Name</string>
     <string name="regist_community">Please read carefully the Term Of Service.Take a concern if you check the box,you deserve to follow our community guidelines</string>
     <string name="cb_tos">I consent to hereby obedient the T.O.S</string>
+    <string name="disclaimer">Semua materi disini hanya fansub,\ntidak untuk dijual.\nSemua barang yang dijual di aplikasi ini,\ntidak ada hubungannya dengan list dan mengendrose\nrumah produksi animasi.</string>
+    <string name="search_not_provided">Please provide keyword</string>
 </resources>

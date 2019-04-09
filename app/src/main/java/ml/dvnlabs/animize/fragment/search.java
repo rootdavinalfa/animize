@@ -2,12 +2,15 @@ package ml.dvnlabs.animize.fragment;
 
 
 import android.graphics.Rect;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -39,35 +43,29 @@ import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.adapter.search_list_adapter;
 import ml.dvnlabs.animize.adapter.video_list_adapter;
 import ml.dvnlabs.animize.driver.Api;
+import ml.dvnlabs.animize.driver.util.APINetworkRequest;
+import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.loader.animlist_loader;
 import ml.dvnlabs.animize.model.search_list_model;
 import ml.dvnlabs.animize.model.video_list_model;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class search extends Fragment implements LoaderManager.LoaderCallbacks<String>, View.OnClickListener {
-
-    EditText search_fi;
-    Button srcbtnret;
-    TextView txt_error;
-    ImageView erro_v;
-    ImageView info_img;
-    TextView overview;
-    ProgressBar src_pb;
-
-    ImageButton search_btn;
-    private String name;
+public class search extends Fragment {
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
     private RecyclerView listView;
     private ArrayList<search_list_model> modeldata;
     private search_list_adapter adapter;
-    private boolean isFirst = true;
-    //private SwipeRefreshLayout swipe_list;
-
+    private EditText srch_txt;
+    private TextView src_error;
+    private String srch_txt_get;
+    private ImageView srch_iv;
+    private boolean isReadyForNextReq = false;
     public search() {
         // Required empty public constructor
     }
@@ -77,110 +75,106 @@ public class search extends Fragment implements LoaderManager.LoaderCallbacks<St
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view =inflater.inflate(R.layout.fragment_search, container, false);
-        search_fi = (EditText)view.findViewById(R.id.search_field);
-        search_btn = (ImageButton)view.findViewById(R.id.search_button);
         listView = (RecyclerView) view.findViewById(R.id.search_listview);
-        srcbtnret = (Button)view.findViewById(R.id.src_btn_retry);
-        txt_error = (TextView)view.findViewById(R.id.srcerror_txt);
-        erro_v = (ImageView)view.findViewById(R.id.iv_src_error);
-        src_pb = (ProgressBar)view.findViewById(R.id.src_loadingbar);
-        overview = (TextView)view.findViewById(R.id.srcoverview);
-        info_img = (ImageView)view.findViewById(R.id.src_imageinfo);
-        search_btn.setOnClickListener(this);
-        srcbtnret.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                action_btn();
-            }
-        });
-        search_fi.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    action_btn();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-
-                Rect r = new Rect();
-                view.getWindowVisibleDisplayFrame(r);
-                int screenHeight = view.getRootView().getHeight();
-
-                // r.bottom is the position above soft keypad or device button.
-                // if keypad is shown, the r.bottom is smaller than that before.
-                int keypadHeight = screenHeight - r.bottom;
-
-                Log.d(TAG, "keypadHeight = " + keypadHeight);
-
-                if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
-                    // keyboard is opened
-
-                    info_img.setVisibility(View.GONE);
-                    overview.setVisibility(View.GONE);
-                }
-                else {
-                    if(isFirst){
-                        info_img.setVisibility(View.VISIBLE);
-                        overview.setVisibility(View.VISIBLE);
-                    }
-                    if (!isFirst){
-                        info_img.setVisibility(View.GONE);
-                        overview.setVisibility(View.GONE);
-                    }
-
-                    // keyboard is closed
-                }
-            }
-        });
-
-
+        srch_txt = (EditText)view.findViewById(R.id.srch_txt_edit);
+        src_error = (TextView)view.findViewById(R.id.src_error_txt);
+        srch_iv = (ImageView)view.findViewById(R.id.error_v_srch);
+        srch_text_logiclistener();
         // Inflate the layout for this fragment
         return view;
 
     }
-    private void action_btn(){
-        isFirst=false;
-        overview.setVisibility(View.GONE);
-        info_img.setVisibility(View.GONE);
-        listView.setVisibility(View.GONE);
-        src_pb.setVisibility(View.VISIBLE);
-        txt_error.setVisibility(View.GONE);
-        src_pb.setVisibility(View.GONE);
-        erro_v.setVisibility(View.GONE);
-        srcbtnret.setVisibility(View.GONE);
-        String getname = search_fi.getText().toString();
-        //name = Uri.parse(Api.url_search).buildUpon().appendQueryParameter("sa","aa").build().toString();
-        name = Uri.encode(getname);
-        //Log.e("INF",getname+"::::"+name);
-        getLoaderManager().restartLoader(3,null,search.this);
+
+    private void srch_text_logiclistener() {
+        srch_txt.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == 66) {
+                    srch_txt.clearFocus();
+                    hideKeyboard(v);
+                    return true; //this is required to stop sending key event to parent
+                }
+                return false;
+            }
+        });
+        srch_txt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                src_error.setVisibility(View.GONE);
+                srch_txt_get = s.toString();
+                int search_text_count = srch_txt.getText().length();
+
+                if (search_text_count > 0){
+                    search_text_count = search_text_count % 2;
+                    if(search_text_count == 0 || isReadyForNextReq){
+                        getSearch();
+                    }
+
+                }
+                src_error.setVisibility(View.VISIBLE);
+                String errormsg = getResources().getString(R.string.search_not_provided);
+                src_error.setText(errormsg);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
-    @Override
-    public void onClick(View view){
-        if(search_fi.getText().toString().isEmpty()){
-            isFirst = true;
-            txt_error.setVisibility(View.GONE);
-            erro_v.setVisibility(View.GONE);
-            info_img.setVisibility(View.VISIBLE);
-            overview.setVisibility(View.VISIBLE);
-            overview.setText(getString(R.string.no_title_provided));
-        }else{
-            action_btn();
+
+    private void getSearch(){
+        String url = Api.url_search+srch_txt_get;
+        System.out.println("TXT:"+srch_txt_get);
+        APINetworkRequest apiNetworkRequest = new APINetworkRequest(getActivity(),search,url,CODE_GET_REQUEST,null);
+    }
+    FetchDataListener search = new FetchDataListener() {
+        @Override
+        public void onFetchComplete(String data) {
+            isReadyForNextReq = true;
+            srch_iv.setVisibility(View.GONE);
+            src_error.setVisibility(View.GONE);
+            jsonparser_search(data);
+        }
+
+        @Override
+        public void onFetchFailure(String msg) {
+            isReadyForNextReq = false;
+            srch_iv.setVisibility(View.VISIBLE);
+            src_error.setVisibility(View.VISIBLE);
+            src_error.setText(msg);
+        }
+
+        @Override
+        public void onFetchStart() {
+            isReadyForNextReq = false;
+
+        }
+    };
+
+
+    private void jsonparser_search(String data){
+        try {
+            JSONObject object = new JSONObject(data);
+            if(!object.getBoolean("error")){
+                show_video(object.getJSONArray("anim"));
+            }
+            else{
+                src_error.setVisibility(View.VISIBLE);
+                src_error.setText("Your keyword seem wrong,please try another keyword\n");
+                src_error.setText(object.getString("message"));
+            }
+
+        }catch (JSONException e){
+            e.printStackTrace();
         }
 
     }
-
-    public static search newInstance(){
-        return new search();
-
-    }
-
-
 
     private void show_video(JSONArray video){
         listView.setVisibility(View.VISIBLE);
@@ -210,59 +204,16 @@ public class search extends Fragment implements LoaderManager.LoaderCallbacks<St
 
     }
 
-    @Override
-    public Loader<String> onCreateLoader(int id, Bundle args) {
+    private void hideKeyboard(View view) {
+        InputMethodManager manager = (InputMethodManager) view.getContext()
+                .getSystemService(INPUT_METHOD_SERVICE);
+        if (manager != null)
+            manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+    public static search newInstance(){
+        return new search();
 
-        String url = Api.url_search+name;
-        src_pb.setVisibility(View.VISIBLE);
-        //Log.e("INFO3282",url);
-        //progressBar.setVisibility(View.VISIBLE);
-        //textload.setVisibility(View.VISIBLE);
-        return new animlist_loader(getContext(),url,null,CODE_GET_REQUEST);
     }
 
-    @Override
-    public void onLoadFinished(Loader<String> loader,String data){
-        try{
-            JSONObject object = new JSONObject(data);
-            if(!object.getBoolean("error")){
-                show_video(object.getJSONArray("anim"));
-                adapter.notifyDataSetChanged();
-                src_pb.setVisibility(View.GONE);
-                //Log.e("INFAA",String.valueOf(adapter.getItemCount()));
-                /*
-                progressBar.setVisibility(View.GONE);
-                textload.setVisibility(View.GONE);
-                iv_error.setVisibility(View.GONE);
-                btn_retry.setVisibility(View.GONE);
-                texterrorload.setVisibility(View.GONE);*/
-
-                // Scheme colors for animation
-
-            }else{
-                src_pb.setVisibility(View.GONE);
-                erro_v.setVisibility(View.VISIBLE);
-                txt_error.setVisibility(View.VISIBLE);
-                txt_error.setText(object.getString("message"));
-
-            }
-
-        }catch (JSONException e){
-            e.printStackTrace();
-            erro_v.setVisibility(View.VISIBLE);
-            txt_error.setVisibility(View.VISIBLE);
-            txt_error.setText(getString(R.string.datalinkerror));
-            /*
-            iv_error.setVisibility(View.VISIBLE);
-            texterrorload.setVisibility(View.VISIBLE);
-            btn_retry.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
-            textload.setVisibility(View.GONE);*/
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<String> loader) {}
 
 }

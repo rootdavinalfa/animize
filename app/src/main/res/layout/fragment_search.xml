@@ -3,168 +3,78 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:layout_height="match_parent"
     tools:context=".fragment.search">
 
     <!-- TODO: Update blank fragment layout -->
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/search_lay">
-
+        android:orientation="vertical">
+        <!--Toolbar -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/ripple_forrounded"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:tint="@color/design_default_color_secondary"
+                android:src="@drawable/ic_arrow_vector"/>
 
-            <androidx.cardview.widget.CardView
+            <EditText
+                android:id="@+id/srch_txt_edit"
+                android:singleLine="true"
+                android:layout_marginEnd="10dp"
+                android:clickable="true"
+                android:foreground="@drawable/ripple_forrounded"
+                android:focusable="true"
+                android:layout_marginStart="5dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="4dp"
-                app:cardUseCompatPadding="true"
-                app:contentPadding="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/search_field"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/textbox_rounded"
-                        android:ems="10"
-                        android:hint="@string/search_anime"
-                        android:imeOptions="actionSearch"
-                        android:inputType="text" />
-
-                    <ImageButton
-                        android:id="@+id/search_button"
-                        style="@android:style/Widget.DeviceDefault.ImageButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@color/exo_edit_mode_background_color"
-                        android:src="@drawable/ic_magnifying_glass" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="0dp"
-                app:cardUseCompatPadding="true"
-                app:contentPadding="2dp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/search_listview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </androidx.cardview.widget.CardView>
+                android:layout_height="40dp"
+                android:background="@drawable/roundbutton"
+                android:hint="@string/search_anime"
+                android:textColor="@color/design_default_color_background"
+                android:textColorHint="@color/design_default_color_secondary" />
 
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:background="@color/design_default_color_secondary" />
 
-        <ImageView
-            android:id="@+id/iv_src_error"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="284dp"
-            android:layout_marginEnd="273dp"
-            android:layout_marginBottom="285dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_astronaut"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/srcerror_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="156dp"
-            android:layout_marginTop="284dp"
-            android:layout_marginEnd="157dp"
-            android:layout_marginBottom="343dp"
-            android:text="TextView"
-            android:textSize="24sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/src_btn_retry"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="157dp"
-            android:layout_marginTop="325dp"
-            android:layout_marginEnd="175dp"
-            android:layout_marginBottom="294dp"
-            android:text="Button"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/src_loadingbar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="75dp"
-            android:layout_height="84dp"
-            android:layout_marginStart="168dp"
-            android:layout_marginTop="193dp"
-            android:layout_marginEnd="168dp"
-            android:layout_marginBottom="382dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/src_imageinfo"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginStart="105dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginEnd="106dp"
-            android:layout_marginBottom="258dp"
-            android:adjustViewBounds="false"
-            android:src="@drawable/ic_idea"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <TextView
-            android:id="@+id/srcoverview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="90dp"
-            android:layout_marginTop="500dp"
-            android:layout_marginEnd="91dp"
-            android:layout_marginBottom="318dp"
-            android:text="Search Anime By Title Here..."
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/src_error_txt"
+                android:gravity="top|center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/design_default_color_background"
+                android:text=""/>
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/error_v_srch"
+                android:layout_centerInParent="true"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_astronaut"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
 
 
+
+    </LinearLayout>
 </FrameLayout>
