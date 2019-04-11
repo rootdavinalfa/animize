@@ -124,13 +124,26 @@
     <FrameLayout
         android:layout_above="@id/DashnavigationView"
         android:layout_below="@id/header"
+        android:id="@+id/video_list_fragment"
+        android:name="ml.dvnlabs.animize.video_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_lastup_list">
+
+    </FrameLayout>
+    <FrameLayout
+        android:layout_above="@id/DashnavigationView"
+        android:layout_below="@id/header"
         android:id="@+id/home_fragment"
         android:name="ml.dvnlabs.animize.animize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_home">
-
     </FrameLayout>
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/DashnavigationView"

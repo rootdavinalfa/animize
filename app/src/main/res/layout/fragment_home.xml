@@ -42,7 +42,7 @@
                                 android:layout_height="30dp"
                                 android:layout_alignParentStart="true"
                                 android:layout_marginStart="4dp"
-                                android:text="Last Uploaded"
+                                android:text="@string/last_uploaded_txt"
                                 android:textColor="@color/design_default_color_background"
                                 android:textSize="24sp" />
 
@@ -55,7 +55,7 @@
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:foreground="@drawable/ripple_forrounded"
-                                android:text="See More"
+                                android:text="@string/home_see_more"
                                 android:textColor="@color/design_default_color_secondary"
                                 android:textSize="17sp" />
                         </RelativeLayout>
@@ -68,12 +68,19 @@
                             android:layout_marginEnd="4dp"
                             android:background="@color/design_default_color_secondary" />
 
-                        <androidx.recyclerview.widget.RecyclerView
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="190dp"
-                            android:scrollbars="horizontal"
-                            tools:layout_editor_absoluteX="8dp"
-                            tools:layout_editor_absoluteY="50dp" />
+                            android:layout_height="match_parent">
+                            <com.yarolegovich.discretescrollview.DiscreteScrollView
+                                android:id="@+id/lastup_list"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:dsv_orientation="horizontal"
+                                />
+
+                        </RelativeLayout>
+
+
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -114,7 +121,7 @@
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:foreground="@drawable/ripple_forrounded"
-                                android:text="See More"
+                                android:text="@string/home_see_more"
                                 android:textColor="@color/design_default_color_secondary"
                                 android:textSize="17sp" />
                         </RelativeLayout>
@@ -172,7 +179,7 @@
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:foreground="@drawable/ripple_forrounded"
-                                android:text="See More"
+                                android:text="@string/home_see_more"
                                 android:textColor="@color/design_default_color_secondary"
                                 android:textSize="17sp" />
                         </RelativeLayout>

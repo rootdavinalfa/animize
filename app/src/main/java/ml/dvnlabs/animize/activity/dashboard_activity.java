@@ -4,17 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import butterknife.BindView;
-import butterknife.OnClick;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.database.LoginInternalDBHelper;
 import ml.dvnlabs.animize.database.model.userland;
-import ml.dvnlabs.animize.fragment.animize;
 import ml.dvnlabs.animize.fragment.global;
 import ml.dvnlabs.animize.fragment.home;
-import ml.dvnlabs.animize.fragment.profile;
+import ml.dvnlabs.animize.fragment.lastup_video_list;
 import ml.dvnlabs.animize.fragment.search;
-
 
 
 import android.content.Intent;
@@ -23,14 +19,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationMenu;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.michaldrabik.tapbarmenulib.TapBarMenu;
 
 
 public class dashboard_activity extends AppCompatActivity   {
@@ -132,6 +124,7 @@ public class dashboard_activity extends AppCompatActivity   {
     public void display_home(){
         getSupportFragmentManager().popBackStack();
         close_search();
+        close_lastup();
         home vl = home.newInstance();
         global.addFragment(getSupportFragmentManager(),vl,R.id.home_fragment,"FRAGMENT_HOME","ZOOM");
         header_layout.setVisibility(View.VISIBLE);
@@ -139,6 +132,7 @@ public class dashboard_activity extends AppCompatActivity   {
 
     public void display_search(){
         close_home();
+        close_lastup();
         search se = search.newInstance();
         global.addFragment(getSupportFragmentManager(),se,R.id.search_fragment,"FRAGMENT_OTHER","ZOOM");
     }
@@ -149,6 +143,26 @@ public class dashboard_activity extends AppCompatActivity   {
         // Check to see if the fragment is already showing.
         search simpleFragment = (search) fragmentManager
                 .findFragmentById(R.id.search_fragment);
+        if (simpleFragment != null) {
+            // Create and commit the transaction to remove the fragment.
+            FragmentTransaction fragmentTransaction =
+                    fragmentManager.beginTransaction();
+            fragmentTransaction.remove(simpleFragment).commit();
+        }
+    }
+
+    public void display_lastup(){
+        close_home();
+        lastup_video_list se = lastup_video_list.newInstance();
+        global.addFragment(getSupportFragmentManager(),se,R.id.video_list_fragment,"FRAGMENT_OTHER","ZOOM");
+    }
+
+    public void close_lastup(){
+        // Get the FragmentManager.
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // Check to see if the fragment is already showing.
+        lastup_video_list simpleFragment = (lastup_video_list) fragmentManager
+                .findFragmentById(R.id.video_list_fragment);
         if (simpleFragment != null) {
             // Create and commit the transaction to remove the fragment.
             FragmentTransaction fragmentTransaction =

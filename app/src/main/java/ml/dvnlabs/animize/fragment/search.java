@@ -79,6 +79,13 @@ public class search extends Fragment {
         srch_txt = (EditText)view.findViewById(R.id.srch_txt_edit);
         src_error = (TextView)view.findViewById(R.id.src_error_txt);
         srch_iv = (ImageView)view.findViewById(R.id.error_v_srch);
+
+        modeldata = new ArrayList<>();
+        modeldata.add(new search_list_model(null,null,null,null));
+        adapter = new search_list_adapter(modeldata,getActivity(),R.layout.search_list_view);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        listView.setLayoutManager(layoutManager);
+
         srch_text_logiclistener();
         // Inflate the layout for this fragment
         return view;
@@ -98,6 +105,8 @@ public class search extends Fragment {
             }
         });
         srch_txt.addTextChangedListener(new TextWatcher() {
+            int timing_text = 0;
+            Handler handler = new Handler();
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -108,17 +117,29 @@ public class search extends Fragment {
                 src_error.setVisibility(View.GONE);
                 srch_txt_get = s.toString();
                 int search_text_count = srch_txt.getText().length();
-
+                if(!modeldata.isEmpty() && search_text_count == 0){
+                    modeldata.clear();
+                    adapter.notifyDataSetChanged();
+                    System.out.println("TRIGGER");
+                }
                 if (search_text_count > 0){
+                    if(!modeldata.isEmpty()){
+                        modeldata.clear();
+                        adapter.notifyDataSetChanged();
+                        System.out.println("TRIGGER2");
+                    }
                     search_text_count = search_text_count % 2;
                     if(search_text_count == 0 || isReadyForNextReq){
                         getSearch();
                     }
 
+                }else{
+                    src_error.setVisibility(View.VISIBLE);
+                    String errormsg = getResources().getString(R.string.search_not_provided);
+                    src_error.setText(errormsg);
                 }
-                src_error.setVisibility(View.VISIBLE);
-                String errormsg = getResources().getString(R.string.search_not_provided);
-                src_error.setText(errormsg);
+
+
             }
 
             @Override
@@ -130,7 +151,7 @@ public class search extends Fragment {
 
     private void getSearch(){
         String url = Api.url_search+srch_txt_get;
-        System.out.println("TXT:"+srch_txt_get);
+        System.out.println("TXT:"+url);
         APINetworkRequest apiNetworkRequest = new APINetworkRequest(getActivity(),search,url,CODE_GET_REQUEST,null);
     }
     FetchDataListener search = new FetchDataListener() {
@@ -178,7 +199,7 @@ public class search extends Fragment {
 
     private void show_video(JSONArray video){
         listView.setVisibility(View.VISIBLE);
-        modeldata = new ArrayList<>();
+        modeldata.clear();
         try{
             for(int i = 0;i<video.length();i++){
                 JSONObject jsonObject = video.getJSONObject(i);
@@ -196,9 +217,7 @@ public class search extends Fragment {
         {
             e.printStackTrace();
         }
-        adapter = new search_list_adapter(modeldata,getActivity(),R.layout.search_list_view);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        listView.setLayoutManager(layoutManager);
+
         //listView.addItemDecoration(itemDecorator);
         listView.setAdapter(adapter);
 

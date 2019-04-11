@@ -1,13 +1,9 @@
 package ml.dvnlabs.animize.fragment;
 
 
-import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -17,7 +13,6 @@ import ml.dvnlabs.animize.adapter.video_list_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
-import ml.dvnlabs.animize.loader.animlist_loader;
 import ml.dvnlabs.animize.model.video_list_model;
 
 import android.os.Handler;
@@ -28,8 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.wang.avi.AVLoadingIndicatorView;
@@ -44,7 +37,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class video_list extends Fragment implements View.OnClickListener {
+public class lastup_video_list extends Fragment implements View.OnClickListener {
 
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
@@ -64,7 +57,7 @@ public class video_list extends Fragment implements View.OnClickListener {
     private LinearLayoutManager layoutManager;
 
 
-    public video_list() {
+    public lastup_video_list() {
         // Required empty public constructor
     }
 
@@ -74,7 +67,7 @@ public class video_list extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         handler = new Handler();
         // Inflate the layout for this fragment
-        final View view= inflater.inflate(R.layout.fragment_video_list, container, false);
+        final View view= inflater.inflate(R.layout.fragment_lastup_list, container, false);
         listView = (RecyclerView) view.findViewById(R.id.PlayVideoList);
 
 
@@ -100,7 +93,7 @@ public class video_list extends Fragment implements View.OnClickListener {
         String a = "INIT";
         Log.e("INF",a);
         getlist_V();
-        //getLoaderManager().restartLoader(0,null,video_list.this);
+        //getLoaderManager().restartLoader(0,null,lastup_video_list.this);
 
         swipe_list.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -111,7 +104,7 @@ public class video_list extends Fragment implements View.OnClickListener {
                 modeldata.clear();
                 page_list =1;
                 getlist_V();
-                //getLoaderManager().restartLoader(0,null,video_list.this);
+                //getLoaderManager().restartLoader(0,null,lastup_video_list.this);
                 btn_retry.setVisibility(View.GONE);
                 texterrorload.setVisibility(View.GONE);
                 iv_error.setVisibility(View.GONE);
@@ -147,15 +140,21 @@ public class video_list extends Fragment implements View.OnClickListener {
     @Override
     public void onResume() {
        super.onResume();
-        //getLoaderManager().initLoader(0,null,video_list.this);
+        //getLoaderManager().initLoader(0,null,lastup_video_list.this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        modeldata.clear();
     }
 
     @Override
     public void onClick(View view){
           retry_load();
     }
-    public static video_list newInstance(){
-        return new video_list();
+    public static lastup_video_list newInstance(){
+        return new lastup_video_list();
 
     }
     //VOLLEY NETWORKING
@@ -301,7 +300,7 @@ public class video_list extends Fragment implements View.OnClickListener {
 
                         getlist_V();
 
-                        //getLoaderManager().restartLoader(0,null,video_list.this);
+                        //getLoaderManager().restartLoader(0,null,lastup_video_list.this);
                         //add items one by one
                         //adapter.notifyDataSetChanged();
                         //or you can add all at once but do not forget to call mAdapter.notifyDataSetChanged();

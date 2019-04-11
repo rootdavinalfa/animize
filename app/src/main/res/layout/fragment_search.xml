@@ -17,23 +17,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <ImageView
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="@drawable/ripple_forrounded"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:tint="@color/design_default_color_secondary"
-                android:src="@drawable/ic_arrow_vector"/>
-
             <EditText
+                android:layout_marginTop="2dp"
                 android:id="@+id/srch_txt_edit"
                 android:singleLine="true"
+                android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
+                android:padding="8dp"
                 android:clickable="true"
                 android:foreground="@drawable/ripple_forrounded"
                 android:focusable="true"
-                android:layout_marginStart="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@drawable/roundbutton"

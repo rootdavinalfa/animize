@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Animize</string>
     <string name="login_username_txt">メール</string>
     <string name="login_password_txt">パスワード</string>
     <string name="btn_login">ローグイン</string>
@@ -19,9 +18,15 @@
     <string name="play_synopsis">筋書き</string>
     <string name="play_playlist">このシーリーズがもっと</string>
     <string name="text_register">Register</string>
-    <string name="txt_regist_name">Name</string>
+    <string name="txt_regist_name">名前</string>
     <string name="regist_community">Please read carefully the Term Of Service.Take a concern if you check the box,you deserve to follow our community guidelines</string>
     <string name="cb_tos">I consent to hereby obedient the T.O.S</string>
     <string name="disclaimer">これはファンサブであり、販売用ではありません。\nこのアプリで販売するすべてのアイテムは、アニメリストとは関係ありません。\n生産会社を支持する。</string>
     <string name="search_not_provided">Please provide Keyword</string>
+    <string name="home_see_more">もっと見る</string>
+    <string name="last_uploaded_txt">最後のアップロード</string>
+    <string name="app_name">アニミーズ</string>
+    <string name="nav_home_txt">ホーム</string>
+    <string name="nav_genre_txt">Genre</string>
+    <string name="nav_anime_txt">アニメ</string>
 </resources>

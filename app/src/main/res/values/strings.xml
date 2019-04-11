@@ -25,4 +25,9 @@
     <string name="cb_tos">I consent to hereby obedient the T.O.S</string>
     <string name="disclaimer">This is fansub only,not for selling. \nAll item sell on this app is not related to anime list and\nendorse production houses.</string>
     <string name="search_not_provided">Please provide keyword</string>
+    <string name="home_see_more">See More</string>
+    <string name="last_uploaded_txt">Last Uploaded</string>
+    <string name="nav_home_txt">Home</string>
+    <string name="nav_genre_txt">Genre</string>
+    <string name="nav_anime_txt">Anime</string>
 </resources>

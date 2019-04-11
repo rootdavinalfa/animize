@@ -7,13 +7,14 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="#EBEBEB"
+    app:cardBackgroundColor="@color/colorPrimary"
     app:cardCornerRadius="0dp"
     app:cardElevation="7dp"
     app:cardUseCompatPadding="true"
     app:contentPadding="0dp">
 
     <androidx.cardview.widget.CardView
+        app:cardBackgroundColor="@color/colorPrimary"
         android:clickable="false"
         android:focusable="false"
         android:layout_width="match_parent"
@@ -26,7 +27,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <TextView
-                android:textColor="@color/design_default_color_secondary_variant"
+                android:textColor="@color/design_default_color_secondary"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
@@ -36,6 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textStyle="bold"
+                android:textColor="@color/design_default_color_background"
                 android:text="Davin Alfarizky"/>
 
         </LinearLayout>
@@ -72,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/advent_pro_bold"
                     android:text="KSJWkdjhiahdihwiuhiawakddkahdksa"
-                    android:textColor="@color/design_default_color_secondary_variant"
+                    android:textColor="@color/design_default_color_secondary"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -87,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="TextView"
-                        android:textColor="@color/design_default_color_secondary_variant"
+                        android:textColor="@color/design_default_color_secondary"
                         android:textStyle="bold" />
 
                     <TextView
@@ -95,7 +97,7 @@
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:text="kewisiwie"
-                        android:textColor="#828282" />
+                        android:textColor="@color/design_default_color_background" />
                 </LinearLayout>
             </LinearLayout>
 

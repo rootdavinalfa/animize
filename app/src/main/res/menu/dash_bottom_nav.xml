@@ -3,14 +3,14 @@
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_home"
-        android:title="Home"/>
+        android:title="@string/nav_home_txt"/>
     <item
         android:id="@+id/nav_genre"
         android:icon="@drawable/ic_genre"
-        android:title="Genre"/>
+        android:title="@string/nav_genre_txt"/>
     <item
         android:id="@+id/nav_package"
         android:icon="@drawable/ic_koinobori"
-        android:title="Anime"/>
+        android:title="@string/nav_anime_txt"/>
 
 </menu>

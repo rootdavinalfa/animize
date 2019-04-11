@@ -428,6 +428,10 @@ public class animplay_activity extends AppCompatActivity implements LoaderManage
 
         if (getService() != null){
             playerManager.unbind();
+            modeldata.clear();
+            if(!playlist_models.isEmpty()){
+                playlist_models.clear();
+            }
         }
         //playerView.setPlayer(null);
         //if(isMyServiceRunning(playerManager.getClass())){
