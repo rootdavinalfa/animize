@@ -57,7 +57,7 @@ public class playlist_holder extends RecyclerView.ViewHolder implements View.OnC
             context.startActivity(intent);*/
             //((animplay_activity)context).releaseall();
             ((animplay_activity)context).setIdanim(this.playlist_model.getId_anim());
-            ((animplay_activity)context).newvideo();
+            //((animplay_activity)context).newvideo();
             PlayerManager.with(context).pause_video();
 
         }

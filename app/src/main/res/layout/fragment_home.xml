@@ -77,6 +77,13 @@
                                 android:layout_height="match_parent"
                                 app:dsv_orientation="horizontal"
                                 />
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/loading_lastup"
+                                android:layout_width="match_parent"
+                                app:shimmer_duration="800"
+                                android:layout_height="match_parent">
+                                <include layout="@layout/shimmer_horizontal"/>
+                            </com.facebook.shimmer.ShimmerFrameLayout>
 
                         </RelativeLayout>
 

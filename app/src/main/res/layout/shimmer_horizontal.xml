@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <RelativeLayout
+        android:layout_width="200dp"
+        android:padding="5dp"
+        android:layout_height="match_parent">
+        <View
+            android:layout_centerInParent="true"
+            android:id="@+id/thumbnail"
+            android:layout_width="220dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/image_shadow"
+            />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="5dp"
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <View
+            android:backgroundTint="@color/design_default_color_secondary"
+            android:background="@drawable/roundbutton"
+            android:id="@+id/title_lastupload_home"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            />
+
+        <View
+            android:background="@drawable/roundbutton"
+            android:backgroundTint="@color/colorPrimary"
+            android:id="@+id/episode_lastupload_home"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            />
+
+    </LinearLayout>
+</LinearLayout>

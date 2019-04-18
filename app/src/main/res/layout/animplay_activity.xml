@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".activity.animplay_activity">
+    <FrameLayout
+        android:id="@+id/main_media_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/animplay_view"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:animateLayoutChanges="true"
+            android:gravity="center"
+            app:controller_layout_id="@layout/animize_controlview" />
+    </FrameLayout>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/aplay_tabs"
+        android:layout_width="match_parent"
+        android:theme="@style/AppTheme.TabStyle"
+        app:tabSelectedTextColor="@color/design_default_color_secondary"
+        app:tabTextColor="@color/design_default_color_background"
+        android:background="@color/colorPrimaryDark"
+        app:tabIndicatorColor="@color/design_default_color_secondary"
+        app:tabRippleColor="@color/design_default_color_secondary"
+        android:layout_height="wrap_content">
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/aplay_tabs_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:text="Details" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/aplay_tabs_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:text="More" />
+    </com.google.android.material.tabs.TabLayout>
+    <RelativeLayout
+        android:id="@+id/aplay_details_errorcont"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/aplay_bar_loading"
+            android:layout_width="100dp"
+            android:layout_centerInParent="true"
+            android:layout_height="100dp" />
+        <ImageView
+            android:id="@+id/aplay_img_error"
+            android:layout_centerInParent="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_astronaut"/>
+        <TextView
+            android:id="@+id/aplay_txt_error"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/aplay_img_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="36sp"
+            android:textColor="@color/design_default_color_background"
+            android:text="Error"/>
+    </RelativeLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/aplay_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

@@ -86,14 +86,12 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
 
         layoutManager = new LinearLayoutManager(getActivity());
 
-        //adapter = new video_list_adapter(modeldata,getActivity(),R.layout.video_list_view);
-//        listView.setAdapter(adapter);
-        //getJson();
-
         String a = "INIT";
         Log.e("INF",a);
+        //Call initialize like init array()
+        initialize();
         getlist_V();
-        //getLoaderManager().restartLoader(0,null,lastup_video_list.this);
+
 
         swipe_list.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -132,6 +130,9 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
 
         return view;
     }
+    private void initialize(){
+        modeldata = new ArrayList<>();
+    }
 
     @Override
     public void onPause(){
@@ -146,7 +147,10 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
     @Override
     public void onStop() {
         super.onStop();
-        modeldata.clear();
+        if(!modeldata.isEmpty()){
+            modeldata.clear();
+        }
+
     }
 
     @Override
@@ -232,7 +236,7 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
 
         //recyclerViewState = layoutManager.onSaveInstanceState();
         if(page_list ==1){
-            modeldata = new ArrayList<>();
+            modeldata.clear();
         }
 
         try{

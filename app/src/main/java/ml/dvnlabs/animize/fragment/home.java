@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
 import com.yarolegovich.discretescrollview.transform.Pivot;
@@ -40,6 +41,7 @@ public class home extends Fragment {
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
     private int page_lastup = 0;
+    private ShimmerFrameLayout lastup_loading;
     private TextView dash_button_lastupmore;
     private DiscreteScrollView listView_lastup;
     private ArrayList<home_lastup_model> modeldata_lastup;
@@ -60,11 +62,13 @@ public class home extends Fragment {
         //namestitle = (TextView)view.findViewById(R.id.titles_lastupload_home);
         linearLayoutManager = new LinearLayoutManager(getActivity());
         dash_button_lastupmore = (TextView)view.findViewById(R.id.dash_lastup_more);
+        lastup_loading = (ShimmerFrameLayout)view.findViewById(R.id.loading_lastup);
         initial_setup();
 
         return view;
     }
     private void initial_setup(){
+        modeldata_lastup = new ArrayList<>();
         ACT_Dash_button_lastupmore();
         getLast_Up();
     }
@@ -76,7 +80,7 @@ public class home extends Fragment {
             }
         });
     }
-    private void getLast_Up(){
+    public void getLast_Up(){
         String url = Api.url_page+"1";
         APINetworkRequest apiNetworkRequest = new APINetworkRequest(getActivity(),lastup,url,CODE_GET_REQUEST,null);
     }
@@ -113,6 +117,8 @@ public class home extends Fragment {
     FetchDataListener lastup = new FetchDataListener() {
         @Override
         public void onFetchComplete(String data) {
+            lastup_loading.stopShimmer();
+            lastup_loading.setVisibility(View.GONE);
             parse_jsonlastup(data);
         }
 
@@ -123,13 +129,15 @@ public class home extends Fragment {
 
         @Override
         public void onFetchStart() {
+            lastup_loading.startShimmer();
+            listView_lastup.setVisibility(View.VISIBLE);
 
         }
     };
 
     private void show_video(JSONArray video){
         try{
-            modeldata_lastup = new ArrayList<>();
+            modeldata_lastup.clear();
             //listView_lastup.setLayoutManager(linearLayoutManager);
             listView_lastup.setVisibility(View.VISIBLE);
             for(int i = 0;i<video.length();i++){
@@ -138,8 +146,7 @@ public class home extends Fragment {
                 String id = jsonObject.getString(Api.JSON_id_anim);
                 String title_name = jsonObject.getString(Api.JSON_name_anim);
                 String episode = jsonObject.getString(Api.JSON_episode_anim);
-                //System.out.println("DATA:"+id);
-                //Log.e("INF::",title_name);
+
                 modeldata_lastup.add(new home_lastup_model(url_tb,id,title_name,episode));
                 //adapter.notifyItemInserted(i);
 
@@ -149,13 +156,6 @@ public class home extends Fragment {
             adapater_lastup = new home_lastup_adapter(modeldata_lastup,getActivity(),R.layout.rv_lastupload);
             listView_lastup.setAdapter(adapater_lastup);
             listView_lastup.setHasFixedSize(true);
-            /*
-            listView_lastup.setItemTransformer(new ScaleTransformer.Builder()
-                    .setMaxScale(1.05f)
-                    .setMinScale(0.8f)
-                    .setPivotX(Pivot.X.CENTER) // CENTER is a default one
-                    .setPivotY(Pivot.Y.BOTTOM) // CENTER is a default one
-                    .build());*/
             DiscreteScrollItemTransformer transformer = new DiscreteScrollItemTransformer() {
                 private static final float MIN_SCALE = 0.75f;
                 @Override
@@ -195,6 +195,7 @@ public class home extends Fragment {
             };
             listView_lastup.setItemTransformer(transformer);
             page_lastup = listView_lastup.getCurrentItem();
+            startTimer();
             listView_lastup.setOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -204,7 +205,7 @@ public class home extends Fragment {
                     }
                 }
             });
-            startTimer();
+
 
 
         }catch (JSONException e){
@@ -227,13 +228,16 @@ public class home extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //getLoaderManager().initLoader(0,null,lastup_video_list.this);
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        modeldata_lastup.clear();
+        if(!modeldata_lastup.isEmpty()){
+            modeldata_lastup.clear();
+        }
+
         cancelTimer();
     }
 

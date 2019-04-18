@@ -18,6 +18,7 @@ import android.view.View;
 
 
 import com.danikula.videocache.CacheListener;
+import com.danikula.videocache.HttpProxyCacheServer;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -57,6 +58,7 @@ import androidx.annotation.Nullable;
 import ml.dvnlabs.animize.Event.PlayerBusError;
 import ml.dvnlabs.animize.Event.PlayerBusStatus;
 import ml.dvnlabs.animize.activity.animplay_activity;
+import ml.dvnlabs.animize.app.AppController;
 
 
 public class PlayerService extends Service implements AudioManager.OnAudioFocusChangeListener, Player.EventListener, CacheListener {
@@ -361,16 +363,16 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
         this.streamUrl = streamUrl;
 
         // TODO: add caching
-//        HttpProxyCacheServer proxy = MainApplication.getProxy(getApplicationContext());
-//        proxy.registerCacheListener(this, streamUrl);
-//        String proxyUrl = proxy.getProxyUrl(streamUrl);
-//
-//        MediaSource mediaSource;
-//        if (streamUrl.contains(".mp")) {
-//            mediaSource = buildMediaSource(Uri.parse(proxyUrl));
-//        } else {
-//            mediaSource = buildMediaSource(Uri.parse(streamUrl));
-//        }
+        //HttpProxyCacheServer proxy = AppController.getProxy(getApplicationContext());
+        //proxy.registerCacheListener(this, streamUrl);
+        //String proxyUrl = proxy.getProxyUrl(streamUrl);
+        //Log.e("ER",proxyUrl);
+        //MediaSource mediaSource;
+        //if (streamUrl.contains(".mp")) {
+          //  mediaSource = buildMediaSource(Uri.parse(proxyUrl));
+        //} else {
+        //    mediaSource = buildMediaSource(Uri.parse(streamUrl));
+        //}
 
         MediaSource mediaSource = buildMediaSource(Uri.parse(streamUrl));
         exoPlayer.prepare(mediaSource);

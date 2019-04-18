@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-
+        android:textSize="26sp"
         android:gravity="center"
         android:padding="16dp"
         android:textColor="@color/design_default_color_background" />

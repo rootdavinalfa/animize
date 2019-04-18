@@ -7,6 +7,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/design_default_color_background</item>
     </style>
+    <style name="AppTheme.TabStyle" parent="Widget.Design.TabLayout">
+        <item name="tabTextColor">@color/design_default_color_background</item>
+        <item name="tabSelectedTextColor">@color/design_default_color_secondary</item>
+        <item name="tabIndicatorColor">@color/design_default_color_secondary</item>
+    </style>
 
     <style name="loginbutton" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorControlHighlight">#306932</item>

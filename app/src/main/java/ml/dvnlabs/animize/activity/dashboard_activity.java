@@ -1,10 +1,12 @@
 package ml.dvnlabs.animize.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.checker.checkNetwork;
 import ml.dvnlabs.animize.database.LoginInternalDBHelper;
 import ml.dvnlabs.animize.database.model.userland;
 import ml.dvnlabs.animize.fragment.global;
@@ -13,16 +15,23 @@ import ml.dvnlabs.animize.fragment.lastup_video_list;
 import ml.dvnlabs.animize.fragment.search;
 
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 
 public class dashboard_activity extends AppCompatActivity   {
@@ -39,6 +48,8 @@ public class dashboard_activity extends AppCompatActivity   {
     private LinearLayout header_layout;
     private LinearLayout dash_serach_btn;
     private BottomNavigationView bottomNavigationView;
+    private RelativeLayout dashboard;
+    private checkNetwork NetworkChecker;
 
 
 
@@ -47,10 +58,6 @@ public class dashboard_activity extends AppCompatActivity   {
         loginInternalDBHelper = new LoginInternalDBHelper(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_activity);
-        header_layout = (LinearLayout)findViewById(R.id.header);
-        dash_serach_btn = (LinearLayout) findViewById(R.id.dash_search);
-        bottomNavigationView = (BottomNavigationView)findViewById(R.id.DashnavigationView);
-        dash_profile_username = (TextView)findViewById(R.id.dash_profile_text);
         initializes();
         SqliteReadUser sqliteReadUser = new SqliteReadUser();
         sqliteReadUser.execute("OK");
@@ -63,9 +70,30 @@ public class dashboard_activity extends AppCompatActivity   {
         });
     }
     public void initializes(){
+        dashboard = (RelativeLayout)findViewById(R.id.dashboard);
+        header_layout = (LinearLayout)findViewById(R.id.header);
+        dash_serach_btn = (LinearLayout) findViewById(R.id.dash_search);
+        bottomNavigationView = (BottomNavigationView)findViewById(R.id.DashnavigationView);
+        dash_profile_username = (TextView)findViewById(R.id.dash_profile_text);
         display_home();
 
     }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Start service and provide it a way to communicate with this class.
+        //Intent startServiceIntent = new Intent(this, checkNetwork.class);
+        //startService(startServiceIntent);
+    }
+
+    @Override
+    protected void onStop() {
+        //stopService(new Intent(this, checkNetwork.class));
+        super.onStop();
+    }
+
     public void close_home(){
         header_layout.setVisibility(View.GONE);
         // Get the FragmentManager.
