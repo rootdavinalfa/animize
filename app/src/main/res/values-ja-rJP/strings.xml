@@ -29,4 +29,7 @@
     <string name="nav_home_txt">ホーム</string>
     <string name="nav_genre_txt">Genre</string>
     <string name="nav_anime_txt">アニメ</string>
+    <string name="pager_title_details">Details</string>
+    <string name="pager_title_more">More</string>
+    <string name="hello_blank_fragment">Test</string>
 </resources>

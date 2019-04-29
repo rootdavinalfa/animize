@@ -2,15 +2,143 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
     tools:context="ml.dvnlabs.animize.fragment.tabs.animplay.more">
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/colorPrimaryDark">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:textAlignment="center"
+                        android:textColor="@color/design_default_color_secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="32sp"
+                        android:text="Source"/>
+                    <RelativeLayout
+                        android:background="@color/colorPrimary"
+                        android:padding="20dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.cardview.widget.CardView
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="@drawable/ripple_forrounded"
+                            android:layout_alignParentStart="true"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:padding="5dp"
+                            app:cardBackgroundColor="@color/cardview_dark_background"
+                            app:cardCornerRadius="5dp"
+                            app:contentPadding="2dp">
+
+                            <ImageView
+                                android:padding="5dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_indonesia" />
+                        </androidx.cardview.widget.CardView>
+                        <androidx.cardview.widget.CardView
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="@drawable/ripple_forrounded"
+                            android:layout_centerInParent="true"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:padding="5dp"
+                            app:cardBackgroundColor="@color/cardview_dark_background"
+                            app:cardCornerRadius="5dp"
+                            app:contentPadding="2dp">
+
+                            <ImageView
+                                android:padding="5dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_united_kingdom" />
+                        </androidx.cardview.widget.CardView>
+                        <androidx.cardview.widget.CardView
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="@drawable/ripple_forrounded"
+                            android:layout_alignParentEnd="true"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:padding="5dp"
+                            app:cardBackgroundColor="@color/cardview_dark_background"
+                            app:cardCornerRadius="5dp"
+                            app:contentPadding="2dp">
+
+                            <ImageView
+                                android:padding="5dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:src="@drawable/ic_raw" />
+                        </androidx.cardview.widget.CardView>
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textAlignment="center"
+                        android:layout_centerInParent="true"
+                        android:textColor="@color/design_default_color_secondary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="32sp"
+                        android:text="Playlist"/>
+                    <ImageView
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="@drawable/ripple_forrounded"
+                        android:rotation="270"
+                        android:layout_alignParentEnd="true"
+                        android:tint="@color/design_default_color_secondary"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_arrow_vector"/>
+                </RelativeLayout>
+
+                <androidx.cardview.widget.CardView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:cardBackgroundColor="@color/colorPrimary"
+                    app:contentPadding="8dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:listitem="@layout/playlist_view">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
 
 
-    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

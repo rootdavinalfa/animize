@@ -17,15 +17,17 @@ public class global {
         int anim_enter = 0;
         int anim_exit = 0;
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if(anim_res.equals("ZOOM")){
-            anim_enter = R.anim.zoom_in;
-            anim_exit = R.anim.zoom_out;
+        if(!anim_res.equals("NULL")){
+            if(anim_res.equals("ZOOM")){
+                anim_enter = R.anim.zoom_in;
+                anim_exit = R.anim.zoom_out;
+            }
+            if(anim_res.equals("SLIDE")){
+                anim_exit = R.anim.slide_down;
+                anim_enter = R.anim.slide_up;
+            }
+            fragmentTransaction.setCustomAnimations(anim_enter,anim_exit);
         }
-        if(anim_res.equals("SLIDE")){
-            anim_exit = R.anim.slide_up;
-            anim_enter = R.anim.slide_down;
-        }
-        fragmentTransaction.setCustomAnimations(anim_enter,anim_exit);
         fragmentTransaction.replace(id,fragment);
         final int count = fragmentManager.getBackStackEntryCount();
         Log.e("COUNTED+:",String.valueOf(count));

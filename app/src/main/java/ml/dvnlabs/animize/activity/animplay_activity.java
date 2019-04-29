@@ -163,7 +163,7 @@ FetchDataListener getvideo = new FetchDataListener() {
         aplay_more = (TabItem)findViewById(R.id.aplay_tabs_more);
         aplay_viewpager = (ViewPager)findViewById(R.id.aplay_pager);
         aplay_tabs.setupWithViewPager(aplay_viewpager);
-        aplay_viewpageradapter adapter = new aplay_viewpageradapter(getSupportFragmentManager(),aplay_tabs.getTabCount());
+        aplay_viewpageradapter adapter = new aplay_viewpageradapter(getSupportFragmentManager(),aplay_tabs.getTabCount(),this);
         aplay_viewpager.setAdapter(adapter);
         aplay_viewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(aplay_tabs));
         fs_btn = (ImageView)findViewById(R.id.exo_fullscreen_icon);

@@ -75,6 +75,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
                             <TextView
+                                android:padding="5dp"
                                 android:id="@+id/synop_play"
                                 android:textColor="@color/textOnPrimary"
                                 android:layout_width="match_parent"

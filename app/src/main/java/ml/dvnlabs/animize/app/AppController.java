@@ -1,6 +1,7 @@
 package ml.dvnlabs.animize.app;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.text.TextUtils;
 
@@ -114,5 +115,8 @@ public class AppController extends Application {
                 throw new IOException(String.format("File %s can't be deleted", file.getAbsolutePath()));
             }
         }
+    }
+    public void setConnectivityListener(checkNetwork.ConnectivityReceiverListener listener) {
+        checkNetwork.connectivityReceiverListener = listener;
     }
 }

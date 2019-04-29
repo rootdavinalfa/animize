@@ -62,9 +62,9 @@ import ml.dvnlabs.animize.app.AppController;
 
 
 public class PlayerService extends Service implements AudioManager.OnAudioFocusChangeListener, Player.EventListener, CacheListener {
-    public static final String ACTION_PLAY = "ml.dvnlabs.animize.player.ACTION_PLAY";
-    public static final String ACTION_PAUSE = "ml.dvnlabs.animize.player.ACTION_PAUSE";
-    public static final String ACTION_STOP = "ml.dvnlabs.animize.player.ACTION_STOP";
+    public static final String ACTION_PLAY = "ml.dvnlabs.animize.player.PlayerService.ACTION_PLAY";
+    public static final String ACTION_PAUSE = "ml.dvnlabs.animize.player.PlayerService.ACTION_PAUSE";
+    public static final String ACTION_STOP = "ml.dvnlabs.animize.player.PlayerService.ACTION_STOP";
 
     private final IBinder playerBind = new PlayerBinder();
 
@@ -115,7 +115,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
     public void onCreate(){
         super.onCreate();
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        notificationManager = new PlayNotificationManager(this);
+        notificationManager = new PlayNotificationManager(this,getApplicationContext());
         mediaSession = new MediaSessionCompat(this,getClass().getSimpleName());
         transportControls = mediaSession.getController().getTransportControls();
         mediaSession.setActive(true);
@@ -169,7 +169,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
         } else if(action.equalsIgnoreCase(ACTION_STOP)){
             pause();
 
-            //notificationManager.cancelNotify();
+            notificationManager.cancelNotify();
         }
 
         return START_NOT_STICKY;
@@ -200,7 +200,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
         exoPlayer.release();
         exoPlayer.removeListener(this);
 
-       //notificationManager.cancelNotify();
+       notificationManager.cancelNotify();
 
         mediaSession.release();
 
@@ -266,7 +266,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
         }
 
         if(!status.equals(PlaybackStatus.IDLE))
-            //notificationManager.startNotify(status);
+            notificationManager.startNotify(status);
 
         //EventBus.getDefault().post(status);
             EventBus.getDefault().post(new PlayerBusStatus(status));

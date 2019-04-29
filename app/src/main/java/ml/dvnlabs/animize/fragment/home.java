@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -42,7 +43,7 @@ public class home extends Fragment {
     private static final int CODE_POST_REQUEST = 1025;
     private int page_lastup = 0;
     private ShimmerFrameLayout lastup_loading;
-    private TextView dash_button_lastupmore;
+    private RelativeLayout dash_button_lastupmore;
     private DiscreteScrollView listView_lastup;
     private ArrayList<home_lastup_model> modeldata_lastup;
     private home_lastup_adapter adapater_lastup;
@@ -61,7 +62,7 @@ public class home extends Fragment {
         //episodean = (TextView)view.findViewById(R.id.episodes_lastupload_home);
         //namestitle = (TextView)view.findViewById(R.id.titles_lastupload_home);
         linearLayoutManager = new LinearLayoutManager(getActivity());
-        dash_button_lastupmore = (TextView)view.findViewById(R.id.dash_lastup_more);
+        dash_button_lastupmore = (RelativeLayout)view.findViewById(R.id.dash_lastup_more);
         lastup_loading = (ShimmerFrameLayout)view.findViewById(R.id.loading_lastup);
         initial_setup();
 

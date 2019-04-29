@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.app.AppController;
 import ml.dvnlabs.animize.checker.checkNetwork;
 import ml.dvnlabs.animize.database.LoginInternalDBHelper;
 import ml.dvnlabs.animize.database.model.userland;
@@ -17,9 +18,13 @@ import ml.dvnlabs.animize.fragment.search;
 
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,8 +39,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
 
-public class dashboard_activity extends AppCompatActivity   {
-
+public class dashboard_activity extends AppCompatActivity implements checkNetwork.ConnectivityReceiverListener{
+    private BroadcastReceiver receiver;
     LoginInternalDBHelper loginInternalDBHelper;
     private String id_users,name_users,emails;
     String tokeen;
@@ -49,7 +54,7 @@ public class dashboard_activity extends AppCompatActivity   {
     private LinearLayout dash_serach_btn;
     private BottomNavigationView bottomNavigationView;
     private RelativeLayout dashboard;
-    private checkNetwork NetworkChecker;
+    private checkNetwork NetworkChecker = null;
 
 
 
@@ -61,6 +66,8 @@ public class dashboard_activity extends AppCompatActivity   {
         initializes();
         SqliteReadUser sqliteReadUser = new SqliteReadUser();
         sqliteReadUser.execute("OK");
+        NetworkChecker = new checkNetwork();
+        registerReceiver(NetworkChecker,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         bottomnavlogic();
         dash_serach_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +75,39 @@ public class dashboard_activity extends AppCompatActivity   {
                 display_search();
             }
         });
+    }
+    //inetCheck for check on fragment
+    public void inetCheck(){
+        boolean isConnect = checkNetwork.isConnected();
+        showSnack(isConnect);
+    }
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        //showSnack(isConnected);
+        //Log.e("INET:","OK");
+        showSnack(isConnected);
+    }
+    private void showSnack(boolean isConnected) {
+        String message;
+        int color;
+        Snackbar snackbar;
+        if(!isConnected){
+            message = "Not connected";
+            color = Color.RED;
+            snackbar = Snackbar
+                    .make(findViewById(R.id.DashnavigationView), message, Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction("Retry", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    home hm = (home) getSupportFragmentManager().findFragmentById(R.id.home_fragment);
+                    hm.getLast_Up();
+                }
+            });
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(R.id.snackbar_text);
+            textView.setTextColor(color);
+            snackbar.show();
+        }
     }
     public void initializes(){
         dashboard = (RelativeLayout)findViewById(R.id.dashboard);
@@ -78,8 +118,15 @@ public class dashboard_activity extends AppCompatActivity   {
         display_home();
 
     }
+    public void broadcastIntent() {
+        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
 
-
+    @Override
+    protected void onResume(){
+        super.onResume();
+        AppController.getInstance().setConnectivityListener(this);
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -92,6 +139,7 @@ public class dashboard_activity extends AppCompatActivity   {
     protected void onStop() {
         //stopService(new Intent(this, checkNetwork.class));
         super.onStop();
+        unregisterReceiver(NetworkChecker);
     }
 
     public void close_home(){
@@ -154,7 +202,7 @@ public class dashboard_activity extends AppCompatActivity   {
         close_search();
         close_lastup();
         home vl = home.newInstance();
-        global.addFragment(getSupportFragmentManager(),vl,R.id.home_fragment,"FRAGMENT_HOME","ZOOM");
+        global.addFragment(getSupportFragmentManager(),vl,R.id.home_fragment,"FRAGMENT_HOME","SLIDE");
         header_layout.setVisibility(View.VISIBLE);
     }
 
@@ -162,7 +210,7 @@ public class dashboard_activity extends AppCompatActivity   {
         close_home();
         close_lastup();
         search se = search.newInstance();
-        global.addFragment(getSupportFragmentManager(),se,R.id.search_fragment,"FRAGMENT_OTHER","ZOOM");
+        global.addFragment(getSupportFragmentManager(),se,R.id.search_fragment,"FRAGMENT_OTHER","SLIDE");
     }
 
     public void close_search(){
@@ -182,7 +230,7 @@ public class dashboard_activity extends AppCompatActivity   {
     public void display_lastup(){
         close_home();
         lastup_video_list se = lastup_video_list.newInstance();
-        global.addFragment(getSupportFragmentManager(),se,R.id.video_list_fragment,"FRAGMENT_OTHER","ZOOM");
+        global.addFragment(getSupportFragmentManager(),se,R.id.video_list_fragment,"FRAGMENT_OTHER","SLIDE");
     }
 
     public void close_lastup(){

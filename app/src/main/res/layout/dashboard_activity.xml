@@ -114,7 +114,6 @@
     </LinearLayout>
     <FrameLayout
         android:layout_above="@id/DashnavigationView"
-        android:layout_below="@id/header"
         android:id="@+id/search_fragment"
         android:name="ml.dvnlabs.animize.search"
         android:layout_width="match_parent"
@@ -124,7 +123,6 @@
     </FrameLayout>
     <FrameLayout
         android:layout_above="@id/DashnavigationView"
-        android:layout_below="@id/header"
         android:id="@+id/video_list_fragment"
         android:name="ml.dvnlabs.animize.video_list"
         android:layout_width="match_parent"
