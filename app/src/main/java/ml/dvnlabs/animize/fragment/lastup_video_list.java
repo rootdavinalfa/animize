@@ -97,7 +97,7 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
             @Override
             public void onRefresh() {
                 isRefreshing = true;
-                listView.setVisibility(View.GONE);
+                //listView.setVisibility(View.GONE);
                 //adapter.notifyDataSetChanged();
                 modeldata.clear();
                 page_list =1;
@@ -132,6 +132,7 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
     }
     private void initialize(){
         modeldata = new ArrayList<>();
+
     }
 
     @Override
@@ -140,7 +141,7 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
     }
     @Override
     public void onResume() {
-       super.onResume();
+        super.onResume();
         //getLoaderManager().initLoader(0,null,lastup_video_list.this);
     }
 
@@ -155,7 +156,7 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
 
     @Override
     public void onClick(View view){
-          retry_load();
+        retry_load();
     }
     public static lastup_video_list newInstance(){
         return new lastup_video_list();
@@ -223,7 +224,7 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
 
     public void retry_load(){
         //getJson();
-        listView.setVisibility(View.GONE);
+        //listView.setVisibility(View.GONE);
         iv_error.setVisibility(View.GONE);
         texterrorload.setVisibility(View.GONE);
         getlist_V();
@@ -255,7 +256,7 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
 
             }
             if(page_list == 1){
-                adapter = new video_list_adapter(modeldata,getActivity(),R.layout.video_list_view);
+                adapter = new video_list_adapter(modeldata,getActivity(),listView);
                 listView.setAdapter(adapter);
             }
             Log.e("INFO COUNT ADAPT:",String.valueOf(adapter.getItemCount()));
@@ -269,8 +270,8 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
 
 
         }catch (JSONException e) {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
+        }
 
 
         //listView.getLayoutManager().onRestoreInstanceState(recyclerViewState);
@@ -293,14 +294,15 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
         listView.setOnScrollListener(new EndlessRecyclerOnScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int current_page) {
-                //modeldata.add(new video_list_model(null,null,null,null));
+                modeldata.add(new video_list_model(null,null,null,null));
                 //adapter.notifyItemInserted(modeldata.size());
+                adapter.notifyDataSetChanged();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         //remove progress item
-                        //modeldata.remove(modeldata.size() - 1);
-                        //adapter.notifyItemRemoved(modeldata.size());
+                        modeldata.remove(modeldata.size() - 1);
+                        adapter.notifyItemRemoved(modeldata.size());
 
                         getlist_V();
 

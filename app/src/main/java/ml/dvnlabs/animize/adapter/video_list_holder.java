@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -70,7 +71,7 @@ public class video_list_holder extends RecyclerView.ViewHolder implements View.O
             Intent intent = new Intent(context, animplay_activity.class);
             intent.putExtra("id_anim",this.vl_model.getIdn());
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            
+            Log.e("CLICKED",this.vl_model.getIdn());
             context.startActivity(intent);
 
         }

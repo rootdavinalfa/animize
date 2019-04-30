@@ -17,6 +17,7 @@ import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.fragment.tabs.animplay.details;
+import ml.dvnlabs.animize.fragment.tabs.animplay.more;
 import ml.dvnlabs.animize.loader.animplay_loader;
 import ml.dvnlabs.animize.model.playlist_model;
 import ml.dvnlabs.animize.model.videoplay_model;
@@ -117,19 +118,9 @@ FetchDataListener getvideo = new FetchDataListener() {
         try{
             JSONObject object = new JSONObject(data);
             if (!object.getBoolean("error")) {
-
-                //refreshing the animlist after every operation
-                //so we get an updated list
-                //we will create this method right now it is commented
-                //because we haven't created it yet
                 if(isInit){
                     show_video(object.getJSONArray("anim"));
                 }
-            /*
-            if(isXpandPlaylist){
-                ply.setVisibility(View.GONE);
-                setplaylist(object.getJSONArray("anim"));
-            }*/
             }
         }catch (JSONException e){
             e.printStackTrace();
@@ -266,6 +257,9 @@ FetchDataListener getvideo = new FetchDataListener() {
         super.onRestart();
         isRestart = true;
     }
+    public void newvideo(){
+        getVideo();
+    }
     private void show_video(JSONArray video){
         //video_loadba = (AVLoadingIndicatorView) findViewById(R.id.video_loadingbar);
         playerView = (PlayerView)findViewById(R.id.animplay_view);
@@ -293,8 +287,10 @@ FetchDataListener getvideo = new FetchDataListener() {
         url = modeldata.get(0).getSource_url();
         //pkg_anim = modeldata.get(0).getPack();
         //Log.e("INFO",url);
+
         ply_name.setText(modeldata.get(0).getName_anim());
         String epe = getString(R.string.episode_text)+": "+modeldata.get(0).getEpisode()+" "+getString(R.string.string_of)+" "+modeldata.get(0).getTotal_ep_anim();
+        //Log.e("INFOAAAA",epe);
         ply_episod.setText(epe);
         if(playerManager.isServiceBound()){
             playerManager.playOrPause(url);
@@ -306,7 +302,13 @@ FetchDataListener getvideo = new FetchDataListener() {
         errortxt.setVisibility(View.GONE);
         errorIMG.setVisibility(View.GONE);
         sendmodelplay(modeldata,datasender);
+        sendpkg(modeldata.get(0).getPack());
 
+    }
+    private void sendpkg(String pkg){
+        String tag = "android:switcher:" + R.id.aplay_pager + ":" + 1;
+        more f = (more) getSupportFragmentManager().findFragmentByTag(tag);
+        f.receivedata(pkg);
     }
     private void sendmodelplay(ArrayList<videoplay_model>data,passdata_arraylist senddata){
         senddata.onDataReceived(data,idanim);

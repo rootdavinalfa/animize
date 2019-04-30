@@ -36,8 +36,8 @@ public class PlayerManager {
 
 
     public void playOrPause(String streamUrl) {
-        service.playOrPause(streamUrl);
         Log.e("URL STREAM:", streamUrl);
+        service.playOrPause(streamUrl);
     }
     public void pause_video(){
         service.pause();
@@ -52,7 +52,7 @@ public class PlayerManager {
     }
 
     public void bind() {
-
+        //context.startService(new Intent(context,PlayerService.class));
         context.getApplicationContext().bindService(new Intent(context, PlayerService.class), serviceConnection, Context.BIND_AUTO_CREATE);
         serviceBound = true;
         if (service != null)
@@ -61,6 +61,7 @@ public class PlayerManager {
  public void unbind() {
 
         if (service!=null) {
+            //context.stopService(new Intent(context,PlayerService.class));
         context.getApplicationContext().unbindService(serviceConnection);
             serviceBound = false;
         }

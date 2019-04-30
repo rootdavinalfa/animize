@@ -100,7 +100,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
 
             stop();
 
-           // notificationManager.cancelNotify();
+           //notificationManager.cancelNotify();
         }
 
         @Override
@@ -169,7 +169,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
         } else if(action.equalsIgnoreCase(ACTION_STOP)){
             pause();
 
-            notificationManager.cancelNotify();
+            //notificationManager.cancelNotify();
         }
 
         return START_NOT_STICKY;
@@ -200,7 +200,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
         exoPlayer.release();
         exoPlayer.removeListener(this);
 
-       notificationManager.cancelNotify();
+       //notificationManager.cancelNotify();
 
         mediaSession.release();
 
@@ -266,7 +266,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
         }
 
         if(!status.equals(PlaybackStatus.IDLE))
-            notificationManager.startNotify(status);
+            //notificationManager.startNotify(status);
 
         //EventBus.getDefault().post(status);
             EventBus.getDefault().post(new PlayerBusStatus(status));
@@ -325,13 +325,11 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
     }
 
     private MediaSource buildMediaSource(Uri uri) {
-
         String userAgent = Util.getUserAgent(getApplicationContext(), "Animize");
             return new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory(userAgent,null,DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
                     DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                     true))
                     .createMediaSource(uri);
-
     }
 
     public String getStatus(){
@@ -380,12 +378,18 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
         exoPlayer.setPlayWhenReady(true);
     }
 
-    public void playOrPause(String url) {
-        if (streamUrl != null && streamUrl.equals(url)) {
-            play();
-        } else {
-            init(url);
+    public void playOrPause(String urli) {
+        if(urli != null){
+            System.out.println("OK");
+            if (streamUrl != null && streamUrl.equals(urli)) {
+                play();
+            } else {
+                Log.e("Service",urli);
+                init(urli);
+
+            }
         }
+
     }
 
     public boolean isPlaying(){
