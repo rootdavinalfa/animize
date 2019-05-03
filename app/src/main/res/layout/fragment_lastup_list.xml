@@ -41,7 +41,7 @@
             >
 
             <androidx.recyclerview.widget.RecyclerView
-
+                tools:listitem="@layout/video_list_view"
                 android:id="@+id/PlayVideoList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -101,6 +101,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/loading_text"
         android:layout_width="wrap_content"
         android:layout_height="22dp"
@@ -115,6 +116,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.wang.avi.AVLoadingIndicatorView
+        android:visibility="gone"
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
         android:layout_width="100dp"

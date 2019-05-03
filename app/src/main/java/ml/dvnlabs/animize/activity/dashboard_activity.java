@@ -139,7 +139,13 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
     protected void onStop() {
         //stopService(new Intent(this, checkNetwork.class));
         super.onStop();
+
+    }
+
+    @Override
+    protected void onDestroy() {
         unregisterReceiver(NetworkChecker);
+        super.onDestroy();
     }
 
     public void close_home(){

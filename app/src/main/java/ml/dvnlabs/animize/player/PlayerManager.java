@@ -10,6 +10,8 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
+import ml.dvnlabs.animize.activity.animplay_activity;
+
 public class PlayerManager {
     private static PlayerManager instance = null;
     private static PlayerService service;
@@ -18,17 +20,18 @@ public class PlayerManager {
 
     private boolean serviceBound;
 
-    private PlayerManager(Context context) {
+    public PlayerManager(Context context) {
         this.context = context;
         //serviceBound = false;
     }
 
+    /*
     public static PlayerManager with(Context context) {
         if (instance == null)
             instance = new PlayerManager(context);
 
         return instance;
-    }
+    }*/
 
     public static PlayerService getService(){
         return service;
@@ -36,8 +39,14 @@ public class PlayerManager {
 
 
     public void playOrPause(String streamUrl) {
-        Log.e("URL STREAM:", streamUrl);
-        service.playOrPause(streamUrl);
+        //Log.e("URL STREAM:", streamUrl);
+        if(service !=null){
+            service.playOrPause(streamUrl);
+        }else {
+            Log.e("ERROR","NOT BOUND");
+            bind();
+        }
+
     }
     public void pause_video(){
         service.pause();
@@ -52,34 +61,45 @@ public class PlayerManager {
     }
 
     public void bind() {
-        //context.startService(new Intent(context,PlayerService.class));
-        context.getApplicationContext().bindService(new Intent(context, PlayerService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+        Log.e("BINDING:","OK");
+        //context.getApplicationContext().startService(new Intent(context,PlayerService.class));
+        context.bindService(new Intent(context, PlayerService.class), serviceConnection, Context.BIND_AUTO_CREATE);
         serviceBound = true;
         if (service != null)
             EventBus.getDefault().post(service.getStatus());
     }
  public void unbind() {
+     Log.e("UNBINDING:","OK");
+     //if (serviceBound){
+     //context.getApplicationContext().stopService(new Intent(context,PlayerService.class));
+     context.unbindService(serviceConnection);
+     serviceBound = false;
+     service = null;
 
-        if (service!=null) {
-            //context.stopService(new Intent(context,PlayerService.class));
-        context.getApplicationContext().unbindService(serviceConnection);
-            serviceBound = false;
-        }
+     //}
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName arg0, IBinder binder) {
-            service = ((PlayerService.PlayerBinder) binder).getService();
+            PlayerService.PlayerBinder playerBinder = (PlayerService.PlayerBinder) binder;
+            service = playerBinder.getService();
+            serviceBound = true;
+            //((animplay_activity)context).playerServiceInit();
+            //String id=((animplay_activity) context).getIntent().getStringExtra("id_anim");
+            ((animplay_activity)context).getVideo();
+            Log.e("BINDER STATUS:","OK");
+            //service = ((PlayerService.PlayerBinder) binder).getService();
 
         }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
-            Log.i(context.getPackageName(), "ServiceConnection::onServiceDisconnected() called");
+            Log.e(context.getPackageName(), "ServiceConnection::onServiceDisconnected() called");
             service = null;
             serviceBound = false;
+            Log.e("BINDER STATUS:","DC");
         }
     };
 }

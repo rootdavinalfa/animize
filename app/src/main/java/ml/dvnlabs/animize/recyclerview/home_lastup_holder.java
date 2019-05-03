@@ -1,4 +1,4 @@
-package ml.dvnlabs.animize.adapter;
+package ml.dvnlabs.animize.recyclerview;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +10,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
-
-import org.w3c.dom.Text;
 
 import androidx.recyclerview.widget.RecyclerView;
 import ml.dvnlabs.animize.R;

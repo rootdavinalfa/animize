@@ -18,7 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.adapter.playlist_adapter;
+import ml.dvnlabs.animize.recyclerview.playlist_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;

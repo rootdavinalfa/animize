@@ -1,4 +1,4 @@
-package ml.dvnlabs.animize.adapter;
+package ml.dvnlabs.animize.recyclerview;
 
 import android.content.Context;
 import android.view.View;

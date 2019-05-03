@@ -1,4 +1,4 @@
-package ml.dvnlabs.animize.adapter;
+package ml.dvnlabs.animize.recyclerview;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 import androidx.recyclerview.widget.RecyclerView;
 import ml.dvnlabs.animize.model.playlist_model;
-import ml.dvnlabs.animize.model.search_list_model;
 
 public class playlist_adapter extends RecyclerView.Adapter<playlist_holder> {
     private Context mcontext;

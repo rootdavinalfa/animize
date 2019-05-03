@@ -80,8 +80,8 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
 
     private String streamUrl;
 
-    protected class PlayerBinder extends Binder {
-        PlayerService getService() {
+    public class PlayerBinder extends Binder {
+        public PlayerService getService() {
             return PlayerService.this;
         }
     }
@@ -379,6 +379,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
     }
 
     public void playOrPause(String urli) {
+        Log.e("STREAM-OK:",urli);
         if(urli != null){
             System.out.println("OK");
             if (streamUrl != null && streamUrl.equals(urli)) {

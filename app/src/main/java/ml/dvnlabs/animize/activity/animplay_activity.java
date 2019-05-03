@@ -1,46 +1,41 @@
 package ml.dvnlabs.animize.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import ml.dvnlabs.animize.Event.PlayerBusError;
 import ml.dvnlabs.animize.Event.PlayerBusStatus;
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.adapter.playlist_adapter;
+import ml.dvnlabs.animize.recyclerview.playlist_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.fragment.tabs.animplay.details;
 import ml.dvnlabs.animize.fragment.tabs.animplay.more;
-import ml.dvnlabs.animize.loader.animplay_loader;
 import ml.dvnlabs.animize.model.playlist_model;
 import ml.dvnlabs.animize.model.videoplay_model;
 import ml.dvnlabs.animize.pager.aplay_viewpageradapter;
 import ml.dvnlabs.animize.pager.passdata_arraylist;
 import ml.dvnlabs.animize.player.PlaybackStatus;
 import ml.dvnlabs.animize.player.PlayerManager;
+import ml.dvnlabs.animize.player.PlayerService;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -50,8 +45,6 @@ import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.wang.avi.AVLoadingIndicatorView;
 
-import net.cachapa.expandablelayout.ExpandableLayout;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
@@ -59,20 +52,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static ml.dvnlabs.animize.player.PlayerManager.getService;
 
 public class animplay_activity extends AppCompatActivity{
+    private static PlayerService service;
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
     private boolean isRestart = false;
     private PlayerView playerView;
 
+    private boolean isReadyVideo = false;
     private boolean isFullscreen = false;
     private boolean isInit = true;
 
     ArrayList<videoplay_model> modeldata;
-    ArrayList<playlist_model> playlist_models;
+    //ArrayList<playlist_model> playlist_models;
     playlist_adapter adapter;
 
     private TextView errortxt;
@@ -93,23 +89,37 @@ public class animplay_activity extends AppCompatActivity{
     int request_step=1;
     int media_height;
     int media_width;
-    String idanim;
-    String url;
+    private String idanim;
+    private String url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
+        //super.onCreate(null);
         setContentView(R.layout.animplay_activity);
         initial_setup();
+        modeldata = new ArrayList<>();
 
-        idanim = getIntent().getStringExtra("id_anim");
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        playerManager = PlayerManager.with(this);
+        Intent intent = getIntent();
+        if(getIntent().getStringExtra("id_anim") != null){
+            setIdanim(intent.getStringExtra("id_anim"));
+            //intent.removeExtra("id_anim");
+        }
+        if(!idanim.isEmpty()){
+
+            System.out.println(idanim);
+        }
+
+        //playerManager = PlayerManager.with(this);
+        playerManager = new PlayerManager(this);
         if(getService() == null){
             playerManager.bind();
         }
-        getVideo();
+        //bindService(new Intent(this, PlayerService.class), serviceConnection, Context.BIND_AUTO_CREATE);
+        //getVideo();
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        //startService(new Intent(this, PlayerService.class));
+        //getVideo();
         notbuffering();
     }
 FetchDataListener getvideo = new FetchDataListener() {
@@ -144,11 +154,14 @@ FetchDataListener getvideo = new FetchDataListener() {
         errorIMG.setVisibility(View.GONE);
     }
 };
-    private void getVideo(){
-        String urli = Api.api_animplay+idanim;
-        APINetworkRequest apiNetworkRequest = new APINetworkRequest(this,getvideo,urli,CODE_GET_REQUEST,null);
+    public void getVideo(){
+        System.out.println("KLKLKLKL "+this.idanim);
+        String urlnew = Api.api_animplay+this.idanim;
+        Log.e("REQUEST: ",urlnew);
+        APINetworkRequest apiNetworkRequest = new APINetworkRequest(this,getvideo,urlnew,CODE_GET_REQUEST,null);
     }
     private void initial_setup(){
+        playerView = (PlayerView)findViewById(R.id.animplay_views);
         aplay_tabs = (TabLayout)findViewById(R.id.aplay_tabs);
         aplay_details = (TabItem)findViewById(R.id.aplay_tabs_details);
         aplay_more = (TabItem)findViewById(R.id.aplay_tabs_more);
@@ -166,7 +179,6 @@ FetchDataListener getvideo = new FetchDataListener() {
         errcont = (RelativeLayout)findViewById(R.id.aplay_details_errorcont);
         loadbar = (AVLoadingIndicatorView)findViewById(R.id.aplay_bar_loading);
         errorIMG = (ImageView)findViewById(R.id.aplay_img_error);
-
     }
     @Subscribe
     public void onEvent(PlayerBusStatus status){
@@ -252,20 +264,24 @@ FetchDataListener getvideo = new FetchDataListener() {
 
     @Override
     protected void onRestart(){
-        //playerManager.bind();
-
         super.onRestart();
+        /*
+        if(getService() == null){
+            playerManager.bind();
+        }*/
         isRestart = true;
     }
+
     public void newvideo(){
         getVideo();
     }
     private void show_video(JSONArray video){
+        if (!modeldata.isEmpty()){
+            modeldata.clear();
+        }
         //video_loadba = (AVLoadingIndicatorView) findViewById(R.id.video_loadingbar);
-        playerView = (PlayerView)findViewById(R.id.animplay_view);
-        //detail_loadba = (AVLoadingIndicatorView) findViewById(R.id.detail_loadingbar);
 
-        modeldata = new ArrayList<>();
+        //detail_loadba = (AVLoadingIndicatorView) findViewById(R.id.detail_loadingbar);
         try{
             for(int i = 0;i<video.length();i++){
                 JSONObject jsonObject = video.getJSONObject(i);
@@ -290,19 +306,45 @@ FetchDataListener getvideo = new FetchDataListener() {
 
         ply_name.setText(modeldata.get(0).getName_anim());
         String epe = getString(R.string.episode_text)+": "+modeldata.get(0).getEpisode()+" "+getString(R.string.string_of)+" "+modeldata.get(0).getTotal_ep_anim();
-        //Log.e("INFOAAAA",epe);
+        Log.e("DATA",modeldata.get(0).getEpisode());
         ply_episod.setText(epe);
+        /*
+        if(getService() == null){
+            playerManager.bind();
+        }
+
         if(playerManager.isServiceBound()){
             playerManager.playOrPause(url);
             playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
             playerView.setPlayer(getService().exoPlayer);
-        }
+        }*/
         //aplay_details.setVisibility(View.VISIBLE);
         errcont.setVisibility(View.GONE);
         errortxt.setVisibility(View.GONE);
         errorIMG.setVisibility(View.GONE);
         sendmodelplay(modeldata,datasender);
         sendpkg(modeldata.get(0).getPack());
+        playerContanti();
+    }
+//TODO Must fix the service binding
+    /*
+    * playerServiceInit()
+    * Flow,if getService() is null then playermanager rebinding if onCreate is not compltly,
+    * although,playermanager will call playerServiceInit() when service is ready to use.
+    * */
+    public void playerServiceInit(String id){
+        idanim = id;
+        getVideo();
+   }
+    private void playerContanti(){
+        //if(isReadyVideo){
+            //Log.e("SERVICETRU",String.valueOf(playerManager.isServiceBound()));
+            //playerManager.playOrPause(url);
+        getService().playOrPause(url);
+            playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+            playerView.setPlayer(getService().exoPlayer);
+        //}
+
 
     }
     private void sendpkg(String pkg){
@@ -311,6 +353,7 @@ FetchDataListener getvideo = new FetchDataListener() {
         f.receivedata(pkg);
     }
     private void sendmodelplay(ArrayList<videoplay_model>data,passdata_arraylist senddata){
+        Log.e("CHECK ID ANIM",idanim);
         senddata.onDataReceived(data,idanim);
 
     }
@@ -325,8 +368,11 @@ FetchDataListener getvideo = new FetchDataListener() {
 
     @Override
     protected void onResume() {
-        playerManager.bind();
         super.onResume();
+        if(getService() == null){
+            //playerManager.bind();
+        }
+
     }
     @Override
     protected void onPause(){
@@ -336,7 +382,6 @@ FetchDataListener getvideo = new FetchDataListener() {
 
     @Override
     protected void onStart(){
-        playerManager.bind();
         super.onStart();
         EventBus.getDefault().register(this);
 
@@ -348,8 +393,8 @@ FetchDataListener getvideo = new FetchDataListener() {
     protected void onStop(){
         //playerManager.unbind();
         //playerView.setPlayer(null);
-        super.onStop();
         EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     public void releaseall(){
@@ -360,21 +405,11 @@ FetchDataListener getvideo = new FetchDataListener() {
     @Override
     protected void onDestroy() {
 
-        if (getService() != null){
-            playerManager.unbind();
-            modeldata.clear();
-        }
-        playerView.setPlayer(null);
-        //if(isMyServiceRunning(playerManager.getClass())){
-
-        //}
-
         super.onDestroy();
     }
 
     @Override
     public void onBackPressed(){
-
         Drawable buttun_fullscren;
         ImageView imageView = (ImageView) findViewById(R.id.exo_fullscreen_icon);
         if(isFullscreen){
@@ -384,9 +419,18 @@ FetchDataListener getvideo = new FetchDataListener() {
 
         }
         if(!isFullscreen){
-            Intent intent = new Intent(this, dashboard_activity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            super.onBackPressed();
+            finish();
+
+            if(getService()!=null&&playerManager.isServiceBound()){
+                playerManager.unbind();
+                modeldata.clear();
+                //idanim = null;
+            }
+            //unbindService(serviceConnection);
+            //Intent intent = new Intent(this, dashboard_activity.class);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //startActivity(intent);
         }
 
     }

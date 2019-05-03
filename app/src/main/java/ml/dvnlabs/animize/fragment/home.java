@@ -2,20 +2,16 @@ package ml.dvnlabs.animize.fragment;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
-import com.yarolegovich.discretescrollview.transform.Pivot;
-import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,8 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.dashboard_activity;
-import ml.dvnlabs.animize.adapter.home_lastup_adapter;
-import ml.dvnlabs.animize.adapter.lastup_listener;
+import ml.dvnlabs.animize.recyclerview.home_lastup_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;

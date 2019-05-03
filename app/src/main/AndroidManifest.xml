@@ -29,7 +29,6 @@
                 android:value="ml.dvnlabs.animize.activity.MainActivity" />
         </activity>
         <activity
-            android:launchMode="singleTask"
             android:name=".activity.animplay_activity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:keepScreenOn="true"
@@ -58,7 +57,10 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".player.PlayerService" />
+        <service android:name="ml.dvnlabs.animize.player.PlayerService"
+            android:enabled="true"
+            android:icon="@drawable/ic_launcher_foreground"
+            android:label="@string/service_name"/>
 
         <meta-data
             android:name="preloaded_fonts"

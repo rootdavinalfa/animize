@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.adapter.EndlessRecyclerOnScrollListener;
-import ml.dvnlabs.animize.adapter.video_list_adapter;
+import ml.dvnlabs.animize.recyclerview.EndlessRecyclerOnScrollListener;
+import ml.dvnlabs.animize.recyclerview.video_list_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
@@ -78,8 +78,8 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
         texterrorload = (TextView) view.findViewById(R.id.loading_errortxt);
         iv_error = (ImageView) view.findViewById(R.id.error_image);
         iv_error.setVisibility(View.GONE);
-        textload.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
+        //textload.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
         texterrorload.setVisibility(View.GONE);
         btn_retry.setVisibility(View.GONE);
         btn_retry.setOnClickListener(this);
@@ -180,8 +180,8 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
                 show_video(object.getJSONArray("anim"));
                 //adapter.notifyDataSetChanged();
                 //Log.e("INFAA",String.valueOf(adapter.getItemCount()));
-                progressBar.setVisibility(View.GONE);
-                textload.setVisibility(View.GONE);
+                //progressBar.setVisibility(View.GONE);
+                //textload.setVisibility(View.GONE);
                 iv_error.setVisibility(View.GONE);
                 btn_retry.setVisibility(View.GONE);
                 texterrorload.setVisibility(View.GONE);
@@ -189,8 +189,8 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
             if (object.getBoolean("error") && object.getString("message").equals("page not found")){
                 page_list=1;
                 System.out.println("ALL DATA CAUGHT UP!");
-                progressBar.setVisibility(View.GONE);
-                textload.setVisibility(View.GONE);
+                //progressBar.setVisibility(View.GONE);
+                //textload.setVisibility(View.GONE);
                 iv_error.setVisibility(View.GONE);
                 btn_retry.setVisibility(View.GONE);
                 texterrorload.setVisibility(View.GONE);
@@ -211,14 +211,14 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
             iv_error.setVisibility(View.VISIBLE);
             texterrorload.setVisibility(View.VISIBLE);
             btn_retry.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
-            textload.setVisibility(View.GONE);
+            //progressBar.setVisibility(View.GONE);
+            //textload.setVisibility(View.GONE);
         }
 
         @Override
         public void onFetchStart() {
-            progressBar.setVisibility(View.VISIBLE);
-            textload.setVisibility(View.VISIBLE);
+            //progressBar.setVisibility(View.VISIBLE);
+            //textload.setVisibility(View.VISIBLE);
         }
     };
 

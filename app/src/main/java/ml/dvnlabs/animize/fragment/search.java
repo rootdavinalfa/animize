@@ -1,9 +1,6 @@
 package ml.dvnlabs.animize.fragment;
 
 
-import android.graphics.Rect;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,45 +8,31 @@ import androidx.fragment.app.Fragment;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.adapter.search_list_adapter;
-import ml.dvnlabs.animize.adapter.video_list_adapter;
+import ml.dvnlabs.animize.recyclerview.search_list_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
-import ml.dvnlabs.animize.loader.animlist_loader;
 import ml.dvnlabs.animize.model.search_list_model;
-import ml.dvnlabs.animize.model.video_list_model;
 
-import static android.content.ContentValues.TAG;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**

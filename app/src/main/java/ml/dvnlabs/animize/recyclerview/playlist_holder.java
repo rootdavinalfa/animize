@@ -1,7 +1,6 @@
-package ml.dvnlabs.animize.adapter;
+package ml.dvnlabs.animize.recyclerview;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,7 +15,6 @@ import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.animplay_activity;
 import ml.dvnlabs.animize.model.playlist_model;
 import ml.dvnlabs.animize.player.PlayerManager;
-import ml.dvnlabs.animize.player.PlayerService;
 
 public class playlist_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView episode;
@@ -58,7 +56,7 @@ public class playlist_holder extends RecyclerView.ViewHolder implements View.OnC
             //((animplay_activity)context).releaseall();
             ((animplay_activity)context).setIdanim(this.playlist_model.getId_anim());
             ((animplay_activity)context).newvideo();
-            PlayerManager.with(context).pause_video();
+            //PlayerManager.with(context).pause_video();
 
         }
 

@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <com.google.android.exoplayer2.ui.PlayerView
-            android:id="@+id/animplay_view"
+            android:id="@+id/animplay_views"
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:animateLayoutChanges="true"
