@@ -11,6 +11,8 @@ public class Api {
     public static final String url_createuser = url_base+"user/create";
     public static final String url_loginuser = url_base+"user/login/";
     public static final String url_decode_login = url_base+"user/login/decode";
+    public static final String url_packagepage = url_base+"anim/list/package/page/";
+    public static final String url_packageinfo = url_base+"package/info/";
 
 
 

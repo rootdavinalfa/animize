@@ -33,4 +33,6 @@
     <string name="pager_title_more">More</string>
     <string name="hello_blank_fragment">Test</string>
     <string name="service_name">Animize Player</string>
+    <string name="NO_NETWORK">インターネット接続なし</string>
+    <string name="btn_logout">Logout</string>
 </resources>

@@ -13,9 +13,11 @@ import ml.dvnlabs.animize.database.model.userland;
 import ml.dvnlabs.animize.fragment.global;
 import ml.dvnlabs.animize.fragment.home;
 import ml.dvnlabs.animize.fragment.lastup_video_list;
+import ml.dvnlabs.animize.fragment.popup.ProfilePop;
 import ml.dvnlabs.animize.fragment.search;
 
 
+import android.app.Dialog;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
@@ -24,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -53,7 +56,7 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
     private LinearLayout header_layout;
     private LinearLayout dash_serach_btn;
     private BottomNavigationView bottomNavigationView;
-    private RelativeLayout dashboard;
+    private RelativeLayout dashboard,dash_profile;
     private checkNetwork NetworkChecker = null;
 
 
@@ -92,8 +95,8 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         int color;
         Snackbar snackbar;
         if(!isConnected){
-            message = "Not connected";
-            color = Color.RED;
+            message = getResources().getString(R.string.NO_NETWORK);
+            color = Color.WHITE;
             snackbar = Snackbar
                     .make(findViewById(R.id.DashnavigationView), message, Snackbar.LENGTH_INDEFINITE);
             snackbar.setAction("Retry", new View.OnClickListener() {
@@ -102,12 +105,38 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
                     home hm = (home) getSupportFragmentManager().findFragmentById(R.id.home_fragment);
                     hm.getLast_Up();
                 }
-            });
+            }).setActionTextColor(color);
             View sbView = snackbar.getView();
+            sbView.setBackgroundColor(getResources().getColor(R.color.design_default_color_error));
             TextView textView = (TextView) sbView.findViewById(R.id.snackbar_text);
             textView.setTextColor(color);
             snackbar.show();
         }
+    }
+    public void SnackError(String error,int id){
+        int color;
+        Snackbar snackbar;
+
+        color = Color.WHITE;
+        snackbar = Snackbar
+                .make(findViewById(R.id.DashnavigationView), error, Snackbar.LENGTH_INDEFINITE);
+        snackbar.setAction("Retry", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (id){
+                    case 1:
+                        lastup_video_list hm = (lastup_video_list) getSupportFragmentManager().findFragmentById(R.id.video_list_fragment);
+                        hm.getlist_V();
+                }
+
+            }
+        }).setActionTextColor(color);
+        View sbView = snackbar.getView();
+        sbView.setBackgroundColor(getResources().getColor(R.color.design_default_color_error));
+        TextView textView = (TextView) sbView.findViewById(R.id.snackbar_text);
+        textView.setTextColor(color);
+        snackbar.show();
+
     }
     public void initializes(){
         dashboard = (RelativeLayout)findViewById(R.id.dashboard);
@@ -115,6 +144,14 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         dash_serach_btn = (LinearLayout) findViewById(R.id.dash_search);
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.DashnavigationView);
         dash_profile_username = (TextView)findViewById(R.id.dash_profile_text);
+        dash_profile = (RelativeLayout)findViewById(R.id.dash_profile);
+        dash_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfilePop pop = new ProfilePop();
+                pop.show(getSupportFragmentManager(),"profilepop");
+            }
+        });
         display_home();
 
     }

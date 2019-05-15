@@ -43,12 +43,13 @@
                     android:textSize="26sp" />
 
                 <ImageView
+                    android:id="@+id/titlename_drop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:foregroundGravity="center"
                     android:padding="5dp"
-                    android:src="@drawable/ic_expand_expand"
+                    android:src="@drawable/ic_expand_collapse"
                     android:tint="@color/design_default_color_background" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
@@ -140,6 +141,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="Category:"/>
                                 <TextView
+                                    android:id="@+id/aplay_details_genres"
                                     android:layout_marginStart="2dp"
                                     android:layout_toEndOf="@id/aplay_txt_category"
                                     android:layout_width="wrap_content"

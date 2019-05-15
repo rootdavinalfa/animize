@@ -53,6 +53,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static ml.dvnlabs.animize.player.PlayerManager.getService;
 
@@ -292,8 +293,14 @@ FetchDataListener getvideo = new FetchDataListener() {
                 String rat = jsonObject.getString("rating");
                 String pack = jsonObject.getString("package_anim");
                 String syi = jsonObject.getString("synopsis");
+                JSONArray genre_json =jsonObject.getJSONArray("genres") ;
+                List<String> genres =new ArrayList<>();
+                for (int j=0;j<genre_json.length();j++){
+                    genres.add(genre_json.getString(j));
+                    //Log.e("GENRES:",genre_json.getString(j));
+                }
                 Log.e("DATA: ",nm+tot);
-                modeldata.add(new videoplay_model(nm,epi,tot,rat,syi,pack,ur));
+                modeldata.add(new videoplay_model(nm,epi,tot,rat,syi,pack,ur,genres));
 
             }
         }catch (Exception e)
@@ -303,7 +310,6 @@ FetchDataListener getvideo = new FetchDataListener() {
         url = modeldata.get(0).getSource_url();
         //pkg_anim = modeldata.get(0).getPack();
         //Log.e("INFO",url);
-
         ply_name.setText(modeldata.get(0).getName_anim());
         String epe = getString(R.string.episode_text)+": "+modeldata.get(0).getEpisode()+" "+getString(R.string.string_of)+" "+modeldata.get(0).getTotal_ep_anim();
         Log.e("DATA",modeldata.get(0).getEpisode());

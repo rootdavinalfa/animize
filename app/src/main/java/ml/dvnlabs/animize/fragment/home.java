@@ -12,12 +12,16 @@ import android.widget.RelativeLayout;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
+import com.yarolegovich.discretescrollview.transform.Pivot;
+import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,11 +30,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.dashboard_activity;
+import ml.dvnlabs.animize.model.packagelist;
 import ml.dvnlabs.animize.recyclerview.home_lastup_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.model.home_lastup_model;
+import ml.dvnlabs.animize.recyclerview.lastpackage_adapter;
 
 public class home extends Fragment {
 
@@ -39,9 +45,12 @@ public class home extends Fragment {
     private int page_lastup = 0;
     private ShimmerFrameLayout lastup_loading;
     private RelativeLayout dash_button_lastupmore;
-    private DiscreteScrollView listView_lastup;
+    private DiscreteScrollView listView_lastup,rv_lastpackage;
+    //private RecyclerView rv_lastpackage;
     private ArrayList<home_lastup_model> modeldata_lastup;
+    private ArrayList<packagelist> modeldatapackage;
     private home_lastup_adapter adapater_lastup;
+    private lastpackage_adapter adapterlastpackage;
     private LinearLayoutManager linearLayoutManager;
     CountDownTimer cTimer = null;
     public home(){
@@ -59,14 +68,17 @@ public class home extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         dash_button_lastupmore = (RelativeLayout)view.findViewById(R.id.dash_lastup_more);
         lastup_loading = (ShimmerFrameLayout)view.findViewById(R.id.loading_lastup);
+        rv_lastpackage = (DiscreteScrollView) view.findViewById(R.id.rv_lastpackage);
         initial_setup();
 
         return view;
     }
     private void initial_setup(){
         modeldata_lastup = new ArrayList<>();
+        modeldatapackage = new ArrayList<>();
         ACT_Dash_button_lastupmore();
         getLast_Up();
+        getLastPackage();
     }
     private void ACT_Dash_button_lastupmore(){
         dash_button_lastupmore.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +91,10 @@ public class home extends Fragment {
     public void getLast_Up(){
         String url = Api.url_page+"1";
         APINetworkRequest apiNetworkRequest = new APINetworkRequest(getActivity(),lastup,url,CODE_GET_REQUEST,null);
+    }
+    public void getLastPackage(){
+        String url = Api.url_packagepage+"1";
+        APINetworkRequest apiNetworkRequest = new APINetworkRequest(getActivity(),lastpackage,url,CODE_GET_REQUEST,null);
     }
 
     private void parse_jsonlastup(String data){
@@ -130,6 +146,70 @@ public class home extends Fragment {
 
         }
     };
+
+    FetchDataListener lastpackage = new FetchDataListener() {
+        @Override
+        public void onFetchComplete(String data) {
+            parseJSONPackage(data);
+
+        }
+
+        @Override
+        public void onFetchFailure(String msg) {
+
+        }
+
+        @Override
+        public void onFetchStart() {
+
+        }
+    };
+
+    private void parseJSONPackage(String data){
+        try {
+            JSONObject object = new JSONObject(data);
+            if(!object.getBoolean("error")){
+                package_list(object.getJSONArray("anim"));
+            }
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+    }
+    private void package_list(JSONArray anim){
+        try {
+            modeldatapackage.clear();
+            for (int i= 0;i<anim.length();i++){
+                JSONObject object = anim.getJSONObject(i);
+                String packages = object.getString("package_anim");
+                String nameanim = object.getString("name_anim");
+                String nowep = object.getString("now_ep_anim");
+                String totep = object.getString("total_ep_anim");
+                String rate = object.getString("rating");
+                String mal = object.getString("mal_id");
+                JSONArray genre_json =object.getJSONArray("genre") ;
+                List<String> genres =new ArrayList<>();
+                for (int j=0;j<genre_json.length();j++){
+                    genres.add(genre_json.getString(j));
+                    //Log.e("GENRES:",genre_json.getString(j));
+                }
+                modeldatapackage.add(new packagelist(packages,nameanim,nowep,totep,rate,mal,genres));
+            }
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+
+            adapterlastpackage = new lastpackage_adapter(modeldatapackage,getActivity(),R.layout.rv_lastpackage);
+            rv_lastpackage.setAdapter(adapterlastpackage);
+            rv_lastpackage.setItemTransformer(new ScaleTransformer.Builder()
+                    .setMinScale(0.8f)
+                    .build());
+
+            //rv_lastpackage.setLayoutManager(linearLayoutManager);
+        }catch (JSONException e){
+            Log.e("JSON ERROR:",e.toString());
+        }
+
+    }
 
     private void show_video(JSONArray video){
         try{

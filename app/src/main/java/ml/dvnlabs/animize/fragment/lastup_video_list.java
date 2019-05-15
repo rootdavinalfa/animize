@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.activity.dashboard_activity;
 import ml.dvnlabs.animize.recyclerview.EndlessRecyclerOnScrollListener;
 import ml.dvnlabs.animize.recyclerview.video_list_adapter;
 import ml.dvnlabs.animize.driver.Api;
@@ -163,7 +164,7 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
 
     }
     //VOLLEY NETWORKING
-    private void getlist_V(){
+    public void getlist_V(){
         try{
             System.out.println("NOW PAGE::"+String.valueOf(page_list));
 
@@ -208,6 +209,7 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
 
         @Override
         public void onFetchFailure(String msg) {
+            ((dashboard_activity)getActivity()).SnackError(msg,1);
             iv_error.setVisibility(View.VISIBLE);
             texterrorload.setVisibility(View.VISIBLE);
             btn_retry.setVisibility(View.VISIBLE);
