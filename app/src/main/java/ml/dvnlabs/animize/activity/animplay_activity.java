@@ -5,6 +5,7 @@ import androidx.viewpager.widget.ViewPager;
 import ml.dvnlabs.animize.Event.PlayerBusError;
 import ml.dvnlabs.animize.Event.PlayerBusStatus;
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.fragment.popup.sourceselector;
 import ml.dvnlabs.animize.recyclerview.playlist_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
@@ -53,6 +54,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static ml.dvnlabs.animize.player.PlayerManager.getService;
 
@@ -89,7 +91,7 @@ public class animplay_activity extends AppCompatActivity{
     int request_step=1;
     int media_height;
     int media_width;
-    private String idanim;
+    private String idanim,id_source;
     private String url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,24 +163,24 @@ FetchDataListener getvideo = new FetchDataListener() {
         APINetworkRequest apiNetworkRequest = new APINetworkRequest(this,getvideo,urlnew,CODE_GET_REQUEST,null);
     }
     private void initial_setup(){
-        playerView = (PlayerView)findViewById(R.id.animplay_views);
-        aplay_tabs = (TabLayout)findViewById(R.id.aplay_tabs);
-        aplay_details = (TabItem)findViewById(R.id.aplay_tabs_details);
-        aplay_more = (TabItem)findViewById(R.id.aplay_tabs_more);
-        aplay_viewpager = (ViewPager)findViewById(R.id.aplay_pager);
+        playerView = findViewById(R.id.animplay_views);
+        aplay_tabs = findViewById(R.id.aplay_tabs);
+        aplay_details = findViewById(R.id.aplay_tabs_details);
+        aplay_more = findViewById(R.id.aplay_tabs_more);
+        aplay_viewpager = findViewById(R.id.aplay_pager);
         aplay_tabs.setupWithViewPager(aplay_viewpager);
         aplay_viewpageradapter adapter = new aplay_viewpageradapter(getSupportFragmentManager(),aplay_tabs.getTabCount(),this);
         aplay_viewpager.setAdapter(adapter);
         aplay_viewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(aplay_tabs));
-        fs_btn = (ImageView)findViewById(R.id.exo_fullscreen_icon);
-        video_buffer = (AVLoadingIndicatorView)findViewById(R.id.exo_buffering);
-        ply_name = (TextView)findViewById(R.id.player_name);
-        ply_episod = (TextView)findViewById(R.id.player_episode);
-        errortxt = (TextView)findViewById(R.id.aplay_txt_error);
-        contbdy = (LinearLayout)findViewById(R.id.aplay_details_cont);
-        errcont = (RelativeLayout)findViewById(R.id.aplay_details_errorcont);
-        loadbar = (AVLoadingIndicatorView)findViewById(R.id.aplay_bar_loading);
-        errorIMG = (ImageView)findViewById(R.id.aplay_img_error);
+        fs_btn = findViewById(R.id.exo_fullscreen_icon);
+        video_buffer = findViewById(R.id.exo_buffering);
+        ply_name = findViewById(R.id.player_name);
+        ply_episod = findViewById(R.id.player_episode);
+        errortxt = findViewById(R.id.aplay_txt_error);
+        contbdy = findViewById(R.id.aplay_details_cont);
+        errcont = findViewById(R.id.aplay_details_errorcont);
+        loadbar = findViewById(R.id.aplay_bar_loading);
+        errorIMG = findViewById(R.id.aplay_img_error);
     }
     @Subscribe
     public void onEvent(PlayerBusStatus status){
@@ -192,22 +194,25 @@ FetchDataListener getvideo = new FetchDataListener() {
     }
     @Subscribe
     public void onEvent(PlayerBusError error){
-        TextView texterror = (TextView)findViewById(R.id.exo_error_message);
+        TextView texterror = findViewById(R.id.exo_error_message);
         texterror.setText(error.geterror());
 
         System.out.println("ERROR:"+error.geterror());
     }
     public void buffering(){
-        video_buffer = (AVLoadingIndicatorView)findViewById(R.id.exo_buffering);
+        video_buffer = findViewById(R.id.exo_buffering);
         video_buffer.show();
     }
     public void notbuffering(){
-        video_buffer = (AVLoadingIndicatorView)findViewById(R.id.exo_buffering);
+        video_buffer = findViewById(R.id.exo_buffering);
         video_buffer.hide();
     }
 
     public void setIdanim(String idanim){
         this.idanim = idanim;
+    }
+    public void setSourceID(String idsource){
+        this.id_source = idsource;
     }
     public void onConfigurationChanged(Configuration newConfig){
         super.onConfigurationChanged(newConfig);
@@ -275,6 +280,12 @@ FetchDataListener getvideo = new FetchDataListener() {
     public void newvideo(){
         getVideo();
     }
+    public void newVideoWithNewSource(){
+        System.out.println("KLKLKLKL "+this.idanim);
+        String urlnew = Api.api_animplay+this.idanim+"/source/"+id_source;
+        Log.e("REQUEST: ",urlnew);
+        APINetworkRequest apiNetworkRequest = new APINetworkRequest(this,getvideo,urlnew,CODE_GET_REQUEST,null);
+    }
     private void show_video(JSONArray video){
         if (!modeldata.isEmpty()){
             modeldata.clear();
@@ -292,8 +303,14 @@ FetchDataListener getvideo = new FetchDataListener() {
                 String rat = jsonObject.getString("rating");
                 String pack = jsonObject.getString("package_anim");
                 String syi = jsonObject.getString("synopsis");
+                JSONArray genre_json =jsonObject.getJSONArray("genres") ;
+                List<String> genres =new ArrayList<>();
+                for (int j=0;j<genre_json.length();j++){
+                    genres.add(genre_json.getString(j));
+                    //Log.e("GENRES:",genre_json.getString(j));
+                }
                 Log.e("DATA: ",nm+tot);
-                modeldata.add(new videoplay_model(nm,epi,tot,rat,syi,pack,ur));
+                modeldata.add(new videoplay_model(nm,epi,tot,rat,syi,pack,ur,genres));
 
             }
         }catch (Exception e)
@@ -303,27 +320,16 @@ FetchDataListener getvideo = new FetchDataListener() {
         url = modeldata.get(0).getSource_url();
         //pkg_anim = modeldata.get(0).getPack();
         //Log.e("INFO",url);
-
         ply_name.setText(modeldata.get(0).getName_anim());
         String epe = getString(R.string.episode_text)+": "+modeldata.get(0).getEpisode()+" "+getString(R.string.string_of)+" "+modeldata.get(0).getTotal_ep_anim();
         Log.e("DATA",modeldata.get(0).getEpisode());
         ply_episod.setText(epe);
-        /*
-        if(getService() == null){
-            playerManager.bind();
-        }
 
-        if(playerManager.isServiceBound()){
-            playerManager.playOrPause(url);
-            playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-            playerView.setPlayer(getService().exoPlayer);
-        }*/
-        //aplay_details.setVisibility(View.VISIBLE);
         errcont.setVisibility(View.GONE);
         errortxt.setVisibility(View.GONE);
         errorIMG.setVisibility(View.GONE);
         sendmodelplay(modeldata,datasender);
-        sendpkg(modeldata.get(0).getPack());
+        sendpkg(modeldata.get(0).getPack(),idanim);
         playerContanti();
     }
 //TODO Must fix the service binding
@@ -347,10 +353,10 @@ FetchDataListener getvideo = new FetchDataListener() {
 
 
     }
-    private void sendpkg(String pkg){
+    private void sendpkg(String pkg,String anim){
         String tag = "android:switcher:" + R.id.aplay_pager + ":" + 1;
         more f = (more) getSupportFragmentManager().findFragmentByTag(tag);
-        f.receivedata(pkg);
+        f.receivedata(pkg,anim);
     }
     private void sendmodelplay(ArrayList<videoplay_model>data,passdata_arraylist senddata){
         Log.e("CHECK ID ANIM",idanim);
@@ -433,5 +439,10 @@ FetchDataListener getvideo = new FetchDataListener() {
             //startActivity(intent);
         }
 
+    }
+    public void showsourceselector(String lang,String idanim){
+        sourceselector sourceselector = new sourceselector();
+        sourceselector.show(getSupportFragmentManager(),"sourceselector");
+        sourceselector.language(lang,idanim,this);
     }
 }

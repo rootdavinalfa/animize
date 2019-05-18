@@ -28,7 +28,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="32sp"
-                        android:text="Source"/>
+                        android:text="@string/source"/>
                     <RelativeLayout
                         android:background="@color/colorPrimary"
                         android:padding="20dp"
@@ -48,6 +48,7 @@
                             app:contentPadding="2dp">
 
                             <ImageView
+                                android:id="@+id/animplay_btn_sourceID"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:src="@drawable/ic_indonesia" />
@@ -65,6 +66,7 @@
                             app:contentPadding="2dp">
 
                             <ImageView
+                                android:id="@+id/animplay_btn_sourceEN"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:src="@drawable/ic_united_kingdom" />
@@ -82,7 +84,7 @@
                             app:contentPadding="2dp">
 
                             <ImageView
-
+                                android:id="@+id/animplay_btn_sourceRAW"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:src="@drawable/ic_japan" />
@@ -105,7 +107,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="32sp"
-                        android:text="Playlist"/>
+                        android:text="@string/playlist"/>
                     <ImageView
                         android:clickable="true"
                         android:focusable="true"

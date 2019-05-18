@@ -1,22 +1,23 @@
 package ml.dvnlabs.animize.recyclerview;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
-import androidx.recyclerview.widget.RecyclerView;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.animplay_activity;
 import ml.dvnlabs.animize.model.playlist_model;
-import ml.dvnlabs.animize.player.PlayerManager;
 
-public class playlist_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class packagelist_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView episode;
     private TextView id_anim;
     private TextView title;
@@ -25,7 +26,7 @@ public class playlist_holder extends RecyclerView.ViewHolder implements View.OnC
     private playlist_model playlist_model;
     private Context context;
 
-    public playlist_holder(Context context,View view){
+    public packagelist_holder(Context context, View view){
         super(view);
         this.context = context;
         this.episode = (TextView)view.findViewById(R.id.playlist_episode);
@@ -47,9 +48,15 @@ public class playlist_holder extends RecyclerView.ViewHolder implements View.OnC
     @Override
     public void onClick(View v){
         if(this.playlist_model!=null){
-            ((animplay_activity)context).setIdanim(this.playlist_model.getId_anim());
-            ((animplay_activity)context).getVideo();
+            Intent intent = new Intent(context.getApplicationContext(), animplay_activity.class);
+            intent.putExtra("id_anim",this.playlist_model.getId_anim());
+            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+            context.startActivity(intent);
+            //((animplay_activity)context).releaseall();
+            //((animplay_activity)context).setIdanim(this.playlist_model.getId_anim());
+            //((animplay_activity)context).newvideo();
+            //PlayerManager.with(context).pause_video();
 
         }
 

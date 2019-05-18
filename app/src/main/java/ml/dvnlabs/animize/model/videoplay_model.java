@@ -3,6 +3,8 @@ package ml.dvnlabs.animize.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 public class videoplay_model {
     private String name_anim;
     private String episode;
@@ -11,8 +13,9 @@ public class videoplay_model {
     private String sysnop;
     private String pack;
     private String source_url;
+    private List<String> genres;
 
-    public videoplay_model(String name, String ep, String total, String rate, String synop, String pkg, String url){
+    public videoplay_model(String name, String ep, String total, String rate, String synop, String pkg, String url,List<String>genre){
         this.episode = ep;
         this.name_anim = name;
         this.rating = rate;
@@ -20,6 +23,7 @@ public class videoplay_model {
         this.sysnop = synop;
         this.total_ep_anim = total;
         this.pack = pkg;
+        this.genres = genre;
     }
     public String getSource_url() {
         return source_url;
@@ -47,5 +51,9 @@ public class videoplay_model {
 
     public String getPack() {
         return pack;
+    }
+
+    public List<String> getGenres() {
+        return this.genres;
     }
 }

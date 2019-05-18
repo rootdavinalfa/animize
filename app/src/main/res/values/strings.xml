@@ -36,4 +36,18 @@
     <string name="pager_title_details">Details</string>
     <string name="pager_title_more">More</string>
     <string name="service_name">Animize Player</string>
+    <string name="NO_NETWORK">No Internet Connection</string>
+    <string name="btn_logout">Logout</string>
+    <string name="video_source" >Video Source</string>
+    <string name="no_sources">No Sources Found!</string>
+    <string name="last_package">Last Package</string>
+    <string name="movies">Movies</string>
+    <string name="synopsis">Synopsis</string>
+    <string name="videos">Videos</string>
+    <string name="category">Category:</string>
+    <string name="uploaded_by">Uploaded By:</string>
+    <string name="last_modified_by">Last Modified By:</string>
+    <string name="comment">Comment</string>
+    <string name="source">Source</string>
+    <string name="playlist">Playlist</string>
 </resources>

@@ -12,7 +12,7 @@
     <string name="string_of">Dari</string>
     <string name="rating_text">Rating:</string>
     <string name="episode_text">Episode</string>
-    <string name="search_text">What do you want to search?</string>
+    <string name="search_text">Apa yang ingin anda cari?</string>
     <string name="datalinkerror">Data-Link Error</string>
     <string name="search_anime">Cari Anime...</string>
     <string name="no_title_provided">You must enter known title!</string>
@@ -30,7 +30,21 @@
     <string name="nav_genre_txt">Genre</string>
     <string name="nav_anime_txt">Anime</string>
     <string name="pager_title_details">Details</string>
-    <string name="pager_title_more">More</string>
+    <string name="pager_title_more">Selebihnya</string>
     <string name="hello_blank_fragment">Test</string>
     <string name="service_name">Animize Player</string>
+    <string name="NO_NETWORK">Tidak Ada Internet</string>
+    <string name="btn_logout">Logout</string>
+    <string name="video_source" >Source Video</string>
+    <string name="no_sources">Tidak ada sumber!</string>
+    <string name="last_package">Last Package</string>
+    <string name="movies">Movies</string>
+    <string name="synopsis">Synopsis</string>
+    <string name="videos">Videos</string>
+    <string name="category">Category:</string>
+    <string name="uploaded_by">Uploaded By:</string>
+    <string name="last_modified_by">Last Modified By:</string>
+    <string name="comment">Comment</string>
+    <string name="source">Source</string>
+    <string name="playlist">Playlist</string>
 </resources>
