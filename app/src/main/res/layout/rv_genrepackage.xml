@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
+    android:background="@color/colorOverPrimary"
+    android:layout_margin="5dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="@drawable/layoutrippleeffect">
@@ -10,6 +11,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="160dp">
+
+            <ImageView
+                android:id="@+id/genrepackage_cover"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_picture"
+                android:tint="@color/design_default_color_background" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/genrepackage_name"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_centerInParent="true"
+                android:text="seishun buta ashdihsadihiashdi sadsa adasdyaro senapi wo minai de"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textAlignment="center"
+                android:textColor="@color/design_default_color_background"
+                android:textSize="22sp" />
+        </RelativeLayout>
         <RelativeLayout
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
@@ -21,7 +51,7 @@
                 android:layout_height="40dp">
 
                 <TextView
-                    android:id="@+id/package_rate"
+                    android:id="@+id/genrepackages_rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -41,7 +71,7 @@
                 android:layout_height="20dp">
 
                 <TextView
-                    android:id="@+id/package_mal"
+                    android:id="@+id/genrepackage_mal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -61,7 +91,7 @@
                 android:layout_height="20dp">
 
                 <TextView
-                    android:id="@+id/package_episode"
+                    android:id="@+id/genrepackage_episode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -73,52 +103,6 @@
                     android:textStyle="bold" />
 
             </RelativeLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_marginTop="-50dp"
-            android:layout_width="match_parent"
-            android:layout_height="160dp">
-
-            <ImageView
-                android:id="@+id/package_cover"
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_picture"
-                android:tint="@color/design_default_color_background" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/package_name"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_centerInParent="true"
-                android:text="seishun buta ashdihsadihiashdi sadsa adasdyaro senapi wo minai de"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textAlignment="center"
-                android:textColor="@color/design_default_color_background"
-                android:textSize="22sp" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:paddingEnd="5dp"
-                android:paddingStart="5dp"
-                android:background="@color/design_default_color_secondary_variant"
-                android:id="@+id/package_genre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Romance,Supernatural"
-                android:textColor="@color/design_default_color_background"
-                android:textSize="12sp" />
         </RelativeLayout>
     </LinearLayout>
 </FrameLayout>

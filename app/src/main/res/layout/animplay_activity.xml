@@ -51,6 +51,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <com.wang.avi.AVLoadingIndicatorView
+            app:indicatorName="BallClipRotateIndicator"
+            app:indicatorColor="@color/design_default_color_secondary"
             android:id="@+id/aplay_bar_loading"
             android:layout_width="100dp"
             android:layout_centerInParent="true"

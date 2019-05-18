@@ -10,6 +10,7 @@ import ml.dvnlabs.animize.app.AppController;
 import ml.dvnlabs.animize.checker.checkNetwork;
 import ml.dvnlabs.animize.database.LoginInternalDBHelper;
 import ml.dvnlabs.animize.database.model.userland;
+import ml.dvnlabs.animize.fragment.genre;
 import ml.dvnlabs.animize.fragment.global;
 import ml.dvnlabs.animize.fragment.home;
 import ml.dvnlabs.animize.fragment.lastup_video_list;
@@ -229,6 +230,7 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
 
                     case R.id.nav_genre:
                         close_home();
+                        display_genre();
                         return true;
 
                     case R.id.nav_package:
@@ -243,6 +245,7 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
     public void display_home(){
         getSupportFragmentManager().popBackStack();
         close_search();
+        close_genre();
         close_lastup();
         home vl = home.newInstance();
         global.addFragment(getSupportFragmentManager(),vl,R.id.home_fragment,"FRAGMENT_HOME","SLIDE");
@@ -254,6 +257,30 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         close_lastup();
         search se = search.newInstance();
         global.addFragment(getSupportFragmentManager(),se,R.id.search_fragment,"FRAGMENT_OTHER","SLIDE");
+    }
+
+    public void display_genre(){
+        if (getSupportFragmentManager().findFragmentById(R.id.genre_fragment) == null){
+            close_home();
+            close_lastup();
+            close_search();
+            genre se = genre.newInstance();
+            global.addFragment(getSupportFragmentManager(),se,R.id.genre_fragment,"FRAGMENT_OTHER","SLIDE");
+        }
+    }
+    public void close_genre(){
+        // Get the FragmentManager.
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // Check to see if the fragment is already showing.
+        genre simpleFragment = (genre) fragmentManager
+                .findFragmentById(R.id.genre_fragment);
+        if (simpleFragment != null) {
+            // Create and commit the transaction to remove the fragment.
+            FragmentTransaction fragmentTransaction =
+                    fragmentManager.beginTransaction();
+            fragmentTransaction.remove(simpleFragment).commit();
+        }
+
     }
 
     public void close_search(){

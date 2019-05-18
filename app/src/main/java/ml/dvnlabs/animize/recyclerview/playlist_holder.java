@@ -47,16 +47,9 @@ public class playlist_holder extends RecyclerView.ViewHolder implements View.OnC
     @Override
     public void onClick(View v){
         if(this.playlist_model!=null){
-            /*
-            Intent intent = new Intent(context.getApplicationContext(), animplay_activity.class);
-            intent.putExtra("id_anim",this.playlist_model.getId_anim());
-            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            context.startActivity(intent);*/
-            //((animplay_activity)context).releaseall();
             ((animplay_activity)context).setIdanim(this.playlist_model.getId_anim());
-            ((animplay_activity)context).newvideo();
-            //PlayerManager.with(context).pause_video();
+            ((animplay_activity)context).getVideo();
+
 
         }
 

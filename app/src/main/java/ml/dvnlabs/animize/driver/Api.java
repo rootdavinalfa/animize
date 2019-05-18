@@ -13,6 +13,11 @@ public class Api {
     public static final String url_decode_login = url_base+"user/login/decode";
     public static final String url_packagepage = url_base+"anim/list/package/page/";
     public static final String url_packageinfo = url_base+"package/info/";
+    public static final String url_genremeta = url_base+"genre/meta";
+    public static final String url_genrelist = url_base+"genre/list/";
+    public static final String url_sourcelist = url_base+"source/list/";
+
+
 
 
 

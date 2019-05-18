@@ -139,7 +139,7 @@
                                     android:textColor="@color/design_default_color_secondary"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Category:"/>
+                                    android:text="@string/category"/>
                                 <TextView
                                     android:id="@+id/aplay_details_genres"
                                     android:layout_marginStart="2dp"
@@ -162,7 +162,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="16sp"
                                 android:textColor="@color/design_default_color_secondary"
-                                android:text="Uploaded By:"/>
+                                android:text="@string/uploaded_by"/>
                             <RelativeLayout
                                 android:paddingStart="15dp"
                                 android:layout_width="match_parent"
@@ -185,7 +185,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="16sp"
                                 android:textColor="@color/design_default_color_secondary"
-                                android:text="Last Modified By:"/>
+                                android:text="@string/last_modified_by"/>
                             <RelativeLayout
                                 android:paddingStart="15dp"
                                 android:layout_width="match_parent"
@@ -223,7 +223,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_marginEnd="30dp"
-                        android:text="Comment"
+                        android:text="@string/comment"
                         android:textColor="@color/design_default_color_background"
                         android:textSize="26sp" />
 

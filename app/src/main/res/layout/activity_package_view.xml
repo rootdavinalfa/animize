@@ -71,7 +71,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Synopsis"
+                    android:text="@string/synopsis"
                     android:textColor="@color/design_default_color_secondary"
                     android:textSize="32sp"/>
             </RelativeLayout>
@@ -110,7 +110,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Videos"
+                    android:text="@string/videos"
                     android:textColor="@color/design_default_color_secondary"
                     android:textSize="24sp"/>
             </RelativeLayout>
