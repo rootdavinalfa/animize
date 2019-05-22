@@ -12,7 +12,7 @@
         android:visibility="visible"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
         <!--Head of Title conpartment-->
         <androidx.cardview.widget.CardView
@@ -53,35 +53,42 @@
                     android:tint="@color/design_default_color_background" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
-        <ScrollView
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <net.cachapa.expandablelayout.ExpandableLayout
-                    android:background="@color/colorPrimary"
                     android:id="@+id/video_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
                     app:el_duration="500"
                     app:el_expanded="true"
                     app:el_parallax="0.5">
+
                     <ScrollView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
+
                             <TextView
-                                android:padding="5dp"
                                 android:id="@+id/synop_play"
-                                android:textColor="@color/textOnPrimary"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="afhufdsasadsaauhfuas\nfsdfdsfds\ndsfsdf\n\ndsfdsf\ndsfdsfh"/>
+                                android:padding="5dp"
+                                android:text="afhufdsasadsaauhfuas\nfsdfdsfds\ndsfsdf\n\ndsfdsf\ndsfdsfh"
+                                android:textColor="@color/textOnPrimary" />
+
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
@@ -89,67 +96,77 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_marginEnd="4dp"
                                 android:background="@color/dividerAplay" />
+
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
+
                                 <TextView
                                     android:id="@+id/aplay_txt_idanimes"
-                                    android:textSize="16sp"
-                                    android:textColor="@color/design_default_color_secondary"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="ID Anim:"/>
+                                    android:text="ID Anim:"
+                                    android:textColor="@color/design_default_color_secondary"
+                                    android:textSize="16sp" />
+
                                 <TextView
                                     android:id="@+id/aplay_txt_idanime"
-                                    android:textStyle="bold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
                                     android:layout_toEndOf="@id/aplay_txt_idanimes"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="14sp"
+                                    android:text="ANMsdhu1"
                                     android:textColor="@color/textOnPrimary"
-                                    android:text="ANMsdhu1"/>
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
                             </RelativeLayout>
+
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
+
                                 <TextView
                                     android:id="@+id/aplay_txt_idsource"
-                                    android:textSize="16sp"
-                                    android:textColor="@color/design_default_color_secondary"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="ID Source:"/>
+                                    android:text="ID Source:"
+                                    android:textColor="@color/design_default_color_secondary"
+                                    android:textSize="16sp" />
+
                                 <TextView
-                                    android:textStyle="bold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
                                     android:layout_toEndOf="@id/aplay_txt_idsource"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="14sp"
+                                    android:text="ANM1"
                                     android:textColor="@color/textOnPrimary"
-                                    android:text="ANM1"/>
+                                    android:textSize="14sp"
+                                    android:textStyle="bold" />
                             </RelativeLayout>
+
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
+
                                 <TextView
                                     android:id="@+id/aplay_txt_category"
-                                    android:textSize="16sp"
-                                    android:textColor="@color/design_default_color_secondary"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/category"/>
+                                    android:text="@string/category"
+                                    android:textColor="@color/design_default_color_secondary"
+                                    android:textSize="16sp" />
+
                                 <TextView
                                     android:id="@+id/aplay_details_genres"
-                                    android:layout_marginStart="2dp"
-                                    android:layout_toEndOf="@id/aplay_txt_category"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textSize="14sp"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_toEndOf="@id/aplay_txt_category"
+                                    android:text="Romance,Action,Supernatural"
                                     android:textColor="@color/textOnPrimary"
-                                    android:text="Romance,Action,Supernatural"/>
+                                    android:textSize="14sp" />
                             </RelativeLayout>
+
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
@@ -157,52 +174,61 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_marginEnd="4dp"
                                 android:background="@color/dividerAplay" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="16sp"
+                                android:text="@string/uploaded_by"
                                 android:textColor="@color/design_default_color_secondary"
-                                android:text="@string/uploaded_by"/>
+                                android:textSize="16sp" />
+
                             <RelativeLayout
-                                android:paddingStart="15dp"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:paddingStart="15dp">
+
                                 <ImageView
                                     android:id="@+id/aplay_img_upload_by"
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
-                                    android:src="@drawable/ic_profile"/>
+                                    android:src="@drawable/ic_profile" />
+
                                 <TextView
-                                    android:textColor="@color/textOnPrimary"
-                                    android:layout_toEndOf="@+id/aplay_img_upload_by"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:textSize="16sp"
-                                    android:text="Davin"/>
+                                    android:layout_toEndOf="@+id/aplay_img_upload_by"
+                                    android:text="Davin"
+                                    android:textColor="@color/textOnPrimary"
+                                    android:textSize="16sp" />
                             </RelativeLayout>
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="16sp"
+                                android:text="@string/last_modified_by"
                                 android:textColor="@color/design_default_color_secondary"
-                                android:text="@string/last_modified_by"/>
+                                android:textSize="16sp" />
+
                             <RelativeLayout
-                                android:paddingStart="15dp"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:paddingStart="15dp">
+
                                 <ImageView
                                     android:id="@+id/aplay_img_modified_by"
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
-                                    android:src="@drawable/ic_profile"/>
+                                    android:src="@drawable/ic_profile" />
+
                                 <TextView
-                                    android:textColor="@color/textOnPrimary"
-                                    android:layout_toEndOf="@+id/aplay_img_modified_by"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:textSize="16sp"
-                                    android:text="Alex"/>
+                                    android:layout_toEndOf="@+id/aplay_img_modified_by"
+                                    android:text="Alex"
+                                    android:textColor="@color/textOnPrimary"
+                                    android:textSize="16sp" />
                             </RelativeLayout>
+
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
@@ -213,32 +239,16 @@
                         </LinearLayout>
                     </ScrollView>
                 </net.cachapa.expandablelayout.ExpandableLayout>
-                <RelativeLayout
-                    android:layout_marginTop="10dp"
+                <FrameLayout
+                    android:id="@+id/aplay_fragment_comment"
+                    android:name="ml.dvnlabs.animize.fragment.mainComment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    tools:layout="@layout/fragment_comment">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_marginEnd="30dp"
-                        android:text="@string/comment"
-                        android:textColor="@color/design_default_color_background"
-                        android:textSize="26sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:foregroundGravity="center"
-                        android:padding="5dp"
-                        android:text="220's"
-                        android:textColor="@color/design_default_color_background"
-                        />
-                </RelativeLayout>
+                </FrameLayout>
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
 
     </LinearLayout>

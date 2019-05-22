@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Replies"
+                android:textSize="26sp"
+                android:textColor="@color/design_default_color_background"/>
+            <ImageView
+                android:id="@+id/comments_thread_close"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/ripple_forrounded"
+                android:padding="7dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_close"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:tint="@color/design_default_color_background"/>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:background="@color/colorPrimaryDark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_margin="10dp"
+                    android:background="@drawable/round_layout"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:id="@+id/comments_thread_users"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:text="Davin Alfarizky asdfasfsafsaf"
+                    android:textSize="12sp"
+                    android:textColor="@color/design_default_color_background"/>
+                <TextView
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@+id/comments_thread_users"
+                    android:id="@+id/comments_added"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="18 May 2019"
+                    android:textColor="@color/design_default_color_background"/>
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/comments_thread_content"
+                android:background="@color/colorPrimaryDark"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/design_default_color_background"
+                android:text="Saya selalu menonton anime ini,\ndimana setiap hari saya selalu makan dan tidur di\nkolong jembatan"/>
+            <View
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerAplay"/>
+        </LinearLayout>
+        <RelativeLayout
+            android:background="@color/colorOverPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:windowSoftInputMode="adjustPan"
+                android:isScrollContainer="true"
+                android:backgroundTint="@color/colorOverPrimary"
+                android:background="@drawable/round_layout"
+                android:layout_alignParentStart="true"
+                android:id="@+id/comments_thread_edittext"
+                android:layout_toStartOf="@+id/comments_thread_adds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/dividerAplay"
+                android:hint="Add a comment"
+                android:maxLines="3"
+                android:textColor="@color/design_default_color_background" />
+            <ImageView
+                android:visibility="visible"
+                android:id="@+id/comments_thread_adds"
+                android:clickable="true"
+                android:foreground="@drawable/layoutrippleeffect"
+                android:focusable="true"
+                android:src="@drawable/ic_paper_plane"
+                android:tint="@color/design_default_color_background"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_margin="5dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+        </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/comments_thread_replied"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/rv_comments_thread">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.fragment.comment.mainComment;
+import ml.dvnlabs.animize.fragment.global;
 import ml.dvnlabs.animize.model.videoplay_model;
 
 /**
@@ -73,6 +75,7 @@ public class details extends Fragment {
                 drop.animate().rotation(deg).setInterpolator(new AccelerateDecelerateInterpolator());
             }
         });
+        showcomment();
     }
     public void receivedata(ArrayList<videoplay_model>data,String idan){
 
@@ -94,7 +97,21 @@ public class details extends Fragment {
             }
             String gen =sb.toString();
             genreer.setText(gen);
+            senddata2mainComment(idan);
         }
+
+    }
+
+    private void showcomment(){
+        mainComment se = mainComment.newInstance();
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.aplay_fragment_comment,se,"COMMENT_MAIN")
+                .addToBackStack("COMMENT_THREAD").commit();
+        //global.addFragment(getChildFragmentManager(),se,R.id.aplay_fragment_comment,"FRAGMENT_OTHER","SLIDE");
+    }
+    private void senddata2mainComment(String idanim){
+        mainComment mc = (mainComment) getChildFragmentManager().findFragmentByTag("COMMENT_MAIN");
+        mc.receivedata(idanim);
 
     }
 

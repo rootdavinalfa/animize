@@ -55,16 +55,16 @@
             android:layout_height="40dp">
 
             <Button
-                android:clickable="true"
-                android:focusable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_centerInParent="true"
-                android:foreground="@drawable/ripple_forrounded"
                 android:background="@drawable/roundbutton"
                 android:backgroundTint="@color/colorPrimaryDark"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/ripple_forrounded"
                 android:padding="5dp"
-                android:text="Manage account"
+                android:text="More Setting's"
                 android:textColor="@color/design_default_color_background" />
         </RelativeLayout>
 

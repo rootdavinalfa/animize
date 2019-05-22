@@ -40,7 +40,7 @@
             android:name=".activity.animplay_activity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:keepScreenOn="true"
-            android:label=""
+            android:label="Animize Player"
             android:parentActivityName=".activity.dashboard_activity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -49,12 +49,22 @@
         <activity
             android:name=".activity.dashboard_activity"
             android:configChanges="orientation|keyboard"
-            android:label=""
+            android:label="Dashboard"
             android:parentActivityName=".activity.MainActivity"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ml.dvnlabs.animize.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activity.settings"
+            android:configChanges="orientation|keyboard"
+            android:label="Animize Settings"
+            android:parentActivityName=".activity.dashboard_activity"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ml.dvnlabs.animize.activity.dashboard_activity" />
         </activity>
         <activity android:name=".activity.MainActivity">
             <intent-filter>

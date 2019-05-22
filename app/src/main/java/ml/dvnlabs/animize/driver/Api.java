@@ -16,6 +16,9 @@ public class Api {
     public static final String url_genremeta = url_base+"genre/meta";
     public static final String url_genrelist = url_base+"genre/list/";
     public static final String url_sourcelist = url_base+"source/list/";
+    public static final String url_commentlist = url_base+"comment/list/";
+    public static final String url_commentthread = url_base+"comment/thread/";
+    public static final String url_commentadd = url_base+"comment/add";
 
 
 
