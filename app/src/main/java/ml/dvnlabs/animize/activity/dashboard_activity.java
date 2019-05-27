@@ -215,7 +215,7 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
             startActivity(startMain);
             //additional code
         } else {
-
+            bottomNavigationView.getMenu().getItem(0).setChecked(true);
             display_home();
         }
     }

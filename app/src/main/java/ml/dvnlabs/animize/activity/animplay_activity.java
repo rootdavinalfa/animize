@@ -1,11 +1,17 @@
 package ml.dvnlabs.animize.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import ml.dvnlabs.animize.Event.PlayerBusError;
 import ml.dvnlabs.animize.Event.PlayerBusStatus;
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.database.LoginInternalDBHelper;
+import ml.dvnlabs.animize.database.model.userland;
+import ml.dvnlabs.animize.fragment.comment.threadComment;
 import ml.dvnlabs.animize.fragment.popup.sourceselector;
+import ml.dvnlabs.animize.model.commentMainModel;
 import ml.dvnlabs.animize.recyclerview.playlist_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
@@ -25,6 +31,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
@@ -65,6 +72,7 @@ public class animplay_activity extends AppCompatActivity{
     private boolean isRestart = false;
     private PlayerView playerView;
 
+    private LoginInternalDBHelper loginInternalDBHelper;
     private boolean isReadyVideo = false;
     private boolean isFullscreen = false;
     private boolean isInit = true;
@@ -100,6 +108,9 @@ public class animplay_activity extends AppCompatActivity{
         setContentView(R.layout.animplay_activity);
         initial_setup();
         modeldata = new ArrayList<>();
+        loginInternalDBHelper = new LoginInternalDBHelper(this);
+        SqliteRead sqliteReadUser = new SqliteRead();
+        sqliteReadUser.execute("OK");
 
         Intent intent = getIntent();
         if(getIntent().getStringExtra("id_anim") != null){
@@ -332,16 +343,6 @@ FetchDataListener getvideo = new FetchDataListener() {
         sendpkg(modeldata.get(0).getPack(),idanim);
         playerContanti();
     }
-//TODO Must fix the service binding
-    /*
-    * playerServiceInit()
-    * Flow,if getService() is null then playermanager rebinding if onCreate is not compltly,
-    * although,playermanager will call playerServiceInit() when service is ready to use.
-    * */
-    public void playerServiceInit(String id){
-        idanim = id;
-        getVideo();
-   }
     private void playerContanti(){
         //if(isReadyVideo){
             //Log.e("SERVICETRU",String.valueOf(playerManager.isServiceBound()));
@@ -353,11 +354,15 @@ FetchDataListener getvideo = new FetchDataListener() {
 
 
     }
+
+    //send pkg id to more fragment
     private void sendpkg(String pkg,String anim){
         String tag = "android:switcher:" + R.id.aplay_pager + ":" + 1;
         more f = (more) getSupportFragmentManager().findFragmentByTag(tag);
         f.receivedata(pkg,anim);
     }
+
+    //Sending arraylist to details fragment
     private void sendmodelplay(ArrayList<videoplay_model>data,passdata_arraylist senddata){
         Log.e("CHECK ID ANIM",idanim);
         senddata.onDataReceived(data,idanim);
@@ -410,39 +415,116 @@ FetchDataListener getvideo = new FetchDataListener() {
     }
     @Override
     protected void onDestroy() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("aplay",0);
 
         super.onDestroy();
+        if(pref != null){
+            Log.e("CLEARING:","CLEAR SharedPreference");
+            SharedPreferences.Editor editor = pref.edit();
+            editor.clear();
+            editor.commit();
+
+        }
     }
 
     @Override
     public void onBackPressed(){
         Drawable buttun_fullscren;
+        threadComment threadComment = (threadComment)getSupportFragmentManager().findFragmentByTag("COMMENT_THREAD");
         ImageView imageView = (ImageView) findViewById(R.id.exo_fullscreen_icon);
-        if(isFullscreen){
-            buttun_fullscren = getResources().getDrawable(R.drawable.ic_fullscreen_expand);
-            imageView.setImageDrawable(buttun_fullscren);
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        }
-        if(!isFullscreen){
-            super.onBackPressed();
-            finish();
+        //Check is threadComment fragment visible or not
+        if (threadComment!=null&&threadComment.isVisible()){
+            System.out.println("THREAD COMMENT UNVISIBLING");
+            closereplyfragment();
+        }else {
+            if(isFullscreen){
+                buttun_fullscren = getResources().getDrawable(R.drawable.ic_fullscreen_expand);
+                imageView.setImageDrawable(buttun_fullscren);
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-            if(getService()!=null&&playerManager.isServiceBound()){
-                playerManager.unbind();
-                modeldata.clear();
-                //idanim = null;
             }
-            //unbindService(serviceConnection);
-            //Intent intent = new Intent(this, dashboard_activity.class);
-            //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            //startActivity(intent);
-        }
+            if(!isFullscreen){
+                super.onBackPressed();
+                finish();
 
+                if(getService()!=null&&playerManager.isServiceBound()){
+                    playerManager.unbind();
+                    modeldata.clear();
+                    //idanim = null;
+                }
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("aplay",0);
+                if(pref != null){
+                    Log.e("CLEARING:","CLEAR SharedPreference");
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.clear();
+                    editor.commit();
+
+                }
+                //unbindService(serviceConnection);
+                //Intent intent = new Intent(this, dashboard_activity.class);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //startActivity(intent);
+            }
+        }
     }
     public void showsourceselector(String lang,String idanim){
         sourceselector sourceselector = new sourceselector();
         sourceselector.show(getSupportFragmentManager(),"sourceselector");
         sourceselector.language(lang,idanim,this);
+    }
+
+    public void showreplyfragment(ArrayList<commentMainModel> model){
+        aplay_tabs.setVisibility(View.GONE);
+        aplay_viewpager.setVisibility(View.GONE);
+
+        threadComment se = threadComment.newInstance(model,idanim);
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_up,R.anim.slide_down)
+                .replace(R.id.aplay_fragment_comment_thread,se,"COMMENT_THREAD")
+                .addToBackStack("COMMENT_THREAD").commit();
+        //se.receivedata(model);
+
+    }
+    public void closereplyfragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // Check to see if the fragment is already showing.
+        threadComment simpleFragment = (threadComment) fragmentManager
+                .findFragmentById(R.id.aplay_fragment_comment_thread);
+        if (simpleFragment != null) {
+            // Create and commit the transaction to remove the fragment.
+            FragmentTransaction fragmentTransaction =
+                    fragmentManager.beginTransaction();
+            fragmentTransaction.remove(simpleFragment).commit();
+        }
+        aplay_tabs.setVisibility(View.VISIBLE);
+        aplay_viewpager.setVisibility(View.VISIBLE);
+    }
+
+
+    //Sqlite for read token and id on local db
+    public class SqliteRead extends AsyncTask<String,Void, userland> {
+        @Override
+        protected void onPreExecute(){
+
+        }
+        @Override
+        protected userland doInBackground(String... params){
+
+            return loginInternalDBHelper.getUser();
+
+        }
+
+        @Override
+        protected void onPostExecute(userland usl){
+            Log.e("TOKEN:",usl.getToken());
+            SharedPreferences preferences = getApplicationContext().getSharedPreferences("aplay",MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("iduser",usl.getIdUser());
+            editor.putString("token",usl.getToken());
+            editor.commit();
+            //dash_profile_username.setText(usl.getNameUser());
+
+        }
     }
 }

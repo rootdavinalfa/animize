@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="@drawable/layoutrippleeffect">
+    <RelativeLayout
+        android:background="@color/colorOverPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_margin="10dp"
+            android:background="@drawable/round_layout"
+            android:backgroundTint="@color/colorPrimary"
+            android:id="@+id/threads_comments_users"
+            android:maxWidth="150dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:text="Davin Alfarizky asdfasfsafsaf"
+            android:textSize="12sp"
+            android:textColor="@color/design_default_color_background"/>
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@+id/threads_comments_users"
+            android:id="@+id/threads_comments_added"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="18 May 2019"
+            android:textColor="@color/design_default_color_background"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/threads_comment_content"
+        android:background="@color/colorOverPrimary"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/design_default_color_background"
+        android:text="Saya selalu menonton anime ini,\ndimana setiap hari saya selalu makan dan tidur di\nkolong jembatan"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/colorOverPrimary"/>
+
+</LinearLayout>
