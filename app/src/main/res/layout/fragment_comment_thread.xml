@@ -33,6 +33,10 @@
                 android:layout_centerInParent="true"
                 android:tint="@color/design_default_color_background"/>
         </RelativeLayout>
+        <View
+            android:layout_width="150dp"
+            android:background="@color/design_default_color_background"
+            android:layout_height="2dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +50,8 @@
                     android:background="@drawable/round_layout"
                     android:backgroundTint="@color/colorPrimary"
                     android:id="@+id/comments_thread_users"
-                    android:layout_width="150dp"
+                    android:maxWidth="150dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:ellipsize="marquee"

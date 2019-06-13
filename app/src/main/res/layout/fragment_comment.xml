@@ -32,7 +32,6 @@
             android:background="@color/colorPrimaryDark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
             android:padding="5dp">
 
             <TextView
@@ -53,7 +52,13 @@
                 android:text="220's"
                 android:textColor="@color/design_default_color_background" />
         </RelativeLayout>
+        <View
+            android:layout_width="150dp"
+            android:background="@color/design_default_color_background"
+            android:layout_height="2dp"/>
         <RelativeLayout
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:background="@color/colorOverPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -85,11 +90,14 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp" />
         </RelativeLayout>
+        <View
+            android:background="@color/design_default_color_secondary"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:nestedScrollingEnabled="false"
             android:id="@+id/aplay_fragment_comment_rv"
-            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem="@layout/rv_comments">

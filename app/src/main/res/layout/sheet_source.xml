@@ -24,6 +24,7 @@
                 android:textSize="36sp" />
         </RelativeLayout>
         <RelativeLayout
+            android:minHeight="100dp"
             android:id="@+id/sourceslist_infocontainer"
             android:visibility="gone"
             android:layout_width="match_parent"
