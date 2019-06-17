@@ -10,7 +10,7 @@
     android:focusable="true"
     android:foreground="@drawable/layoutrippleeffect">
     <View
-        android:background="@color/design_default_color_secondary"
+        android:background="@color/primaryDarkColor"
         android:layout_width="9dp"
         android:layout_height="50dp"/>
     <LinearLayout

@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorOverPrimary"
+    android:background="@color/secondaryLightColor"
     android:layout_margin="5dp"
     android:clickable="true"
     android:focusable="true"
@@ -22,7 +22,7 @@
                 android:layout_height="220dp"
                 android:layout_centerInParent="true"
                 android:src="@drawable/ic_picture"
-                android:tint="@color/design_default_color_background" />
+                android:tint="@color/secondaryDarkColor" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:textAlignment="center"
-                android:textColor="@color/design_default_color_background"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="22sp" />
         </RelativeLayout>
         <RelativeLayout
@@ -98,7 +98,7 @@
                     android:gravity="center"
 
                     android:text="2 Of 12"
-                    android:textColor="@color/design_default_color_background"
+                    android:textColor="@color/secondaryDarkColor"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 

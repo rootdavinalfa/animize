@@ -2,7 +2,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
     android:clickable="true"
     android:focusable="true"
     android:foreground="@drawable/layoutrippleeffect">
@@ -57,6 +56,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/roundbutton"
+                android:backgroundTint="@color/primaryLightColor"
                 android:layout_width="100dp"
                 android:layout_height="20dp">
 
@@ -68,7 +68,7 @@
                     android:gravity="center"
 
                     android:text="2 Of 12"
-                    android:textColor="@color/design_default_color_background"
+                    android:textColor="@color/secondaryDarkColor"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -86,7 +86,7 @@
                 android:layout_height="220dp"
                 android:layout_centerInParent="true"
                 android:src="@drawable/ic_picture"
-                android:tint="@color/design_default_color_background" />
+                android:tint="@color/secondaryDarkColor" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
@@ -101,7 +101,7 @@
                 android:maxLines="2"
                 android:ellipsize="end"
                 android:textAlignment="center"
-                android:textColor="@color/design_default_color_background"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="22sp" />
         </RelativeLayout>
         <RelativeLayout
@@ -111,13 +111,13 @@
             <TextView
                 android:paddingEnd="5dp"
                 android:paddingStart="5dp"
-                android:background="@color/design_default_color_secondary_variant"
+                android:background="@color/primaryLightColor"
                 android:id="@+id/package_genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="Romance,Supernatural"
-                android:textColor="@color/design_default_color_background"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="12sp" />
         </RelativeLayout>
     </LinearLayout>

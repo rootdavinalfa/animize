@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimaryDark">
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,7 +19,7 @@
                 android:text="@string/nav_genre_txt"
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
-                android:textColor="@color/design_default_color_secondary_variant"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="36sp"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -27,16 +27,16 @@
         <View
             android:layout_width="80dp"
             android:layout_height="1dp"
-            android:background="@color/design_default_color_secondary" />
+            android:background="@color/secondaryDarkColor" />
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/genre_tablayout"
             android:layout_width="match_parent"
             android:theme="@style/AppTheme.TabStyle"
-            app:tabSelectedTextColor="@color/design_default_color_secondary"
-            app:tabTextColor="@color/design_default_color_background"
-            android:background="@color/colorPrimaryDark"
-            app:tabIndicatorColor="@color/design_default_color_secondary"
-            app:tabRippleColor="@color/design_default_color_secondary"
+            app:tabSelectedTextColor="@color/primaryDarkColor"
+            app:tabTextColor="@color/secondaryDarkColor"
+            android:background="@color/secondaryLightColor"
+            app:tabIndicatorColor="@color/primaryLightColor"
+            app:tabRippleColor="@color/primaryLightColor"
             android:layout_height="wrap_content"
             app:tabMode="scrollable">
 

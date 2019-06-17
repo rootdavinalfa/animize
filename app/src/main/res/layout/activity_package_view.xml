@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="190dp"
         android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/pv_collapse_toolbar"
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -46,7 +46,7 @@
         android:layout_height="match_parent">
         <com.wang.avi.AVLoadingIndicatorView
             app:indicatorName="BallClipRotateIndicator"
-            app:indicatorColor="@color/design_default_color_secondary"
+            app:indicatorColor="@color/primaryLightColor"
             android:layout_centerInParent="true"
             android:id="@+id/packageview_loading"
             android:visibility="gone"
@@ -58,7 +58,7 @@
         android:visibility="visible"
         android:id="@+id/packageview_container"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:background="@color/colorPrimary"
+        android:background="@color/secondaryLightColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -72,13 +72,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/synopsis"
-                    android:textColor="@color/design_default_color_secondary"
+                    android:textColor="@color/secondaryTextColor"
                     android:textSize="32sp"/>
             </RelativeLayout>
             <TextView
                 android:padding="5dp"
                 android:id="@+id/packageview_synopsis"
-                android:textColor="@color/textOnPrimary"
+                android:textColor="@color/secondaryDarkColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="afhufdsasadsa\n\n\n\n\n\nauhfuas\nfsdfdsfds\ndsfsdf\n\ndsfdsf\ndsfdsfh"/>
@@ -88,13 +88,13 @@
                 <TextView
                     android:paddingEnd="5dp"
                     android:paddingStart="5dp"
-                    android:background="@color/design_default_color_secondary_variant"
+                    android:background="@color/primaryLightColor"
                     android:id="@+id/packageview_genre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="Romance,Supernatural"
-                    android:textColor="@color/design_default_color_background"
+                    android:textColor="@color/secondaryTextColor"
                     android:textSize="16sp" />
             </RelativeLayout>
             <View
@@ -103,7 +103,7 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="4dp"
-                android:background="@color/dividerAplay" />
+                android:background="@color/secondaryTextColor" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -111,7 +111,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/videos"
-                    android:textColor="@color/design_default_color_secondary"
+                    android:textColor="@color/secondaryTextColor"
                     android:textSize="24sp"/>
             </RelativeLayout>
             <androidx.recyclerview.widget.RecyclerView

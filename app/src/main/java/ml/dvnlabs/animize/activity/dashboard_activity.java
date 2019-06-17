@@ -105,6 +105,7 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
                 public void onClick(View v) {
                     home hm = (home) getSupportFragmentManager().findFragmentById(R.id.home_fragment);
                     hm.getLast_Up();
+                    hm.getLastPackage();
                 }
             }).setActionTextColor(color);
             View sbView = snackbar.getView();
@@ -127,7 +128,12 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
                 switch (id){
                     case 1:
                         lastup_video_list hm = (lastup_video_list) getSupportFragmentManager().findFragmentById(R.id.video_list_fragment);
-                        hm.getlist_V();
+                        if (hm != null && hm.isVisible()){
+                            hm.getlist_V();
+                        }else {
+                            snackbar.dismiss();
+                        }
+
                 }
 
             }
@@ -247,9 +253,11 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         close_search();
         close_genre();
         close_lastup();
-        home vl = home.newInstance();
-        global.addFragment(getSupportFragmentManager(),vl,R.id.home_fragment,"FRAGMENT_HOME","SLIDE");
-        header_layout.setVisibility(View.VISIBLE);
+        if (getSupportFragmentManager().findFragmentById(R.id.home_fragment)==null){
+            home vl = home.newInstance();
+            global.addFragment(getSupportFragmentManager(),vl,R.id.home_fragment,"FRAGMENT_HOME","SLIDE");
+            header_layout.setVisibility(View.VISIBLE);
+        }
     }
 
     public void display_search(){

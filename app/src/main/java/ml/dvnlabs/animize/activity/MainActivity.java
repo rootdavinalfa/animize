@@ -1,10 +1,15 @@
 package ml.dvnlabs.animize.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.database.LoginInternalDBHelper;
 import ml.dvnlabs.animize.database.model.userland;
@@ -61,38 +66,38 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
-private void initializa(){
-    loginInternalDBHelper = new LoginInternalDBHelper(this);
-    if(!loginInternalDBHelper.getUserCount()){
-        System.out.println("OnCREATE NULL DB");
-        setTheme(R.style.AppTheme);
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        setWindowFlag(this,WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,false);
-        getWindow().setStatusBarColor(Color.TRANSPARENT);
-        getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        );
+    private void initializa(){
+        loginInternalDBHelper = new LoginInternalDBHelper(this);
+        if(!loginInternalDBHelper.getUserCount()){
+            System.out.println("OnCREATE NULL DB");
+            setTheme(R.style.AppTheme);
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            setWindowFlag(this,WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,false);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            getWindow().setFlags(
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+            );
 
 
-        setContentView(R.layout.activity_main);
+            setContentView(R.layout.activity_main);
 
-        container = (RelativeLayout) findViewById(R.id.mainScreen);
-        avLoadingIndicatorView = (AVLoadingIndicatorView)findViewById(R.id.loading_login);
-        avLoadingIndicatorView.hide();
-        email_tf = (EditText)findViewById(R.id.login_userfield);
-        password_tf = (EditText)findViewById(R.id.login_passwordfield);
+            container = (RelativeLayout) findViewById(R.id.mainScreen);
+            avLoadingIndicatorView = (AVLoadingIndicatorView)findViewById(R.id.loading_login);
+            avLoadingIndicatorView.hide();
+            email_tf = (EditText)findViewById(R.id.login_userfield);
+            password_tf = (EditText)findViewById(R.id.login_passwordfield);
+        }
+        if(loginInternalDBHelper.getUserCount()){
+            System.out.println("OnCREATE DB");
+            SqliteLoginBackground sqliteLoginBackground = new SqliteLoginBackground();
+            //Params 0 = login_user/add_user
+            //params 1 - 4 = id_user,name_user,email,token
+            sqliteLoginBackground.execute("login_user",null,null,null,null);
+        }
     }
-    if(loginInternalDBHelper.getUserCount()){
-        System.out.println("OnCREATE DB");
-        SqliteLoginBackground sqliteLoginBackground = new SqliteLoginBackground();
-        //Params 0 = login_user/add_user
-        //params 1 - 4 = id_user,name_user,email,token
-        sqliteLoginBackground.execute("login_user",null,null,null,null);
-    }
-}
 
     public static void setWindowFlag(Activity activity,final int bits,boolean on){
         Window win = activity.getWindow();

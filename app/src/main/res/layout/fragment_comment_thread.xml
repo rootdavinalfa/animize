@@ -19,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:text="Replies"
                 android:textSize="26sp"
-                android:textColor="@color/design_default_color_background"/>
+                android:textColor="@color/primaryLightColor"/>
             <ImageView
                 android:id="@+id/comments_thread_close"
                 android:clickable="true"
@@ -31,7 +31,7 @@
                 android:src="@drawable/ic_close"
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
-                android:tint="@color/design_default_color_background"/>
+                />
         </RelativeLayout>
         <View
             android:layout_width="150dp"

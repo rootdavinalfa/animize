@@ -40,7 +40,7 @@
                     android:layout_marginEnd="30dp"
                     android:text="青春ブタ野郎はバニーガール先輩の夢を見ない"
                     android:textColor="@color/design_default_color_background"
-                    android:textSize="26sp" />
+                    android:textSize="30sp" />
 
                 <ImageView
                     android:id="@+id/titlename_drop"
@@ -106,7 +106,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="ID Anim:"
-                                    android:textColor="@color/design_default_color_secondary"
+                                    android:textColor="@color/primaryLightColor"
                                     android:textSize="16sp" />
 
                                 <TextView
@@ -130,7 +130,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="ID Source:"
-                                    android:textColor="@color/design_default_color_secondary"
+                                    android:textColor="@color/primaryLightColor"
                                     android:textSize="16sp" />
 
                                 <TextView
@@ -153,7 +153,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="@string/category"
-                                    android:textColor="@color/design_default_color_secondary"
+                                    android:textColor="@color/primaryLightColor"
                                     android:textSize="16sp" />
 
                                 <TextView
@@ -179,7 +179,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/uploaded_by"
-                                android:textColor="@color/design_default_color_secondary"
+                                android:textColor="@color/primaryLightColor"
                                 android:textSize="16sp" />
 
                             <RelativeLayout
@@ -206,7 +206,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/last_modified_by"
-                                android:textColor="@color/design_default_color_secondary"
+                                android:textColor="@color/primaryLightColor"
                                 android:textSize="16sp" />
 
                             <RelativeLayout

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.lastup_video_list">
     <LinearLayout
@@ -12,26 +11,28 @@
         android:orientation="vertical">
         <!--Toolbar -->
         <LinearLayout
+            android:background="@color/secondaryLightColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
             <TextView
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/design_default_color_secondary"
+                android:textColor="@color/secondaryTextColor"
                 android:text="@string/last_uploaded_txt"
                 android:textSize="32sp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:background="@color/secondaryDarkColor" />
 
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:background="@color/design_default_color_secondary" />
+
 
         <!-- TODO: Update blank fragment layout -->
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

@@ -4,6 +4,12 @@ apply plugin: 'kotlin-android'
 
 android {
     signingConfigs {
+    release {
+        storeFile file('D:\\Davin\\projekt\\Animize\\animize-key-release.jks')
+        storePassword 'davinalfa123'
+        keyAlias = 'key0'
+        keyPassword 'davinalfa123'
+    }
     }
     compileSdkVersion 28
     defaultConfig {
@@ -13,20 +19,22 @@ android {
         versionCode 1
         versionName '0.0.1'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        resValue("string","app_names","Animize")
     }
     buildTypes {
         release {
-            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
             debuggable false
             jniDebuggable false
+            signingConfig signingConfigs.release
         }
         debug {
             versionNameSuffix 'debug'
             debuggable true
             jniDebuggable true
             applicationIdSuffix '.debug'
+            resValue("string","app_names","Animize-deb")
         }
     }
     compileOptions {
@@ -41,19 +49,22 @@ android {
             minSdkVersion 22
             applicationId 'ml.dvnlabs.animize'
             targetSdkVersion 28
-            versionCode 1
-            versionName '0'
+            versionCode 2
+            versionName 'TimeLapse-01-'
             versionNameSuffix 'Mirai'
+            applicationIdSuffix = '.mirai'
+            resValue("string","app_names","Animize | Mirai")
         }
-        machi_beta {
+        ima {
             dimension "version"
             minSdkVersion 22
-            applicationIdSuffix '.machi'
+            applicationIdSuffix '.ima'
             targetSdkVersion 28
-            versionCode 1
-            versionName '0.1'
-            versionNameSuffix 'Machi'
+            versionCode 2
+            versionName 'rel-01-'
+            versionNameSuffix 'ima'
             applicationId 'ml.dvnlabs.animize'
+            resValue("string","app_names","Animize")
         }
     }
 }
@@ -87,6 +98,7 @@ dependencies {
     implementation 'com.wang.avi:library:2.1.3'
     implementation 'com.facebook.shimmer:shimmer:0.4.0'
     implementation 'androidx.preference:preference:1.1.0-beta01'
+    implementation 'com.hendraanggrian.material:collapsingtoolbarlayout-subtitle:1.0.0'
 }
 repositories {
     mavenCentral()

@@ -8,6 +8,7 @@
 
     <LinearLayout
 
+        android:padding="7dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -38,7 +39,6 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
 
-                android:text=""
                 android:textColor="@color/design_default_color_background" />
         </RelativeLayout>
 
@@ -97,10 +97,10 @@
             android:layout_height="16dp"
             android:layout_weight="5"
             app:bar_height="3dp"
-            app:buffered_color="#920097FF"
-            app:played_color="#B55AC0FF"
-            app:scrubber_color="#0281DA"
-            app:unplayed_color="#90575757" />
+            app:buffered_color="@color/primaryDarkColor"
+            app:played_color="@color/secondaryLightColor"
+            app:scrubber_color="@color/primaryColor"
+            app:unplayed_color="@color/secondaryTextColor" />
 
         <TextView
             android:id="@id/exo_duration"
