@@ -13,10 +13,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/secondaryLightColor"
         android:orientation="vertical">
 
         <ImageView
+            android:padding="5dp"
             android:id="@+id/srctitle_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -50,7 +50,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:textColor="@color/secondaryDarkColor"
+                        android:textColor="@color/secondaryTextColor"
                         android:id="@+id/srcid_anime"
                         android:layout_width="195dp"
                         android:layout_height="wrap_content"

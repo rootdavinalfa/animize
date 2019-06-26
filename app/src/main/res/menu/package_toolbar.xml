@@ -3,6 +3,7 @@
     <item
         android:id="@+id/package_star"
         android:icon="@drawable/ic_star"
+        android:iconTint="@color/yellow"
         app:showAsAction="ifRoom|withText"
         android:title="Favorite">
     </item>

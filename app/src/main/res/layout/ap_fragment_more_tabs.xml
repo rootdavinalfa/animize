@@ -112,7 +112,7 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:foreground="@drawable/ripple_forrounded"
-                        android:rotation="270"
+                        android:rotation="90"
                         android:layout_alignParentEnd="true"
                         android:tint="@color/primaryLightColor"
                         android:layout_width="40dp"

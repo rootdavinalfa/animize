@@ -26,6 +26,7 @@
         android:id="@+id/aplay_tabs"
         android:layout_width="match_parent"
         android:theme="@style/AppTheme.TabStyle"
+        app:tabTextAppearance="@style/MyCustomTabTextAppearance"
         app:tabSelectedTextColor="@color/primaryLightColor"
         app:tabTextColor="@color/design_default_color_background"
         android:background="@color/colorPrimaryDark"

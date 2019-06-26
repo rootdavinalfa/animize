@@ -1,4 +1,4 @@
-package ml.dvnlabs.animize.fragment;
+package ml.dvnlabs.animize.fragment.dashboard;
 
 import android.os.Bundle;
 import android.util.Log;

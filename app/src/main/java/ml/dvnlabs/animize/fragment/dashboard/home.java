@@ -1,4 +1,4 @@
-package ml.dvnlabs.animize.fragment;
+package ml.dvnlabs.animize.fragment.dashboard;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -12,14 +12,12 @@ import android.widget.RelativeLayout;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
-import com.yarolegovich.discretescrollview.transform.Pivot;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +28,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.dashboard_activity;
+import ml.dvnlabs.animize.model.bannerlist_model;
 import ml.dvnlabs.animize.model.packagelist;
+import ml.dvnlabs.animize.recyclerview.banner_adapter;
 import ml.dvnlabs.animize.recyclerview.home_lastup_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
@@ -45,12 +45,15 @@ public class home extends Fragment {
     private int page_lastup = 0;
     private ShimmerFrameLayout lastup_loading;
     private RelativeLayout dash_button_lastupmore;
-    private DiscreteScrollView listView_lastup,rv_lastpackage;
+    private DiscreteScrollView listView_lastup,rv_lastpackage,rv_bannerlist;
     //private RecyclerView rv_lastpackage;
     private ArrayList<home_lastup_model> modeldata_lastup;
     private ArrayList<packagelist> modeldatapackage;
+    private ArrayList<bannerlist_model> bannerlist_models;
+
     private home_lastup_adapter adapater_lastup;
     private lastpackage_adapter adapterlastpackage;
+    private banner_adapter adapter_banner;
     private LinearLayoutManager linearLayoutManager;
     CountDownTimer cTimer = null;
     public home(){
@@ -62,13 +65,14 @@ public class home extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view= inflater.inflate(R.layout.fragment_home, container, false);
-        listView_lastup = (DiscreteScrollView) view.findViewById(R.id.lastup_list);
+        listView_lastup = view.findViewById(R.id.lastup_list);
         //episodean = (TextView)view.findViewById(R.id.episodes_lastupload_home);
         //namestitle = (TextView)view.findViewById(R.id.titles_lastupload_home);
         linearLayoutManager = new LinearLayoutManager(getActivity());
-        dash_button_lastupmore = (RelativeLayout)view.findViewById(R.id.dash_lastup_more);
-        lastup_loading = (ShimmerFrameLayout)view.findViewById(R.id.loading_lastup);
-        rv_lastpackage = (DiscreteScrollView) view.findViewById(R.id.rv_lastpackage);
+        dash_button_lastupmore = view.findViewById(R.id.dash_lastup_more);
+        lastup_loading = view.findViewById(R.id.loading_lastup);
+        rv_lastpackage = view.findViewById(R.id.rv_lastpackage);
+        rv_bannerlist = view.findViewById(R.id.rv_banner);
         initial_setup();
 
         return view;
@@ -76,7 +80,9 @@ public class home extends Fragment {
     private void initial_setup(){
         modeldata_lastup = new ArrayList<>();
         modeldatapackage = new ArrayList<>();
+        bannerlist_models = new ArrayList<>();
         ACT_Dash_button_lastupmore();
+        getBanner();
         getLast_Up();
         getLastPackage();
     }
@@ -88,6 +94,12 @@ public class home extends Fragment {
             }
         });
     }
+
+    public void getBanner(){
+        String url = Api.url_banner;
+        APINetworkRequest apiNetworkRequest = new APINetworkRequest(getActivity(),bannerlist,url,CODE_GET_REQUEST,null);
+    }
+
     public void getLast_Up(){
         String url = Api.url_page+"1";
         APINetworkRequest apiNetworkRequest = new APINetworkRequest(getActivity(),lastup,url,CODE_GET_REQUEST,null);
@@ -126,6 +138,32 @@ public class home extends Fragment {
         if(cTimer!=null)
             cTimer.cancel();
     }
+
+    FetchDataListener bannerlist = new FetchDataListener() {
+        @Override
+        public void onFetchComplete(String data) {
+            try{
+                JSONObject object = new JSONObject(data);
+                if(!object.getBoolean("error")){
+                    banner_list(object.getJSONArray("banner"));
+                }
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFetchFailure(String msg) {
+
+        }
+
+        @Override
+        public void onFetchStart() {
+
+        }
+    };
+
     FetchDataListener lastup = new FetchDataListener() {
         @Override
         public void onFetchComplete(String data) {
@@ -172,6 +210,24 @@ public class home extends Fragment {
                 package_list(object.getJSONArray("anim"));
             }
 
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private void banner_list(JSONArray banner){
+        try {
+            bannerlist_models.clear();
+            for (int i =0;i<banner.length();i++){
+                JSONObject object = banner.getJSONObject(i);
+                String banner_image = object.getString("banner_image");
+                String banner_url = object.getString("banner_url");
+                String banner_title = object.getString("banner_title");
+                bannerlist_models.add(new bannerlist_model(banner_image,banner_title,banner_url));
+            }
+            adapter_banner = new banner_adapter(bannerlist_models,getActivity(),R.layout.rv_banner);
+            rv_bannerlist.setAdapter(adapter_banner);
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -316,6 +372,7 @@ public class home extends Fragment {
 
         cancelTimer();
     }
+
 
     public static home newInstance(){
         return new home();

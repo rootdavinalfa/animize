@@ -13,6 +13,7 @@
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:theme="@style/CustomToolbarTheme"
             android:id="@+id/pv_collapse_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -35,7 +36,9 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:titleTextColor="@color/primaryColor"
+                app:subtitleTextColor="@color/design_default_color_background">
 
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>

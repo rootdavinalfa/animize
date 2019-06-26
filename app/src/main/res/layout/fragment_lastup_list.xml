@@ -11,7 +11,6 @@
         android:orientation="vertical">
         <!--Toolbar -->
         <LinearLayout
-            android:background="@color/secondaryLightColor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -23,14 +22,6 @@
                 android:textColor="@color/secondaryTextColor"
                 android:text="@string/last_uploaded_txt"
                 android:textSize="32sp"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="4dp"
-                android:background="@color/secondaryDarkColor" />
-
         </LinearLayout>
 
 

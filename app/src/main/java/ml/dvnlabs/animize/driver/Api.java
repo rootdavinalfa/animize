@@ -19,6 +19,7 @@ public class Api {
     public static final String url_commentlist = url_base+"comment/list/";
     public static final String url_commentthread = url_base+"comment/thread/";
     public static final String url_commentadd = url_base+"comment/add";
+    public static final String url_banner = url_base+"banner/get/";
 
 
 

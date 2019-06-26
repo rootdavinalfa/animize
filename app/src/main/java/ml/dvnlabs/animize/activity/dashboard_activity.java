@@ -1,46 +1,43 @@
 package ml.dvnlabs.animize.activity;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.app.AppController;
 import ml.dvnlabs.animize.checker.checkNetwork;
 import ml.dvnlabs.animize.database.LoginInternalDBHelper;
 import ml.dvnlabs.animize.database.model.userland;
-import ml.dvnlabs.animize.fragment.genre;
+import ml.dvnlabs.animize.fragment.dashboard.genre;
+import ml.dvnlabs.animize.fragment.dashboard.home;
 import ml.dvnlabs.animize.fragment.global;
-import ml.dvnlabs.animize.fragment.home;
 import ml.dvnlabs.animize.fragment.lastup_video_list;
 import ml.dvnlabs.animize.fragment.popup.ProfilePop;
 import ml.dvnlabs.animize.fragment.search;
+import ml.dvnlabs.animize.pager.dashboard_pager;
 
 
-import android.app.Dialog;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 
 
 public class dashboard_activity extends AppCompatActivity implements checkNetwork.ConnectivityReceiverListener{
@@ -55,9 +52,12 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
 
     private String TAG = dashboard_activity.class.getSimpleName();
     private LinearLayout header_layout;
-    private LinearLayout dash_serach_btn;
+    private ImageView dash_serach_btn;
     private BottomNavigationView bottomNavigationView;
     private RelativeLayout dashboard,dash_profile;
+    private TabLayout dash_tabs;
+    private ViewPager dash_pager;
+
     private checkNetwork NetworkChecker = null;
 
 
@@ -66,13 +66,14 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
     protected void onCreate(Bundle savedInstanceState) {
         loginInternalDBHelper = new LoginInternalDBHelper(this);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.dashboard_activity);
+        setContentView(R.layout.dashboard_activity_view);
         initializes();
         SqliteReadUser sqliteReadUser = new SqliteReadUser();
         sqliteReadUser.execute("OK");
         NetworkChecker = new checkNetwork();
         registerReceiver(NetworkChecker,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         bottomnavlogic();
+
         dash_serach_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,9 +147,18 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
 
     }
     public void initializes(){
-        dashboard = (RelativeLayout)findViewById(R.id.dashboard);
+        //dashboard = (RelativeLayout)findViewById(R.id.dashboard);
         header_layout = (LinearLayout)findViewById(R.id.header);
-        dash_serach_btn = (LinearLayout) findViewById(R.id.dash_search);
+
+        //Set pager and tab
+
+        dash_tabs = findViewById(R.id.dash_tab);
+        dash_pager = findViewById(R.id.dash_viewpager);
+        dash_tabs.setupWithViewPager(dash_pager);
+        dashboard_pager adapter = new dashboard_pager(getSupportFragmentManager(),dash_tabs.getTabCount(),this);
+        dash_pager.setAdapter(adapter);
+        dash_pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(dash_tabs));
+        dash_serach_btn =  findViewById(R.id.dash_btn_search);
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.DashnavigationView);
         dash_profile_username = (TextView)findViewById(R.id.dash_profile_text);
         dash_profile = (RelativeLayout)findViewById(R.id.dash_profile);
@@ -159,7 +169,7 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
                 pop.show(getSupportFragmentManager(),"profilepop");
             }
         });
-        display_home();
+        //display_home();
 
     }
     public void broadcastIntent() {
@@ -192,21 +202,6 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         super.onDestroy();
     }
 
-    public void close_home(){
-        header_layout.setVisibility(View.GONE);
-        // Get the FragmentManager.
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        // Check to see if the fragment is already showing.
-        home simpleFragment = (home) fragmentManager
-                .findFragmentById(R.id.home_fragment);
-        if (simpleFragment != null) {
-            // Create and commit the transaction to remove the fragment.
-            FragmentTransaction fragmentTransaction =
-                    fragmentManager.beginTransaction();
-            fragmentTransaction.remove(simpleFragment).commit();
-        }
-    }
-
     @Override
     public void onBackPressed()
     {
@@ -234,31 +229,35 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
                         display_home();
                         return true;
 
-                    case R.id.nav_genre:
+                    case R.id.nav_library:
                         close_home();
-                        display_genre();
+
                         return true;
 
-                    case R.id.nav_package:
-                        close_home();
+                    case R.id.nav_feed:
+
                         return true;
                 }
                 return false;
             }
         });
     }
-
     public void display_home(){
-        getSupportFragmentManager().popBackStack();
-        close_search();
-        close_genre();
-        close_lastup();
-        if (getSupportFragmentManager().findFragmentById(R.id.home_fragment)==null){
-            home vl = home.newInstance();
-            global.addFragment(getSupportFragmentManager(),vl,R.id.home_fragment,"FRAGMENT_HOME","SLIDE");
-            header_layout.setVisibility(View.VISIBLE);
+        if(getSupportFragmentManager().findFragmentById(R.id.search_fragment) != null){
+            close_search();
+        }else if (getSupportFragmentManager().findFragmentById(R.id.video_list_fragment)!=null){
+            close_lastup();
+
         }
+        dash_pager.setVisibility(View.VISIBLE);
+        header_layout.setVisibility(View.VISIBLE);
     }
+    public void close_home(){
+        dash_pager.setVisibility(View.GONE);
+        header_layout.setVisibility(View.GONE);
+
+    }
+
 
     public void display_search(){
         close_home();
@@ -267,29 +266,6 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         global.addFragment(getSupportFragmentManager(),se,R.id.search_fragment,"FRAGMENT_OTHER","SLIDE");
     }
 
-    public void display_genre(){
-        if (getSupportFragmentManager().findFragmentById(R.id.genre_fragment) == null){
-            close_home();
-            close_lastup();
-            close_search();
-            genre se = genre.newInstance();
-            global.addFragment(getSupportFragmentManager(),se,R.id.genre_fragment,"FRAGMENT_OTHER","SLIDE");
-        }
-    }
-    public void close_genre(){
-        // Get the FragmentManager.
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        // Check to see if the fragment is already showing.
-        genre simpleFragment = (genre) fragmentManager
-                .findFragmentById(R.id.genre_fragment);
-        if (simpleFragment != null) {
-            // Create and commit the transaction to remove the fragment.
-            FragmentTransaction fragmentTransaction =
-                    fragmentManager.beginTransaction();
-            fragmentTransaction.remove(simpleFragment).commit();
-        }
-
-    }
 
     public void close_search(){
         // Get the FragmentManager.

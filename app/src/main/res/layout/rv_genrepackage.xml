@@ -2,7 +2,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/secondaryLightColor"
     android:layout_margin="5dp"
     android:clickable="true"
     android:focusable="true"
@@ -47,18 +46,19 @@
             <RelativeLayout
                 android:layout_alignParentStart="true"
                 android:background="@drawable/ic_star"
+                android:backgroundTint="@color/yellow"
                 android:layout_width="40dp"
                 android:layout_height="40dp">
 
                 <TextView
+                    android:layout_margin="5dp"
                     android:id="@+id/genrepackages_rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:gravity="center"
-
-                    android:text="9.99"
                     android:textColor="@color/design_default_color_background"
+                    android:text="9.99"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -87,6 +87,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/roundbutton"
+                android:backgroundTint="@color/primaryColor"
                 android:layout_width="100dp"
                 android:layout_height="20dp">
 
@@ -98,7 +99,7 @@
                     android:gravity="center"
 
                     android:text="2 Of 12"
-                    android:textColor="@color/secondaryDarkColor"
+                    android:textColor="@color/design_default_color_background"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 

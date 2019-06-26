@@ -56,7 +56,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/roundbutton"
-                android:backgroundTint="@color/primaryLightColor"
+                android:backgroundTint="@color/primaryColor"
                 android:layout_width="100dp"
                 android:layout_height="20dp">
 
@@ -68,7 +68,7 @@
                     android:gravity="center"
 
                     android:text="2 Of 12"
-                    android:textColor="@color/secondaryDarkColor"
+                    android:textColor="@color/design_default_color_background"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -111,13 +111,13 @@
             <TextView
                 android:paddingEnd="5dp"
                 android:paddingStart="5dp"
-                android:background="@color/primaryLightColor"
+                android:background="@color/primaryColor"
                 android:id="@+id/package_genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="Romance,Supernatural"
-                android:textColor="@color/secondaryTextColor"
+                android:textColor="@color/design_default_color_background"
                 android:textSize="12sp" />
         </RelativeLayout>
     </LinearLayout>

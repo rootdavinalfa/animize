@@ -1,6 +1,7 @@
 package ml.dvnlabs.animize.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
@@ -34,6 +35,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -106,6 +108,7 @@ public class animplay_activity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         //super.onCreate(null);
         setContentView(R.layout.animplay_activity);
+        getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDark));
         initial_setup();
         modeldata = new ArrayList<>();
         loginInternalDBHelper = new LoginInternalDBHelper(this);
@@ -186,6 +189,7 @@ FetchDataListener getvideo = new FetchDataListener() {
         fs_btn = findViewById(R.id.exo_fullscreen_icon);
         video_buffer = findViewById(R.id.exo_buffering);
         ply_name = findViewById(R.id.player_name);
+        ply_name.setSelected(true);
         ply_episod = findViewById(R.id.player_episode);
         errortxt = findViewById(R.id.aplay_txt_error);
         contbdy = findViewById(R.id.aplay_details_cont);

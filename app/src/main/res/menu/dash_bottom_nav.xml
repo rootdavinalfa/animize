@@ -5,12 +5,12 @@
         android:icon="@drawable/ic_home"
         android:title="@string/nav_home_txt"/>
     <item
-        android:id="@+id/nav_genre"
-        android:icon="@drawable/ic_genre"
-        android:title="@string/nav_genre_txt"/>
+        android:id="@+id/nav_library"
+        android:icon="@drawable/ic_library"
+        android:title="Library"/>
     <item
-        android:id="@+id/nav_package"
+        android:id="@+id/nav_feed"
         android:icon="@drawable/ic_koinobori"
-        android:title="@string/nav_anime_txt"/>
+        android:title="Feed"/>
 
 </menu>

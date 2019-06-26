@@ -14,7 +14,7 @@ import com.danikula.videocache.HttpProxyCacheServer;
 import java.io.File;
 import java.io.IOException;
 
-import butterknife.internal.Utils;
+
 import ml.dvnlabs.animize.checker.checkNetwork;
 
 public class AppController extends Application {

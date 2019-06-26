@@ -41,9 +41,9 @@
             android:maxLines="2"
             android:padding="8dp"
             android:singleLine="false"
-            android:textColor="@color/secondaryTextColor"
+            android:textColor="@color/design_default_color_background"
             android:background="@drawable/roundbutton"
-            android:backgroundTint="@color/primaryLightColor"
+            android:backgroundTint="@color/primaryColor"
             android:text="Seishaun vwwevBuasdfdsfsfds Yrao"
             android:textSize="20sp"
             android:textStyle="bold" />

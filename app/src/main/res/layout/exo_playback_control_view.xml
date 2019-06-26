@@ -24,7 +24,10 @@
                 android:layout_alignParentStart="true"
                 android:ellipsize="marquee"
                 android:singleLine="true"
-
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:scrollHorizontally="true"
+                android:marqueeRepeatLimit ="marquee_forever"
                 android:textColor="@color/design_default_color_background"
                 android:textSize="30sp" />
         </RelativeLayout>

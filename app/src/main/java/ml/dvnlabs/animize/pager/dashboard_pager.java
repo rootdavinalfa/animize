@@ -7,37 +7,31 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import ml.dvnlabs.animize.fragment.dashboard.genre;
+import ml.dvnlabs.animize.fragment.dashboard.home;
 
-import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.fragment.tabs.animplay.details;
-import ml.dvnlabs.animize.fragment.tabs.animplay.more;
-
-public class aplay_viewpageradapter extends FragmentPagerAdapter {
+public class dashboard_pager extends FragmentPagerAdapter {
 
     private int numOfTabss;
     private Context mContext;
-    public aplay_viewpageradapter(FragmentManager fm, int numOfTabs,Context context){
+    public dashboard_pager(FragmentManager fm, int numOfTabs, Context context){
         super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.numOfTabss = numOfTabs;
         this.mContext = context;
+
     }
     @NonNull
     @Override
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return new details();
+                return new home();
             case 1:
-                return new more();
+                return new genre();
             default:
                 return null;
         }
 
-    }
-
-    @Override
-    public int getCount() {
-        return numOfTabss;
     }
 
     @Nullable
@@ -45,11 +39,15 @@ public class aplay_viewpageradapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position){
             case 0:
-                return mContext.getString(R.string.pager_title_details);
+                return "For U";
             case 1:
-                return mContext.getString(R.string.pager_title_more);
-            default:
-                return null;
+                return "Genre";
         }
+        return super.getPageTitle(position);
+    }
+
+    @Override
+    public int getCount() {
+        return numOfTabss;
     }
 }

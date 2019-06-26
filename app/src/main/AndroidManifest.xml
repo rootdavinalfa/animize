@@ -16,12 +16,20 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_animize"
         android:label="@string/app_names"
-        tools:replace="android:label"
         android:roundIcon="@mipmap/ic_launcher_animize_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".activity.packageView"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:label">
+        <activity
+            android:name=".activity.webview"
+            android:parentActivityName=".activity.dashboard_activity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ml.dvnlabs.animize.activity.dashboard_activity" />
+        </activity>
+        <activity
+            android:name=".activity.packageView"
             android:configChanges="orientation|keyboard"
             android:parentActivityName=".activity.dashboard_activity">
             <meta-data

@@ -29,7 +29,7 @@ public class multitab_adapter extends FragmentStatePagerAdapter{
 
 
     public multitab_adapter(FragmentManager fm, int num,List<String>pagetitl){
-        super(fm);
+        super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.numOfTabs = num;
         this.pagetitle = pagetitl;
         this.fragmentManager = fm;

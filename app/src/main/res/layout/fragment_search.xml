@@ -30,6 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="@drawable/roundbutton"
+                android:backgroundTint="@color/OverWhite"
                 android:hint="@string/search_anime"
                 android:textColor="@color/secondaryDarkColor"
                 android:textColorHint="@color/secondaryTextColor" />
@@ -52,8 +53,10 @@
                 android:gravity="top|center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/design_default_color_background"
-                android:text=""/>
+                android:textColor="@color/secondaryTextColor"
+                android:text=""
+                android:textSize="22sp"
+                android:layout_centerInParent="true"/>
             <ImageView
                 android:visibility="gone"
                 android:id="@+id/error_v_srch"
