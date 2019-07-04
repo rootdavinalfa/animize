@@ -2,7 +2,6 @@ package ml.dvnlabs.animize.fragment.comment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,7 +33,7 @@ import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.model.api_usermodel;
 import ml.dvnlabs.animize.model.commentMainModel;
-import ml.dvnlabs.animize.recyclerview.commentThread_adapter;
+import ml.dvnlabs.animize.recyclerview.comment.commentThread_adapter;
 
 public class threadComment extends Fragment {
 

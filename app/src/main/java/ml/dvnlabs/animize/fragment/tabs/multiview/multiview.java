@@ -10,25 +10,21 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.model.genre_packagelist;
-import ml.dvnlabs.animize.recyclerview.genre_packagelist_adapter;
-import ml.dvnlabs.animize.recyclerview.lastpackage_adapter;
+import ml.dvnlabs.animize.recyclerview.packagelist.genre_packagelist_adapter;
+
 import ml.dvnlabs.animize.view.AutoGridLayoutManager;
 
 public class multiview extends Fragment {

@@ -50,4 +50,7 @@
     <string name="comment">Comment</string>
     <string name="source">Source</string>
     <string name="playlist">Playlist</string>
+    <string name="tab_star">Starred</string>
+    <string name="tab_recent">Recent</string>
+    <string name="tab_download">Download</string>
 </resources>

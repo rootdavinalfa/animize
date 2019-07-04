@@ -1,17 +1,13 @@
 package ml.dvnlabs.animize.activity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.database.LoginInternalDBHelper;
+import ml.dvnlabs.animize.database.InitInternalDBHelper;
 import ml.dvnlabs.animize.database.model.userland;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
@@ -46,7 +42,7 @@ public class MainActivity extends AppCompatActivity{
     private AVLoadingIndicatorView avLoadingIndicatorView;
     private Handler handler;
 
-    LoginInternalDBHelper loginInternalDBHelper;
+    InitInternalDBHelper initInternalDBHelper;
     String tokeen;
 
     private String TAG = MainActivity.class.getSimpleName();
@@ -67,8 +63,8 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void initializa(){
-        loginInternalDBHelper = new LoginInternalDBHelper(this);
-        if(!loginInternalDBHelper.getUserCount()){
+        initInternalDBHelper = new InitInternalDBHelper(this);
+        if(!initInternalDBHelper.getUserCount()){
             System.out.println("OnCREATE NULL DB");
             setTheme(R.style.AppTheme);
             getWindow().getDecorView().setSystemUiVisibility(
@@ -90,7 +86,7 @@ public class MainActivity extends AppCompatActivity{
             email_tf = (EditText)findViewById(R.id.login_userfield);
             password_tf = (EditText)findViewById(R.id.login_passwordfield);
         }
-        if(loginInternalDBHelper.getUserCount()){
+        if(initInternalDBHelper.getUserCount()){
             System.out.println("OnCREATE DB");
             SqliteLoginBackground sqliteLoginBackground = new SqliteLoginBackground();
             //Params 0 = login_user/add_user
@@ -270,12 +266,12 @@ private void error_auth(){
             if(method.equals("login_user")){
                 System.out.println("DB login_user");
                 //userland usl = new userland();
-                //usl = loginInternalDBHelper.getUser();
+                //usl = initInternalDBHelper.getUser();
                 //id_users = usl.getIdUser();
                 //name_users = usl.getNameUser();
                 //emails = usl.getEmail();
                 //tokeen = usl.getToken();
-                return loginInternalDBHelper.getUser();
+                return initInternalDBHelper.getUser();
             }
             if(method.equals("add_user")){
                 System.out.println("DB add_user");
@@ -285,14 +281,14 @@ private void error_auth(){
                 String tok = params[4];
                 System.out.println(ids+nm+em+tok);
 
-                loginInternalDBHelper.insertuser(tok,ids,em,nm);
+                initInternalDBHelper.insertuser(tok,ids,em,nm);
                 userland usl = new userland();
-                usl = loginInternalDBHelper.getUser();
+                usl = initInternalDBHelper.getUser();
                 //id_users = usl.getIdUser();
                 //name_users = usl.getNameUser();
                 //emails = usl.getEmail();
                 //tokeen = usl.getToken();
-                return loginInternalDBHelper.getUser();
+                return initInternalDBHelper.getUser();
             }
             return null;
 

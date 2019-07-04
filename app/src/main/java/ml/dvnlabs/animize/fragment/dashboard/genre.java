@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ public class genre extends Fragment {
     private TabLayout tabLayout;
     private ViewPager pager;
     private List<String>pagetitle;
+    private LinearLayout loading;
 
     public genre(){
 
@@ -41,9 +43,10 @@ public class genre extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_genre,container,false);
-        tabLayout = (TabLayout)view.findViewById(R.id.genre_tablayout);
+        tabLayout = view.findViewById(R.id.genre_tablayout);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        pager = (ViewPager)view.findViewById(R.id.genre_viewpager);
+        pager = view.findViewById(R.id.genre_viewpager);
+        loading = view.findViewById(R.id.genre_title_load);
         getpagetitle();
         return view;
     }
@@ -84,6 +87,7 @@ public class genre extends Fragment {
     FetchDataListener fetchgenre = new FetchDataListener() {
         @Override
         public void onFetchComplete(String data) {
+            loading.setVisibility(View.GONE);
             try {
                 JSONObject object = new JSONObject(data);
                 if(!object.getBoolean("error")){
@@ -96,12 +100,14 @@ public class genre extends Fragment {
 
         @Override
         public void onFetchFailure(String msg) {
+            loading.setVisibility(View.GONE);
             Log.e("ERROR:",msg);
 
         }
 
         @Override
         public void onFetchStart() {
+            loading.setVisibility(View.VISIBLE);
 
         }
     };

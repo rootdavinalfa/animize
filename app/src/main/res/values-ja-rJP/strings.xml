@@ -47,4 +47,7 @@
     <string name="comment">コメント</string>
     <string name="source">ソース</string>
     <string name="playlist">プレイリスト</string>
+    <string name="tab_star">Starred</string>
+    <string name="tab_recent">Recent</string>
+    <string name="tab_download">Download</string>
 </resources>

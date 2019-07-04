@@ -9,12 +9,11 @@ import androidx.viewpager.widget.ViewPager;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.app.AppController;
 import ml.dvnlabs.animize.checker.checkNetwork;
-import ml.dvnlabs.animize.database.LoginInternalDBHelper;
+import ml.dvnlabs.animize.database.InitInternalDBHelper;
 import ml.dvnlabs.animize.database.model.userland;
-import ml.dvnlabs.animize.fragment.dashboard.genre;
-import ml.dvnlabs.animize.fragment.dashboard.home;
 import ml.dvnlabs.animize.fragment.global;
 import ml.dvnlabs.animize.fragment.lastup_video_list;
+import ml.dvnlabs.animize.fragment.library;
 import ml.dvnlabs.animize.fragment.popup.ProfilePop;
 import ml.dvnlabs.animize.fragment.search;
 import ml.dvnlabs.animize.pager.dashboard_pager;
@@ -26,6 +25,7 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -42,7 +42,7 @@ import com.google.android.material.tabs.TabLayout;
 
 public class dashboard_activity extends AppCompatActivity implements checkNetwork.ConnectivityReceiverListener{
     private BroadcastReceiver receiver;
-    LoginInternalDBHelper loginInternalDBHelper;
+    InitInternalDBHelper initInternalDBHelper;
     private String id_users,name_users,emails;
     String tokeen;
     private TextView dash_profile_username;
@@ -59,14 +59,22 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
     private ViewPager dash_pager;
 
     private checkNetwork NetworkChecker = null;
+    private boolean isHome;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        loginInternalDBHelper = new LoginInternalDBHelper(this);
+        initInternalDBHelper = new InitInternalDBHelper(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard_activity_view);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            int flags = getWindow().getDecorView().getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            getWindow().getDecorView().setSystemUiVisibility(flags);
+            this.getWindow().setStatusBarColor(getColor(R.color.colorAccent));
+        }
         initializes();
         SqliteReadUser sqliteReadUser = new SqliteReadUser();
         sqliteReadUser.execute("OK");
@@ -104,9 +112,9 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
             snackbar.setAction("Retry", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    home hm = (home) getSupportFragmentManager().findFragmentById(R.id.home_fragment);
-                    hm.getLast_Up();
-                    hm.getLastPackage();
+                    //home hm = (home) getSupportFragmentManager().findFragmentById(R.id.home_fragment);
+                    //hm.getLast_Up();
+                    //hm.getLastPackage();
                 }
             }).setActionTextColor(color);
             View sbView = snackbar.getView();
@@ -158,6 +166,7 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         dashboard_pager adapter = new dashboard_pager(getSupportFragmentManager(),dash_tabs.getTabCount(),this);
         dash_pager.setAdapter(adapter);
         dash_pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(dash_tabs));
+        isHome = true;
         dash_serach_btn =  findViewById(R.id.dash_btn_search);
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.DashnavigationView);
         dash_profile_username = (TextView)findViewById(R.id.dash_profile_text);
@@ -206,9 +215,9 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
     public void onBackPressed()
     {
         //header.setVisibility(View.VISIBLE);
-        int count = getSupportFragmentManager().getBackStackEntryCount();
-        Log.e("COUNTED-:",String.valueOf(count));
-        if (count == 0) {
+        //int count = getSupportFragmentManager().getBackStackEntryCount()-1;
+        //Log.e("COUNTED-:",String.valueOf(count));
+        if (isHome) {
             super.onBackPressed();
             Intent startMain = new Intent(Intent.ACTION_MAIN);
             startMain.addCategory(Intent.CATEGORY_HOME);
@@ -231,7 +240,7 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
 
                     case R.id.nav_library:
                         close_home();
-
+                        display_library();
                         return true;
 
                     case R.id.nav_feed:
@@ -243,16 +252,15 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         });
     }
     public void display_home(){
-        if(getSupportFragmentManager().findFragmentById(R.id.search_fragment) != null){
-            close_search();
-        }else if (getSupportFragmentManager().findFragmentById(R.id.video_list_fragment)!=null){
-            close_lastup();
-
-        }
+        isHome = true;
+        close_search();
+        close_library();
+        close_lastup();
         dash_pager.setVisibility(View.VISIBLE);
         header_layout.setVisibility(View.VISIBLE);
     }
     public void close_home(){
+        isHome = false;
         dash_pager.setVisibility(View.GONE);
         header_layout.setVisibility(View.GONE);
 
@@ -261,9 +269,10 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
 
     public void display_search(){
         close_home();
-        close_lastup();
+        close_library();
         search se = search.newInstance();
         global.addFragment(getSupportFragmentManager(),se,R.id.search_fragment,"FRAGMENT_OTHER","SLIDE");
+
     }
 
 
@@ -300,6 +309,28 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
             fragmentTransaction.remove(simpleFragment).commit();
         }
     }
+    public void display_library(){
+        close_home();
+        close_search();
+        close_lastup();
+        library se = new library();
+        global.addFragment(getSupportFragmentManager(),se,R.id.library_fragment,"FRAGMENT_OTHER","NULL");
+
+    }
+
+    public void close_library(){
+        // Get the FragmentManager.
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // Check to see if the fragment is already showing.
+        library simpleFragment = (library) fragmentManager
+                .findFragmentById(R.id.library_fragment);
+        if (simpleFragment != null) {
+            // Create and commit the transaction to remove the fragment.
+            FragmentTransaction fragmentTransaction =
+                    fragmentManager.beginTransaction();
+            fragmentTransaction.remove(simpleFragment).commit();
+        }
+    }
 
     public class SqliteReadUser extends AsyncTask<String,Void,userland> {
         @Override
@@ -309,7 +340,7 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         @Override
         protected userland doInBackground(String... params){
 
-            return loginInternalDBHelper.getUser();
+            return initInternalDBHelper.getUser();
 
         }
 

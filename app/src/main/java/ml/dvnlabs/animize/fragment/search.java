@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.recyclerview.search_list_adapter;
+import ml.dvnlabs.animize.recyclerview.list.search_list_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;

@@ -1,20 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/genre_title_load"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            app:indicatorColor="@color/primaryDarkColor"
+            app:indicatorName="BallClipRotateIndicator"/>
+        <TextView
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/primaryColor"
+            android:text="Waiting divine message..."/>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/genre_tablayout"
             android:layout_width="match_parent"
             android:theme="@style/AppTheme.TabStyle"
-            app:tabIndicatorHeight="0dp"
-            app:tabRippleColor="@color/primaryColor"
+            app:tabIndicatorHeight="1dp"
+            app:tabIndicatorColor="@color/primaryColor"
+            app:tabRippleColor="@null"
             app:tabSelectedTextColor="@color/primaryDarkColor"
             app:tabTextAppearance="@style/MyCustomTabTextAppearance"
             app:tabTextColor="@color/secondaryDarkColor"
@@ -29,5 +51,4 @@
 
         </androidx.viewpager.widget.ViewPager>
     </LinearLayout>
-
-</FrameLayout>
+</RelativeLayout>

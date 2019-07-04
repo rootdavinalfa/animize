@@ -30,20 +30,20 @@ import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.dashboard_activity;
 import ml.dvnlabs.animize.model.bannerlist_model;
 import ml.dvnlabs.animize.model.packagelist;
-import ml.dvnlabs.animize.recyclerview.banner_adapter;
-import ml.dvnlabs.animize.recyclerview.home_lastup_adapter;
+import ml.dvnlabs.animize.recyclerview.banner.banner_adapter;
+import ml.dvnlabs.animize.recyclerview.list.home_lastup_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.model.home_lastup_model;
-import ml.dvnlabs.animize.recyclerview.lastpackage_adapter;
+import ml.dvnlabs.animize.recyclerview.packagelist.lastpackage_adapter;
 
 public class home extends Fragment {
 
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
     private int page_lastup = 0;
-    private ShimmerFrameLayout lastup_loading;
+    private ShimmerFrameLayout lastup_loading,package_loading,banner_loading;
     private RelativeLayout dash_button_lastupmore;
     private DiscreteScrollView listView_lastup,rv_lastpackage,rv_bannerlist;
     //private RecyclerView rv_lastpackage;
@@ -71,6 +71,8 @@ public class home extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getActivity());
         dash_button_lastupmore = view.findViewById(R.id.dash_lastup_more);
         lastup_loading = view.findViewById(R.id.loading_lastup);
+        banner_loading = view.findViewById(R.id.shimmer_banner);
+        package_loading = view.findViewById(R.id.shimmer_package);
         rv_lastpackage = view.findViewById(R.id.rv_lastpackage);
         rv_bannerlist = view.findViewById(R.id.rv_banner);
         initial_setup();
@@ -142,6 +144,8 @@ public class home extends Fragment {
     FetchDataListener bannerlist = new FetchDataListener() {
         @Override
         public void onFetchComplete(String data) {
+            banner_loading.stopShimmer();
+            banner_loading.setVisibility(View.GONE);
             try{
                 JSONObject object = new JSONObject(data);
                 if(!object.getBoolean("error")){
@@ -155,11 +159,15 @@ public class home extends Fragment {
 
         @Override
         public void onFetchFailure(String msg) {
+            banner_loading.stopShimmer();
+            banner_loading.setVisibility(View.GONE);
 
         }
 
         @Override
         public void onFetchStart() {
+            banner_loading.startShimmer();
+            banner_loading.setVisibility(View.VISIBLE);
 
         }
     };
@@ -188,17 +196,23 @@ public class home extends Fragment {
     FetchDataListener lastpackage = new FetchDataListener() {
         @Override
         public void onFetchComplete(String data) {
+            package_loading.stopShimmer();
+            package_loading.setVisibility(View.GONE);
             parseJSONPackage(data);
 
         }
 
         @Override
         public void onFetchFailure(String msg) {
+            package_loading.stopShimmer();
+            package_loading.setVisibility(View.GONE);
 
         }
 
         @Override
         public void onFetchStart() {
+            package_loading.startShimmer();
+            package_loading.setVisibility(View.VISIBLE);
 
         }
     };

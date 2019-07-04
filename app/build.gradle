@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
 
@@ -52,9 +52,9 @@ android {
             minSdkVersion 22
             applicationIdSuffix '.ima'
             targetSdkVersion 28
-            versionCode 4
-            versionName 'rel-02-'
-            versionNameSuffix 'ima'
+            versionCode 5
+            versionName '01-'
+            versionNameSuffix 'canary'
             applicationId 'ml.dvnlabs.animize'
             resValue("string", "app_names", "Animize")
         }

@@ -10,7 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.dashboard_activity;
 import ml.dvnlabs.animize.recyclerview.EndlessRecyclerOnScrollListener;
-import ml.dvnlabs.animize.recyclerview.video_list_adapter;
+import ml.dvnlabs.animize.recyclerview.list.video_list_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;

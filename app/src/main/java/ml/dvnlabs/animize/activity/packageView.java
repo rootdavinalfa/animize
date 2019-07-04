@@ -8,14 +8,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -28,14 +29,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.database.PackageStarDBHelper;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.model.packageinfo;
-import ml.dvnlabs.animize.model.packagelist;
 import ml.dvnlabs.animize.model.playlist_model;
-import ml.dvnlabs.animize.recyclerview.packagelist_adapter;
-import ml.dvnlabs.animize.recyclerview.playlist_adapter;
+import ml.dvnlabs.animize.recyclerview.packagelist.packagelist_adapter;
 
 import static ml.dvnlabs.animize.activity.MainActivity.setWindowFlag;
 
@@ -48,6 +48,11 @@ public class packageView extends AppCompatActivity {
     private RecyclerView listview;
     private TextView genr,synops;
     String pkganim;
+
+
+    private MenuItem pack_star;
+
+    PackageStarDBHelper packageStarDBHelper;
 
     private NestedScrollView container;
     private AVLoadingIndicatorView loading;
@@ -74,10 +79,13 @@ public class packageView extends AppCompatActivity {
         if(!pkganim.isEmpty()){
 
             System.out.println(pkganim);
+            packageStarDBHelper = new PackageStarDBHelper(this);
+
         }
         GetInfo();
 
     }
+
     private void initialize(){
         Toolbar toolbar = (Toolbar)findViewById(R.id.pv_toolbar);
         setSupportActionBar(toolbar);
@@ -85,11 +93,11 @@ public class packageView extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         collapsingToolbarLayout = findViewById(R.id.pv_collapse_toolbar);
         collapsingToolbarLayout.setTitle("");
-        listview = (RecyclerView)findViewById(R.id.packageview_list);
-        synops = (TextView)findViewById(R.id.packageview_synopsis);
-        genr = (TextView)findViewById(R.id.packageview_genre);
-        container = (NestedScrollView)findViewById(R.id.packageview_container);
-        loading = (AVLoadingIndicatorView)findViewById(R.id.packageview_loading);
+        listview = findViewById(R.id.packageview_list);
+        synops = findViewById(R.id.packageview_synopsis);
+        genr = findViewById(R.id.packageview_genre);
+        container =findViewById(R.id.packageview_container);
+        loading = findViewById(R.id.packageview_loading);
         //container.setVisibility(View.GONE);
 
         modelinfo = new ArrayList<>();
@@ -99,7 +107,32 @@ public class packageView extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.package_toolbar, menu);
+        pack_star = menu.findItem(R.id.package_star);
+        if(packageStarDBHelper.isAvail()){
+            System.out.println("ON Read DB star");
+            readStarStatus read = new readStarStatus();
+            read.execute();
+        }
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        ChangeStar star = new ChangeStar();
+        if(id == R.id.package_star){
+
+            if(packageStarDBHelper.isStarred(pkganim)){
+                Log.e("CLICKED","UNSTAR");
+                star.execute("UNSTAR");
+            }else {
+                Log.e("CLICKED","STAR");
+                star.execute("STAR");
+            }
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getplaylist(){
@@ -234,5 +267,65 @@ public class packageView extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+
+    private class readStarStatus extends AsyncTask<String,Void,Boolean>{
+        @Override
+        protected void onPreExecute(){
+
+        }
+        @Override
+        protected Boolean doInBackground(String... params){
+
+            return packageStarDBHelper.isStarred(pkganim);
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean pa){
+            if(pa){
+                pack_star.setIcon(R.drawable.ic_star);
+            }else {
+                pack_star.setIcon(R.drawable.ic_add);
+            }
+
+        }
+    }
+    private class ChangeStar extends AsyncTask<String,Void,Boolean>{
+        @Override
+        protected void onPreExecute(){
+
+        }
+        @Override
+        protected Boolean doInBackground(String... params){
+            String change = params[0];
+            if(change.equals("UNSTAR")){
+                System.out.println("UNSTAR");
+                packageStarDBHelper.unStar(pkganim);
+            }else if(change.equals("STAR")){
+                System.out.println("STAR");
+                packageStarDBHelper.add_star(pkganim);
+            }
+            return packageStarDBHelper.isStarred(pkganim);
+
+
+        }
+
+        @Override
+        protected void onPostExecute(Boolean pa){
+            System.out.println("OK");
+            String status;
+            if(pa){
+                System.out.println("STAR");
+                pack_star.setIcon(R.drawable.ic_star);
+                status = "Add to Star Success";
+            }else {
+                System.out.println("UNSTAR");
+                pack_star.setIcon(R.drawable.ic_add);
+                status = "Remove Star Success";
+            }
+            Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT).show();
+        }
     }
 }

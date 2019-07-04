@@ -11,11 +11,23 @@
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:orientation="vertical">
-        <com.yarolegovich.discretescrollview.DiscreteScrollView
-            android:id="@+id/rv_banner"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            app:dsv_orientation="horizontal"/>
+            android:layout_height="wrap_content">
+            <com.yarolegovich.discretescrollview.DiscreteScrollView
+                android:id="@+id/rv_banner"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                app:dsv_orientation="horizontal"/>
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_banner"
+                android:layout_width="match_parent"
+                android:layout_height="180dp">
+                <include layout="@layout/shimmer_big"/>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+        </RelativeLayout>
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="220dp"
@@ -122,14 +134,24 @@
                         android:textColor="@color/secondaryDarkColor"
                         android:textSize="17sp" />
                 </RelativeLayout>
-
-                <com.yarolegovich.discretescrollview.DiscreteScrollView
-                    android:id="@+id/rv_lastpackage"
-                    tools:listitem="@layout/rv_lastpackage"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:dsv_orientation="horizontal"
-                    />
+                    android:layout_height="match_parent">
+                    <com.yarolegovich.discretescrollview.DiscreteScrollView
+                        android:id="@+id/rv_lastpackage"
+                        tools:listitem="@layout/rv_lastpackage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:dsv_orientation="horizontal"
+                        />
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmer_package"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <include layout="@layout/shimmer_big"/>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+                </RelativeLayout>
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <Space

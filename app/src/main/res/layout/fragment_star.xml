@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="ml.dvnlabs.animize.fragment.library_n.star">
+    <RelativeLayout
+        android:layout_centerInParent="true"
+        android:id="@+id/starred_loading"
+        android:layout_width="150dp"
+        android:layout_height="170dp">
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/starred_loading_av"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            app:indicatorColor="@color/primaryColor"
+            app:indicatorName="BallClipRotateIndicator"/>
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/starred_loading_av"
+            android:layout_width="wrap_content"
+            android:maxWidth="150dp"
+            android:layout_height="wrap_content"
+            android:text="Loading Divine Star"
+            android:textColor="@color/secondaryTextColor"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/starred_void"
+        android:layout_centerInParent="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp">
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/starred_nulled"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_nulled"
+            android:tint="@color/primaryDarkColor"
+            />
+        <TextView
+            android:gravity="center"
+            android:layout_below="@+id/starred_nulled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="200dp"
+            android:textColor="@color/secondaryTextColor"
+            android:text="No Star From Divine,Please Add One!"/>
+    </RelativeLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/starred_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/star_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/rv_starredpackage"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+</RelativeLayout>

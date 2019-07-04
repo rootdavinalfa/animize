@@ -8,18 +8,17 @@ import androidx.viewpager.widget.ViewPager;
 import ml.dvnlabs.animize.Event.PlayerBusError;
 import ml.dvnlabs.animize.Event.PlayerBusStatus;
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.database.LoginInternalDBHelper;
+import ml.dvnlabs.animize.database.InitInternalDBHelper;
 import ml.dvnlabs.animize.database.model.userland;
 import ml.dvnlabs.animize.fragment.comment.threadComment;
 import ml.dvnlabs.animize.fragment.popup.sourceselector;
 import ml.dvnlabs.animize.model.commentMainModel;
-import ml.dvnlabs.animize.recyclerview.playlist_adapter;
+import ml.dvnlabs.animize.recyclerview.list.playlist_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.fragment.tabs.animplay.details;
 import ml.dvnlabs.animize.fragment.tabs.animplay.more;
-import ml.dvnlabs.animize.model.playlist_model;
 import ml.dvnlabs.animize.model.videoplay_model;
 import ml.dvnlabs.animize.pager.aplay_viewpageradapter;
 import ml.dvnlabs.animize.pager.passdata_arraylist;
@@ -28,18 +27,13 @@ import ml.dvnlabs.animize.player.PlayerManager;
 import ml.dvnlabs.animize.player.PlayerService;
 
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -62,7 +56,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static ml.dvnlabs.animize.player.PlayerManager.getService;
@@ -74,7 +67,7 @@ public class animplay_activity extends AppCompatActivity{
     private boolean isRestart = false;
     private PlayerView playerView;
 
-    private LoginInternalDBHelper loginInternalDBHelper;
+    private InitInternalDBHelper initInternalDBHelper;
     private boolean isReadyVideo = false;
     private boolean isFullscreen = false;
     private boolean isInit = true;
@@ -111,7 +104,7 @@ public class animplay_activity extends AppCompatActivity{
         getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDark));
         initial_setup();
         modeldata = new ArrayList<>();
-        loginInternalDBHelper = new LoginInternalDBHelper(this);
+        initInternalDBHelper = new InitInternalDBHelper(this);
         SqliteRead sqliteReadUser = new SqliteRead();
         sqliteReadUser.execute("OK");
 
@@ -515,7 +508,7 @@ FetchDataListener getvideo = new FetchDataListener() {
         @Override
         protected userland doInBackground(String... params){
 
-            return loginInternalDBHelper.getUser();
+            return initInternalDBHelper.getUser();
 
         }
 
