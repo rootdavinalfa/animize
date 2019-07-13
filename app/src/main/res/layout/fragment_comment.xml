@@ -59,13 +59,13 @@
         <RelativeLayout
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:background="@color/secondaryDarkColor2"
+            android:background="@color/colorOverPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
                 android:windowSoftInputMode="adjustPan"
                 android:isScrollContainer="true"
-                android:backgroundTint="@color/secondaryDarkColor2"
+                android:backgroundTint="@color/secondaryTextColor"
                 android:background="@drawable/round_layout"
                 android:layout_alignParentStart="true"
                 android:id="@+id/aplay_comments_edittext"
@@ -86,7 +86,6 @@
                 android:tint="@color/design_default_color_background"
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
-                android:layout_margin="5dp"
                 android:layout_width="40dp"
                 android:layout_height="40dp" />
         </RelativeLayout>

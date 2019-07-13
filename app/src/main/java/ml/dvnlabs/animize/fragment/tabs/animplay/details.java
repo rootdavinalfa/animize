@@ -37,7 +37,8 @@ import ml.dvnlabs.animize.model.videoplay_model;
 public class details extends Fragment {
     private CardView video_det_compartment;
     private ExpandableLayout video_dets;
-    private TextView synop_play,detailname,idanime,genreer;
+    private RelativeLayout btn_pack_see;
+    private TextView synop_play,detailname,idanime,genreer,title_pack;
     private ImageView drop;
     private AVLoadingIndicatorView loadbar;
     private ArrayList<videoplay_model> models;
@@ -57,6 +58,8 @@ public class details extends Fragment {
         synop_play = (TextView)view.findViewById(R.id.synop_play);
         detailname = (TextView)view.findViewById(R.id.details_name);
         idanime = (TextView)view.findViewById(R.id.aplay_txt_idanime);
+        title_pack = view.findViewById(R.id.fragment_details_title);
+        btn_pack_see = view.findViewById(R.id.see_pack_btn);
         drop = (ImageView)view.findViewById(R.id.titlename_drop);
         genreer = (TextView)view.findViewById(R.id.aplay_details_genres);
 
@@ -75,6 +78,12 @@ public class details extends Fragment {
                 drop.animate().rotation(deg).setInterpolator(new AccelerateDecelerateInterpolator());
             }
         });
+        btn_pack_see.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         showcomment();
     }
     public void receivedata(ArrayList<videoplay_model>data,String idan){
@@ -82,6 +91,7 @@ public class details extends Fragment {
         if(data!=null){
             models = data;
             synop_play.setText(models.get(0).getSysnop());
+            title_pack.setText(models.get(0).getName_anim());
             detailname.setText(models.get(0).getName_anim());
             idanime.setText(idan);
             List<String> genree = new ArrayList<>();

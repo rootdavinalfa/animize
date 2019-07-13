@@ -14,7 +14,7 @@ import ml.dvnlabs.animize.database.model.userland;
 
 public class InitInternalDBHelper extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = dbversion.DatabaseVer;
 
     // Database Name
     private static final String DATABASE_NAME = "local_animize_db";
@@ -39,12 +39,24 @@ public class InitInternalDBHelper extends SQLiteOpenHelper {
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + userland.table_name);
-        db.execSQL("DROP TABLE IF EXISTS " + starland.table_name);
+        if (oldVersion < 2){
+            if (checktablenotexist(db,"star_package")){
+                db.execSQL(starland.CREATE_TABLE);
+            }
+
+        }
+
 
         // Create tables again
-        onCreate(db);
+        //onCreate(db);
+    }
+    private boolean checktablenotexist(SQLiteDatabase db,String table_name){
+        Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"
+                + table_name + "'", null);
+        if (cursor.getCount() == 0){
+            return true;
+        }
+        return false;
     }
     public void insertuser(String token,String idus,String ema,String nameus){
         try {

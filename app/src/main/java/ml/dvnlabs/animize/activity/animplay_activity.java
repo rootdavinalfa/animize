@@ -43,6 +43,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.tabs.TabItem;
@@ -341,15 +342,9 @@ FetchDataListener getvideo = new FetchDataListener() {
         playerContanti();
     }
     private void playerContanti(){
-        //if(isReadyVideo){
-            //Log.e("SERVICETRU",String.valueOf(playerManager.isServiceBound()));
-            //playerManager.playOrPause(url);
         getService().playOrPause(url);
-            playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-            playerView.setPlayer(getService().exoPlayer);
-        //}
-
-
+        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+        playerView.setPlayer(getService().exoPlayer);
     }
 
     //send pkg id to more fragment

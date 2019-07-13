@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/colorPrimary"
     tools:context="ml.dvnlabs.animize.activity.packageView">
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -61,7 +60,7 @@
         android:visibility="visible"
         android:id="@+id/packageview_container"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-        android:background="@color/secondaryLightColor"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout

@@ -110,10 +110,10 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
                 //getJson();
                 // Your code here
 
-                // To keep animation for 4 seconds
+                // To keep animateView for 4 seconds
                 new Handler().postDelayed(new Runnable() {
                     @Override public void run() {
-                        // Stop animation (This will be after 3 seconds)
+                        // Stop animateView (This will be after 3 seconds)
                         swipe_list.setRefreshing(false);
                         page_list = page_list+1;
                     }

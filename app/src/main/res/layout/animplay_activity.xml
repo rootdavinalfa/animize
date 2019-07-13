@@ -30,8 +30,10 @@
         app:tabSelectedTextColor="@color/primaryLightColor"
         app:tabTextColor="@color/design_default_color_background"
         android:background="@color/colorPrimaryDark"
-        app:tabIndicatorColor="@color/secondaryLightColor"
-        app:tabRippleColor="@color/secondaryLightColor"
+        app:tabIndicatorHeight="1dp"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorColor="@color/primaryLightColor"
+        app:tabRippleColor="@null"
         android:layout_height="wrap_content">
         <com.google.android.material.tabs.TabItem
             android:id="@+id/aplay_tabs_details"

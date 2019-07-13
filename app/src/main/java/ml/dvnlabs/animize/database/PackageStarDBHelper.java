@@ -15,7 +15,7 @@ import ml.dvnlabs.animize.database.model.starland;
 
 public class PackageStarDBHelper extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = dbversion.DatabaseVer;
 
     // Database Name
     private static final String DATABASE_NAME = "local_animize_db";
@@ -30,7 +30,7 @@ public class PackageStarDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         // create notes table
-        db.execSQL(starland.CREATE_TABLE);
+        //db.execSQL(starland.CREATE_TABLE);
 
     }
 
@@ -38,10 +38,10 @@ public class PackageStarDBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + starland.table_name);
+        //db.execSQL("DROP TABLE IF EXISTS " + starland.table_name);
 
         // Create tables again
-        onCreate(db);
+        //onCreate(db);
     }
 
 

@@ -23,8 +23,6 @@
             android:foreground="@drawable/layoutrippleeffect"
             android:orientation="horizontal"
             app:cardBackgroundColor="@color/colorPrimaryDark"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="5dp"
             app:contentPadding="5dp">
 
             <RelativeLayout
@@ -36,12 +34,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:layout_marginEnd="30dp"
+                    android:layout_toStartOf="@id/titlename_drop"
                     android:text="青春ブタ野郎はバニーガール先輩の夢を見ない"
                     android:textColor="@color/design_default_color_background"
-                    android:textSize="30sp" />
+                    android:textSize="34sp" />
 
                 <ImageView
+                    android:layout_centerInParent="true"
                     android:id="@+id/titlename_drop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -69,7 +68,7 @@
                     android:background="@color/colorPrimary"
                     app:el_duration="500"
                     app:el_expanded="true"
-                    app:el_parallax="0.5">
+                    app:el_parallax="1">
 
                     <ScrollView
                         android:layout_width="match_parent"
@@ -227,7 +226,6 @@
                                     android:textColor="@color/textOnPrimary"
                                     android:textSize="16sp" />
                             </RelativeLayout>
-
                             <View
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
@@ -235,9 +233,75 @@
                                 android:layout_marginTop="5dp"
                                 android:layout_marginEnd="4dp"
                                 android:background="@color/dividerAplay" />
+
                         </LinearLayout>
                     </ScrollView>
                 </net.cachapa.expandablelayout.ExpandableLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp">
+                    <ImageView
+                        android:id="@+id/details_img_cover"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:tint="@color/design_default_color_background"
+                        android:src="@drawable/ic_picture"/>
+                    <LinearLayout
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_toEndOf="@+id/details_img_cover"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/fragment_details_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:ellipsize="marquee"
+                            android:textSize="26sp"
+                            android:textColor="@color/secondaryLightColor"
+                            android:text="seisheuh sahuheu asuhue ashuhueahuasdu aeuhu"/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <RelativeLayout
+                                android:id="@+id/see_pack_btn"
+                                android:foreground="@drawable/ripple_forrounded"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:background="@drawable/round_layout"
+                                android:backgroundTint="@color/primaryDarkColor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" >
+                                <TextView
+                                    android:textColor="@color/secondaryLightColor"
+                                    android:text="See Package"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </RelativeLayout>
+                            <RelativeLayout
+                                android:layout_marginStart="4dp"
+                                android:foreground="@drawable/ripple_forrounded"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:background="@drawable/round_layout"
+                                android:backgroundTint="@color/red"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" >
+                                <TextView
+                                    android:textColor="@color/secondaryLightColor"
+                                    android:text="Add to Offline"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </RelativeLayout>
                 <FrameLayout
                     android:id="@+id/aplay_fragment_comment"
                     android:name="ml.dvnlabs.animize.fragment.mainComment"

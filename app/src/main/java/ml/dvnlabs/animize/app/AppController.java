@@ -1,7 +1,6 @@
 package ml.dvnlabs.animize.app;
 
 import android.app.Application;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.text.TextUtils;
 
@@ -9,7 +8,9 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.danikula.videocache.HttpProxyCacheServer;
+import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
+import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor;
+import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +23,10 @@ public class AppController extends Application {
             .getSimpleName();
 
     private RequestQueue mRequestQueue;
-    private HttpProxyCacheServer proxy;
+
+    private static SimpleCache sDownloadCache;
+
+
 
 
     private static AppController mInstance;
@@ -66,21 +70,18 @@ public class AppController extends Application {
             mRequestQueue.cancelAll(tag);
         }
     }
-    public static HttpProxyCacheServer getProxy(Context context) {
-        AppController app = (AppController) context.getApplicationContext();
-        return app.proxy == null ? (app.proxy = app.newProxy()) : app.proxy;
-    }
 
-    private HttpProxyCacheServer newProxy() {
-        return new HttpProxyCacheServer.Builder(this)
-                .cacheDirectory(getVideoCacheDir(this))
-//                .maxCacheSize(150)
-//                .maxCacheFilesCount(15)
-                .build();
-    }
     public static File getVideoCacheDir(Context context) {
         return new File(context.getExternalCacheDir(), "video-cache");
     }
+
+    public static SimpleCache setCache() {
+        if (sDownloadCache == null){
+            sDownloadCache = new SimpleCache(new File(mInstance.getCacheDir(), "anim"), new LeastRecentlyUsedCacheEvictor(1024 * 1024 * 17));//17MB
+        }
+        return sDownloadCache;
+    }
+
 
     public static void cleanVideoCacheDir(Context context) throws IOException {
         File videoCacheDir = getVideoCacheDir(context);

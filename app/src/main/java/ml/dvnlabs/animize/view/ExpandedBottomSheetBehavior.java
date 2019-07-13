@@ -19,7 +19,7 @@ public class ExpandedBottomSheetBehavior<V extends View> extends BottomSheetBeha
         return super.onLayoutChild(parent, child, layoutDirection);
         /*
             Unfortunately its not good enough to just call setState(STATE_EXPANDED); after super.onLayoutChild
-            The reason is that an animation plays after calling setState. This can cause some graphical issues with other layouts
+            The reason is that an animateView plays after calling setState. This can cause some graphical issues with other layouts
             Instead we need to use setInternalState, however this is a private method.
             The trick is to utilise onRestoreInstance to call setInternalState immediately and indirectly
          */

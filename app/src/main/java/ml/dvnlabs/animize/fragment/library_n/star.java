@@ -88,10 +88,10 @@ public class star extends Fragment {
                     loading.setVisibility(View.GONE);
                     voided.setVisibility(View.VISIBLE);
                 }
-                // To keep animation for 4 seconds
+                // To keep animateView for 4 seconds
                 new Handler().postDelayed(new Runnable() {
                     @Override public void run() {
-                        // Stop animation (This will be after 3 seconds)
+                        // Stop animateView (This will be after 3 seconds)
                         refreshLayout.setRefreshing(false);
                     }
                 }, 2000); // Delay in millis
