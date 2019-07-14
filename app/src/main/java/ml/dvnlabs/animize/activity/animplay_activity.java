@@ -25,7 +25,10 @@ import ml.dvnlabs.animize.pager.passdata_arraylist;
 import ml.dvnlabs.animize.player.PlaybackStatus;
 import ml.dvnlabs.animize.player.PlayerManager;
 import ml.dvnlabs.animize.player.PlayerService;
+import ml.dvnlabs.animize.view.VideoOnSwipeTouchListener;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,16 +37,24 @@ import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.exoplayer2.Player;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.tabs.TabItem;
@@ -85,8 +96,8 @@ public class animplay_activity extends AppCompatActivity{
     private TabLayout aplay_tabs;
     private TabItem aplay_details,aplay_more;
     private ViewPager aplay_viewpager;
-    private ImageView fs_btn;
-    private TextView ply_name,ply_episod;
+    private ImageView fs_btn,video_artwork;
+    private TextView ply_name,ply_episod,video_seektime;
     AVLoadingIndicatorView video_buffer;
 
     private PlayerManager playerManager;
@@ -182,6 +193,8 @@ FetchDataListener getvideo = new FetchDataListener() {
         aplay_viewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(aplay_tabs));
         fs_btn = findViewById(R.id.exo_fullscreen_icon);
         video_buffer = findViewById(R.id.exo_buffering);
+        video_artwork = findViewById(R.id.exo_artwork);
+        video_seektime = findViewById(R.id.exo_seektime);
         ply_name = findViewById(R.id.player_name);
         ply_name.setSelected(true);
         ply_episod = findViewById(R.id.player_episode);
@@ -318,8 +331,9 @@ FetchDataListener getvideo = new FetchDataListener() {
                     genres.add(genre_json.getString(j));
                     //Log.e("GENRES:",genre_json.getString(j));
                 }
+                String thmb = jsonObject.getString("thumbnail");
                 Log.e("DATA: ",nm+tot);
-                modeldata.add(new videoplay_model(nm,epi,tot,rat,syi,pack,ur,genres));
+                modeldata.add(new videoplay_model(nm,epi,tot,rat,syi,pack,ur,genres,thmb));
 
             }
         }catch (Exception e)
@@ -344,6 +358,79 @@ FetchDataListener getvideo = new FetchDataListener() {
     private void playerContanti(){
         getService().playOrPause(url);
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+        playerView.setUseArtwork(true);
+        playerView.setShowBuffering(PlayerView.SHOW_BUFFERING_ALWAYS);
+        playerView.setUseController(true);
+
+
+        playerView.setOnTouchListener(new VideoOnSwipeTouchListener(this,playerView,getService().exoPlayer){
+            private int counting,counting_rewind;
+            private Handler handler = new Handler();
+            public void onSwipeRight() {
+
+                String seektimes = "Forward: "+counting+ " Seconds";
+                video_seektime.setText(seektimes);
+                show_seektime();
+                unVisible();
+                //Toast.makeText(animplay_activity.this, "right", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeLeft() {
+                if (counting == 0){
+                    counting_rewind = 0;
+                }else {
+                    counting_rewind = counting_rewind + 1;
+                }
+                String seektimes = "Rewind: "+counting_rewind+ " Seconds";
+                video_seektime.setText(seektimes);
+                show_seektime();
+                unVisible();
+                //Toast.makeText(animplay_activity.this, "left", Toast.LENGTH_SHORT).show();
+            }
+            private void show_seektime(){
+
+                video_seektime.animate()
+                        .translationY(video_seektime.getHeight())
+                        .alpha(1f)
+                        .setDuration(500)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                video_seektime.setVisibility(View.VISIBLE);
+                            }
+                        });
+                video_seektime.setVisibility(View.VISIBLE);
+            }
+            private void unVisible(){
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        video_seektime.animate()
+                                .translationY(video_seektime.getHeight())
+                                .alpha(0f)
+                                .setDuration(500)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        video_seektime.setVisibility(View.GONE);
+                                    }
+                                });
+                        //video_seektime.setVisibility(View.GONE);
+                    }
+                },3000);
+            }
+
+            @Override
+            public void onCounting(int count) {
+                this.counting = count;
+                //super.onCounting(count);
+            }
+        });
+
+        Glide.with(this).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_picture).error(R.drawable.ic_picture)).load(modeldata.get(0).getUrl_thmb()).transition(new DrawableTransitionOptions().crossFade()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()).into(video_artwork);
         playerView.setPlayer(getService().exoPlayer);
     }
 

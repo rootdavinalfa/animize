@@ -127,7 +127,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
     public void onCreate(){
         super.onCreate();
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        notificationManager = new PlayNotificationManager(this,getApplicationContext());
+        //notificationManager = new PlayNotificationManager(this,getApplicationContext());
         mediaSession = new MediaSessionCompat(this,getClass().getSimpleName());
         transportControls = mediaSession.getController().getTransportControls();
         mediaSession.setActive(true);
@@ -140,7 +140,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
         DefaultTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         DefaultLoadControl loadControl = new DefaultLoadControl();
 
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(this,trackSelector);
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(this,trackSelector,loadControl);
         //exoPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory,trackSelector,loadControl);
         exoPlayer.addListener(this);
         status = PlaybackStatus.IDLE;
@@ -342,7 +342,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
         //File filecache = new File(this.getCacheDir()+"/anim/");
         //Cache cache = new SimpleCache(filecache,new LeastRecentlyUsedCacheEvictor(1024 * 1024 * 17));//17 MB
 
-        CacheDataSourceFactory cacheDataSourceFactory = new CacheDataSourceFactory(AppController.setCache(),new DefaultHttpDataSourceFactory(userAgent,null,DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
+        CacheDataSourceFactory cacheDataSourceFactory = new CacheDataSourceFactory(AppController.setVideoCache(),new DefaultHttpDataSourceFactory(userAgent,null,DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
                 DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                 true));
         return new ProgressiveMediaSource.Factory(cacheDataSourceFactory,extractorsFactory)

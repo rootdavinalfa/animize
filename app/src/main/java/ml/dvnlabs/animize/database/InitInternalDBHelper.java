@@ -91,6 +91,19 @@ public class InitInternalDBHelper extends SQLiteOpenHelper {
         return null;
 
     }
+    public String delete_starred(){
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(starland.table_name,null,null);
+            String status = "deleted";
+            db.close();
+            return status;
+        }catch (SQLiteException e){
+            e.printStackTrace();
+        }
+        return null;
+
+    }
     public userland getUser(){
         try {
             String selectquery = "SELECT * FROM "+userland.table_name+" ";

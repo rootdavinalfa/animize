@@ -2,6 +2,7 @@ package ml.dvnlabs.animize.fragment.dashboard;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
+import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
 import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
@@ -242,6 +244,25 @@ public class home extends Fragment {
             }
             adapter_banner = new banner_adapter(bannerlist_models,getActivity(),R.layout.rv_banner);
             rv_bannerlist.setAdapter(adapter_banner);
+
+            //System.out.println("Bnnaer count:"+bannerlist_models.size());
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                int currentBanner;
+                @Override
+                public void run() {
+                    currentBanner = rv_bannerlist.getCurrentItem();
+                    //System.out.println("CURRENT:"+currentBanner);
+                    if (bannerlist_models.size()-1 > currentBanner){
+                        rv_bannerlist.smoothScrollToPosition(currentBanner + 1);
+                        rv_bannerlist.setItemTransitionTimeMillis(500);
+                    }else {
+                        rv_bannerlist.smoothScrollToPosition(0);
+                        rv_bannerlist.setItemTransitionTimeMillis(500);
+                    }
+                    handler.postDelayed(this,5000);
+                }
+            },5000);
         }catch (JSONException e){
             e.printStackTrace();
         }

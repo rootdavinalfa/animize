@@ -37,7 +37,6 @@ import ml.dvnlabs.animize.model.videoplay_model;
 public class details extends Fragment {
     private CardView video_det_compartment;
     private ExpandableLayout video_dets;
-    private RelativeLayout btn_pack_see;
     private TextView synop_play,detailname,idanime,genreer,title_pack;
     private ImageView drop;
     private AVLoadingIndicatorView loadbar;
@@ -59,7 +58,6 @@ public class details extends Fragment {
         detailname = (TextView)view.findViewById(R.id.details_name);
         idanime = (TextView)view.findViewById(R.id.aplay_txt_idanime);
         title_pack = view.findViewById(R.id.fragment_details_title);
-        btn_pack_see = view.findViewById(R.id.see_pack_btn);
         drop = (ImageView)view.findViewById(R.id.titlename_drop);
         genreer = (TextView)view.findViewById(R.id.aplay_details_genres);
 
@@ -76,12 +74,6 @@ public class details extends Fragment {
                 video_dets.toggle();
                 float deg = (drop.getRotation() == 180F) ? 0F : 180F;
                 drop.animate().rotation(deg).setInterpolator(new AccelerateDecelerateInterpolator());
-            }
-        });
-        btn_pack_see.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
             }
         });
         showcomment();

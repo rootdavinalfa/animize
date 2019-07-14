@@ -13,9 +13,10 @@ public class videoplay_model {
     private String sysnop;
     private String pack;
     private String source_url;
+    private String url_thmb;
     private List<String> genres;
 
-    public videoplay_model(String name, String ep, String total, String rate, String synop, String pkg, String url,List<String>genre){
+    public videoplay_model(String name, String ep, String total, String rate, String synop, String pkg, String url,List<String>genre,String url_thm){
         this.episode = ep;
         this.name_anim = name;
         this.rating = rate;
@@ -24,7 +25,13 @@ public class videoplay_model {
         this.total_ep_anim = total;
         this.pack = pkg;
         this.genres = genre;
+        this.url_thmb = url_thm;
     }
+
+    public String getUrl_thmb() {
+        return url_thmb;
+    }
+
     public String getSource_url() {
         return source_url;
     }

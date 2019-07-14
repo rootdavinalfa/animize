@@ -14,12 +14,15 @@
         android:orientation="vertical">
 
         <com.google.android.exoplayer2.ui.PlayerView
+            android:clickable="true"
+            android:focusable="true"
+            app:surface_type="surface_view"
             android:id="@+id/animplay_views"
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:animateLayoutChanges="true"
             android:gravity="center"
-            app:controller_layout_id="@layout/animize_controlview" />
+            />
     </FrameLayout>
 
     <com.google.android.material.tabs.TabLayout

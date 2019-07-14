@@ -75,7 +75,7 @@ public class AppController extends Application {
         return new File(context.getExternalCacheDir(), "video-cache");
     }
 
-    public static SimpleCache setCache() {
+    public static SimpleCache setVideoCache() {
         if (sDownloadCache == null){
             sDownloadCache = new SimpleCache(new File(mInstance.getCacheDir(), "anim"), new LeastRecentlyUsedCacheEvictor(1024 * 1024 * 17));//17MB
         }

@@ -37,7 +37,10 @@
                     android:layout_toStartOf="@id/titlename_drop"
                     android:text="青春ブタ野郎はバニーガール先輩の夢を見ない"
                     android:textColor="@color/design_default_color_background"
-                    android:textSize="34sp" />
+                    android:textSize="32sp"
+                    android:maxLines="2"
+                    android:singleLine="false"
+                    android:ellipsize="end"/>
 
                 <ImageView
                     android:layout_centerInParent="true"
@@ -112,6 +115,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
+                                    android:layout_centerInParent="true"
                                     android:layout_toEndOf="@id/aplay_txt_idanimes"
                                     android:text="ANMsdhu1"
                                     android:textColor="@color/textOnPrimary"
@@ -135,6 +139,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
+                                    android:layout_centerInParent="true"
                                     android:layout_toEndOf="@id/aplay_txt_idsource"
                                     android:text="ANM1"
                                     android:textColor="@color/textOnPrimary"
@@ -159,6 +164,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
+                                    android:layout_centerInParent="true"
                                     android:layout_toEndOf="@id/aplay_txt_category"
                                     android:text="Romance,Action,Supernatural"
                                     android:textColor="@color/textOnPrimary"
@@ -237,7 +243,17 @@
                         </LinearLayout>
                     </ScrollView>
                 </net.cachapa.expandablelayout.ExpandableLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Favorite"
+                    android:textColor="@color/primaryLightColor"
+                    android:textSize="16sp" />
                 <RelativeLayout
+                    android:id="@+id/aplay_add_star_layout"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="@drawable/layoutrippleeffect"
                     android:layout_width="match_parent"
                     android:layout_height="100dp">
                     <ImageView
@@ -257,45 +273,40 @@
                             android:id="@+id/fragment_details_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:singleLine="true"
-                            android:ellipsize="marquee"
+                            android:maxLines="2"
+                            android:singleLine="false"
+                            android:ellipsize="end"
                             android:textSize="26sp"
                             android:textColor="@color/secondaryLightColor"
-                            android:text="seisheuh sahuheu asuhue ashuhueahuasdu aeuhu"/>
+                            android:text="seisheuh saasdsadhuheu asuhue ashuhueahuasdu aeuhu"/>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
                             <RelativeLayout
-                                android:id="@+id/see_pack_btn"
-                                android:foreground="@drawable/ripple_forrounded"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:background="@drawable/round_layout"
-                                android:backgroundTint="@color/primaryDarkColor"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" >
                                 <TextView
-                                    android:textColor="@color/secondaryLightColor"
-                                    android:text="See Package"
+                                    android:id="@+id/aplay_add_star_status"
+                                    android:layout_marginEnd="5dp"
+                                    android:layout_centerInParent="true"
+                                    android:layout_toStartOf="@+id/aplay_add_star"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
-
-                            </RelativeLayout>
-                            <RelativeLayout
-                                android:layout_marginStart="4dp"
-                                android:foreground="@drawable/ripple_forrounded"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:background="@drawable/round_layout"
-                                android:backgroundTint="@color/red"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" >
-                                <TextView
-                                    android:textColor="@color/secondaryLightColor"
-                                    android:text="Add to Offline"
+                                    android:layout_height="wrap_content"
+                                    android:text="This Anime not starred!"
+                                    android:textColor="@color/textOnPrimary"/>
+                                <ImageView
+                                    android:id="@+id/aplay_add_star"
+                                    android:foreground="@drawable/ripple_forrounded"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentEnd="true"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_add"
+                                    android:tint="@color/primaryLightColor"/>
 
                             </RelativeLayout>
                         </LinearLayout>
