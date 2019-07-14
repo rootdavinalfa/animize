@@ -7,6 +7,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 
@@ -19,6 +20,7 @@ public class VideoOnSwipeTouchListener implements View.OnTouchListener {
     private int counter_seek;
     private Context mContext;
     private android.os.Handler handler;
+    private Runnable runnable;
     private boolean isCounting = false;
 
     public VideoOnSwipeTouchListener(Context ctx, PlayerView playerView,SimpleExoPlayer player){
@@ -26,7 +28,14 @@ public class VideoOnSwipeTouchListener implements View.OnTouchListener {
         this.playerView = playerView;
         this.player = player;
         this.mContext = ctx;
-
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                isCounting = false;
+                counter_seek =0;
+            }
+        };
     }
 
     @Override
@@ -48,25 +57,28 @@ public class VideoOnSwipeTouchListener implements View.OnTouchListener {
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            if (distanceX < 0){
-                counter_seek = counter_seek + 1;
-                player.seekTo(counter_seek*1000);
+            if (player.getPlaybackState() == Player.STATE_READY || player.getPlaybackState() == Player.STATE_BUFFERING ){
+                long nowTime = player.getCurrentPosition();
+                long endTime = player.getDuration();
                 isCounting = true;
-                //Log.e("PLAYER:","Forward "+" Second : "+counter_seek);
-            }else if (distanceX > 0){
-                counter_seek = counter_seek -1;
-                if (counter_seek < 0){
-                    counter_seek = 0;
-                    player.seekTo(counter_seek);
-                }else {
-                    player.seekTo(counter_seek*1000);
+                System.out.println("NOW TIME:"+nowTime+" END TIME: "+endTime);
+                if (distanceX < 0){
+                    counter_seek = counter_seek + 1;
+                    player.seekTo((counter_seek*1000)+nowTime);
+                    Log.e("PLAYER:","Forward "+" Second : "+counter_seek);
+                }else if (distanceX > 0){
+                    counter_seek = counter_seek +1;
+                    player.seekTo(nowTime - (counter_seek*1000));
+                    Log.e("PLAYER:","Rewind "+" Second : "+counter_seek);
+
                 }
-                isCounting = true;
-                //Log.e("PLAYER:","Rewind "+" Second : "+counter_seek);
+                handler.postDelayed(runnable,2000);
+                onCounting(counter_seek);
+                //Log.e("SCROLL:",String.valueOf(Math.round(distanceX)));
+
             }
-            onCounting(counter_seek);
-            //Log.e("SCROLL:",String.valueOf(Math.round(distanceX)));
             return false;
+
             //return super.onScroll(e1, e2, distanceX, distanceY);
         }
 

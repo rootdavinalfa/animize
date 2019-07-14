@@ -364,7 +364,7 @@ FetchDataListener getvideo = new FetchDataListener() {
 
 
         playerView.setOnTouchListener(new VideoOnSwipeTouchListener(this,playerView,getService().exoPlayer){
-            private int counting,counting_rewind;
+            private int counting;
             private Handler handler = new Handler();
             public void onSwipeRight() {
 
@@ -375,12 +375,8 @@ FetchDataListener getvideo = new FetchDataListener() {
                 //Toast.makeText(animplay_activity.this, "right", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeLeft() {
-                if (counting == 0){
-                    counting_rewind = 0;
-                }else {
-                    counting_rewind = counting_rewind + 1;
-                }
-                String seektimes = "Rewind: "+counting_rewind+ " Seconds";
+
+                String seektimes = "Rewind: "+counting+ " Seconds";
                 video_seektime.setText(seektimes);
                 show_seektime();
                 unVisible();
