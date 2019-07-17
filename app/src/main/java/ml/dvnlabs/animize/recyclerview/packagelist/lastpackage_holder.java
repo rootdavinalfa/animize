@@ -9,6 +9,11 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,11 +59,21 @@ public class lastpackage_holder extends RecyclerView.ViewHolder implements View.
             //counter++;
         }
         String genree =sb.toString();
+
         
         name.setText(data.getname());
         genre.setText(genree);
         String mals = "MAL: "+ data.getMal();
         mal.setText(mals);
+
+        Glide.with(mcontext)
+                .applyDefaultRequestOptions(new RequestOptions()
+                        .placeholder(R.drawable.ic_picture)
+                        .error(R.drawable.ic_picture))
+                .load(data.getCoverur())
+                .transition(new DrawableTransitionOptions()
+                        .crossFade()).apply(new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.ALL).override(424,600)).into(cover);
     }
     @Override
     public void onClick(View v){

@@ -11,6 +11,10 @@ import android.widget.RelativeLayout;
 
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
 import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
@@ -28,8 +32,11 @@ import androidx.fragment.app.Fragment;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.dashboard_activity;
+import ml.dvnlabs.animize.app.AppController;
 import ml.dvnlabs.animize.model.bannerlist_model;
 import ml.dvnlabs.animize.model.packagelist;
 import ml.dvnlabs.animize.recyclerview.banner.banner_adapter;
@@ -57,6 +64,8 @@ public class home extends Fragment {
     private lastpackage_adapter adapterlastpackage;
     private banner_adapter adapter_banner;
     private LinearLayoutManager linearLayoutManager;
+    private SwipeRefreshLayout refresh_home;
+    private AdView mAdView;
     CountDownTimer cTimer = null;
     public home(){
 
@@ -77,9 +86,54 @@ public class home extends Fragment {
         package_loading = view.findViewById(R.id.shimmer_package);
         rv_lastpackage = view.findViewById(R.id.rv_lastpackage);
         rv_bannerlist = view.findViewById(R.id.rv_banner);
+        refresh_home = view.findViewById(R.id.dash_refresh_home);
         initial_setup();
-
+        Runnable runnableAdView = new Runnable() {
+            @Override
+            public void run() {
+                ads_starter(view);
+            }
+        };
+        new Handler().postDelayed(runnableAdView,3000);
+        swipe_refresh();
         return view;
+    }
+    private void ads_starter(View view){
+        AppController.initialize_ads(getActivity());
+        mAdView = view.findViewById(R.id.adView_dashboard);
+        if (AppController.isDebug(getActivity())){
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("48D9BD5E389E13283355412BC6A229A2").build();
+            mAdView.loadAd(adRequest);
+        }else {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
+
+        //IF TESTING PLEASE UNCOMMENT testmode
+
+
+    }
+    private void swipe_refresh(){
+        refresh_home.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getBanner();
+                getLast_Up();
+                getLastPackage();
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animateView (This will be after 3 seconds)
+                        refresh_home.setRefreshing(false);
+                    }
+                }, 2000); // Delay in millis
+            }
+        });
+        refresh_home.setColorSchemeColors(
+                getResources().getColor(android.R.color.holo_blue_bright),
+                getResources().getColor(android.R.color.holo_green_light),
+                getResources().getColor(android.R.color.holo_orange_light),
+                getResources().getColor(android.R.color.holo_red_light)
+        );
     }
     private void initial_setup(){
         modeldata_lastup = new ArrayList<>();
@@ -124,28 +178,11 @@ public class home extends Fragment {
         }
 
     }
-    //start timer function
-    void startTimer() {
-        cTimer = new CountDownTimer(3000, 1000) {
-            public void onTick(long millisUntilFinished) {
-            }
-            public void onFinish() {
-                lastup_scrollto();
-            }
-        };
-        cTimer.start();
-    }
-
-
-    //cancel timer
-    void cancelTimer() {
-        if(cTimer!=null)
-            cTimer.cancel();
-    }
 
     FetchDataListener bannerlist = new FetchDataListener() {
         @Override
         public void onFetchComplete(String data) {
+            rv_bannerlist.setVisibility(View.VISIBLE);
             banner_loading.stopShimmer();
             banner_loading.setVisibility(View.GONE);
             try{
@@ -162,12 +199,13 @@ public class home extends Fragment {
         @Override
         public void onFetchFailure(String msg) {
             banner_loading.stopShimmer();
-            banner_loading.setVisibility(View.GONE);
-
+            banner_loading.startShimmer();
+            banner_loading.setVisibility(View.VISIBLE);
         }
 
         @Override
         public void onFetchStart() {
+            rv_bannerlist.setVisibility(View.GONE);
             banner_loading.startShimmer();
             banner_loading.setVisibility(View.VISIBLE);
 
@@ -177,6 +215,7 @@ public class home extends Fragment {
     FetchDataListener lastup = new FetchDataListener() {
         @Override
         public void onFetchComplete(String data) {
+            listView_lastup.setVisibility(View.VISIBLE);
             lastup_loading.stopShimmer();
             lastup_loading.setVisibility(View.GONE);
             parse_jsonlastup(data);
@@ -184,13 +223,16 @@ public class home extends Fragment {
 
         @Override
         public void onFetchFailure(String msg) {
+            lastup_loading.startShimmer();
+            lastup_loading.setVisibility(View.VISIBLE);
             Log.e("ERROR",msg);
         }
 
         @Override
         public void onFetchStart() {
             lastup_loading.startShimmer();
-            listView_lastup.setVisibility(View.VISIBLE);
+            lastup_loading.setVisibility(View.VISIBLE);
+            listView_lastup.setVisibility(View.GONE);
 
         }
     };
@@ -198,6 +240,7 @@ public class home extends Fragment {
     FetchDataListener lastpackage = new FetchDataListener() {
         @Override
         public void onFetchComplete(String data) {
+            rv_lastpackage.setVisibility(View.VISIBLE);
             package_loading.stopShimmer();
             package_loading.setVisibility(View.GONE);
             parseJSONPackage(data);
@@ -206,8 +249,8 @@ public class home extends Fragment {
 
         @Override
         public void onFetchFailure(String msg) {
-            package_loading.stopShimmer();
-            package_loading.setVisibility(View.GONE);
+            package_loading.startShimmer();
+            package_loading.setVisibility(View.VISIBLE);
 
         }
 
@@ -215,6 +258,7 @@ public class home extends Fragment {
         public void onFetchStart() {
             package_loading.startShimmer();
             package_loading.setVisibility(View.VISIBLE);
+            rv_lastpackage.setVisibility(View.GONE);
 
         }
     };
@@ -255,10 +299,10 @@ public class home extends Fragment {
                     //System.out.println("CURRENT:"+currentBanner);
                     if (bannerlist_models.size()-1 > currentBanner){
                         rv_bannerlist.smoothScrollToPosition(currentBanner + 1);
-                        rv_bannerlist.setItemTransitionTimeMillis(500);
+                        rv_bannerlist.setItemTransitionTimeMillis(250);
                     }else {
                         rv_bannerlist.smoothScrollToPosition(0);
-                        rv_bannerlist.setItemTransitionTimeMillis(500);
+                        rv_bannerlist.setItemTransitionTimeMillis(250);
                     }
                     handler.postDelayed(this,5000);
                 }
@@ -279,13 +323,14 @@ public class home extends Fragment {
                 String totep = object.getString("total_ep_anim");
                 String rate = object.getString("rating");
                 String mal = object.getString("mal_id");
+                String cover = object.getString("cover");
                 JSONArray genre_json =object.getJSONArray("genre") ;
                 List<String> genres =new ArrayList<>();
                 for (int j=0;j<genre_json.length();j++){
                     genres.add(genre_json.getString(j));
                     //Log.e("GENRES:",genre_json.getString(j));
                 }
-                modeldatapackage.add(new packagelist(packages,nameanim,nowep,totep,rate,mal,genres));
+                modeldatapackage.add(new packagelist(packages,nameanim,nowep,totep,rate,mal,genres,cover));
             }
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
 
@@ -295,6 +340,23 @@ public class home extends Fragment {
                     .setMinScale(0.8f)
                     .build());
 
+            /*Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                int currentBanner;
+                @Override
+                public void run() {
+                    currentBanner = rv_lastpackage.getCurrentItem();
+                    //System.out.println("CURRENT:"+currentBanner);
+                    if (modeldatapackage.size()-1 > currentBanner){
+                        rv_lastpackage.smoothScrollToPosition(currentBanner + 1);
+                        rv_lastpackage.setItemTransitionTimeMillis(500);
+                    }else {
+                        rv_lastpackage.smoothScrollToPosition(0);
+                        rv_lastpackage.setItemTransitionTimeMillis(500);
+                    }
+                    handler.postDelayed(this,5000);
+                }
+            },8000);*/
             //rv_lastpackage.setLayoutManager(linearLayoutManager);
         }catch (JSONException e){
             Log.e("JSON ERROR:",e.toString());
@@ -362,16 +424,23 @@ public class home extends Fragment {
             };
             listView_lastup.setItemTransformer(transformer);
             page_lastup = listView_lastup.getCurrentItem();
-            startTimer();
-            listView_lastup.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            /*Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                int currentBanner;
                 @Override
-                public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                    super.onScrollStateChanged(recyclerView, newState);
-                    if(newState == RecyclerView.SCROLL_STATE_IDLE){
-                        page_lastup = listView_lastup.getCurrentItem();
+                public void run() {
+                    currentBanner = listView_lastup.getCurrentItem();
+                    //System.out.println("CURRENT:"+currentBanner);
+                    if (modeldata_lastup.size()-1 > currentBanner){
+                        listView_lastup.smoothScrollToPosition(currentBanner + 1);
+                        listView_lastup.setItemTransitionTimeMillis(500);
+                    }else {
+                        listView_lastup.smoothScrollToPosition(0);
+                        listView_lastup.setItemTransitionTimeMillis(500);
                     }
+                    handler.postDelayed(this,6500);
                 }
-            });
+            },8000);*/
 
 
 
@@ -404,8 +473,6 @@ public class home extends Fragment {
         if(!modeldata_lastup.isEmpty()){
             modeldata_lastup.clear();
         }
-
-        cancelTimer();
     }
 
 

@@ -18,6 +18,7 @@
             app:indicatorColor="@color/primaryDarkColor"/>
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="5dp"
         android:scrollIndicators="none"
         android:visibility="visible"
         android:id="@+id/genre_list_package"

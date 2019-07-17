@@ -117,7 +117,8 @@ public class multiview extends Fragment {
                 String totep = object.getString("total_ep_anim");
                 String rate = object.getString("rating");
                 String mal = object.getString("mal_id");
-                modeldatapackage.add(new genre_packagelist(packages,nameanim,nowep,totep,rate,mal));
+                String cover = object.getString("cover");
+                modeldatapackage.add(new genre_packagelist(packages,nameanim,nowep,totep,rate,mal,cover));
             }
             //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             LayoutManager = new AutoGridLayoutManager(getContext(),500);

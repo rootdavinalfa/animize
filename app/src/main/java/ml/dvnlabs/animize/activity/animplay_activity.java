@@ -2,6 +2,7 @@ package ml.dvnlabs.animize.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
@@ -56,6 +57,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -82,6 +84,7 @@ public class animplay_activity extends AppCompatActivity{
     private InitInternalDBHelper initInternalDBHelper;
     private boolean isReadyVideo = false;
     private boolean isFullscreen = false;
+    public boolean isLocked = false;
     private boolean isInit = true;
 
     ArrayList<videoplay_model> modeldata;
@@ -96,7 +99,7 @@ public class animplay_activity extends AppCompatActivity{
     private TabLayout aplay_tabs;
     private TabItem aplay_details,aplay_more;
     private ViewPager aplay_viewpager;
-    private ImageView fs_btn,video_artwork;
+    private ImageView fs_btn,video_artwork,locker;
     private TextView ply_name,ply_episod,video_seektime;
     AVLoadingIndicatorView video_buffer;
 
@@ -195,6 +198,7 @@ FetchDataListener getvideo = new FetchDataListener() {
         video_buffer = findViewById(R.id.exo_buffering);
         video_artwork = findViewById(R.id.exo_artwork);
         video_seektime = findViewById(R.id.exo_seektime);
+        locker = findViewById(R.id.exo_controller_lock);
         ply_name = findViewById(R.id.player_name);
         ply_name.setSelected(true);
         ply_episod = findViewById(R.id.player_episode);
@@ -262,6 +266,7 @@ FetchDataListener getvideo = new FetchDataListener() {
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY|
                 View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION|
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        show_locker();
         isFullscreen =true;
 
     }
@@ -271,6 +276,7 @@ FetchDataListener getvideo = new FetchDataListener() {
         media.height = media_height;
         media.width = FrameLayout.LayoutParams.MATCH_PARENT;
         playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        hide_locker();
         isFullscreen = false;
     }
 
@@ -278,12 +284,12 @@ FetchDataListener getvideo = new FetchDataListener() {
         Drawable buttun_fullscren;
 
         if(isFullscreen){
-            buttun_fullscren = getResources().getDrawable(R.drawable.ic_fullscreen_expand);
+            buttun_fullscren = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_fullscreen_expand,null);
             fs_btn.setImageDrawable(buttun_fullscren);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         if(!isFullscreen){
-            buttun_fullscren = getResources().getDrawable(R.drawable.ic_fullscreen_skrink);
+            buttun_fullscren = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_fullscreen_skrink,null);
             fs_btn.setImageDrawable(buttun_fullscren);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
@@ -325,6 +331,7 @@ FetchDataListener getvideo = new FetchDataListener() {
                 String rat = jsonObject.getString("rating");
                 String pack = jsonObject.getString("package_anim");
                 String syi = jsonObject.getString("synopsis");
+                String cover = jsonObject.getString("cover");
                 JSONArray genre_json =jsonObject.getJSONArray("genres") ;
                 List<String> genres =new ArrayList<>();
                 for (int j=0;j<genre_json.length();j++){
@@ -333,7 +340,7 @@ FetchDataListener getvideo = new FetchDataListener() {
                 }
                 String thmb = jsonObject.getString("thumbnail");
                 Log.e("DATA: ",nm+tot);
-                modeldata.add(new videoplay_model(nm,epi,tot,rat,syi,pack,ur,genres,thmb));
+                modeldata.add(new videoplay_model(nm,epi,tot,rat,syi,pack,ur,genres,thmb,cover));
 
             }
         }catch (Exception e)
@@ -361,25 +368,62 @@ FetchDataListener getvideo = new FetchDataListener() {
         playerView.setUseArtwork(true);
         playerView.setShowBuffering(PlayerView.SHOW_BUFFERING_ALWAYS);
         playerView.setUseController(true);
+        locker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isLocked && isFullscreen){
+                    locker.setImageResource(R.drawable.ic_locked);
+                    playerView.setUseController(true);
+                    Toast.makeText(animplay_activity.this,"Controller unLocked!",Toast.LENGTH_SHORT).show();
+                    isLocked = false;
+                }else if(!isLocked && isFullscreen){
+                    locker.setImageResource(R.drawable.ic_unlocked);
+                    playerView.setUseController(false);
+                    Toast.makeText(animplay_activity.this,"Controller Locked!",Toast.LENGTH_SHORT).show();
+                    isLocked = true;
+                }
+            }
+        });
+        playerView.setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+            @Override
+            public void onVisibilityChange(int visibility) {
+                if (visibility==0 && isFullscreen){
+                    hide_locker();
+
+                    playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                }else if(visibility >0 &&  isFullscreen){
+                    show_locker();
+
+                    playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE |
+                            View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE|
+                            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY|
+                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION|
+                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                }
+            }
+        });
+
 
 
         playerView.setOnTouchListener(new VideoOnSwipeTouchListener(this,playerView,getService().exoPlayer){
             private int counting;
             private Handler handler = new Handler();
             public void onSwipeRight() {
-
-                String seektimes = "Forward: "+counting+ " Seconds";
-                video_seektime.setText(seektimes);
-                show_seektime();
-                unVisible();
+                if (!isLocked){
+                    String seektimes = "Forward: "+counting+ " Seconds";
+                    video_seektime.setText(seektimes);
+                    show_seektime();
+                    unVisible();
+                }
                 //Toast.makeText(animplay_activity.this, "right", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeLeft() {
-
-                String seektimes = "Rewind: "+counting+ " Seconds";
-                video_seektime.setText(seektimes);
-                show_seektime();
-                unVisible();
+                if (!isLocked){
+                    String seektimes = "Rewind: "+counting+ " Seconds";
+                    video_seektime.setText(seektimes);
+                    show_seektime();
+                    unVisible();
+                }
                 //Toast.makeText(animplay_activity.this, "left", Toast.LENGTH_SHORT).show();
             }
             private void show_seektime(){
@@ -426,8 +470,38 @@ FetchDataListener getvideo = new FetchDataListener() {
             }
         });
 
-        Glide.with(this).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_picture).error(R.drawable.ic_picture)).load(modeldata.get(0).getUrl_thmb()).transition(new DrawableTransitionOptions().crossFade()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()).into(video_artwork);
+        Glide.with(this).applyDefaultRequestOptions(new RequestOptions()
+                .placeholder(R.drawable.ic_picture).error(R.drawable.ic_picture))
+                .load(modeldata.get(0).getUrl_thmb())
+                .transition(new DrawableTransitionOptions().crossFade())
+                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()).into(video_artwork);
         playerView.setPlayer(getService().exoPlayer);
+    }
+    private void show_locker(){
+        locker.animate()
+                .translationY(locker.getHeight())
+                .alpha(1f)
+                .setDuration(500)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        locker.setVisibility(View.VISIBLE);
+                    }
+                });
+    }
+    private void hide_locker(){
+        locker.animate()
+                .translationY(locker.getHeight())
+                .alpha(1f)
+                .setDuration(500)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        locker.setVisibility(View.GONE);
+                    }
+                });
     }
 
     //send pkg id to more fragment
@@ -435,6 +509,9 @@ FetchDataListener getvideo = new FetchDataListener() {
         String tag = "android:switcher:" + R.id.aplay_pager + ":" + 1;
         more f = (more) getSupportFragmentManager().findFragmentByTag(tag);
         f.receivedata(pkg,anim);
+        String tag1 = "android:switcher:" + R.id.aplay_pager + ":" + 0;
+        details f1 = (details) getSupportFragmentManager().findFragmentByTag(tag1);
+        f1.receivestring(pkg,modeldata.get(0).getCover());
     }
 
     //Sending arraylist to details fragment
@@ -514,9 +591,11 @@ FetchDataListener getvideo = new FetchDataListener() {
             closereplyfragment();
         }else {
             if(isFullscreen){
-                buttun_fullscren = getResources().getDrawable(R.drawable.ic_fullscreen_expand);
+                buttun_fullscren = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_fullscreen_expand,null);
                 imageView.setImageDrawable(buttun_fullscren);
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                playerView.setUseController(true);
+                isLocked = false;
 
             }
             if(!isFullscreen){

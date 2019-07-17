@@ -9,15 +9,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -29,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.app.AppController;
 import ml.dvnlabs.animize.database.PackageStarDBHelper;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
@@ -41,6 +51,7 @@ import static ml.dvnlabs.animize.activity.MainActivity.setWindowFlag;
 
 public class packageView extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private ImageView cover_toolbar;
     private static final int CODE_GET_REQUEST = 1024;
     private ArrayList<playlist_model> playlist_models;
     private ArrayList<packageinfo> modelinfo;
@@ -49,6 +60,8 @@ public class packageView extends AppCompatActivity {
     private TextView genr,synops;
     String pkganim;
 
+
+    private AdView mAdView;
 
     private MenuItem pack_star;
 
@@ -62,11 +75,17 @@ public class packageView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_package_view);
 
+        //make translucent statusBar on kitkat devices
+
+
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
         //make fully Android Transparent Status bar
 
         setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
+
+
 
 
         initialize();
@@ -83,7 +102,32 @@ public class packageView extends AppCompatActivity {
 
         }
         GetInfo();
+        Runnable runnableAdView = new Runnable() {
+            @Override
+            public void run() {
+                ads_starter();
+            }
+        };
+        new Handler().postDelayed(runnableAdView,2000);
+    }
+    private void ads_starter(){
+        AppController.initialize_ads(this);
+        mAdView = findViewById(R.id.adView_packageView);
+        //IF TESTING PLEASE UNCOMMENT testmode
+        if (AppController.isDebug(this)){
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("48D9BD5E389E13283355412BC6A229A2").build();
+            mAdView.loadAd(adRequest);
+        }else {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void initialize(){
@@ -91,13 +135,16 @@ public class packageView extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        toolbar.setTitle("");
         collapsingToolbarLayout = findViewById(R.id.pv_collapse_toolbar);
-        collapsingToolbarLayout.setTitle("");
+        collapsingToolbarLayout.setTitle("Loading...");
         listview = findViewById(R.id.packageview_list);
         synops = findViewById(R.id.packageview_synopsis);
         genr = findViewById(R.id.packageview_genre);
         container =findViewById(R.id.packageview_container);
         loading = findViewById(R.id.packageview_loading);
+        cover_toolbar = findViewById(R.id.toolbar_cover);
         //container.setVisibility(View.GONE);
 
         modelinfo = new ArrayList<>();
@@ -213,13 +260,14 @@ public class packageView extends AppCompatActivity {
                 String totep = object.getString("total_ep_anim");
                 String rate = object.getString("rating");
                 String mal = object.getString("mal_id");
+                String cover = object.getString("cover");
                 JSONArray genre_json =object.getJSONArray("genre") ;
                 List<String> genres =new ArrayList<>();
                 for (int j=0;j<genre_json.length();j++){
                     genres.add(genre_json.getString(j));
                     //Log.e("GENRES:",genre_json.getString(j));
                 }
-                modelinfo.add(new packageinfo(packages,nameanim,synop,totep,rate,mal,genres));
+                modelinfo.add(new packageinfo(packages,nameanim,synop,totep,rate,mal,genres,cover));
             }
             collapsingToolbarLayout.setTitle(modelinfo.get(0).getname());
             synops.setText(modelinfo.get(0).getSynopsis());
@@ -237,6 +285,15 @@ public class packageView extends AppCompatActivity {
             }
             String genree =sb.toString();
             genr.setText(genree);
+            Glide.with(this)
+                    .applyDefaultRequestOptions(new RequestOptions()
+                            .placeholder(R.drawable.ic_picture)
+                            .error(R.drawable.ic_picture))
+                    .load(modelinfo.get(0).getCover())
+                    .transition(new DrawableTransitionOptions()
+                            .crossFade()).apply(new RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL).override(424,600)).into(cover_toolbar);
+
 
         }catch (JSONException e){
             Log.e("JSON ERROR:",e.toString());

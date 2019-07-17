@@ -15,6 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +25,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.app.AppController;
 import ml.dvnlabs.animize.database.PackageStarDBHelper;
 import ml.dvnlabs.animize.database.model.starland;
 import ml.dvnlabs.animize.driver.Api;
@@ -45,6 +49,7 @@ public class star extends Fragment {
     private RelativeLayout loading,voided;
     private SwipeRefreshLayout refreshLayout;
     private String tempid;
+    private AdView mAdView;
 
 
 
@@ -72,7 +77,29 @@ public class star extends Fragment {
             voided.setVisibility(View.VISIBLE);
         }
         swipe_refresh();
+        Runnable runnableAdView = new Runnable() {
+            @Override
+            public void run() {
+                ads_starter(view);
+            }
+        };
+        new Handler().postDelayed(runnableAdView,2000);
+        swipe_refresh();
         return view;
+    }
+
+    private void ads_starter(View view){
+        AppController.initialize_ads(getActivity());
+        mAdView = view.findViewById(R.id.adView_star);
+        //IF TESTING PLEASE UNCOMMENT testmode
+        if (AppController.isDebug(getActivity())){
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("48D9BD5E389E13283355412BC6A229A2").build();
+            mAdView.loadAd(adRequest);
+        }else {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
+
     }
     private void swipe_refresh(){
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -115,7 +142,8 @@ public class star extends Fragment {
                 String totep = object.getString("total_ep_anim");
                 String rate = object.getString("rating");
                 String mal = object.getString("mal_id");
-                starmodels.add(new starmodel(packages,nameanim,totep,rate,mal));
+                String cover = object.getString("cover");
+                starmodels.add(new starmodel(packages,nameanim,totep,rate,mal,cover));
             }
             if (counter == starmodels.size()){
                 loading.setVisibility(View.GONE);

@@ -50,7 +50,9 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.FileDataSource;
 import com.google.android.exoplayer2.upstream.cache.Cache;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSink;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
@@ -334,17 +336,13 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
     }
 
     private MediaSource buildMediaSource(Uri uri) {
-        //DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         String userAgent = Util.getUserAgent(getApplicationContext(), "Animize");
-        //DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, userAgent, bandwidthMeter);
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-
-        //File filecache = new File(this.getCacheDir()+"/anim/");
-        //Cache cache = new SimpleCache(filecache,new LeastRecentlyUsedCacheEvictor(1024 * 1024 * 17));//17 MB
-
-        CacheDataSourceFactory cacheDataSourceFactory = new CacheDataSourceFactory(AppController.setVideoCache(),new DefaultHttpDataSourceFactory(userAgent,null,DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, bandwidthMeter,new DefaultHttpDataSourceFactory(userAgent,null,DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
                 DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                 true));
+        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        CacheDataSourceFactory cacheDataSourceFactory = new CacheDataSourceFactory(AppController.setVideoCache(),dataSourceFactory);
         return new ProgressiveMediaSource.Factory(cacheDataSourceFactory,extractorsFactory)
                 .createMediaSource(uri);
     }

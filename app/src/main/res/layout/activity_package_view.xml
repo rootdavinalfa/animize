@@ -2,26 +2,30 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="ml.dvnlabs.animize.activity.packageView">
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="190dp"
         android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
         <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:fitsSystemWindows="true"
             android:theme="@style/CustomToolbarTheme"
             android:id="@+id/pv_collapse_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimaryDark"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <ImageView
+                android:fitsSystemWindows="true"
+                android:tint="@color/blacktrans"
+                android:id="@+id/toolbar_cover"
                 android:src="@drawable/ic_picture"
                 app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
                 android:layout_width="match_parent"
@@ -74,7 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/synopsis"
-                    android:textColor="@color/secondaryTextColor"
+                    android:textColor="@color/primaryColor"
                     android:textSize="32sp"/>
             </RelativeLayout>
             <TextView
@@ -98,6 +102,28 @@
                     android:text="Romance,Supernatural"
                     android:textColor="@color/secondaryTextColor"
                     android:textSize="16sp" />
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="4dp"
+                android:background="@color/secondaryTextColor" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView_packageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true"
+                    ads:adSize="LARGE_BANNER"
+                    ads:adUnitId="ca-app-pub-2736984372955523/1668978810">
+                </com.google.android.gms.ads.AdView>
+
             </RelativeLayout>
             <View
                 android:layout_width="match_parent"

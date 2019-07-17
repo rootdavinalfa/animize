@@ -11,6 +11,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
+import com.google.android.gms.ads.MobileAds;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class AppController extends Application {
     private RequestQueue mRequestQueue;
 
     private static SimpleCache sDownloadCache;
-
+    public static long max_cache_size = 1024*1024*30;
 
 
 
@@ -49,6 +50,10 @@ public class AppController extends Application {
         }
 
         return mRequestQueue;
+    }
+    public static boolean isDebug(Context context){
+        //Check is PACKAGE_NAME is debug or not,if not return false;otherwise return true if release version
+        return context.getPackageName().equals("ml.dvnlabs.animize.ima.debug");
     }
 
 
@@ -77,7 +82,7 @@ public class AppController extends Application {
 
     public static SimpleCache setVideoCache() {
         if (sDownloadCache == null){
-            sDownloadCache = new SimpleCache(new File(mInstance.getCacheDir(), "anim"), new LeastRecentlyUsedCacheEvictor(1024 * 1024 * 17));//17MB
+            sDownloadCache = new SimpleCache(new File(mInstance.getCacheDir(), "anim"), new LeastRecentlyUsedCacheEvictor(max_cache_size));//17MB
         }
         return sDownloadCache;
     }
@@ -119,5 +124,10 @@ public class AppController extends Application {
     }
     public void setConnectivityListener(checkNetwork.ConnectivityReceiverListener listener) {
         checkNetwork.connectivityReceiverListener = listener;
+    }
+    public static void initialize_ads(Context context){
+        MobileAds.initialize(context,
+                "ca-app-pub-2736984372955523~5382604601");
+
     }
 }

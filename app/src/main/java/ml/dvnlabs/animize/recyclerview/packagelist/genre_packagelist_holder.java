@@ -48,7 +48,14 @@ public class genre_packagelist_holder extends RecyclerView.ViewHolder implements
         this.rate.setText(data.getRate());
         String mals = "MAL: "+ data.getMal();
         this.mal.setText(mals);
-
+        Glide.with(context)
+                .applyDefaultRequestOptions(new RequestOptions()
+                .placeholder(R.drawable.ic_picture)
+                .error(R.drawable.ic_picture))
+                .load(data.getCover())
+                .transition(new DrawableTransitionOptions()
+                        .crossFade()).apply(new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.ALL).override(424,600)).into(thumbnail);
     }
     @Override
     public void onClick(View v){

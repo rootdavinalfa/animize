@@ -1,13 +1,26 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="ml.dvnlabs.animize.fragment.library_n.download">
+    <RelativeLayout
+        android:layout_centerInParent="true"
+        android:layout_width="200dp"
+        android:layout_height="200dp">
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_centerInParent="true"
+            android:id="@+id/download_loadbar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:indicatorColor="@color/primaryColor"
+            app:indicatorName="BallClipRotateIndicator"/>
+        <TextView
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/download_loadbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Waiting message from sky"/>
+    </RelativeLayout>
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-</FrameLayout>
+</RelativeLayout>

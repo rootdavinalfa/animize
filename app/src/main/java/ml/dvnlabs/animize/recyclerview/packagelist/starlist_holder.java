@@ -9,6 +9,11 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
+
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.packageView;
 import ml.dvnlabs.animize.model.starmodel;
@@ -40,6 +45,14 @@ public class starlist_holder extends RecyclerView.ViewHolder implements View.OnC
         this.rate.setText(data.getRating());
         String mals = "MAL: "+ data.getMal();
         this.mal.setText(mals);
+        Glide.with(context)
+                .applyDefaultRequestOptions(new RequestOptions()
+                        .placeholder(R.drawable.ic_picture)
+                        .error(R.drawable.ic_picture))
+                .load(data.getCover())
+                .transition(new DrawableTransitionOptions()
+                        .crossFade()).apply(new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.ALL).override(424,600)).into(thumbnail);
 
     }
     @Override

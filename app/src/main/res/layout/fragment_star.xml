@@ -48,6 +48,7 @@
     </RelativeLayout>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/starred_refresh"
+        android:layout_above="@+id/adView_container_star"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
@@ -56,6 +57,23 @@
             android:layout_height="match_parent"
             tools:listitem="@layout/rv_starredpackage"/>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <RelativeLayout
+        android:id="@+id/adView_container_star"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <com.google.android.gms.ads.AdView
+
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView_star"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="ca-app-pub-2736984372955523/2995337072">
+        </com.google.android.gms.ads.AdView>
+
+    </RelativeLayout>
 
 
 </RelativeLayout>
