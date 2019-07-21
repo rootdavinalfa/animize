@@ -23,6 +23,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.app.AppController;
@@ -42,6 +45,7 @@ public class star extends Fragment {
 
     private PackageStarDBHelper packageStarDBHelper;
     private ArrayList<starmodel> starmodels;
+    private ArrayList<starland> indexstarred;
     private int counter =0;
     private RecyclerView rv_starred;
     private starlist_adapter adapter;
@@ -143,9 +147,21 @@ public class star extends Fragment {
                 String rate = object.getString("rating");
                 String mal = object.getString("mal_id");
                 String cover = object.getString("cover");
-                starmodels.add(new starmodel(packages,nameanim,totep,rate,mal,cover));
+                for (int j=0;j<indexstarred.size();j++){
+                    if (indexstarred.get(j).getPackageid().equals(packages)){
+                        //System.out.println("Setting:"+j);
+                        starmodels.set(j,new starmodel(packages,nameanim,totep,rate,mal,cover));
+                    }
+                }
+
+
             }
-            if (counter == starmodels.size()){
+            /*Log.e("isNUlled:",String.valueOf(isAllNull(starmodels)));*/
+            if (!isAllNull(starmodels)){
+                /*Log.e("SIZE starmodels:",String.valueOf(starmodels.size()));
+                for (int k = 0;k<starmodels.size();k++){
+                    Log.e("COVER",starmodels.get(k).getCover());
+                }*/
                 loading.setVisibility(View.GONE);
                 LayoutManager = new AutoGridLayoutManager(getContext(),500);
                 adapter = new starlist_adapter(starmodels,getActivity(),R.layout.rv_starredpackage);
@@ -155,6 +171,16 @@ public class star extends Fragment {
         }catch (JSONException e){
             e.printStackTrace();
         }
+    }
+    public static boolean isAllNull(ArrayList<starmodel> list){
+        for(int i=0;i<list.size();i++){
+            if(list.get(i).getName() != null){
+                if (i == list.size()-1){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
     private void getRestPackage(String id){
         this.tempid = id;
@@ -206,7 +232,9 @@ public class star extends Fragment {
             counter = pa.size();
             System.out.println("COUNTER: "+counter);
             starmodels = new ArrayList<>();
+            indexstarred = pa;
             for (int i =0;i<pa.size();i++){
+                starmodels.add(new starmodel(null,null,null,null,null,null));
                 getRestPackage(pa.get(i).getPackageid());
             }
 

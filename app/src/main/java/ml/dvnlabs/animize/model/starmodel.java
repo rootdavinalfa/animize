@@ -35,4 +35,28 @@ public class starmodel {
     public String getTotal_ep() {
         return total_ep;
     }
+
+    public void setPackageid(String packageid) {
+        this.packageid = packageid;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public void setMal(String mal) {
+        this.mal = mal;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public void setTotal_ep(String total_ep) {
+        this.total_ep = total_ep;
+    }
 }

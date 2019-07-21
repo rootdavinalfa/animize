@@ -3,6 +3,9 @@ package ml.dvnlabs.animize.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,14 +24,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.wang.avi.AVLoadingIndicatorView;
+
+import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +48,8 @@ import ml.dvnlabs.animize.database.PackageStarDBHelper;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
+import ml.dvnlabs.animize.fragment.global;
+import ml.dvnlabs.animize.fragment.information.coverview;
 import ml.dvnlabs.animize.model.packageinfo;
 import ml.dvnlabs.animize.model.playlist_model;
 import ml.dvnlabs.animize.recyclerview.packagelist.packagelist_adapter;
@@ -293,8 +300,17 @@ public class packageView extends AppCompatActivity {
                     .transition(new DrawableTransitionOptions()
                             .crossFade()).apply(new RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL).override(424,600)).into(cover_toolbar);
+            cover_toolbar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fm = getSupportFragmentManager();
+                    coverview alertDialog = coverview.newInstance();
+                    alertDialog.setUrl(modelinfo.get(0).getCover());
+                    alertDialog.show(fm, "coverview");
 
 
+                }
+            });
         }catch (JSONException e){
             Log.e("JSON ERROR:",e.toString());
         }
@@ -344,7 +360,7 @@ public class packageView extends AppCompatActivity {
             if(pa){
                 pack_star.setIcon(R.drawable.ic_star);
             }else {
-                pack_star.setIcon(R.drawable.ic_add);
+                pack_star.setIcon(R.drawable.ic_star_nofill);
             }
 
         }
@@ -379,7 +395,7 @@ public class packageView extends AppCompatActivity {
                 status = "Add to Star Success";
             }else {
                 System.out.println("UNSTAR");
-                pack_star.setIcon(R.drawable.ic_add);
+                pack_star.setIcon(R.drawable.ic_star_nofill);
                 status = "Remove Star Success";
             }
             Toast.makeText(getApplicationContext(),status,Toast.LENGTH_SHORT).show();

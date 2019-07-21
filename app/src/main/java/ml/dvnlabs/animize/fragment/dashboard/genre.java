@@ -1,6 +1,7 @@
 package ml.dvnlabs.animize.fragment.dashboard;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.app.AppController;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
@@ -34,6 +38,7 @@ public class genre extends Fragment {
     private ViewPager pager;
     private List<String>pagetitle;
     private LinearLayout loading;
+    private AdView mAdView;
 
     public genre(){
 
@@ -47,8 +52,30 @@ public class genre extends Fragment {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         pager = view.findViewById(R.id.genre_viewpager);
         loading = view.findViewById(R.id.genre_title_load);
+        Runnable runnableAdView = new Runnable() {
+            @Override
+            public void run() {
+                ads_starter(view);
+            }
+        };
+        new Handler().postDelayed(runnableAdView,3000);
         getpagetitle();
         return view;
+    }
+    private void ads_starter(View view){
+        AppController.initialize_ads(getActivity());
+        mAdView = view.findViewById(R.id.genre_adView);
+        if (AppController.isDebug(getActivity())){
+            AdRequest adRequest = new AdRequest.Builder().addTestDevice("48D9BD5E389E13283355412BC6A229A2").build();
+            mAdView.loadAd(adRequest);
+        }else {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
+
+        //IF TESTING PLEASE UNCOMMENT testmode
+
+
     }
     private void getpagetitle(){
         pagetitle = new ArrayList<>();
