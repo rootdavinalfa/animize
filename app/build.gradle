@@ -72,8 +72,8 @@ android {
             minSdkVersion 22
             applicationIdSuffix '.ima'
             targetSdkVersion 28
-            versionCode 9
-            versionName '02-002-'
+            versionCode 10
+            versionName '02-003-'
             versionNameSuffix 'canary'
             applicationId 'ml.dvnlabs.animize'
             resValue("string", "app_names", "Animize")

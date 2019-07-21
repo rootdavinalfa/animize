@@ -50,4 +50,6 @@
     <string name="tab_star">Starred</string>
     <string name="tab_recent">Recent</string>
     <string name="tab_download">Download</string>
+    <string name="offline_service">Animize Offline Servicing</string>
+    <string name="track_selection_title">Title</string>
 </resources>

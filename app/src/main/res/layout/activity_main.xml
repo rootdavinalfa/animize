@@ -123,7 +123,6 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/roundbutton"
                             android:backgroundTint="@color/secondaryDarkColor"
-                            android:onClick="btn_regist_action"
                             android:text="@string/btn_register"
                             android:textColor="@color/design_default_color_on_primary"
                             />
@@ -142,7 +141,6 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/roundbutton"
                             android:backgroundTint="@color/secondaryDarkColor"
-                            android:onClick="btn_login_action"
                             android:text="@string/btn_login"
                             android:textColor="@color/design_default_color_on_primary"
                             android:theme="@style/loginbutton"

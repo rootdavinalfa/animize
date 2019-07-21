@@ -27,9 +27,11 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/genre_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_above="@+id/genre_adView">
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/genre_tablayout"
             android:layout_width="match_parent"
@@ -51,4 +53,15 @@
 
         </androidx.viewpager.widget.ViewPager>
     </LinearLayout>
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/genre_adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-2736984372955523/5638199323">
+
+    </com.google.android.gms.ads.AdView>
 </RelativeLayout>

@@ -38,3 +38,11 @@
 }
 
 -keep class com.wang.avi.** { *; }
+
+-keep public class com.google.android.gms.ads.** {
+    public *;
+}
+
+-keep public class com.google.ads.** {
+    public *;
+}
