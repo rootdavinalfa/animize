@@ -50,9 +50,8 @@ public class search_list_holder extends RecyclerView.ViewHolder implements View.
     @Override
     public void onClick(View v){
         if(this.vl_model!=null){
-            Intent intent = new Intent(context, animplay_activity.class);
+            Intent intent = new Intent(context.getApplicationContext(), animplay_activity.class);
             intent.putExtra("id_anim",this.vl_model.getIdn());
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         }
 

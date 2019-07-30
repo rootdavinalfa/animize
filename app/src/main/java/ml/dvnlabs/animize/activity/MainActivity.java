@@ -55,13 +55,11 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializa();
-        Log.e("INITIALIZE:","dvnlabs.ml 2019,Animize Loader.");
-        Log.e("MESSAGE:","このプログラムは自己資金によるプログラムです。" +
-                "\nこのプログラムでは、どちらのパッチ広告もクラックしないでください。" +
-                "\nご愛顧いただければ、サービスの拡大につながる可能性があります。");
-        Log.e("ENGLISH:","this program is self funded program." +
-                "\nPlease not to crack either patching ads in this program." +
-                "\nYour patronage may lead us to expanding the service");
+        Log.e("INITIALIZE:","dvnlabs.ml 2019,Animize Loader.Animize entertainment 2019.");
+        Log.e("MESSAGE:","メインプログラムではなく、サイドプロジェクト専用のプログラムです。" +
+                "\nこのプログラムはペースの遅いアップデートになると述べてください。");
+        Log.e("ENGLISH:","This program just for side project,not main project." +
+                "\nPlease be state this program will be slow paced update.");
 
 
     }

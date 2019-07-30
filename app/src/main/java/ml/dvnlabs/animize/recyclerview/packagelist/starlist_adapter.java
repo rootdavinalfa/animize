@@ -9,14 +9,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import ml.dvnlabs.animize.database.model.starland;
 import ml.dvnlabs.animize.model.starmodel;
 
 public class starlist_adapter extends RecyclerView.Adapter<starlist_holder> {
     private Context mcontext;
-    private ArrayList<starmodel> packagelists;
+    //private ArrayList<starmodel> packagelists;
+    private ArrayList<starland> packagelists;
     private int itemResor;
 
-    public starlist_adapter(ArrayList<starmodel>data, Context context, int itemResource){
+    public starlist_adapter(ArrayList<starland>data, Context context, int itemResource){
         this.mcontext = context;
         this.itemResor = itemResource;
         this.packagelists = data;
@@ -31,7 +33,8 @@ public class starlist_adapter extends RecyclerView.Adapter<starlist_holder> {
 
     @Override
     public void onBindViewHolder(starlist_holder holder,int position){
-        starmodel slm = this.packagelists.get(position);
+        System.out.println("CDATA:POS:"+position+":PKG:"+this.packagelists.get(position).getPackageid());
+        starland slm = this.packagelists.get(position);
         holder.bind_playlist(slm);
 
     }
@@ -45,5 +48,6 @@ public class starlist_adapter extends RecyclerView.Adapter<starlist_holder> {
         }
 
     }
+
 
 }

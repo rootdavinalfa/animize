@@ -31,21 +31,63 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_above="@+id/genre_adView">
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/genre_tablayout"
+        >
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:theme="@style/AppTheme.TabStyle"
-            app:tabIndicatorHeight="1dp"
-            app:tabIndicatorColor="@color/primaryColor"
-            app:tabRippleColor="@null"
-            app:tabSelectedTextColor="@color/primaryDarkColor"
-            app:tabTextAppearance="@style/MyCustomTabTextAppearance"
-            app:tabTextColor="@color/secondaryDarkColor"
-            android:layout_height="wrap_content"
-            app:tabMode="scrollable">
+            android:layout_height="wrap_content">
+            <com.google.android.material.tabs.TabLayout
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/genre_tabshow"
+                android:id="@+id/genre_tablayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.TabStyle"
+                app:tabIndicatorHeight="1dp"
+                app:tabIndicatorColor="@color/primaryColor"
+                app:tabRippleColor="@null"
+                app:tabSelectedTextColor="@color/primaryDarkColor"
+                app:tabTextAppearance="@style/MyCustomTabTextAppearance"
+                app:tabTextColor="@color/secondaryDarkColor"
+                app:tabMode="scrollable">
+            </com.google.android.material.tabs.TabLayout>
+            <ImageView
+                android:id="@+id/genre_tabshow"
+                android:layout_alignParentEnd="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="15dp"
+                android:rotation="180"
+                android:tint="@color/secondaryTextColor"
+                android:src="@drawable/ic_expand_collapse"/>
+            <net.cachapa.expandablelayout.ExpandableLayout
+                android:id="@+id/genre_meta_container"
+                android:layout_below="@+id/genre_tablayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:el_duration="500"
+                app:el_expanded="false"
+                app:el_parallax="1">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_margin="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="List Genre"
+                        android:textSize="20sp"
+                        android:textColor="@color/secondaryTextColor"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/genre_rv_meta_staggered"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-        </com.google.android.material.tabs.TabLayout>
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                </LinearLayout>
+            </net.cachapa.expandablelayout.ExpandableLayout>
+        </RelativeLayout>
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/genre_viewpager"
             android:layout_width="match_parent"
@@ -53,15 +95,4 @@
 
         </androidx.viewpager.widget.ViewPager>
     </LinearLayout>
-    <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/genre_adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-2736984372955523/5638199323">
-
-    </com.google.android.gms.ads.AdView>
 </RelativeLayout>

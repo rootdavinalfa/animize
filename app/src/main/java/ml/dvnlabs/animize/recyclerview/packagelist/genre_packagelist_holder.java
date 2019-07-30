@@ -6,7 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,7 +23,7 @@ import ml.dvnlabs.animize.activity.packageView;
 import ml.dvnlabs.animize.model.genre_packagelist;
 import ml.dvnlabs.animize.model.playlist_model;
 
-public class genre_packagelist_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class genre_packagelist_holder extends RecyclerView.ViewHolder implements View.OnClickListener , View.OnLongClickListener{
     private TextView episode;
     private TextView rate,mal;
     private TextView title;
@@ -38,6 +41,7 @@ public class genre_packagelist_holder extends RecyclerView.ViewHolder implements
         this.rate = (TextView)view.findViewById(R.id.genrepackages_rate);
         this.mal = (TextView)view.findViewById(R.id.genrepackage_mal);
         itemView.setOnClickListener(this);
+        itemView.setOnLongClickListener(this);
     }
 
     public void bind_playlist(genre_packagelist plm){
@@ -67,8 +71,16 @@ public class genre_packagelist_holder extends RecyclerView.ViewHolder implements
             Log.e("CLICK:",this.data.getPack());
 
         }
-
     }
 
-
+    @Override
+    public boolean onLongClick(View v) {
+        /*if(this.data!=null){
+            AppCompatActivity activity = (AppCompatActivity) context;
+            new ModalBottomSheetDialogFragment.Builder()
+                    .add(R.menu.package_select)
+                    .show(activity.getSupportFragmentManager(),"select_package");
+        }*/
+        return true;
+    }
 }

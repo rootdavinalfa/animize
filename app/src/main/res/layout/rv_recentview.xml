@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="@drawable/layoutrippleeffect">
+    <TextView
+        android:id="@+id/recentlist_friendlyday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Today"
+        android:textColor="@color/secondaryTextColor"
+        android:textSize="22sp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+        <ImageView
+            android:id="@+id/recentlist_cover"
+            android:layout_margin="5dp"
+            android:layout_width="100dp"
+            android:layout_height="150dp"
+            tools:src="@drawable/ic_picture"/>
+        <LinearLayout
+            android:layout_toEndOf="@+id/recentlist_cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/recentlist_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:ellipsize="end"
+                tools:text="makakakakak asuuas gudsaug uasdugu"
+                android:textSize="22sp"
+                android:textColor="@color/secondaryDarkColor2"/>
+            <TextView
+                android:id="@+id/recentlist_episode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Episode : 1"
+                android:textSize="18sp"
+                android:textColor="@color/secondaryDarkColor2"/>
+            <TextView
+                android:id="@+id/recentlist_lasttime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Last Time : 12:22"
+                android:textSize="15sp"
+                android:textColor="@color/secondaryDarkColor"/>
+            <TextView
+                android:id="@+id/recentlist_playedon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Last Played On : 12 February 2019"
+                android:textSize="15sp"
+                android:textColor="@color/secondaryDarkColor"/>
+        </LinearLayout>
+        
+    </RelativeLayout>
+    <View
+        android:layout_marginBottom="1dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/secondaryTextColor"/>
+
+</LinearLayout>

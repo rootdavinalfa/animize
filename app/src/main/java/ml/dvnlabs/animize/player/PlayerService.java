@@ -386,13 +386,13 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
 
 
     public void playOrPause(String urli) {
-        Log.e("STREAM-OK:",urli);
+        //Log.e("STREAM-OK:",urli);
         if(urli != null){
             System.out.println("OK");
             if (streamUrl != null && streamUrl.equals(urli)) {
                 play();
             } else {
-                Log.e("Service",urli);
+                //Log.e("Service",urli);
                 init(urli);
 
             }

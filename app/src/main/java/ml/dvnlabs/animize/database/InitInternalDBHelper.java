@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
+import ml.dvnlabs.animize.database.model.recentland;
 import ml.dvnlabs.animize.database.model.starland;
 import ml.dvnlabs.animize.database.model.userland;
 
@@ -33,6 +34,7 @@ public class InitInternalDBHelper extends SQLiteOpenHelper {
         // create notes table
         db.execSQL(userland.CREATE_TABLE);
         db.execSQL(starland.CREATE_TABLE);
+        db.execSQL(recentland.CREATE_TABLE);
 
     }
 
@@ -44,6 +46,11 @@ public class InitInternalDBHelper extends SQLiteOpenHelper {
                 db.execSQL(starland.CREATE_TABLE);
             }
 
+        }
+        if(oldVersion <3){
+            if (checktablenotexist(db, recentland.table_name)){
+                db.execSQL(recentland.CREATE_TABLE);
+            }
         }
 
 
@@ -84,6 +91,7 @@ public class InitInternalDBHelper extends SQLiteOpenHelper {
             db.delete(userland.table_name,null,null);
             String status = "signout";
             db.close();
+            delete_starred();
             return status;
         }catch (SQLiteException e){
             e.printStackTrace();

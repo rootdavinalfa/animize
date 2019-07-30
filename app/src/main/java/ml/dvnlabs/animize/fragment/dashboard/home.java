@@ -88,17 +88,17 @@ public class home extends Fragment {
         rv_bannerlist = view.findViewById(R.id.rv_banner);
         refresh_home = view.findViewById(R.id.dash_refresh_home);
         initial_setup();
-        Runnable runnableAdView = new Runnable() {
+        /*Runnable runnableAdView = new Runnable() {
             @Override
             public void run() {
                 ads_starter(view);
             }
         };
-        new Handler().postDelayed(runnableAdView,3000);
+        new Handler().postDelayed(runnableAdView,3000);*/
         swipe_refresh();
         return view;
     }
-    private void ads_starter(View view){
+    /*private void ads_starter(View view){
         AppController.initialize_ads(getActivity());
         mAdView = view.findViewById(R.id.adView_dashboard);
         if (AppController.isDebug(getActivity())){
@@ -112,7 +112,7 @@ public class home extends Fragment {
         //IF TESTING PLEASE UNCOMMENT testmode
 
 
-    }
+    }*/
     private void swipe_refresh(){
         refresh_home.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

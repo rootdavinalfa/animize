@@ -32,7 +32,9 @@
         <activity
             android:name=".activity.packageView"
             android:configChanges="orientation|keyboard"
-            android:parentActivityName=".activity.dashboard_activity">
+            android:parentActivityName=".activity.dashboard_activity"
+            android:theme="@style/AppThemePackageView"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ml.dvnlabs.animize.activity.dashboard_activity" />
@@ -99,18 +101,6 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-2736984372955523~5382604601"/>
-
-        <service android:name="ml.dvnlabs.animize.downloader.OfflineService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.exoplayer.downloadService.action.RESTART"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </service>
-
-        <service android:name="com.google.android.exoplayer2.scheduler.PlatformScheduler$PlatformSchedulerService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="true"/>
 
     </application>
 

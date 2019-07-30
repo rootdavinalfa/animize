@@ -109,15 +109,15 @@ public class packageView extends AppCompatActivity {
 
         }
         GetInfo();
-        Runnable runnableAdView = new Runnable() {
+        /*Runnable runnableAdView = new Runnable() {
             @Override
             public void run() {
                 ads_starter();
             }
         };
-        new Handler().postDelayed(runnableAdView,2000);
+        new Handler().postDelayed(runnableAdView,2000);*/
     }
-    private void ads_starter(){
+    /*private void ads_starter(){
         AppController.initialize_ads(this);
         mAdView = findViewById(R.id.adView_packageView);
         //IF TESTING PLEASE UNCOMMENT testmode
@@ -129,7 +129,7 @@ public class packageView extends AppCompatActivity {
             mAdView.loadAd(adRequest);
         }
 
-    }
+    }*/
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -138,7 +138,7 @@ public class packageView extends AppCompatActivity {
     }
 
     private void initialize(){
-        Toolbar toolbar = (Toolbar)findViewById(R.id.pv_toolbar);
+        Toolbar toolbar = findViewById(R.id.pv_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -157,8 +157,21 @@ public class packageView extends AppCompatActivity {
         modelinfo = new ArrayList<>();
 
     }
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
+        return true;
+    }*/
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.clear();
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.package_toolbar, menu);
         pack_star = menu.findItem(R.id.package_star);
@@ -167,7 +180,7 @@ public class packageView extends AppCompatActivity {
             readStarStatus read = new readStarStatus();
             read.execute();
         }
-        return true;
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

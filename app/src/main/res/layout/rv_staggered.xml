@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="@drawable/ripple_forrounded"
+        android:layout_margin="5dp"
+        android:id="@+id/rv_staggered_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="5dp"
+        app:contentPadding="5dp"
+        app:cardBackgroundColor="@color/primaryColor"
+        >
+        <TextView
+            android:id="@+id/rv_staggered_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Romance (12)"
+            android:textSize="14sp"
+            android:textColor="@color/design_default_color_background"/>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

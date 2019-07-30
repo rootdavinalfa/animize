@@ -24,6 +24,7 @@ public class APINetworkRequest {
     int REQ_CODE;
 
 
+    public APINetworkRequest(){}
     public APINetworkRequest(final Context context,final FetchDataListener listen,final String urli,int REQUEST_CODE,
                              HashMap<String,String> params){
 
@@ -97,6 +98,30 @@ public class APINetworkRequest {
             }
         };
         RequestQueueVolley.getInstance(context).addToRequestQueue(stringRequest.setShouldCache(false));
+
+    }
+    public void GET_CACHED_REQUEST(final Context context,final FetchDataListener listen,final String url){
+        if(listen !=null){
+            listen.onFetchStart();
+        }
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (listen != null) {
+                            listen.onFetchComplete(response);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof NoConnectionError){
+                    listen.onFetchFailure("Network Connectivity Problem!");
+
+                }
+            }
+        });
+        RequestQueueVolley.getInstance(context).addToRequestQueue(stringRequest.setShouldCache(true));
 
     }
 

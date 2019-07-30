@@ -5,21 +5,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="ml.dvnlabs.animize.fragment.library_n.recent">
     <RelativeLayout
+        android:id="@+id/recent_void"
         android:layout_centerInParent="true"
         android:layout_width="200dp"
         android:layout_height="200dp">
-        <com.wang.avi.AVLoadingIndicatorView
-            android:layout_centerInParent="true"
-            android:id="@+id/recent_loadbar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            app:indicatorColor="@color/primaryColor"
-            app:indicatorName="BallClipRotateIndicator"/>
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:id="@+id/starred_nulled"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_nulled"
+            android:tint="@color/primaryDarkColor"
+            />
         <TextView
-            android:layout_centerInParent="true"
-            android:layout_below="@+id/recent_loadbar"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_below="@+id/starred_nulled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Waiting message from sky"/>
+            android:maxWidth="200dp"
+            android:textColor="@color/secondaryTextColor"
+            android:text="No Recent Watch One Anime!"/>
     </RelativeLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/recent_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recent_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/rv_recentview"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>

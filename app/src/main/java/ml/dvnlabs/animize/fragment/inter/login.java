@@ -81,7 +81,7 @@ public class login extends Fragment {
             HashMap<String,String> params = new HashMap<>();
             params.put("email",email_tf.getText().toString().trim());
             params.put("password",password_tf.getText().toString().trim());
-            APINetworkRequest apiNetworkRequest = new APINetworkRequest(getActivity(),fetchLoginListenerStep1,url,CODE_POST_REQUEST,params);
+            new APINetworkRequest(getActivity(),fetchLoginListenerStep1,url,CODE_POST_REQUEST,params);
 
         }catch (Exception e){
             Log.e(TAG,String.valueOf(e));
@@ -144,7 +144,7 @@ public class login extends Fragment {
             String url = Api.url_decode_login;
             HashMap<String,String> params = new HashMap<>();
             params.put("token",tokeen);
-            APINetworkRequest apiNetworkRequest = new APINetworkRequest(getActivity(),fetchLoginListenerStep2,url,CODE_POST_REQUEST,params);
+            new APINetworkRequest(getActivity(),fetchLoginListenerStep2,url,CODE_POST_REQUEST,params);
 
         }catch (Exception e){
             Log.e(TAG,String.valueOf(e));
