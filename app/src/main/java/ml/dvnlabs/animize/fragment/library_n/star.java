@@ -16,26 +16,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
+
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.app.AppController;
+
 import ml.dvnlabs.animize.database.PackageStarDBHelper;
 import ml.dvnlabs.animize.database.model.starland;
-import ml.dvnlabs.animize.driver.Api;
-import ml.dvnlabs.animize.driver.util.APINetworkRequest;
-import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
-import ml.dvnlabs.animize.model.starmodel;
+
 import ml.dvnlabs.animize.recyclerview.packagelist.starlist_adapter;
 import ml.dvnlabs.animize.view.AutoGridLayoutManager;
 
@@ -52,7 +41,7 @@ public class star extends Fragment {
     private RelativeLayout loading,voided;
     private SwipeRefreshLayout refreshLayout;
     private String tempid;
-    private AdView mAdView;
+
 
 
 
@@ -73,13 +62,7 @@ public class star extends Fragment {
         packageStarDBHelper = new PackageStarDBHelper(getActivity());
         refresh_list();
         swipe_refresh();
-       /* Runnable runnableAdView = new Runnable() {
-            @Override
-            public void run() {
-                ads_starter(view);
-            }
-        };
-        new Handler().postDelayed(runnableAdView,2000);*/
+
         return view;
     }
     private void refresh_list(){
@@ -93,19 +76,9 @@ public class star extends Fragment {
         }
     }
 
-    /*private void ads_starter(View view){
-        AppController.initialize_ads(getActivity());
-        mAdView = view.findViewById(R.id.adView_star);
-        //IF TESTING PLEASE UNCOMMENT testmode
-        if (AppController.isDebug(getActivity())){
-            AdRequest adRequest = new AdRequest.Builder().addTestDevice("48D9BD5E389E13283355412BC6A229A2").build();
-            mAdView.loadAd(adRequest);
-        }else {
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mAdView.loadAd(adRequest);
-        }
 
-    }*/
+
+
 
     @Override
     public void onResume() {
@@ -154,6 +127,7 @@ public class star extends Fragment {
                 LayoutManager = new AutoGridLayoutManager(getContext(),500);
                 adapter = new starlist_adapter(pa,getActivity(),R.layout.rv_starredpackage);
                 rv_starred.setLayoutManager(LayoutManager);
+                rv_starred.setHasFixedSize(true);
                 rv_starred.setAdapter(adapter);
             }else{
                 voided.setVisibility(View.VISIBLE);

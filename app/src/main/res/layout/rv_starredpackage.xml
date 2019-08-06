@@ -1,119 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="5dp"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="@drawable/layoutrippleeffect">
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:visibility="gone"
-        android:id="@+id/rv_shimmer_recent"
+    android:foreground="@drawable/layoutrippleeffect"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp"
+    app:contentPadding="5dp">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <include layout="@layout/shimmer_recent"/>
-    </com.facebook.shimmer.ShimmerFrameLayout>
-    <LinearLayout
-        android:id="@+id/rv_item_recent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/rv_shimmer_recent"
             android:layout_width="match_parent"
-            android:layout_height="160dp">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/star_cover"
+            <include layout="@layout/shimmer_recent" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
+        <LinearLayout
+            android:id="@+id/rv_item_recent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_picture"
-                 />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:layout_height="160dp">
 
-            <TextView
-                android:id="@+id/star_name"
+                <ImageView
+                    android:id="@+id/star_cover"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_picture" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_centerInParent="true"
-                tools:text="seishun buta ashdihsadihiashdi sadsa adasdyaro senapi wo minai de"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textAlignment="center"
-                android:textColor="@color/secondaryTextColor"
-                android:textSize="22sp" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_marginTop="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="40dp">
-            <RelativeLayout
-                android:layout_alignParentStart="true"
-                android:background="@drawable/ic_star"
-                android:backgroundTint="@color/yellow"
-                android:layout_width="40dp"
-                android:layout_height="40dp">
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:layout_margin="5dp"
-                    android:id="@+id/star_rate"
+                    android:id="@+id/star_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:textColor="@color/design_default_color_background"
-                    tools:text="9.99"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textAlignment="center"
+                    android:textColor="@color/secondaryTextColor"
+                    android:textSize="22sp"
+                    tools:text="seishun buta ashdihsadihiashdi sadsa adasdyaro senapi wo minai de" />
             </RelativeLayout>
+
             <RelativeLayout
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/roundbutton"
-                android:backgroundTint="@color/red"
-                android:layout_width="100dp"
-                android:layout_height="20dp">
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp">
 
-                <TextView
-                    android:id="@+id/star_mal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
+                <RelativeLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentStart="true"
+                    android:background="@drawable/ic_star"
+                    android:backgroundTint="@color/yellow">
 
-                    tools:text="MAL : 11021"
-                    android:textColor="@color/design_default_color_background"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/star_rate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_background"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="9.99" />
 
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/roundbutton"
+                    android:backgroundTint="@color/red">
+
+                    <TextView
+                        android:id="@+id/star_mal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+
+                        android:textColor="@color/design_default_color_background"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="MAL : 11021" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/roundbutton"
+                    android:backgroundTint="@color/primaryColor">
+
+                    <TextView
+                        android:id="@+id/star_episode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+
+                        android:textColor="@color/design_default_color_background"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="2 Of 12" />
+
+                </RelativeLayout>
             </RelativeLayout>
-            <RelativeLayout
-                android:layout_marginTop="20dp"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/roundbutton"
-                android:backgroundTint="@color/primaryColor"
-                android:layout_width="100dp"
-                android:layout_height="20dp">
+        </LinearLayout>
+    </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/star_episode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-
-                    tools:text="2 Of 12"
-                    android:textColor="@color/design_default_color_background"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-            </RelativeLayout>
-        </RelativeLayout>
-    </LinearLayout>
-</RelativeLayout>
+</androidx.cardview.widget.CardView>

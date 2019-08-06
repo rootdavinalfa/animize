@@ -2,9 +2,12 @@ package ml.dvnlabs.animize.fragment.tabs.animplay;
 
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -26,6 +29,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -33,6 +38,7 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.wasabeef.glide.transformations.BlurTransformation;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.packageView;
 import ml.dvnlabs.animize.database.PackageStarDBHelper;
@@ -142,6 +148,24 @@ public class details extends Fragment {
                     .transition(new DrawableTransitionOptions()
                             .crossFade()).apply(new RequestOptions()
                     .diskCacheStrategy(DiskCacheStrategy.ALL).override(424,600)).into(covers);
+            Glide.with(this)
+                    .applyDefaultRequestOptions(new RequestOptions()
+                            .placeholder(R.drawable.ic_picture_light)
+                            .error(R.drawable.ic_picture_light))
+                    .load(cover_url).transform(new BlurTransformation(25,3))
+                    .transition(new DrawableTransitionOptions()
+                            .crossFade()).apply(new RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)).into(new CustomTarget<Drawable>() {
+                @Override
+                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                    add_star_lay.setBackground(resource);
+                }
+
+                @Override
+                public void onLoadCleared(@Nullable Drawable placeholder) {
+                    add_star_lay.setBackground(placeholder);
+                }
+            });
 
         }
         if(packageStarDBHelper.isAvail()){

@@ -6,6 +6,7 @@ public class Api {
     public static final String api_animplay = url_base+"anim/detail/play/";
     public static final String url_video = "http://api.dvnlabs.ml/animize/video/json.php?id=";
     public static final String url_search =url_base+"anim/search/name=";
+    public static final String url_search_pack =url_base+"anim/search/package/";
     public static final String url_page = url_base+"anim/list/page/";
     public static final String url_playlist_play = url_base+"anim/detail/playlist/";
     public static final String url_createuser = url_base+"user/create";

@@ -10,7 +10,7 @@ public class AutoGridLayoutManager extends GridLayoutManager {
     private boolean columnWidthChanged = true;
 
     public AutoGridLayoutManager(Context context, int columnWidth) {
-        super(context, 1);
+        super(context, 2);
 
         setColumnWidth(columnWidth);
     }

@@ -29,6 +29,20 @@
                 </com.facebook.shimmer.ShimmerFrameLayout>
 
             </RelativeLayout>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+            <!--ADSVIEW-->
+            <LinearLayout
+                android:id="@+id/dash_ads"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,7 +55,7 @@
                     android:layout_height="10dp" />
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="350dp"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="5dp"
                     app:contentPadding="5dp">

@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="@drawable/layoutrippleeffect"
-    android:id="@+id/genrepack_container"
+    android:id="@+id/searchpack_container"
     app:cardCornerRadius="5dp"
     app:cardElevation="5dp"
     app:contentPadding="5dp">
@@ -23,7 +23,7 @@
             android:layout_height="160dp">
 
             <ImageView
-                android:id="@+id/genrepackage_cover"
+                android:id="@+id/searchpackage_cover"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_centerInParent="true"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/genrepackage_name"
+                android:id="@+id/searchpackage_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -67,7 +67,7 @@
                 android:backgroundTint="@color/yellow">
 
                 <TextView
-                    android:id="@+id/genrepackages_rate"
+                    android:id="@+id/searchpackages_rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -80,7 +80,7 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
+           <!-- <RelativeLayout
                 android:layout_width="100dp"
                 android:layout_height="20dp"
                 android:layout_alignParentEnd="true"
@@ -88,7 +88,7 @@
                 android:backgroundTint="@color/red">
 
                 <TextView
-                    android:id="@+id/genrepackage_mal"
+                    android:id="@+id/searchpackage_mal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
@@ -99,7 +99,7 @@
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
-            </RelativeLayout>
+            </RelativeLayout>-->
 
             <RelativeLayout
                 android:layout_width="100dp"
@@ -110,7 +110,7 @@
                 android:backgroundTint="@color/primaryColor">
 
                 <TextView
-                    android:id="@+id/genrepackage_episode"
+                    android:id="@+id/searchpackage_episode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"

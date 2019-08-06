@@ -159,10 +159,63 @@ public class RecentPlayDBHelper extends SQLiteOpenHelper {
         }
         return null;
     }
+
+    public recentland read_recent_pn_package(String pkgid){
+        try {
+            //model = new ArrayList<>();
+
+            String selectquery = "SELECT * FROM "+recentland.table_name+" WHERE "+recentland.col_packageid+" = '"+pkgid+"' ORDER BY "+recentland.col_lastmodified+" DESC LIMIT 0,1";
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectquery,null);
+            recentland rec = new recentland();
+            if (cursor!=null && cursor.moveToFirst()){
+                while (!cursor.isAfterLast()){
+                    String packageid = cursor.getString(cursor.getColumnIndex(recentland.col_packageid));
+                    String packagename = cursor.getString(cursor.getColumnIndex(recentland.col_packagename));
+                    String anmid = cursor.getString(cursor.getColumnIndex(recentland.col_anmid));
+                    int episode = cursor.getInt(cursor.getColumnIndex(recentland.col_episode));
+                    //System.out.println(packagename);
+                    String cover = cursor.getString(cursor.getColumnIndex(recentland.col_urlcover));
+                    long timestamp = cursor.getLong(cursor.getColumnIndex(recentland.col_lasttimestamp));
+                    long modified = cursor.getLong(cursor.getColumnIndex(recentland.col_lastmodified));
+                    //System.out.println("TIMESTAMP::"+timestamp);
+                    //model.add(new recentland(packageid,packagename,anmid,episode,cover,timestamp));
+                    rec = new recentland(packageid,packagename,anmid,episode,cover,timestamp,modified);
+                    cursor.moveToNext();
+                }
+
+                cursor.close();
+            }
+            db.close();
+            return rec;
+        }catch (SQLiteException e){
+            Log.e("Error get: ",e.getMessage());
+        }
+        return null;
+    }
+
     /*Check is anime_id is available on DB or not*/
     public boolean isRecentAvail(String anmid){
         try {
             String countQuery = "SELECT  * FROM " + recentland.table_name+" WHERE "+recentland.col_anmid+" = '"+anmid+"'";
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+
+            int count = cursor.getCount();
+            cursor.close();
+            if(count>0){
+                return true;
+            }
+            db.close();
+            return false;
+        }catch (SQLiteException e){
+            Log.e("Error Get: ",e.getMessage());
+        }
+        return false;
+    }
+    public boolean isRecentPackAvail(String pkgid){
+        try {
+            String countQuery = "SELECT  * FROM " + recentland.table_name+" WHERE "+recentland.col_packageid+" = '"+pkgid+"'";
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery(countQuery, null);
 

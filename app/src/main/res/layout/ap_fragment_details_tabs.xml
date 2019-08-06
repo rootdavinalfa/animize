@@ -13,48 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <!--Head of Title conpartment-->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/video_det_comp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="@drawable/layoutrippleeffect"
-            android:orientation="horizontal"
-            app:cardBackgroundColor="@color/colorPrimaryDark"
-            app:contentPadding="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/details_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_toStartOf="@id/titlename_drop"
-                    android:text="青春ブタ野郎はバニーガール先輩の夢を見ない"
-                    android:textColor="@color/design_default_color_background"
-                    android:textSize="32sp"
-                    android:maxLines="2"
-                    android:singleLine="false"
-                    android:ellipsize="end"/>
-
-                <ImageView
-                    android:layout_centerInParent="true"
-                    android:id="@+id/titlename_drop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:foregroundGravity="center"
-                    android:padding="5dp"
-                    android:src="@drawable/ic_expand_collapse"
-                    android:tint="@color/design_default_color_background" />
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
-
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -63,6 +21,116 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/aplay_add_star_layout"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="@drawable/layoutrippleeffect"
+                    android:padding="2dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp">
+                    <ImageView
+                        android:id="@+id/details_img_cover"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/ic_picture_light"/>
+                    <LinearLayout
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_toEndOf="@+id/details_img_cover"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        >
+                        <TextView
+                            android:background="@drawable/round_layout"
+                            android:backgroundTint="@color/blacktrans2"
+                            android:id="@+id/fragment_details_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLines="2"
+                            android:singleLine="false"
+                            android:ellipsize="end"
+                            android:textSize="26sp"
+                            android:textColor="@color/secondaryLightColor"
+                            android:text="seisheuh saasdsadhuheu asuhue ashuhueahuasdu aeuhu"/>
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp" />
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" >
+                                <TextView
+                                    android:background="@drawable/round_layout"
+                                    android:backgroundTint="@color/blacktrans2"
+                                    android:id="@+id/aplay_add_star_status"
+                                    android:layout_marginEnd="5dp"
+                                    android:layout_centerInParent="true"
+                                    android:layout_toStartOf="@+id/aplay_add_star"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="This Anime not starred!"
+                                    android:textColor="@color/secondaryLightColor"/>
+                                <ImageView
+                                    android:id="@+id/aplay_add_star"
+                                    android:foreground="@drawable/ripple_forrounded"
+                                    android:clickable="true"
+                                    android:focusable="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_add"
+                                    />
+
+                            </RelativeLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+                <!--Head of Title conpartment-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/video_det_comp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="@drawable/layoutrippleeffect"
+                    android:orientation="horizontal"
+                    app:cardBackgroundColor="@color/colorPrimaryDark"
+                    app:contentPadding="5dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/details_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_toStartOf="@id/titlename_drop"
+                            android:text="青春ブタ野郎はバニーガール先輩の夢を見ない"
+                            android:textColor="@color/design_default_color_background"
+                            android:textSize="32sp"
+                            android:maxLines="2"
+                            android:singleLine="false"
+                            android:ellipsize="end"/>
+
+                        <ImageView
+                            android:layout_centerInParent="true"
+                            android:id="@+id/titlename_drop"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:foregroundGravity="center"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_expand_collapse"
+                            android:tint="@color/design_default_color_background" />
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
 
                 <net.cachapa.expandablelayout.ExpandableLayout
                     android:id="@+id/video_details"
@@ -243,75 +311,12 @@
                         </LinearLayout>
                     </ScrollView>
                 </net.cachapa.expandablelayout.ExpandableLayout>
-                <TextView
+                <!--<TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Favorite"
                     android:textColor="@color/primaryLightColor"
-                    android:textSize="16sp" />
-                <RelativeLayout
-                    android:id="@+id/aplay_add_star_layout"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="@drawable/layoutrippleeffect"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp">
-                    <ImageView
-                        android:id="@+id/details_img_cover"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/ic_picture_light"/>
-                    <LinearLayout
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_toEndOf="@+id/details_img_cover"
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/fragment_details_title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:maxLines="2"
-                            android:singleLine="false"
-                            android:ellipsize="end"
-                            android:textSize="26sp"
-                            android:textColor="@color/secondaryLightColor"
-                            android:text="seisheuh saasdsadhuheu asuhue ashuhueahuasdu aeuhu"/>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" >
-                                <TextView
-                                    android:id="@+id/aplay_add_star_status"
-                                    android:layout_marginEnd="5dp"
-                                    android:layout_centerInParent="true"
-                                    android:layout_toStartOf="@+id/aplay_add_star"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="This Anime not starred!"
-                                    android:textColor="@color/textOnPrimary"/>
-                                <ImageView
-                                    android:id="@+id/aplay_add_star"
-                                    android:foreground="@drawable/ripple_forrounded"
-                                    android:clickable="true"
-                                    android:focusable="true"
-                                    android:layout_centerInParent="true"
-                                    android:layout_alignParentBottom="true"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_add"
-                                    />
-
-                            </RelativeLayout>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                </RelativeLayout>
+                    android:textSize="16sp" />-->
                 <FrameLayout
                     android:id="@+id/aplay_fragment_comment"
                     android:name="ml.dvnlabs.animize.fragment.mainComment"

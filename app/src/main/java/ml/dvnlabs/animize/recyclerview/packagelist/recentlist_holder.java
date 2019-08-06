@@ -55,19 +55,40 @@ public class recentlist_holder extends RecyclerView.ViewHolder implements View.O
         format_date_friendly.setTimeZone(tz);
 
         SimpleDateFormat format_timeplay = new SimpleDateFormat("mm:ss");
-
+        SimpleDateFormat format_month = new SimpleDateFormat("M");
+        format_month.setTimeZone(tz);
         String played = "Played On: "+format_date.format(date_modified);
 
         //Day for today,2 day ago
         String day = format_date_friendly.format(date_modified);
-
+        int today = Integer.valueOf(format_date_friendly.format(System.currentTimeMillis()));
         String friendly;
-
-        if (Integer.valueOf(day).equals(Integer.valueOf(format_date_friendly.format(System.currentTimeMillis())))){
-            friendly = "Today";
-        }else{
-            friendly = format_date_friendly.format(date_modified)+" Days Ago";
+        long diff = System.currentTimeMillis() - rec.getModified();
+        long diffMinutes = diff / (60 * 1000) % 60;
+        long diffHours = diff / (60 * 60 * 1000) % 24;
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+        //System.out.println("NAME: "+rec.getPackage_name()+" Episode:"+rec.getEpisode()+" Times:"+ diffDays+"/"+diffHours+"/"+diffMinutes);
+        if (Integer.valueOf(day) == today && Integer.valueOf(format_month.format(date_modified)).equals( Integer.valueOf(format_month.format(System.currentTimeMillis())))){
+            if (diffMinutes <=58 && diffHours == 0){
+                friendly ="Today, "+ diffMinutes + " Minutes ago";
+            }else {
+                friendly = "Today, "+diffHours+" Hours ago";
+            }
         }
+        else {
+            if (diffDays < 1){
+                friendly = "Yesterday, "+diffHours +" Hours ago";
+            }else {
+                if (today - 1 == Integer.valueOf(day)){
+                    //friendly = "Yesterday, "+ diffHours +" Hours ago";
+                    friendly = "Yesterday"+ (diffHours==0?"":", "+diffHours+" Hours ago");
+                }else{
+                    friendly = diffDays+" Days " + (diffHours==0?" Ago":", "+diffHours+" Hours ago");
+                    //friendly = "Yesterday"+ (diffHours==0?"":", "+diffHours+" Hours ago");
+                }
+            }
+        }
+
 
         String format_playtime = "Last Time: "+format_timeplay.format(time_player);
 
@@ -76,7 +97,7 @@ public class recentlist_holder extends RecyclerView.ViewHolder implements View.O
         this.name.setText(rec.getPackage_name());
         this.lasttime.setText(format_playtime);
 
-        String episodee = "Episode :"+rec.getEpisode();
+        String episodee = "Episode: "+rec.getEpisode();
         this.episode.setText(episodee);
         Glide.with(context)
                 .applyDefaultRequestOptions(new RequestOptions()

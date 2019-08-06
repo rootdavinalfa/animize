@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.material.tabs.TabLayout;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
@@ -54,7 +52,6 @@ public class genre extends Fragment {
     private StaggeredGridLayoutManager staggeredLayout;
 
     private ImageView btn_expand;
-    private AdView mAdView;
 
     public genre(){
 
@@ -71,12 +68,7 @@ public class genre extends Fragment {
         rv_meta = view.findViewById(R.id.genre_rv_meta_staggered);
         expand_meta = view.findViewById(R.id.genre_meta_container);
         btn_expand = view.findViewById(R.id.genre_tabshow);
-        /*Runnable runnableAdView = new Runnable() {
-            @Override
-            public void run() {
-                ads_starter(view);
-            }
-        };*/
+
         btn_expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +77,7 @@ public class genre extends Fragment {
                 btn_expand.animate().rotation(deg).setInterpolator(new AccelerateDecelerateInterpolator());
             }
         });
-        /*new Handler().postDelayed(runnableAdView,3000);*/
+
         getpagetitle();
         return view;
     }
@@ -96,21 +88,7 @@ public class genre extends Fragment {
         btn_expand.animate().rotation(deg).setInterpolator(new AccelerateDecelerateInterpolator());
 
     }
-    /*private void ads_starter(View view){
-        AppController.initialize_ads(getActivity());
-        mAdView = view.findViewById(R.id.genre_adView);
-        if (AppController.isDebug(getActivity())){
-            AdRequest adRequest = new AdRequest.Builder().addTestDevice("48D9BD5E389E13283355412BC6A229A2").build();
-            mAdView.loadAd(adRequest);
-        }else {
-            AdRequest adRequest = new AdRequest.Builder().build();
-            mAdView.loadAd(adRequest);
-        }
 
-        //IF TESTING PLEASE UNCOMMENT testmode
-
-
-    }*/
     private void getpagetitle(){
         metagenre_models= new ArrayList<>();
         String url = Api.url_genremeta;

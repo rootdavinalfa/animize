@@ -35,11 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -81,6 +77,7 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
             this.getWindow().setStatusBarColor(getColor(R.color.colorAccent));
         }
         initializes();
+        AudienceNetworkAds.initialize(this);
 
 
         SqliteReadUser sqliteReadUser = new SqliteReadUser();
@@ -196,6 +193,12 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
     protected void onResume(){
         super.onResume();
         AppController.getInstance().setConnectivityListener(this);
+        if (bottomNavigationView.getMenu().getItem(1).isChecked()){
+            //display_library();
+            close_home();
+        }else{
+            display_home();
+        }
     }
     @Override
     protected void onStart() {
@@ -225,11 +228,11 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         //int count = getSupportFragmentManager().getBackStackEntryCount()-1;
         //Log.e("COUNTED-:",String.valueOf(count));
         if (isHome) {
-            super.onBackPressed();
             Intent startMain = new Intent(Intent.ACTION_MAIN);
             startMain.addCategory(Intent.CATEGORY_HOME);
-            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(startMain);
+            //super.onBackPressed();
             //additional code
         } else {
             bottomNavigationView.getMenu().getItem(0).setChecked(true);

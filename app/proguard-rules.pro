@@ -46,3 +46,11 @@
 -keep public class com.google.ads.** {
     public *;
 }
+#-dontwarn jp.co.cyberagent.android.gpuimage.**
+
+#-keep public class * implements com.bumptech.glide.module.GlideModule
+#-keep public class * extends com.bumptech.glide.module.AppGlideModule
+#-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+#  **[] $VALUES;
+#  public *;
+#}

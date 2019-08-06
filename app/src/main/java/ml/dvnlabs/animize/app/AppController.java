@@ -7,7 +7,7 @@ import com.google.android.exoplayer2.database.DatabaseProvider;
 import com.google.android.exoplayer2.upstream.cache.Cache;
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
-import com.google.android.gms.ads.MobileAds;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class AppController extends Application {
     public static final String TAG = AppController.class
             .getSimpleName();
     private static SimpleCache sDownloadCache;
-    public static long max_cache_size = 1024*1024*70;
+    public static long max_cache_size = 1024*1024*40;
 
 
 
@@ -85,10 +85,5 @@ public class AppController extends Application {
     }
     public void setConnectivityListener(checkNetwork.ConnectivityReceiverListener listener) {
         checkNetwork.connectivityReceiverListener = listener;
-    }
-    public static void initialize_ads(Context context){
-        MobileAds.initialize(context,
-                "ca-app-pub-2736984372955523~5382604601");
-
     }
 }

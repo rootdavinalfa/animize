@@ -619,6 +619,7 @@ FetchDataListener getvideo = new FetchDataListener() {
                     editor.commit();
 
                 }
+                handler_player_recent.removeCallbacks(update_recent);
                 super.onBackPressed();
                 finish();
                 //unbindService(serviceConnection);
@@ -666,17 +667,25 @@ FetchDataListener getvideo = new FetchDataListener() {
         read.execute("");
     }
     private void update_rect(){
-        if (getService().exoPlayer.getPlaybackState() == Player.STATE_READY || getService().exoPlayer.getPlaybackState() == Player.STATE_BUFFERING){
-            update_recent = new Runnable() {
-                @Override
-                public void run() {
-                    playerrecent_write first_write = new playerrecent_write();
-                    first_write.execute("UPDATE");
-                }
-            };
-            handler_player_recent = new Handler();
-            handler_player_recent.postDelayed(update_recent,5000);
+        if (getService() !=null){
+            if (getService().exoPlayer.getPlaybackState() == Player.STATE_READY || getService().exoPlayer.getPlaybackState() == Player.STATE_BUFFERING){
+                update_recent = new Runnable() {
+                    @Override
+                    public void run() {
+                        playerrecent_write first_write = new playerrecent_write();
+                        first_write.execute("UPDATE");
+                    }
+                };
+                handler_player_recent = new Handler();
+                handler_player_recent.postDelayed(update_recent,5000);
+            }
         }
+    }
+    private long getCurrentPlayTime(){
+        return getService().exoPlayer.getCurrentPosition();
+    }
+    private void seekPlayer(long positition){
+        getService().exoPlayer.seekTo(positition);
     }
     //Endof recent method
 
@@ -692,25 +701,28 @@ FetchDataListener getvideo = new FetchDataListener() {
 
         @Override
         protected Void doInBackground(String... params) {
-            if (params[0].equals("FIRST")){
-                String package_id = modeldata.get(0).getPack();
-                String package_name = modeldata.get(0).getName_anim();
-                String anmid =idanim;
-                int episode= Integer.valueOf(modeldata.get(0).getEpisode());
-                String url_cover = modeldata.get(0).getCover();
-                long timestamp = getService().exoPlayer.getCurrentPosition();
-                recentPlayDBHelper.add_recent(package_id,package_name,anmid,episode,url_cover,timestamp);
+            if (!modeldata.isEmpty()){
+                if (params[0].equals("FIRST")){
+                    String package_id = modeldata.get(0).getPack();
+                    String package_name = modeldata.get(0).getName_anim();
+                    String anmid =idanim;
+                    int episode= Integer.valueOf(modeldata.get(0).getEpisode());
+                    String url_cover = modeldata.get(0).getCover();
+                    long timestamp = getCurrentPlayTime();
+                    recentPlayDBHelper.add_recent(package_id,package_name,anmid,episode,url_cover,timestamp);
 
+                }
+                if (params[0].equals("UPDATE")){
+                    String package_id = modeldata.get(0).getPack();
+                    String package_name = modeldata.get(0).getName_anim();
+                    String anmid =idanim;
+                    int episode= Integer.valueOf(modeldata.get(0).getEpisode());
+                    String url_cover = modeldata.get(0).getCover();
+                    long timestamp = getCurrentPlayTime();
+                    recentPlayDBHelper.update_recent(package_id,package_name,anmid,episode,url_cover,timestamp);
+                }
             }
-            if (params[0].equals("UPDATE")){
-                String package_id = modeldata.get(0).getPack();
-                String package_name = modeldata.get(0).getName_anim();
-                String anmid =idanim;
-                int episode= Integer.valueOf(modeldata.get(0).getEpisode());
-                String url_cover = modeldata.get(0).getCover();
-                long timestamp = getService().exoPlayer.getCurrentPosition();
-                recentPlayDBHelper.update_recent(package_id,package_name,anmid,episode,url_cover,timestamp);
-            }
+
             return null;
         }
 
@@ -735,8 +747,8 @@ FetchDataListener getvideo = new FetchDataListener() {
         @Override
         protected void onPostExecute(recentland recentland) {
             System.out.println("TIMESTAMP::"+recentland.getTimestamp());
-            if (getService().exoPlayer.getCurrentPosition() < recentland.getTimestamp()){
-                getService().exoPlayer.seekTo(recentland.getTimestamp());
+            if (getCurrentPlayTime() < recentland.getTimestamp()){
+               seekPlayer(recentland.getTimestamp());
             }
             update_rect();
         }

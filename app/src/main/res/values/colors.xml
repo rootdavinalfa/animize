@@ -26,5 +26,6 @@
     <color name="yellow">#CE8215</color>
     <color name="OverWhite">#CFCFCF</color>
     <color name="blacktrans">#6A000000</color>
+    <color name="blacktrans2">#92000000</color>
 
 </resources>
