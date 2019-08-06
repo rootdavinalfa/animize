@@ -14,23 +14,29 @@
         android:orientation="vertical">
 
         <com.google.android.exoplayer2.ui.PlayerView
+            android:clickable="true"
+            android:focusable="true"
+            app:surface_type="surface_view"
             android:id="@+id/animplay_views"
             android:layout_width="match_parent"
             android:layout_height="220dp"
             android:animateLayoutChanges="true"
             android:gravity="center"
-            app:controller_layout_id="@layout/animize_controlview" />
+            />
     </FrameLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/aplay_tabs"
         android:layout_width="match_parent"
         android:theme="@style/AppTheme.TabStyle"
-        app:tabSelectedTextColor="@color/design_default_color_secondary"
+        app:tabTextAppearance="@style/MyCustomTabTextAppearance"
+        app:tabSelectedTextColor="@color/primaryLightColor"
         app:tabTextColor="@color/design_default_color_background"
         android:background="@color/colorPrimaryDark"
-        app:tabIndicatorColor="@color/design_default_color_secondary"
-        app:tabRippleColor="@color/design_default_color_secondary"
+        app:tabIndicatorHeight="1dp"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorColor="@color/primaryLightColor"
+        app:tabRippleColor="@null"
         android:layout_height="wrap_content">
         <com.google.android.material.tabs.TabItem
             android:id="@+id/aplay_tabs_details"
@@ -53,7 +59,7 @@
         android:layout_height="match_parent">
         <com.wang.avi.AVLoadingIndicatorView
             app:indicatorName="BallClipRotateIndicator"
-            app:indicatorColor="@color/design_default_color_secondary"
+            app:indicatorColor="@color/primaryLightColor"
             android:id="@+id/aplay_bar_loading"
             android:layout_width="100dp"
             android:layout_centerInParent="true"

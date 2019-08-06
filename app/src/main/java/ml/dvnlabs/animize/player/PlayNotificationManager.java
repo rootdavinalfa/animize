@@ -77,8 +77,8 @@ public class PlayNotificationManager {
         //String CHANNEL_ID = "ml.dvnlabs.animplay_activity";
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(service,CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher_animize)
-                .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher_animize))
+                .setSmallIcon(R.mipmap.ic_launcher_animize_round)
+                .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher_animize_round))
                 .setContentTitle(mAppname)
                 .setContentText("Playing...")
                 .setCategory(Notification.CATEGORY_SERVICE)

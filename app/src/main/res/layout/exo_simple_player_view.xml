@@ -24,6 +24,24 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <ImageView
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone"
+        android:id="@+id/exo_controller_lock"
+        android:layout_margin="2dp"
+        android:padding="5dp"
+        android:elevation="10dp"
+        android:foreground="@drawable/ripple_forrounded"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:tint="@color/secondaryLightColor"
+        android:background="@color/blacktrans"
+        android:src="@drawable/ic_locked"/>
+
+
     <View
         android:id="@id/exo_shutter"
         android:layout_width="match_parent"
@@ -36,7 +54,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_centerInParent="true"
-        app:indicatorColor="#ffff"
+        app:indicatorColor="@color/design_default_color_background"
         app:indicatorName="LineScalePulseOutRapidIndicator"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,6 +80,19 @@
         android:gravity="center"
         android:padding="16dp"
         android:textColor="@color/design_default_color_background" />
+    <TextView
+
+        android:visibility="gone"
+        android:id="@+id/exo_seektime"
+        android:background="@drawable/round_layout"
+        android:backgroundTint="@color/blacktrans"
+        android:layout_centerInParent="true"
+        android:layout_below="@+id/exo_buffering"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/design_default_color_background"
+        android:text="Rewind : 10 Second"/>
 
     <FrameLayout
         android:id="@id/exo_overlay"

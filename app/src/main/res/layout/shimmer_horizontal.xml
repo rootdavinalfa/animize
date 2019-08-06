@@ -27,7 +27,7 @@
         android:orientation="vertical"
         >
         <View
-            android:backgroundTint="@color/design_default_color_secondary"
+            android:backgroundTint="@color/primaryLightColor"
             android:background="@drawable/roundbutton"
             android:id="@+id/title_lastupload_home"
             android:layout_width="match_parent"
@@ -36,7 +36,7 @@
 
         <View
             android:background="@drawable/roundbutton"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/design_default_color_error"
             android:id="@+id/episode_lastupload_home"
             android:layout_width="match_parent"
             android:layout_height="30dp"

@@ -12,26 +12,25 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.fragment.tabs.multiview.multiview;
+import ml.dvnlabs.animize.model.metagenre_model;
 
 public class multitab_adapter extends FragmentStatePagerAdapter{
     private int numOfTabs;
     private Fragment fragment = null;
-    private List<String> pagetitle = new ArrayList<>();
+    private ArrayList<metagenre_model> meta = new ArrayList<>();
     private Bundle bundle;
     private FragmentManager fragmentManager;
-    private SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
-
-
-    public multitab_adapter(FragmentManager fm, int num,List<String>pagetitl){
-        super(fm);
+    public multitab_adapter(FragmentManager fm, int num, ArrayList<metagenre_model> meta){
+        super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.numOfTabs = num;
-        this.pagetitle = pagetitl;
+        this.meta = meta;
         this.fragmentManager = fm;
 
     }
@@ -43,7 +42,7 @@ public class multitab_adapter extends FragmentStatePagerAdapter{
             if (i == position) {
                 bundle = new Bundle();
                 fragment = multiview.newInstance();
-                bundle.putString("genre",pagetitle.get(i));
+                bundle.putString("genre",meta.get(i).getTitle());
                 fragment.setArguments(bundle);
                 break;
             }
@@ -64,11 +63,9 @@ public class multitab_adapter extends FragmentStatePagerAdapter{
     public CharSequence getPageTitle(int position) {
         String title = "Default";
         //return super.getPageTitle(position);
-        if (!pagetitle.isEmpty()){
-            title = pagetitle.get(position);
+        if (!meta.isEmpty()){
+            title = meta.get(position).getTitle();
         }
-        //Log.e("TITLE:",title);
-        //title = title.substring(0,1).toUpperCase() + title.substring(1).toLowerCase();
         return title;
     }
 }

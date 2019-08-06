@@ -1,0 +1,70 @@
+{
+  "project_info": {
+    "project_number": "947897772580",
+    "firebase_url": "https://animize.firebaseio.com",
+    "project_id": "animize",
+    "storage_bucket": "animize.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947897772580:android:677d3c39d4465758",
+        "android_client_info": {
+          "package_name": "ml.dvnlabs.animize.ima"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947897772580-gekqea7488s4sfq8lfgv52u94f4aejsk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbTAXxeFRxoOX-GUJt-XTDtT6MX6KHchg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947897772580-gekqea7488s4sfq8lfgv52u94f4aejsk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-2736984372955523~5382604601"
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947897772580:android:8fdb5b56ffcc7fb1",
+        "android_client_info": {
+          "package_name": "ml.dvnlabs.animize.ima.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947897772580-gekqea7488s4sfq8lfgv52u94f4aejsk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbTAXxeFRxoOX-GUJt-XTDtT6MX6KHchg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947897772580-gekqea7488s4sfq8lfgv52u94f4aejsk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/informa_header"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:id="@+id/webview_title_head"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primaryDarkColor"
+                android:textSize="26sp"
+                android:text="Information"/>
+            <ImageView
+                android:id="@+id/informa_close"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/ripple_forrounded"
+                android:tint="@color/secondaryDarkColor2"
+                android:padding="15dp"
+                android:src="@drawable/ic_close"
+                android:layout_alignParentEnd="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
+
+        </RelativeLayout>
+        <WebView
+            android:id="@+id/animize_webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/animize_webview_loading"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:indicatorColor="@color/primaryColor"
+        app:indicatorName="BallClipRotateIndicator"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

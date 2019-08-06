@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tool="http://schemas.android.com/tools"
-    android:background="@color/colorPrimary"
     >
 
     <LinearLayout
@@ -21,6 +20,7 @@
                 android:id="@+id/dash_profile_img"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:tint="@color/primaryTextColor"
                 android:src="@drawable/ic_profile" />
 
             <LinearLayout
@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:text="John Doe"
                     android:textAlignment="viewStart"
-                    android:textColor="@color/design_default_color_background"
+                    android:textColor="@color/primaryDarkColor"
                     android:textSize="26sp" />
 
                 <TextView
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:text="john@dvnlabs.ml"
                     android:textAlignment="viewStart"
-                    android:textColor="@color/design_default_color_background"
+                    android:textColor="@color/primaryTextColor"
                     android:textSize="16sp" />
             </LinearLayout>
         </RelativeLayout>

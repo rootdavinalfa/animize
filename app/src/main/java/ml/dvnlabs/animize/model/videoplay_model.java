@@ -6,16 +6,11 @@ import android.os.Parcelable;
 import java.util.List;
 
 public class videoplay_model {
-    private String name_anim;
-    private String episode;
-    private String  total_ep_anim;
-    private String rating;
-    private String sysnop;
-    private String pack;
-    private String source_url;
+    private String name_anim,episode,total_ep_anim,rating,sysnop,pack,source_url,url_thmb,cover;
     private List<String> genres;
 
-    public videoplay_model(String name, String ep, String total, String rate, String synop, String pkg, String url,List<String>genre){
+
+    public videoplay_model(String name, String ep, String total, String rate, String synop, String pkg, String url,List<String>genre,String url_thm,String cover){
         this.episode = ep;
         this.name_anim = name;
         this.rating = rate;
@@ -24,7 +19,18 @@ public class videoplay_model {
         this.total_ep_anim = total;
         this.pack = pkg;
         this.genres = genre;
+        this.url_thmb = url_thm;
+        this.cover = cover;
     }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public String getUrl_thmb() {
+        return url_thmb;
+    }
+
     public String getSource_url() {
         return source_url;
     }

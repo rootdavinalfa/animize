@@ -38,7 +38,7 @@
     <string name="service_name">Animize Player</string>
     <string name="NO_NETWORK">No Internet Connection</string>
     <string name="btn_logout">Logout</string>
-    <string name="video_source" >Video Source</string>
+    <string name="video_source">Video Source</string>
     <string name="no_sources">No Sources Found!</string>
     <string name="last_package">Last Package</string>
     <string name="movies">Movies</string>
@@ -50,4 +50,9 @@
     <string name="comment">Comment</string>
     <string name="source">Source</string>
     <string name="playlist">Playlist</string>
+    <string name="tab_star">Starred</string>
+    <string name="tab_recent">Recent</string>
+    <string name="tab_download">Download</string>
+    <string name="offline_service">Animize Offline Servicing</string>
+    <string name="track_selection_title">Title</string>
 </resources>

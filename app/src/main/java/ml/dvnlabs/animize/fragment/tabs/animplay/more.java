@@ -2,6 +2,7 @@ package ml.dvnlabs.animize.fragment.tabs.animplay;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,7 +24,8 @@ import java.util.ArrayList;
 
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.animplay_activity;
-import ml.dvnlabs.animize.recyclerview.playlist_adapter;
+import ml.dvnlabs.animize.activity.packageView;
+import ml.dvnlabs.animize.recyclerview.list.playlist_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
@@ -34,7 +37,6 @@ import ml.dvnlabs.animize.model.playlist_model;
 public class more extends Fragment {
     private static final int CODE_GET_REQUEST = 1024;
     private ImageView sourceid,sourceen,sourceraw;
-
     private Context context;
     private ArrayList<playlist_model> playlist_models;
     playlist_adapter adapter;

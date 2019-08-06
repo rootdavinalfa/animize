@@ -20,10 +20,11 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/video_source"
-                android:textColor="@color/design_default_color_secondary"
+                android:textColor="@color/primaryLightColor"
                 android:textSize="36sp" />
         </RelativeLayout>
         <RelativeLayout
+            android:minHeight="100dp"
             android:id="@+id/sourceslist_infocontainer"
             android:visibility="gone"
             android:layout_width="match_parent"
@@ -32,7 +33,7 @@
                 android:id="@+id/sourceslist_loading"
                 android:layout_centerInParent="true"
                 app:indicatorName="BallClipRotateIndicator"
-                app:indicatorColor="@color/design_default_color_secondary"
+                app:indicatorColor="@color/primaryLightColor"
                 android:layout_width="100dp"
                 android:layout_height="100dp" />
             <TextView
@@ -41,7 +42,7 @@
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/design_default_color_secondary"
+                android:textColor="@color/primaryLightColor"
                 android:text="@string/no_sources"
                 android:textSize="18sp"/>
         </RelativeLayout>

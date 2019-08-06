@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+    <LinearLayout
+        android:layout_gravity="top"
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/slackey"
+                    android:text="@string/app_name"
+                    android:textColor="@color/primaryDarkColor"
+                    android:textSize="40sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/dash_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/layoutrippleeffect">
+
+                <TextView
+                    android:id="@+id/dash_profile_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="4dp"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
+                    android:text="John Doe"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/dash_tab"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                app:tabIndicatorHeight="0dp"
+                app:tabRippleColor="@null"
+                app:tabSelectedTextColor="@color/primaryDarkColor"
+                app:tabTextAppearance="@style/MyCustomTabTextAppearance"
+                app:tabTextColor="@color/secondaryDarkColor">
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/dash_tab_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="For U" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:id="@+id/dash_tab_genre"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Genre" />
+            </com.google.android.material.tabs.TabLayout>
+
+            <RelativeLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true">
+
+                <ImageView
+                    android:id="@+id/dash_btn_search"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="@drawable/layoutrippleeffect"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_search"
+                    android:tint="@color/secondaryTextColor" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_above="@+id/DashnavigationView"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_below="@+id/header"
+        android:id="@+id/dash_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <FrameLayout
+        android:layout_above="@id/DashnavigationView"
+        android:id="@+id/search_fragment"
+        android:name="ml.dvnlabs.animize.search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_search">
+
+    </FrameLayout>
+    <FrameLayout
+        android:layout_above="@id/DashnavigationView"
+        android:id="@+id/video_list_fragment"
+        android:name="ml.dvnlabs.animize.video_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_lastup_list">
+
+    </FrameLayout>
+    <FrameLayout
+        android:layout_above="@id/DashnavigationView"
+        android:id="@+id/library_fragment"
+        android:name="ml.dvnlabs.animize.library"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_library">
+
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/DashnavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/design_default_color_background"
+        android:foreground="@drawable/layoutrippleeffect"
+        app:itemIconTint="@drawable/nav_color_state"
+        app:itemTextColor="@drawable/nav_color_state"
+        app:menu="@menu/dash_bottom_nav"
+        android:layout_alignParentBottom="true" />
+
+
+</RelativeLayout>

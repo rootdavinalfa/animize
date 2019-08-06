@@ -17,7 +17,7 @@ public class aplay_viewpageradapter extends FragmentPagerAdapter {
     private int numOfTabss;
     private Context mContext;
     public aplay_viewpageradapter(FragmentManager fm, int numOfTabs,Context context){
-        super(fm);
+        super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.numOfTabss = numOfTabs;
         this.mContext = context;
     }

@@ -7,7 +7,7 @@
     tools:context="ml.dvnlabs.animize.fragment.tabs.animplay.more">
 
     <!-- TODO: Update blank fragment layout -->
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -24,7 +24,7 @@
                     android:orientation="vertical">
                     <TextView
                         android:textAlignment="center"
-                        android:textColor="@color/design_default_color_secondary"
+                        android:textColor="@color/primaryLightColor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="32sp"
@@ -103,7 +103,7 @@
                     <TextView
                         android:textAlignment="center"
                         android:layout_centerInParent="true"
-                        android:textColor="@color/design_default_color_secondary"
+                        android:textColor="@color/primaryLightColor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="32sp"
@@ -112,9 +112,9 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:foreground="@drawable/ripple_forrounded"
-                        android:rotation="270"
+                        android:rotation="90"
                         android:layout_alignParentEnd="true"
-                        android:tint="@color/design_default_color_secondary"
+                        android:tint="@color/primaryLightColor"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:src="@drawable/ic_arrow_vector"/>
@@ -128,6 +128,7 @@
                     app:contentPadding="8dp">
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:nestedScrollingEnabled="false"
                         android:id="@+id/playlist_list"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -140,6 +141,6 @@
 
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>

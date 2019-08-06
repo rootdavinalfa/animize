@@ -1,43 +1,45 @@
 package ml.dvnlabs.animize.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import ml.dvnlabs.animize.Event.PlayerBusError;
 import ml.dvnlabs.animize.Event.PlayerBusStatus;
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.database.LoginInternalDBHelper;
+import ml.dvnlabs.animize.database.InitInternalDBHelper;
+import ml.dvnlabs.animize.database.RecentPlayDBHelper;
+import ml.dvnlabs.animize.database.model.recentland;
 import ml.dvnlabs.animize.database.model.userland;
 import ml.dvnlabs.animize.fragment.comment.threadComment;
 import ml.dvnlabs.animize.fragment.popup.sourceselector;
 import ml.dvnlabs.animize.model.commentMainModel;
-import ml.dvnlabs.animize.recyclerview.playlist_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.fragment.tabs.animplay.details;
 import ml.dvnlabs.animize.fragment.tabs.animplay.more;
-import ml.dvnlabs.animize.model.playlist_model;
 import ml.dvnlabs.animize.model.videoplay_model;
 import ml.dvnlabs.animize.pager.aplay_viewpageradapter;
 import ml.dvnlabs.animize.pager.passdata_arraylist;
 import ml.dvnlabs.animize.player.PlaybackStatus;
 import ml.dvnlabs.animize.player.PlayerManager;
-import ml.dvnlabs.animize.player.PlayerService;
+import ml.dvnlabs.animize.view.VideoOnSwipeTouchListener;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.IBinder;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -46,8 +48,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -60,27 +69,26 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static ml.dvnlabs.animize.player.PlayerManager.getService;
 
 public class animplay_activity extends AppCompatActivity{
-    private static PlayerService service;
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
     private boolean isRestart = false;
     private PlayerView playerView;
 
-    private LoginInternalDBHelper loginInternalDBHelper;
-    private boolean isReadyVideo = false;
+    private InitInternalDBHelper initInternalDBHelper;
+    private RecentPlayDBHelper recentPlayDBHelper;
     private boolean isFullscreen = false;
+    public boolean isLocked = false;
     private boolean isInit = true;
 
-    ArrayList<videoplay_model> modeldata;
-    //ArrayList<playlist_model> playlist_models;
-    playlist_adapter adapter;
+    private Handler handler_player_recent;
+    private Runnable update_recent;
 
+    ArrayList<videoplay_model> modeldata;
     private TextView errortxt;
     private AVLoadingIndicatorView loadbar;
     private ImageView errorIMG;
@@ -89,14 +97,12 @@ public class animplay_activity extends AppCompatActivity{
     private TabLayout aplay_tabs;
     private TabItem aplay_details,aplay_more;
     private ViewPager aplay_viewpager;
-    private ImageView fs_btn;
-    private TextView ply_name,ply_episod;
+    private ImageView fs_btn,video_artwork,locker,anim_download;
+    private TextView ply_name,ply_episod,video_seektime;
     AVLoadingIndicatorView video_buffer;
 
     private PlayerManager playerManager;
 
-    String pkg_anim;
-    int request_step=1;
     int media_height;
     int media_width;
     private String idanim,id_source;
@@ -104,37 +110,39 @@ public class animplay_activity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //super.onCreate(null);
         setContentView(R.layout.animplay_activity);
+        getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.colorPrimaryDark));
         initial_setup();
         modeldata = new ArrayList<>();
-        loginInternalDBHelper = new LoginInternalDBHelper(this);
+        initInternalDBHelper = new InitInternalDBHelper(this);
+        recentPlayDBHelper = new RecentPlayDBHelper(this);
         SqliteRead sqliteReadUser = new SqliteRead();
         sqliteReadUser.execute("OK");
 
         Intent intent = getIntent();
         if(getIntent().getStringExtra("id_anim") != null){
             setIdanim(intent.getStringExtra("id_anim"));
-            //intent.removeExtra("id_anim");
         }
         if(!idanim.isEmpty()){
 
             System.out.println(idanim);
         }
-
-        //playerManager = PlayerManager.with(this);
         playerManager = new PlayerManager(this);
         if(getService() == null){
             playerManager.bind();
         }
-        //bindService(new Intent(this, PlayerService.class), serviceConnection, Context.BIND_AUTO_CREATE);
-        //getVideo();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        //startService(new Intent(this, PlayerService.class));
-        //getVideo();
         notbuffering();
     }
+    private void recentplayed(){
+        if (recentPlayDBHelper.isRecentAvail(idanim)){
+            read_rect();
+        }else{
+            playerrecent_write first_write = new playerrecent_write();
+            first_write.execute("FIRST");
+        }
+    }
+
 FetchDataListener getvideo = new FetchDataListener() {
     @Override
     public void onFetchComplete(String data) {
@@ -170,8 +178,8 @@ FetchDataListener getvideo = new FetchDataListener() {
     public void getVideo(){
         System.out.println("KLKLKLKL "+this.idanim);
         String urlnew = Api.api_animplay+this.idanim;
-        Log.e("REQUEST: ",urlnew);
-        APINetworkRequest apiNetworkRequest = new APINetworkRequest(this,getvideo,urlnew,CODE_GET_REQUEST,null);
+        //Log.e("REQUEST: ",urlnew);
+        new APINetworkRequest(this,getvideo,urlnew,CODE_GET_REQUEST,null);
     }
     private void initial_setup(){
         playerView = findViewById(R.id.animplay_views);
@@ -185,7 +193,12 @@ FetchDataListener getvideo = new FetchDataListener() {
         aplay_viewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(aplay_tabs));
         fs_btn = findViewById(R.id.exo_fullscreen_icon);
         video_buffer = findViewById(R.id.exo_buffering);
+        video_artwork = findViewById(R.id.exo_artwork);
+        video_seektime = findViewById(R.id.exo_seektime);
+        anim_download = findViewById(R.id.anim_download);
+        locker = findViewById(R.id.exo_controller_lock);
         ply_name = findViewById(R.id.player_name);
+        ply_name.setSelected(true);
         ply_episod = findViewById(R.id.player_episode);
         errortxt = findViewById(R.id.aplay_txt_error);
         contbdy = findViewById(R.id.aplay_details_cont);
@@ -225,7 +238,7 @@ FetchDataListener getvideo = new FetchDataListener() {
     public void setSourceID(String idsource){
         this.id_source = idsource;
     }
-    public void onConfigurationChanged(Configuration newConfig){
+    public void onConfigurationChanged(@NonNull Configuration newConfig){
         super.onConfigurationChanged(newConfig);
         int currentOrient = getResources().getConfiguration().orientation;
         if(currentOrient == Configuration.ORIENTATION_LANDSCAPE){
@@ -251,6 +264,7 @@ FetchDataListener getvideo = new FetchDataListener() {
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY|
                 View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION|
                 View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        show_locker();
         isFullscreen =true;
 
     }
@@ -260,6 +274,7 @@ FetchDataListener getvideo = new FetchDataListener() {
         media.height = media_height;
         media.width = FrameLayout.LayoutParams.MATCH_PARENT;
         playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        hide_locker();
         isFullscreen = false;
     }
 
@@ -267,12 +282,12 @@ FetchDataListener getvideo = new FetchDataListener() {
         Drawable buttun_fullscren;
 
         if(isFullscreen){
-            buttun_fullscren = getResources().getDrawable(R.drawable.ic_fullscreen_expand);
+            buttun_fullscren = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_fullscreen_expand,null);
             fs_btn.setImageDrawable(buttun_fullscren);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         if(!isFullscreen){
-            buttun_fullscren = getResources().getDrawable(R.drawable.ic_fullscreen_skrink);
+            buttun_fullscren = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_fullscreen_skrink,null);
             fs_btn.setImageDrawable(buttun_fullscren);
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
@@ -288,13 +303,11 @@ FetchDataListener getvideo = new FetchDataListener() {
         isRestart = true;
     }
 
-    public void newvideo(){
-        getVideo();
-    }
+    //Method for new video from new source
     public void newVideoWithNewSource(){
         System.out.println("KLKLKLKL "+this.idanim);
         String urlnew = Api.api_animplay+this.idanim+"/source/"+id_source;
-        Log.e("REQUEST: ",urlnew);
+        //Log.e("REQUEST: ",urlnew);
         APINetworkRequest apiNetworkRequest = new APINetworkRequest(this,getvideo,urlnew,CODE_GET_REQUEST,null);
     }
     private void show_video(JSONArray video){
@@ -314,14 +327,16 @@ FetchDataListener getvideo = new FetchDataListener() {
                 String rat = jsonObject.getString("rating");
                 String pack = jsonObject.getString("package_anim");
                 String syi = jsonObject.getString("synopsis");
+                String cover = jsonObject.getString("cover");
                 JSONArray genre_json =jsonObject.getJSONArray("genres") ;
                 List<String> genres =new ArrayList<>();
                 for (int j=0;j<genre_json.length();j++){
                     genres.add(genre_json.getString(j));
                     //Log.e("GENRES:",genre_json.getString(j));
                 }
-                Log.e("DATA: ",nm+tot);
-                modeldata.add(new videoplay_model(nm,epi,tot,rat,syi,pack,ur,genres));
+                String thmb = jsonObject.getString("thumbnail");
+                //Log.e("DATA: ",nm+tot);
+                modeldata.add(new videoplay_model(nm,epi,tot,rat,syi,pack,ur,genres,thmb,cover));
 
             }
         }catch (Exception e)
@@ -333,26 +348,159 @@ FetchDataListener getvideo = new FetchDataListener() {
         //Log.e("INFO",url);
         ply_name.setText(modeldata.get(0).getName_anim());
         String epe = getString(R.string.episode_text)+": "+modeldata.get(0).getEpisode()+" "+getString(R.string.string_of)+" "+modeldata.get(0).getTotal_ep_anim();
-        Log.e("DATA",modeldata.get(0).getEpisode());
+        //Log.e("DATA",modeldata.get(0).getEpisode());
         ply_episod.setText(epe);
 
         errcont.setVisibility(View.GONE);
         errortxt.setVisibility(View.GONE);
         errorIMG.setVisibility(View.GONE);
-        sendmodelplay(modeldata,datasender);
-        sendpkg(modeldata.get(0).getPack(),idanim);
-        playerContanti();
+        if (modeldata!=null){
+            sendmodelplay(modeldata,datasender);
+            sendpkg(modeldata.get(0).getPack(),idanim);
+            playerContanti();
+        }
     }
     private void playerContanti(){
-        //if(isReadyVideo){
-            //Log.e("SERVICETRU",String.valueOf(playerManager.isServiceBound()));
-            //playerManager.playOrPause(url);
         getService().playOrPause(url);
-            playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-            playerView.setPlayer(getService().exoPlayer);
-        //}
+        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+        playerView.setUseArtwork(true);
+        playerView.setShowBuffering(PlayerView.SHOW_BUFFERING_ALWAYS);
+        playerView.setUseController(true);
+        locker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isLocked && isFullscreen){
+                    locker.setImageResource(R.drawable.ic_locked);
+                    playerView.setUseController(true);
+                    //Toast.makeText(animplay_activity.this,"Controller unLocked!",Toast.LENGTH_SHORT).show();
+                    isLocked = false;
+                }else if(!isLocked && isFullscreen){
+                    locker.setImageResource(R.drawable.ic_unlocked);
+                    playerView.setUseController(false);
+                    //Toast.makeText(animplay_activity.this,"Controller Locked!",Toast.LENGTH_SHORT).show();
+                    isLocked = true;
+                }
+            }
+        });
+        playerView.setControllerVisibilityListener(new PlayerControlView.VisibilityListener() {
+            @Override
+            public void onVisibilityChange(int visibility) {
+                if (visibility==0 && isFullscreen){
+                    hide_locker();
+
+                    playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                }else if(visibility >0 &&  isFullscreen){
+                    show_locker();
+
+                    playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE |
+                            View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE|
+                            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY|
+                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION|
+                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                }
+            }
+        });
 
 
+
+        playerView.setOnTouchListener(new VideoOnSwipeTouchListener(this,playerView,getService().exoPlayer){
+            private int counting;
+            private Handler handler = new Handler();
+            public void onSwipeRight() {
+                if (!isLocked){
+                    String seektimes = "Forward: "+counting+ " Seconds";
+                    video_seektime.setText(seektimes);
+                    show_seektime();
+                    unVisible();
+                }
+                //Toast.makeText(animplay_activity.this, "right", Toast.LENGTH_SHORT).show();
+            }
+            public void onSwipeLeft() {
+                if (!isLocked){
+                    String seektimes = "Rewind: "+counting+ " Seconds";
+                    video_seektime.setText(seektimes);
+                    show_seektime();
+                    unVisible();
+                }
+                //Toast.makeText(animplay_activity.this, "left", Toast.LENGTH_SHORT).show();
+            }
+            private void show_seektime(){
+
+                video_seektime.animate()
+                        .translationY(video_seektime.getHeight())
+                        .alpha(1f)
+                        .setDuration(500)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                video_seektime.setVisibility(View.VISIBLE);
+                            }
+                        });
+                video_seektime.setVisibility(View.VISIBLE);
+            }
+            private void unVisible(){
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        video_seektime.animate()
+                                .translationY(video_seektime.getHeight())
+                                .alpha(0f)
+                                .setDuration(500)
+                                .setListener(new AnimatorListenerAdapter() {
+                                    @Override
+                                    public void onAnimationEnd(Animator animation) {
+                                        super.onAnimationEnd(animation);
+                                        video_seektime.setVisibility(View.GONE);
+                                    }
+                                });
+                        //video_seektime.setVisibility(View.GONE);
+                    }
+                },3000);
+            }
+
+            @Override
+            public void onCounting(int count) {
+                this.counting = count;
+                //super.onCounting(count);
+            }
+        });
+
+        Glide.with(this).applyDefaultRequestOptions(new RequestOptions()
+                .placeholder(R.drawable.ic_picture).error(R.drawable.ic_picture))
+                .load(modeldata.get(0).getUrl_thmb())
+                .transition(new DrawableTransitionOptions().crossFade())
+                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()).into(video_artwork);
+        playerView.setPlayer(getService().exoPlayer);
+        recentplayed();
+    }
+    private void show_locker(){
+        locker.animate()
+                .translationY(locker.getHeight())
+                .alpha(1f)
+                .setDuration(500)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        locker.setVisibility(View.VISIBLE);
+                    }
+                });
+    }
+    private void hide_locker(){
+        locker.animate()
+                .translationY(locker.getHeight())
+                .alpha(1f)
+                .setDuration(500)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        locker.setVisibility(View.GONE);
+                    }
+                });
     }
 
     //send pkg id to more fragment
@@ -360,12 +508,17 @@ FetchDataListener getvideo = new FetchDataListener() {
         String tag = "android:switcher:" + R.id.aplay_pager + ":" + 1;
         more f = (more) getSupportFragmentManager().findFragmentByTag(tag);
         f.receivedata(pkg,anim);
+        String tag1 = "android:switcher:" + R.id.aplay_pager + ":" + 0;
+        details f1 = (details) getSupportFragmentManager().findFragmentByTag(tag1);
+        f1.receivestring(pkg,modeldata.get(0).getCover());
     }
 
     //Sending arraylist to details fragment
     private void sendmodelplay(ArrayList<videoplay_model>data,passdata_arraylist senddata){
         Log.e("CHECK ID ANIM",idanim);
-        senddata.onDataReceived(data,idanim);
+        if (!data.isEmpty()){
+            senddata.onDataReceived(data,idanim);
+        }
 
     }
     passdata_arraylist datasender = new passdata_arraylist() {
@@ -380,9 +533,11 @@ FetchDataListener getvideo = new FetchDataListener() {
     @Override
     protected void onResume() {
         super.onResume();
-        if(getService() == null){
+        if(getService() != null){
+            recentplayed();
             //playerManager.bind();
         }
+
 
     }
     @Override
@@ -405,6 +560,7 @@ FetchDataListener getvideo = new FetchDataListener() {
         //playerManager.unbind();
         //playerView.setPlayer(null);
         EventBus.getDefault().unregister(this);
+        handler_player_recent.removeCallbacks(update_recent);
         super.onStop();
     }
 
@@ -425,6 +581,7 @@ FetchDataListener getvideo = new FetchDataListener() {
             editor.commit();
 
         }
+        handler_player_recent.removeCallbacks(update_recent);
     }
 
     @Override
@@ -439,18 +596,19 @@ FetchDataListener getvideo = new FetchDataListener() {
             closereplyfragment();
         }else {
             if(isFullscreen){
-                buttun_fullscren = getResources().getDrawable(R.drawable.ic_fullscreen_expand);
+                buttun_fullscren = ResourcesCompat.getDrawable(getResources(),R.drawable.ic_fullscreen_expand,null);
                 imageView.setImageDrawable(buttun_fullscren);
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                playerView.setUseController(true);
+                isLocked = false;
 
             }
             if(!isFullscreen){
-                super.onBackPressed();
-                finish();
-
                 if(getService()!=null&&playerManager.isServiceBound()){
                     playerManager.unbind();
-                    modeldata.clear();
+                    if (!modeldata.isEmpty()){
+                        modeldata.clear();
+                    }
                     //idanim = null;
                 }
                 SharedPreferences pref = getApplicationContext().getSharedPreferences("aplay",0);
@@ -461,6 +619,9 @@ FetchDataListener getvideo = new FetchDataListener() {
                     editor.commit();
 
                 }
+                handler_player_recent.removeCallbacks(update_recent);
+                super.onBackPressed();
+                finish();
                 //unbindService(serviceConnection);
                 //Intent intent = new Intent(this, dashboard_activity.class);
                 //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -500,8 +661,102 @@ FetchDataListener getvideo = new FetchDataListener() {
         aplay_tabs.setVisibility(View.VISIBLE);
         aplay_viewpager.setVisibility(View.VISIBLE);
     }
+    //Recent Method
+    private void read_rect(){
+        playerrecent_read read = new playerrecent_read();
+        read.execute("");
+    }
+    private void update_rect(){
+        if (getService() !=null){
+            if (getService().exoPlayer.getPlaybackState() == Player.STATE_READY || getService().exoPlayer.getPlaybackState() == Player.STATE_BUFFERING){
+                update_recent = new Runnable() {
+                    @Override
+                    public void run() {
+                        playerrecent_write first_write = new playerrecent_write();
+                        first_write.execute("UPDATE");
+                    }
+                };
+                handler_player_recent = new Handler();
+                handler_player_recent.postDelayed(update_recent,5000);
+            }
+        }
+    }
+    private long getCurrentPlayTime(){
+        return getService().exoPlayer.getCurrentPosition();
+    }
+    private void seekPlayer(long positition){
+        getService().exoPlayer.seekTo(positition);
+    }
+    //Endof recent method
 
+    /*
+    * This section for getRecent and updateRecent + firstime
+    * */
+    //SQLite for write last played with timestamp
+    public class playerrecent_write extends AsyncTask<String,Void, Void>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
+        @Override
+        protected Void doInBackground(String... params) {
+            if (!modeldata.isEmpty()){
+                if (params[0].equals("FIRST")){
+                    String package_id = modeldata.get(0).getPack();
+                    String package_name = modeldata.get(0).getName_anim();
+                    String anmid =idanim;
+                    int episode= Integer.valueOf(modeldata.get(0).getEpisode());
+                    String url_cover = modeldata.get(0).getCover();
+                    long timestamp = getCurrentPlayTime();
+                    recentPlayDBHelper.add_recent(package_id,package_name,anmid,episode,url_cover,timestamp);
+
+                }
+                if (params[0].equals("UPDATE")){
+                    String package_id = modeldata.get(0).getPack();
+                    String package_name = modeldata.get(0).getName_anim();
+                    String anmid =idanim;
+                    int episode= Integer.valueOf(modeldata.get(0).getEpisode());
+                    String url_cover = modeldata.get(0).getCover();
+                    long timestamp = getCurrentPlayTime();
+                    recentPlayDBHelper.update_recent(package_id,package_name,anmid,episode,url_cover,timestamp);
+                }
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void vod) {
+            super.onPostExecute(vod);
+            update_rect();
+        }
+    }
+    //SQLite for read last played with timestamp
+    public class playerrecent_read extends AsyncTask<String,Void, recentland>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected recentland doInBackground(String... strings) {
+            return recentPlayDBHelper.read_recent(idanim);
+        }
+
+        @Override
+        protected void onPostExecute(recentland recentland) {
+            System.out.println("TIMESTAMP::"+recentland.getTimestamp());
+            if (getCurrentPlayTime() < recentland.getTimestamp()){
+               seekPlayer(recentland.getTimestamp());
+            }
+            update_rect();
+        }
+    }
+
+    /*
+    * THIS SECTION FOR READ TOKEN ONLY
+    * */
     //Sqlite for read token and id on local db
     public class SqliteRead extends AsyncTask<String,Void, userland> {
         @Override
@@ -511,13 +766,13 @@ FetchDataListener getvideo = new FetchDataListener() {
         @Override
         protected userland doInBackground(String... params){
 
-            return loginInternalDBHelper.getUser();
+            return initInternalDBHelper.getUser();
 
         }
 
         @Override
         protected void onPostExecute(userland usl){
-            Log.e("TOKEN:",usl.getToken());
+            //Log.e("TOKEN:",usl.getToken());
             SharedPreferences preferences = getApplicationContext().getSharedPreferences("aplay",MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("iduser",usl.getIdUser());

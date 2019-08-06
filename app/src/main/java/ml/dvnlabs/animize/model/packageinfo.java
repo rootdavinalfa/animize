@@ -3,10 +3,10 @@ package ml.dvnlabs.animize.model;
 import java.util.List;
 
 public class packageinfo {
-    String pack, name, syn,tot, rate, mal;
+    String pack, name, syn,tot, rate, mal,cover;
     List<String>genre;
 
-    public packageinfo(String pack, String name, String sysnop, String tot, String rate, String mal, List<String>genre){
+    public packageinfo(String pack, String name, String sysnop, String tot, String rate, String mal, List<String>genre,String cover){
         this.pack = pack;
         this.name = name;
         this.syn = sysnop;
@@ -14,6 +14,11 @@ public class packageinfo {
         this.rate = rate;
         this.mal = mal;
         this.genre = genre;
+        this.cover = cover;
+    }
+
+    public String getCover() {
+        return cover;
     }
 
     public String getMal() {

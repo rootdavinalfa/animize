@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradientprofilebg">
+    <TextView
+        android:layout_marginTop="120dp"
+        android:id="@+id/login_appname"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Animize"
+        android:textColor="@color/secondaryLightColor"
+        android:textSize="46sp"/>
+    <LinearLayout
+        android:id="@+id/user_inter_login"
+        android:layout_marginStart="2dp"
+        android:layout_below="@+id/login_appname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/inter_tablayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="1dp"
+            app:tabRippleColor="@null"
+            app:tabIndicatorColor="@color/secondaryLightColor"
+            app:tabSelectedTextColor="@color/secondaryLightColor"
+            app:tabTextAppearance="@style/LoginTabAppreance"
+            app:tabTextColor="@color/design_default_color_background">
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Login"/>
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Register"/>
+
+        </com.google.android.material.tabs.TabLayout>
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/user_inter_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

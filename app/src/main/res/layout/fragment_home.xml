@@ -1,30 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/colorPrimaryDark"
     android:layout_height="match_parent"
-    android:padding="8dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <ScrollView
+    android:id="@+id/dash_refresh_home"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <androidx.cardview.widget.CardView
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardBackgroundColor="@color/colorPrimaryDark"
-            app:contentPadding="2dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.yarolegovich.discretescrollview.DiscreteScrollView
+                    android:id="@+id/rv_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    app:dsv_orientation="horizontal"/>
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmer_banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp">
+                    <include layout="@layout/shimmer_big"/>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+
+            </RelativeLayout>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+            <!--ADSVIEW-->
+            <LinearLayout
+                android:id="@+id/dash_ads"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
                 android:orientation="vertical">
 
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="5dp"
+                    app:contentPadding="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="@drawable/ripple_forrounded"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginStart="4dp"
+                                android:text="@string/last_package"
+                                android:textColor="@color/secondaryTextColor"
+                                android:textSize="24sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="30dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="4dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="@drawable/ripple_forrounded"
+                                android:text="@string/home_see_more"
+                                android:textColor="@color/secondaryDarkColor"
+                                android:textSize="17sp" />
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <com.yarolegovich.discretescrollview.DiscreteScrollView
+                                android:id="@+id/rv_lastpackage"
+                                tools:listitem="@layout/rv_lastpackage"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:dsv_orientation="horizontal"
+                                />
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/shimmer_package"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <include layout="@layout/shimmer_big"/>
+                            </com.facebook.shimmer.ShimmerFrameLayout>
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp" />
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
-                    app:cardBackgroundColor="@color/colorPrimary"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="5dp"
                     app:contentPadding="5dp">
@@ -48,7 +142,7 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_marginStart="4dp"
                                 android:text="@string/last_uploaded_txt"
-                                android:textColor="@color/design_default_color_background"
+                                android:textColor="@color/secondaryTextColor"
                                 android:textSize="24sp" />
 
                             <TextView
@@ -57,17 +151,10 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginEnd="4dp"
                                 android:text="@string/home_see_more"
-                                android:textColor="@color/design_default_color_secondary"
+                                android:textColor="@color/secondaryDarkColor"
                                 android:textSize="17sp" />
                         </RelativeLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="4dp"
-                            android:background="@color/design_default_color_secondary" />
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -95,72 +182,13 @@
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="10dp" />
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    app:cardBackgroundColor="@color/colorPrimary"
-                    app:cardCornerRadius="2dp"
-                    app:cardElevation="5dp"
-                    app:contentPadding="5dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:foreground="@drawable/ripple_forrounded"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:layout_alignParentStart="true"
-                                android:layout_marginStart="4dp"
-                                android:text="@string/last_package"
-                                android:textColor="@color/design_default_color_background"
-                                android:textSize="24sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="4dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:foreground="@drawable/ripple_forrounded"
-                                android:text="@string/home_see_more"
-                                android:textColor="@color/design_default_color_secondary"
-                                android:textSize="17sp" />
-                        </RelativeLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="4dp"
-                            android:background="@color/design_default_color_secondary" />
-
-                        <com.yarolegovich.discretescrollview.DiscreteScrollView
-                            android:id="@+id/rv_lastpackage"
-                            tools:listitem="@layout/rv_lastpackage"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="10dp" />
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
-                    app:cardBackgroundColor="@color/colorPrimary"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="5dp"
                     app:contentPadding="5dp">
@@ -183,7 +211,7 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_marginStart="4dp"
                                 android:text="@string/movies"
-                                android:textColor="@color/design_default_color_background"
+                                android:textColor="@color/secondaryTextColor"
                                 android:textSize="24sp" />
 
                             <TextView
@@ -195,17 +223,10 @@
                                 android:focusable="true"
                                 android:foreground="@drawable/ripple_forrounded"
                                 android:text="@string/home_see_more"
-                                android:textColor="@color/design_default_color_secondary"
+                                android:textColor="@color/secondaryDarkColor"
                                 android:textSize="17sp" />
                         </RelativeLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="4dp"
-                            android:background="@color/design_default_color_secondary" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:layout_width="match_parent"
@@ -220,21 +241,21 @@
                     android:layout_height="5dp" />
                 <RelativeLayout
                     android:padding="10dp"
-                    android:background="@color/colorPrimaryDark"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textColor="@color/design_default_color_secondary"
+                        android:textColor="@color/exo_error_message_background_color"
                         android:textSize="12sp"
                         android:layout_centerInParent="true"
                         android:textAlignment="center"
                         android:text="@string/disclaimer"/>
                 </RelativeLayout>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-</FrameLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

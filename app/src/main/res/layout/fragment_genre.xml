@@ -1,46 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorPrimaryDark">
+    >
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/genre_title_load"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            app:indicatorColor="@color/primaryDarkColor"
+            app:indicatorName="BallClipRotateIndicator"/>
+        <TextView
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/primaryColor"
+            android:text="Waiting divine message..."/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/genre_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
+            <com.google.android.material.tabs.TabLayout
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/genre_tabshow"
+                android:id="@+id/genre_tablayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-smallcaps"
-                android:text="@string/nav_genre_txt"
-                android:textAlignment="viewStart"
-                android:textAllCaps="false"
-                android:textColor="@color/design_default_color_secondary_variant"
-                android:textSize="36sp"
-                android:textStyle="bold" />
+                android:theme="@style/AppTheme.TabStyle"
+                app:tabIndicatorHeight="1dp"
+                app:tabIndicatorColor="@color/primaryColor"
+                app:tabRippleColor="@null"
+                app:tabSelectedTextColor="@color/primaryDarkColor"
+                app:tabTextAppearance="@style/MyCustomTabTextAppearance"
+                app:tabTextColor="@color/secondaryDarkColor"
+                app:tabMode="scrollable">
+            </com.google.android.material.tabs.TabLayout>
+            <ImageView
+                android:id="@+id/genre_tabshow"
+                android:layout_alignParentEnd="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="15dp"
+                android:rotation="180"
+                android:tint="@color/secondaryTextColor"
+                android:src="@drawable/ic_expand_collapse"/>
+            <net.cachapa.expandablelayout.ExpandableLayout
+                android:id="@+id/genre_meta_container"
+                android:layout_below="@+id/genre_tablayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:el_duration="500"
+                app:el_expanded="false"
+                app:el_parallax="1">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_margin="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="List Genre"
+                        android:textSize="20sp"
+                        android:textColor="@color/secondaryTextColor"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/genre_rv_meta_staggered"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                </LinearLayout>
+            </net.cachapa.expandablelayout.ExpandableLayout>
         </RelativeLayout>
-
-        <View
-            android:layout_width="80dp"
-            android:layout_height="1dp"
-            android:background="@color/design_default_color_secondary" />
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/genre_tablayout"
-            android:layout_width="match_parent"
-            android:theme="@style/AppTheme.TabStyle"
-            app:tabSelectedTextColor="@color/design_default_color_secondary"
-            app:tabTextColor="@color/design_default_color_background"
-            android:background="@color/colorPrimaryDark"
-            app:tabIndicatorColor="@color/design_default_color_secondary"
-            app:tabRippleColor="@color/design_default_color_secondary"
-            android:layout_height="wrap_content"
-            app:tabMode="scrollable">
-
-        </com.google.android.material.tabs.TabLayout>
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/genre_viewpager"
             android:layout_width="match_parent"
@@ -48,5 +95,4 @@
 
         </androidx.viewpager.widget.ViewPager>
     </LinearLayout>
-
-</FrameLayout>
+</RelativeLayout>

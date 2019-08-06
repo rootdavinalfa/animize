@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorOverPrimary"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="5dp"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="@drawable/layoutrippleeffect">
+    android:foreground="@drawable/layoutrippleeffect"
+    android:id="@+id/genrepack_container"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp"
+    app:contentPadding="5dp">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,54 +27,65 @@
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_picture"
-                android:tint="@color/design_default_color_background" />
+                android:src="@drawable/ic_picture" />
         </RelativeLayout>
+
         <RelativeLayout
+            android:layout_margin="2dp"
+            android:background="@drawable/round_layout"
+            android:backgroundTint="@color/blacktrans2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/genrepackage_name"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="seishun buta ashdihsadihiashdi sadsa adasdyaro senapi wo minai de"
-                android:maxLines="2"
                 android:ellipsize="end"
+                android:maxLines="3"
+                tools:text="seishun buta ashdihsadihiashdi sadsa adasdyaro senapi wo minai de"
                 android:textAlignment="center"
                 android:textColor="@color/design_default_color_background"
-                android:textSize="22sp" />
+                android:textSize="20sp"
+                android:autoSizeMaxTextSize="22sp"
+                android:autoSizeMinTextSize="16sp"/>
         </RelativeLayout>
+
         <RelativeLayout
-            android:layout_marginTop="5dp"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp">
+
             <RelativeLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentStart="true"
                 android:background="@drawable/ic_star"
-                android:layout_width="40dp"
-                android:layout_height="40dp">
+                android:backgroundTint="@color/yellow">
 
                 <TextView
                     android:id="@+id/genrepackages_rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:layout_margin="5dp"
                     android:gravity="center"
-
                     android:text="9.99"
                     android:textColor="@color/design_default_color_background"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
             </RelativeLayout>
+
             <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="20dp"
                 android:layout_alignParentEnd="true"
                 android:background="@drawable/roundbutton"
-                android:backgroundTint="@color/red"
-                android:layout_width="100dp"
-                android:layout_height="20dp">
+                android:backgroundTint="@color/red">
 
                 <TextView
                     android:id="@+id/genrepackage_mal"
@@ -83,12 +100,14 @@
                     android:textStyle="bold" />
 
             </RelativeLayout>
+
             <RelativeLayout
-                android:layout_marginTop="20dp"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/roundbutton"
                 android:layout_width="100dp"
-                android:layout_height="20dp">
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/roundbutton"
+                android:backgroundTint="@color/primaryColor">
 
                 <TextView
                     android:id="@+id/genrepackage_episode"
@@ -105,4 +124,4 @@
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
-</FrameLayout>
+</androidx.cardview.widget.CardView>

@@ -1,5 +1,6 @@
 package ml.dvnlabs.animize.player;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -17,8 +18,6 @@ import android.util.Log;
 import android.view.View;
 
 
-import com.danikula.videocache.CacheListener;
-import com.danikula.videocache.HttpProxyCacheServer;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -29,8 +28,14 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.offline.DownloadManager;
+import com.google.android.exoplayer2.offline.DownloadService;
+import com.google.android.exoplayer2.scheduler.Scheduler;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.dash.DashChunkSource;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
@@ -42,8 +47,17 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.FileDataSource;
+import com.google.android.exoplayer2.upstream.cache.Cache;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSink;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
+import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
+import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor;
+import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 import com.google.android.exoplayer2.util.Util;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -61,7 +75,7 @@ import ml.dvnlabs.animize.activity.animplay_activity;
 import ml.dvnlabs.animize.app.AppController;
 
 
-public class PlayerService extends Service implements AudioManager.OnAudioFocusChangeListener, Player.EventListener, CacheListener {
+public class PlayerService extends Service implements AudioManager.OnAudioFocusChangeListener, Player.EventListener {
     public static final String ACTION_PLAY = "ml.dvnlabs.animize.player.PlayerService.ACTION_PLAY";
     public static final String ACTION_PAUSE = "ml.dvnlabs.animize.player.PlayerService.ACTION_PAUSE";
     public static final String ACTION_STOP = "ml.dvnlabs.animize.player.PlayerService.ACTION_STOP";
@@ -115,7 +129,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
     public void onCreate(){
         super.onCreate();
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        notificationManager = new PlayNotificationManager(this,getApplicationContext());
+        //notificationManager = new PlayNotificationManager(this,getApplicationContext());
         mediaSession = new MediaSessionCompat(this,getClass().getSimpleName());
         transportControls = mediaSession.getController().getTransportControls();
         mediaSession.setActive(true);
@@ -128,7 +142,8 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
         DefaultTrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         DefaultLoadControl loadControl = new DefaultLoadControl();
 
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory,trackSelector,loadControl);
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(this,trackSelector,loadControl);
+        //exoPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory,trackSelector,loadControl);
         exoPlayer.addListener(this);
         status = PlaybackStatus.IDLE;
 
@@ -199,6 +214,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
 
         exoPlayer.release();
         exoPlayer.removeListener(this);
+
 
        //notificationManager.cancelNotify();
 
@@ -319,17 +335,16 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
 
     }
 
-    @Override
-    public void onCacheAvailable(File cacheFile, String url, int percentsAvailable) {
-        Log.d("__onCacheAvailable", percentsAvailable + "");
-    }
-
     private MediaSource buildMediaSource(Uri uri) {
+        DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         String userAgent = Util.getUserAgent(getApplicationContext(), "Animize");
-            return new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory(userAgent,null,DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
-                    DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
-                    true))
-                    .createMediaSource(uri);
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, bandwidthMeter,new DefaultHttpDataSourceFactory(userAgent,null,DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
+                DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
+                true));
+        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        CacheDataSourceFactory cacheDataSourceFactory = new CacheDataSourceFactory(AppController.setVideoCache(),dataSourceFactory);
+        return new ProgressiveMediaSource.Factory(cacheDataSourceFactory,extractorsFactory)
+                .createMediaSource(uri);
     }
 
     public String getStatus(){
@@ -360,32 +375,24 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
     public void init(String streamUrl) {
         this.streamUrl = streamUrl;
 
-        // TODO: add caching
-        //HttpProxyCacheServer proxy = AppController.getProxy(getApplicationContext());
-        //proxy.registerCacheListener(this, streamUrl);
-        //String proxyUrl = proxy.getProxyUrl(streamUrl);
-        //Log.e("ER",proxyUrl);
-        //MediaSource mediaSource;
-        //if (streamUrl.contains(".mp")) {
-          //  mediaSource = buildMediaSource(Uri.parse(proxyUrl));
-        //} else {
-        //    mediaSource = buildMediaSource(Uri.parse(streamUrl));
-        //}
-
         MediaSource mediaSource = buildMediaSource(Uri.parse(streamUrl));
+
         exoPlayer.prepare(mediaSource);
         exoPlayer.setVideoScalingMode(C.VIDEO_SCALING_MODE_SCALE_TO_FIT);
         exoPlayer.setPlayWhenReady(true);
     }
 
+
+
+
     public void playOrPause(String urli) {
-        Log.e("STREAM-OK:",urli);
+        //Log.e("STREAM-OK:",urli);
         if(urli != null){
             System.out.println("OK");
             if (streamUrl != null && streamUrl.equals(urli)) {
                 play();
             } else {
-                Log.e("Service",urli);
+                //Log.e("Service",urli);
                 init(urli);
 
             }

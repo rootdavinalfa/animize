@@ -12,12 +12,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -32,7 +29,7 @@ import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.model.sourcelist;
-import ml.dvnlabs.animize.recyclerview.sourcelist_adapter;
+import ml.dvnlabs.animize.recyclerview.list.sourcelist_adapter;
 
 public class sourceselector extends BottomSheetDialogFragment {
     private static final int CODE_GET_REQUEST = 1024;

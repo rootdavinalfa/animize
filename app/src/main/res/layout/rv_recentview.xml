@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="@drawable/layoutrippleeffect"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp"
+    app:contentPadding="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/recentlist_friendlyday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primaryDarkColor"
+            android:textSize="20sp"
+            tools:text="Today" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp">
+
+            <ImageView
+                android:id="@+id/recentlist_cover"
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:layout_margin="5dp"
+                tools:src="@drawable/ic_picture" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/recentlist_cover"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/recentlist_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@color/secondaryDarkColor2"
+                    android:textSize="20sp"
+                    tools:text="makakakakak asuuas gudsaug uasdugu" />
+
+                <TextView
+                    android:id="@+id/recentlist_episode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondaryDarkColor2"
+                    android:textSize="16sp"
+                    tools:text="Episode : 1" />
+
+                <TextView
+                    android:id="@+id/recentlist_lasttime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondaryDarkColor"
+                    android:textSize="14sp"
+                    tools:text="Last Time : 12:22" />
+
+                <TextView
+                    android:id="@+id/recentlist_playedon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondaryDarkColor"
+                    android:textSize="14sp"
+                    tools:text="Last Played On : 12 February 2019" />
+            </LinearLayout>
+
+        </RelativeLayout>
+        <!--<View
+            android:layout_marginBottom="1dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/secondaryTextColor"/>-->
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

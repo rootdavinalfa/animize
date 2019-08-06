@@ -11,12 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.MainActivity;
-import ml.dvnlabs.animize.database.LoginInternalDBHelper;
+import ml.dvnlabs.animize.database.InitInternalDBHelper;
 import ml.dvnlabs.animize.database.model.userland;
 
 /**
@@ -24,7 +23,7 @@ import ml.dvnlabs.animize.database.model.userland;
  */
 public class profile extends Fragment {
     private TextView textid,textname,textemail;
-    private LoginInternalDBHelper loginInternalDBHelper;
+    private InitInternalDBHelper initInternalDBHelper;
     private Button btn_so;
     public profile() {
         // Required empty public constructor
@@ -40,7 +39,7 @@ public class profile extends Fragment {
         textemail = (TextView)view.findViewById(R.id.text_prof_email);
         textid = (TextView)view.findViewById(R.id.text_prof_id);
         textname = (TextView)view.findViewById(R.id.text_prof_name);
-        loginInternalDBHelper = new LoginInternalDBHelper(getContext());
+        initInternalDBHelper = new InitInternalDBHelper(getContext());
         SqliteReadUser sqliteReadUser = new SqliteReadUser();
         sqliteReadUser.execute("OK");
         btn_so.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +66,9 @@ public class profile extends Fragment {
         @Override
         protected String doInBackground(String... params){
 
-            return loginInternalDBHelper.sign_out();
+            initInternalDBHelper.sign_out();
+            initInternalDBHelper.delete_starred();
+            return null;
 
             }
 
@@ -85,7 +86,7 @@ public class profile extends Fragment {
         @Override
         protected userland doInBackground(String... params){
 
-            return loginInternalDBHelper.getUser();
+            return initInternalDBHelper.getUser();
 
         }
 

@@ -2,7 +2,6 @@ package ml.dvnlabs.animize.fragment.comment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,7 +33,7 @@ import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.model.api_usermodel;
 import ml.dvnlabs.animize.model.commentMainModel;
-import ml.dvnlabs.animize.recyclerview.commentMain_adapter;
+import ml.dvnlabs.animize.recyclerview.comment.commentMain_adapter;
 
 public class mainComment extends Fragment {
 

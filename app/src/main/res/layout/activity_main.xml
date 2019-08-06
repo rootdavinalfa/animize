@@ -122,7 +122,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/roundbutton"
-                            android:onClick="btn_regist_action"
+                            android:backgroundTint="@color/secondaryDarkColor"
                             android:text="@string/btn_register"
                             android:textColor="@color/design_default_color_on_primary"
                             />
@@ -140,7 +140,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/roundbutton"
-                            android:onClick="btn_login_action"
+                            android:backgroundTint="@color/secondaryDarkColor"
                             android:text="@string/btn_login"
                             android:textColor="@color/design_default_color_on_primary"
                             android:theme="@style/loginbutton"

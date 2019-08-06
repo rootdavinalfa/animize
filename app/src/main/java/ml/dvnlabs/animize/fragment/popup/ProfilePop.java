@@ -1,37 +1,26 @@
 package ml.dvnlabs.animize.fragment.popup;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.DialogFragment;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.MainActivity;
-import ml.dvnlabs.animize.database.LoginInternalDBHelper;
+import ml.dvnlabs.animize.database.InitInternalDBHelper;
 import ml.dvnlabs.animize.database.model.userland;
 
 public class ProfilePop extends BottomSheetDialogFragment {
-    private LoginInternalDBHelper loginInternalDBHelper;
+    private InitInternalDBHelper initInternalDBHelper;
     private TextView textname,textemail;
     private Button btn_logout;
 
@@ -49,7 +38,7 @@ public class ProfilePop extends BottomSheetDialogFragment {
         textname = (TextView)view.findViewById(R.id.dash_profile_tv_name);
 
 
-        loginInternalDBHelper = new LoginInternalDBHelper(getContext());
+        initInternalDBHelper = new InitInternalDBHelper(getContext());
         SqliteReadUser sqliteReadUser = new SqliteReadUser();
         sqliteReadUser.execute("OK");
         btn_logout.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +64,7 @@ public class ProfilePop extends BottomSheetDialogFragment {
         @Override
         protected String doInBackground(String... params){
 
-            return loginInternalDBHelper.sign_out();
+            return initInternalDBHelper.sign_out();
 
         }
 
@@ -93,7 +82,7 @@ public class ProfilePop extends BottomSheetDialogFragment {
         @Override
         protected userland doInBackground(String... params){
 
-            return loginInternalDBHelper.getUser();
+            return initInternalDBHelper.getUser();
 
         }
 

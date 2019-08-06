@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="@drawable/layoutrippleeffect"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp"
+    app:contentPadding="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/rv_shimmer_recent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <include layout="@layout/shimmer_recent" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <LinearLayout
+            android:id="@+id/rv_item_recent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="160dp">
+
+                <ImageView
+                    android:id="@+id/star_cover"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/ic_picture" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/star_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_centerInParent="true"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textAlignment="center"
+                    android:textColor="@color/secondaryTextColor"
+                    android:textSize="22sp"
+                    tools:text="seishun buta ashdihsadihiashdi sadsa adasdyaro senapi wo minai de" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="5dp">
+
+                <RelativeLayout
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentStart="true"
+                    android:background="@drawable/ic_star"
+                    android:backgroundTint="@color/yellow">
+
+                    <TextView
+                        android:id="@+id/star_rate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_margin="5dp"
+                        android:gravity="center"
+                        android:textColor="@color/design_default_color_background"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="9.99" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/roundbutton"
+                    android:backgroundTint="@color/red">
+
+                    <TextView
+                        android:id="@+id/star_mal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+
+                        android:textColor="@color/design_default_color_background"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="MAL : 11021" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="100dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/roundbutton"
+                    android:backgroundTint="@color/primaryColor">
+
+                    <TextView
+                        android:id="@+id/star_episode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+
+                        android:textColor="@color/design_default_color_background"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        tools:text="2 Of 12" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
