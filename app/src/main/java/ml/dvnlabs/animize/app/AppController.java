@@ -2,9 +2,6 @@ package ml.dvnlabs.animize.app;
 
 import android.app.Application;
 import android.content.Context;
-import com.android.volley.RequestQueue;
-import com.google.android.exoplayer2.database.DatabaseProvider;
-import com.google.android.exoplayer2.upstream.cache.Cache;
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 
@@ -40,8 +37,6 @@ public class AppController extends Application {
         //Check is PACKAGE_NAME is debug or not,if not return false;otherwise return true if release version
         return context.getPackageName().equals("ml.dvnlabs.animize.ima.debug");
     }
-
-
 
 
     public static SimpleCache setVideoCache() {

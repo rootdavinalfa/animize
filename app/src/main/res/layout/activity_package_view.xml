@@ -119,6 +119,12 @@
                         tools:listitem="@layout/rv_staggered">
 
                     </androidx.recyclerview.widget.RecyclerView>
+                    <FrameLayout
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/packageview_ads"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
                     <RelativeLayout
                         android:clickable="true"
                         android:focusable="true"

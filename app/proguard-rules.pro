@@ -39,13 +39,17 @@
 
 -keep class com.wang.avi.** { *; }
 
--keep public class com.google.android.gms.ads.** {
-    public *;
-}
 
--keep public class com.google.ads.** {
-    public *;
-}
+-keep class com.heyzap.** {*;}
+-keepclassmembers class com.heyzap.** {*;}
+-keepclasseswithmembernames class com.heyzap.** {*;}
+
+-keep class com.fyber.inneractive.** {*;}
+-keepclassmembers class com.fyber.inneractive.** {*;}
+-keepclasseswithmembernames class com.fyber.inneractive.** {*;}
+
+-dontwarn com.heyzap.**
+
 #-dontwarn jp.co.cyberagent.android.gpuimage.**
 
 #-keep public class * implements com.bumptech.glide.module.GlideModule
@@ -54,3 +58,47 @@
 #  **[] $VALUES;
 #  public *;
 #}
+
+# For Google Play Services
+-keep public class com.google.android.gms.ads.**{
+   public *;
+}
+
+# For mediation
+-keepattributes *Annotation*
+
+# Other required classes for Google Play Services
+# Read more at http://developer.android.com/google/play-services/setup.html
+-keep class * extends java.util.ListResourceBundle {
+   protected Object[][] getContents();
+}
+
+-keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
+   public static final *** NULL;
+}
+
+-keepnames @com.google.android.gms.common.annotation.KeepName class *
+-keepclassmembernames class * {
+   @com.google.android.gms.common.annotation.KeepName *;
+}
+
+-keepnames class * implements android.os.Parcelable {
+   public static final ** CREATOR;
+}
+-keepattributes SourceFile,LineNumberTable
+-keep class com.inmobi.** { *; }
+-dontwarn com.inmobi.**
+-keep public class com.google.android.gms.**
+-dontwarn com.google.android.gms.**
+-dontwarn com.squareup.picasso.**
+-keep class com.google.android.gms.ads.identifier.AdvertisingIdClient{public *;}
+-keep class com.google.android.gms.ads.identifier.AdvertisingIdClient$Info{public *;}
+#skip the Picasso library classes
+-keep class com.squareup.picasso.** {*;}
+-dontwarn com.squareup.picasso.**
+-dontwarn com.squareup.okhttp.**
+#skip Moat classes
+-keep class com.moat.** {*;}
+-dontwarn com.moat.**
+#skip AVID classes
+-keep class com.integralads.avid.library.** {*;}

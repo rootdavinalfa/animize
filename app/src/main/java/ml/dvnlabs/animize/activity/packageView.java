@@ -6,26 +6,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,12 +29,14 @@ import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.MultiTransformation;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.facebook.ads.AudienceNetworkAds;
+import com.heyzap.sdk.ads.BannerAdView;
+import com.heyzap.sdk.ads.HeyzapAds;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
@@ -53,14 +51,12 @@ import java.util.List;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.app.AppController;
 import ml.dvnlabs.animize.database.PackageStarDBHelper;
 import ml.dvnlabs.animize.database.RecentPlayDBHelper;
 import ml.dvnlabs.animize.database.model.recentland;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
-import ml.dvnlabs.animize.fragment.global;
 import ml.dvnlabs.animize.fragment.information.coverview;
 import ml.dvnlabs.animize.model.packageinfo;
 import ml.dvnlabs.animize.model.playlist_model;
@@ -81,9 +77,12 @@ public class packageView extends AppCompatActivity {
     private TextView genr,synops,recent_title,recent_episode;
     private CoordinatorLayout package_parent;
     private RelativeLayout recent_container;
+    private FrameLayout adContainer;
     String pkganim;
 
     private MenuItem pack_star;
+
+    private BannerAdView bannerAdView;
 
     PackageStarDBHelper packageStarDBHelper;
     RecentPlayDBHelper recentPlayDBHelper;
@@ -121,7 +120,9 @@ public class packageView extends AppCompatActivity {
             System.out.println(pkganim);
             packageStarDBHelper = new PackageStarDBHelper(this);
             recentPlayDBHelper = new RecentPlayDBHelper(this);
-
+            AudienceNetworkAds.initialize(this);
+            //MobileAds.initialize(this,"pub-2736984372955523");
+            HeyzapAds.start("0cab52e102b54b73b63c898d3c8e5e40", this);
         }
         GetInfo();
     }
@@ -154,6 +155,7 @@ public class packageView extends AppCompatActivity {
         recent_episode = findViewById(R.id.packageview_recent_episode);
         recent_title = findViewById(R.id.packageview_recent_title);
         recent_img = findViewById(R.id.packageview_recent_img);
+        adContainer = findViewById(R.id.packageview_ads);
         //container.setVisibility(View.GONE);
 
         modelinfo = new ArrayList<>();
@@ -165,6 +167,12 @@ public class packageView extends AppCompatActivity {
         super.onResume();
         show_recent();
         invalidateOptionsMenu();
+    }
+
+    @Override
+    protected void onDestroy() {
+        bannerAdView.destroy();
+        super.onDestroy();
     }
 
     @Override
@@ -326,7 +334,7 @@ public class packageView extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     FragmentManager fm = getSupportFragmentManager();
-                    coverview alertDialog = coverview.newInstance();
+                    coverview alertDialog = new coverview();
                     alertDialog.setUrl(modelinfo.get(0).getCover());
                     alertDialog.show(fm, "coverview");
 
@@ -334,6 +342,12 @@ public class packageView extends AppCompatActivity {
                 }
             });
             show_recent();
+            bannerAdView = new BannerAdView(this);
+            adContainer.addView(bannerAdView);
+            //AdSettings.addTestDevice("e9e9d5f9-4782-4688-945e-2b27e89ba7d0");
+            //AdSettings.setDebugBuild(true);
+            bannerAdView.load();
+
         }catch (JSONException e){
             Log.e("JSON ERROR:",e.toString());
         }
