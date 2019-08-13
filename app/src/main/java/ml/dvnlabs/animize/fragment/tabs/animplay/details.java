@@ -1,7 +1,6 @@
 package ml.dvnlabs.animize.fragment.tabs.animplay;
 
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,11 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AnticipateInterpolator;
-import android.view.animation.AnticipateOvershootInterpolator;
-import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,11 +35,8 @@ import java.util.List;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.activity.packageView;
 import ml.dvnlabs.animize.database.PackageStarDBHelper;
 import ml.dvnlabs.animize.fragment.comment.mainComment;
-import ml.dvnlabs.animize.fragment.global;
-import ml.dvnlabs.animize.fragment.library_n.star;
 import ml.dvnlabs.animize.model.videoplay_model;
 
 /**

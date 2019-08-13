@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.dashboard_activity;
-import ml.dvnlabs.animize.recyclerview.EndlessRecyclerOnScrollListener;
+import ml.dvnlabs.animize.recyclerview.EndlessRecyclerScrollListener;
 import ml.dvnlabs.animize.recyclerview.list.video_list_adapter;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
@@ -293,7 +293,7 @@ public class lastup_video_list extends Fragment implements View.OnClickListener 
         }
     }
     private void onscrool(){
-        listView.setOnScrollListener(new EndlessRecyclerOnScrollListener(layoutManager) {
+        listView.setOnScrollListener(new EndlessRecyclerScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int current_page) {
                 modeldata.add(new video_list_model(null,null,null,null));

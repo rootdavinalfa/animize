@@ -27,7 +27,6 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,9 +35,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.ads.AudienceNetworkAds;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
+import com.heyzap.sdk.ads.HeyzapAds;
 
 
 public class dashboard_activity extends AppCompatActivity implements checkNetwork.ConnectivityReceiverListener{
@@ -78,10 +80,12 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         }
         initializes();
         AudienceNetworkAds.initialize(this);
-
-
+        //MobileAds.initialize(this,"pub-2736984372955523");
+        HeyzapAds.start("0cab52e102b54b73b63c898d3c8e5e40", this);
+        //HeyzapAds.startTestActivity(this);
         SqliteReadUser sqliteReadUser = new SqliteReadUser();
         sqliteReadUser.execute("OK");
+
         NetworkChecker = new checkNetwork();
         registerReceiver(NetworkChecker,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         bottomnavlogic();
@@ -281,7 +285,7 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         close_home();
         close_library();
         search se = search.newInstance();
-        global.addFragment(getSupportFragmentManager(),se,R.id.search_fragment,"FRAGMENT_OTHER","SLIDE");
+        global.Companion.addFragment(getSupportFragmentManager(),se,R.id.search_fragment,"FRAGMENT_OTHER","SLIDE");
 
     }
 
@@ -303,7 +307,7 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
     public void display_lastup(){
         close_home();
         lastup_video_list se = lastup_video_list.newInstance();
-        global.addFragment(getSupportFragmentManager(),se,R.id.video_list_fragment,"FRAGMENT_OTHER","SLIDE");
+        global.Companion.addFragment(getSupportFragmentManager(),se,R.id.video_list_fragment,"FRAGMENT_OTHER","SLIDE");
     }
 
     public void close_lastup(){
@@ -324,7 +328,7 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         close_search();
         close_lastup();
         library se = new library();
-        global.addFragment(getSupportFragmentManager(),se,R.id.library_fragment,"FRAGMENT_OTHER","NULL");
+        global.Companion.addFragment(getSupportFragmentManager(),se,R.id.library_fragment,"FRAGMENT_OTHER","NULL");
 
     }
 

@@ -30,6 +30,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.extractor.mkv.MatroskaExtractor;
 import com.google.android.exoplayer2.offline.DownloadManager;
 import com.google.android.exoplayer2.offline.DownloadService;
 import com.google.android.exoplayer2.scheduler.Scheduler;
@@ -341,7 +342,7 @@ public class PlayerService extends Service implements AudioManager.OnAudioFocusC
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, bandwidthMeter,new DefaultHttpDataSourceFactory(userAgent,null,DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
                 DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                 true));
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true);
         CacheDataSourceFactory cacheDataSourceFactory = new CacheDataSourceFactory(AppController.setVideoCache(),dataSourceFactory);
         return new ProgressiveMediaSource.Factory(cacheDataSourceFactory,extractorsFactory)
                 .createMediaSource(uri);

@@ -33,12 +33,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp" />
             <!--ADSVIEW-->
-            <LinearLayout
+            <FrameLayout
                 android:id="@+id/dash_ads"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"/>
-
+                />
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="10dp" />

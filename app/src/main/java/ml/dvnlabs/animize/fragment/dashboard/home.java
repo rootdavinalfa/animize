@@ -8,16 +8,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
-import com.facebook.ads.Ad;
-import com.facebook.ads.AdError;
-import com.facebook.ads.AdListener;
-import com.facebook.ads.AdSize;
-import com.facebook.ads.AdView;
+import com.facebook.ads.AdSettings;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.heyzap.sdk.ads.BannerAdView;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
 import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
@@ -72,10 +73,9 @@ public class home extends Fragment {
     private banner_adapter adapter_banner;
     private LinearLayoutManager linearLayoutManager;
     private SwipeRefreshLayout refresh_home;
-    private LinearLayout adContainer;
+    private FrameLayout adContainer,adcontainer1;
     private Context mContext;
-
-    private AdView adView;
+    private BannerAdView bannerAdView;
     public home(){
 
     }
@@ -98,36 +98,13 @@ public class home extends Fragment {
         refresh_home = view.findViewById(R.id.dash_refresh_home);
 
 
-        LinearLayout adContainer = view.findViewById(R.id.dash_ads);
+        adContainer = view.findViewById(R.id.dash_ads);
         //Ads
-        adView = new AdView(mContext, "1204479006402233_1204480009735466", AdSize.BANNER_HEIGHT_90);
-
-        adContainer.addView(adView);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onError(Ad ad, AdError adError) {
-                // Ad error callback
-                Log.e("AD ERROR:",adError.getErrorMessage());
-            }
-
-            @Override
-            public void onAdLoaded(Ad ad) {
-                // Ad loaded callback
-                Log.i("AD Loaded ID: ",ad.getPlacementId());
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-                // Ad clicked callback
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-                // Ad impression logged callback
-            }
-        });
-
-        adView.loadAd();
+        bannerAdView = new BannerAdView(getActivity());
+        adContainer.addView(bannerAdView);
+        //AdSettings.addTestDevice("e9e9d5f9-4782-4688-945e-2b27e89ba7d0");
+        //AdSettings.setDebugBuild(true);
+        bannerAdView.load();
         initial_setup();
         swipe_refresh();
         return view;
@@ -462,9 +439,10 @@ public class home extends Fragment {
         if(!modeldata_lastup.isEmpty()){
             modeldata_lastup.clear();
         }
-        if (adView != null) {
+        bannerAdView.destroy();
+        /*if (adView != null) {
             adView.destroy();
-        }
+        }*/
         super.onDestroy();
     }
 
