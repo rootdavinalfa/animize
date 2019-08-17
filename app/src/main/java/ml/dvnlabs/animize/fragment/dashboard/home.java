@@ -15,9 +15,6 @@ import android.widget.RelativeLayout;
 
 import com.facebook.ads.AdSettings;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 import com.heyzap.sdk.ads.BannerAdView;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;

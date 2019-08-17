@@ -61,8 +61,8 @@ android {
             minSdkVersion 22
             applicationIdSuffix '.ima'
             targetSdkVersion 28
-            versionCode 20
-            versionName '02-006-05-'
+            versionCode 21
+            versionName '02-006-06-'
             versionNameSuffix 'canary'
             applicationId 'ml.dvnlabs.animize'
             resValue("string", "app_names", "Animize")
@@ -102,9 +102,9 @@ dependencies {
     implementation 'com.github.Kennyc1012:BottomSheetMenu:3.0.1'
     implementation 'com.fyber:fairbid:9.56.0'
     implementation 'com.google.android.gms:play-services-basement:17.1.0'
-    implementation 'com.google.android.gms:play-services-ads:18.1.1'
+    //implementation 'com.google.android.gms:play-services-ads:18.1.1'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
-    implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
+    //implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
 
 }
 repositories {

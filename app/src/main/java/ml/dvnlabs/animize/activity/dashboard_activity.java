@@ -35,8 +35,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.ads.AudienceNetworkAds;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
