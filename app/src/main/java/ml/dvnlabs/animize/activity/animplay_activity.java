@@ -15,15 +15,15 @@ import ml.dvnlabs.animize.database.RecentPlayDBHelper;
 import ml.dvnlabs.animize.database.model.recentland;
 import ml.dvnlabs.animize.database.model.userland;
 import ml.dvnlabs.animize.fragment.comment.threadComment;
-import ml.dvnlabs.animize.fragment.popup.sourceselector;
+import ml.dvnlabs.animize.fragment.popup.sourceSelector;
+import ml.dvnlabs.animize.fragment.tabs.animplay.more;
 import ml.dvnlabs.animize.model.commentMainModel;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 import ml.dvnlabs.animize.fragment.tabs.animplay.details;
-import ml.dvnlabs.animize.fragment.tabs.animplay.more;
 import ml.dvnlabs.animize.model.videoplay_model;
-import ml.dvnlabs.animize.pager.aplay_viewpageradapter;
+import ml.dvnlabs.animize.pager.aplayViewPagerAdapter;
 import ml.dvnlabs.animize.pager.passdata_arraylist;
 import ml.dvnlabs.animize.player.PlaybackStatus;
 import ml.dvnlabs.animize.player.PlayerManager;
@@ -187,7 +187,7 @@ FetchDataListener getvideo = new FetchDataListener() {
         aplay_more = findViewById(R.id.aplay_tabs_more);
         aplay_viewpager = findViewById(R.id.aplay_pager);
         aplay_tabs.setupWithViewPager(aplay_viewpager);
-        aplay_viewpageradapter adapter = new aplay_viewpageradapter(getSupportFragmentManager(),aplay_tabs.getTabCount(),this);
+        aplayViewPagerAdapter adapter = new aplayViewPagerAdapter(getSupportFragmentManager(),aplay_tabs.getTabCount(),this);
         aplay_viewpager.setAdapter(adapter);
         aplay_viewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(aplay_tabs));
         fs_btn = findViewById(R.id.exo_fullscreen_icon);
@@ -402,7 +402,7 @@ FetchDataListener getvideo = new FetchDataListener() {
 
 
 
-        playerView.setOnTouchListener(new VideoOnSwipeTouchListener(this,playerView,getService().exoPlayer){
+        playerView.setOnTouchListener(new VideoOnSwipeTouchListener(this,playerView,getService().getExoPlayer()){
             private int counting;
             private Handler handler = new Handler();
             public void onSwipeRight() {
@@ -472,7 +472,7 @@ FetchDataListener getvideo = new FetchDataListener() {
                 .load(modeldata.get(0).getUrl_thmb())
                 .transition(new DrawableTransitionOptions().crossFade())
                 .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()).into(video_artwork);
-        playerView.setPlayer(getService().exoPlayer);
+        playerView.setPlayer(getService().getExoPlayer());
         recentplayed();
     }
     private void show_locker(){
@@ -506,10 +506,14 @@ FetchDataListener getvideo = new FetchDataListener() {
     private void sendpkg(String pkg,String anim){
         String tag = "android:switcher:" + R.id.aplay_pager + ":" + 1;
         more f = (more) getSupportFragmentManager().findFragmentByTag(tag);
-        f.receivedata(pkg,anim);
+        if(f != null){
+            f.receivedata(pkg,anim);
+        }
         String tag1 = "android:switcher:" + R.id.aplay_pager + ":" + 0;
         details f1 = (details) getSupportFragmentManager().findFragmentByTag(tag1);
-        f1.receivestring(pkg,modeldata.get(0).getCover());
+        if(f1 != null){
+            f1.receivestring(pkg,modeldata.get(0).getCover());
+        }
     }
 
     //Sending arraylist to details fragment
@@ -629,7 +633,7 @@ FetchDataListener getvideo = new FetchDataListener() {
         }
     }
     public void showsourceselector(String lang,String idanim){
-        sourceselector sourceselector = new sourceselector();
+        sourceSelector sourceselector = new sourceSelector();
         sourceselector.show(getSupportFragmentManager(),"sourceselector");
         sourceselector.language(lang,idanim,this);
     }
@@ -667,7 +671,7 @@ FetchDataListener getvideo = new FetchDataListener() {
     }
     private void update_rect(){
         if (getService() !=null){
-            if (getService().exoPlayer.getPlaybackState() == Player.STATE_READY || getService().exoPlayer.getPlaybackState() == Player.STATE_BUFFERING){
+            if (getService().getExoPlayer().getPlaybackState() == Player.STATE_READY || getService().getExoPlayer().getPlaybackState() == Player.STATE_BUFFERING){
                 update_recent = new Runnable() {
                     @Override
                     public void run() {
@@ -681,10 +685,10 @@ FetchDataListener getvideo = new FetchDataListener() {
         }
     }
     private long getCurrentPlayTime(){
-        return getService().exoPlayer.getCurrentPosition();
+        return getService().getExoPlayer().getCurrentPosition();
     }
     private void seekPlayer(long positition){
-        getService().exoPlayer.seekTo(positition);
+        getService().getExoPlayer().seekTo(positition);
     }
     //Endof recent method
 

@@ -61,8 +61,8 @@ android {
             minSdkVersion 22
             applicationIdSuffix '.ima'
             targetSdkVersion 28
-            versionCode 21
-            versionName '02-006-06-'
+            versionCode 22
+            versionName '02-006-07-'
             versionNameSuffix 'canary'
             applicationId 'ml.dvnlabs.animize'
             resValue("string", "app_names", "Animize")
@@ -89,15 +89,15 @@ dependencies {
     implementation 'com.android.support:support-annotations:28.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0-alpha06'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta02'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03'
     implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.wang.avi:library:2.1.3'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'androidx.preference:preference:1.1.0-rc01'
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
-    implementation 'com.google.firebase:firebase-core:17.0.1'
-    implementation 'com.facebook.android:audience-network-sdk:5.4.1'
+    implementation 'com.google.firebase:firebase-core:17.1.0'
+    implementation 'com.facebook.android:audience-network-sdk:5.5.0'
     implementation 'jp.wasabeef:glide-transformations:4.0.1'
     implementation 'com.github.Kennyc1012:BottomSheetMenu:3.0.1'
     implementation 'com.fyber:fairbid:9.56.0'

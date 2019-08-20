@@ -21,6 +21,7 @@ public class playlist_holder extends RecyclerView.ViewHolder implements View.OnC
     private TextView id_anim;
     private TextView title;
     private ImageView thumbnail;
+    private View now_sign;
 
     private playlist_model playlist_model;
     private Context context;
@@ -28,19 +29,23 @@ public class playlist_holder extends RecyclerView.ViewHolder implements View.OnC
     public playlist_holder(Context context,View view){
         super(view);
         this.context = context;
-        this.episode = (TextView)view.findViewById(R.id.playlist_episode);
-        this.id_anim = (TextView)view.findViewById(R.id.playlist_id);
-        this.title = (TextView)view.findViewById(R.id.playlist_title);
-        this.thumbnail = (ImageView)view.findViewById(R.id.playlist_imgthumb);
+        this.episode = view.findViewById(R.id.playlist_episode);
+        this.id_anim =view.findViewById(R.id.playlist_id);
+        this.title = view.findViewById(R.id.playlist_title);
+        this.thumbnail = view.findViewById(R.id.playlist_imgthumb);
+        this.now_sign = view.findViewById(R.id.playlist_now_sign);
         itemView.setOnClickListener(this);
     }
 
-    public void bind_playlist(playlist_model plm){
+    public void bind_playlist(playlist_model plm,int now,int pos){
         this.playlist_model = plm;
         this.title.setText(playlist_model.getTitle());
         this.id_anim.setText(playlist_model.getId_anim());
         String ep = context.getString(R.string.episode_text)+": "+playlist_model.getEpisode();
         this.episode.setText(ep);
+        if (now == pos){
+            this.now_sign.setVisibility(View.VISIBLE);
+        }
         Glide.with(itemView).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_picture).error(R.drawable.ic_picture)).load(playlist_model.getUrl_image()).transition(new DrawableTransitionOptions().crossFade()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).override(600,200).fitCenter()).into(thumbnail);
 
     }

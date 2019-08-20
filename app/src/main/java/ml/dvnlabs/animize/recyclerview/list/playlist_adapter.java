@@ -13,13 +13,17 @@ import ml.dvnlabs.animize.model.playlist_model;
 public class playlist_adapter extends RecyclerView.Adapter<playlist_holder> {
     private Context mcontext;
     private ArrayList<playlist_model> playlistdata;
-    private int itemResor;
+    private int itemResor,now;
 
-    public playlist_adapter(ArrayList<playlist_model>data,Context context,int itemResource){
+    public playlist_adapter(ArrayList<playlist_model>data,Context context,int itemResource,String idanim){
         this.mcontext = context;
         this.itemResor = itemResource;
         this.playlistdata = data;
-
+        for (int i= 0;i< playlistdata.size();i++){
+            if(data.get(i).getId_anim().equals(idanim)){
+                this.now = i;
+            }
+        }
     }
     @Override
     public playlist_holder onCreateViewHolder(ViewGroup parent,int viewType){
@@ -31,7 +35,7 @@ public class playlist_adapter extends RecyclerView.Adapter<playlist_holder> {
     @Override
     public void onBindViewHolder(playlist_holder holder,int position){
         playlist_model slm = this.playlistdata.get(position);
-        holder.bind_playlist(slm);
+        holder.bind_playlist(slm,now,holder.getAdapterPosition());
 
     }
     @Override
