@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import ml.dvnlabs.animize.model.packagelist;
+import org.jetbrains.annotations.NotNull;
 
 public class lastpackage_adapter extends RecyclerView.Adapter<lastpackage_holder> {
 
@@ -24,6 +25,7 @@ public class lastpackage_adapter extends RecyclerView.Adapter<lastpackage_holder
         this.itemRes = itemResource;
     }
 
+    @NotNull
     @Override
     public lastpackage_holder onCreateViewHolder(ViewGroup parent, int viewType){
         View view = LayoutInflater.from(parent.getContext()).inflate(this.itemRes,parent,false);

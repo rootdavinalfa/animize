@@ -48,73 +48,6 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:orientation="vertical">
-
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="350dp"
-                    app:cardCornerRadius="2dp"
-                    app:cardElevation="5dp"
-                    app:contentPadding="5dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:foreground="@drawable/ripple_forrounded"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:layout_alignParentStart="true"
-                                android:layout_marginStart="4dp"
-                                android:text="@string/last_package"
-                                android:textColor="@color/secondaryTextColor"
-                                android:textSize="24sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="4dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:foreground="@drawable/ripple_forrounded"
-                                android:text="@string/home_see_more"
-                                android:textColor="@color/secondaryDarkColor"
-                                android:textSize="17sp" />
-                        </RelativeLayout>
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-                            <com.yarolegovich.discretescrollview.DiscreteScrollView
-                                android:id="@+id/rv_lastpackage"
-                                tools:listitem="@layout/rv_lastpackage"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                app:dsv_orientation="horizontal"
-                                />
-                            <com.facebook.shimmer.ShimmerFrameLayout
-                                android:id="@+id/shimmer_package"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-                                <include layout="@layout/shimmer_big"/>
-                            </com.facebook.shimmer.ShimmerFrameLayout>
-                        </RelativeLayout>
-
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-                <Space
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp" />
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
@@ -133,16 +66,16 @@
                             android:focusable="true"
                             android:foreground="@drawable/ripple_forrounded"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp">
+                            android:layout_height="35dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:layout_height="30dp"
+                                android:layout_height="35dp"
                                 android:layout_alignParentStart="true"
                                 android:layout_marginStart="4dp"
                                 android:text="@string/last_uploaded_txt"
-                                android:textColor="@color/secondaryTextColor"
-                                android:textSize="24sp" />
+                                android:textColor="@color/primaryDarkColor"
+                                android:textSize="26sp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -180,61 +113,49 @@
                 </androidx.cardview.widget.CardView>
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-
-                <Space
+                    android:layout_height="10dp"/>
+                <LinearLayout
+                    android:elevation="5dp"
                     android:layout_width="match_parent"
-                    android:layout_height="10dp" />
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="220dp"
-                    app:cardCornerRadius="2dp"
-                    app:cardElevation="5dp"
-                    app:contentPadding="5dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <LinearLayout
+                    <RelativeLayout
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="@drawable/ripple_forrounded"
                         android:layout_width="match_parent"
-                        android:layout_height="220dp"
-                        android:orientation="vertical">
+                        android:layout_height="40dp">
 
-                        <RelativeLayout
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:foreground="@drawable/ripple_forrounded"
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:layout_alignParentStart="true"
-                                android:layout_marginStart="4dp"
-                                android:text="@string/movies"
-                                android:textColor="@color/secondaryTextColor"
-                                android:textSize="24sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="30dp"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="4dp"
-                                android:clickable="true"
-                                android:focusable="true"
-                                android:foreground="@drawable/ripple_forrounded"
-                                android:text="@string/home_see_more"
-                                android:textColor="@color/secondaryDarkColor"
-                                android:textSize="17sp" />
-                        </RelativeLayout>
-
-
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginStart="4dp"
+                            android:text="@string/last_package"
+                            android:textColor="@color/primaryDarkColor"
+                            android:textSize="26sp" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
                         <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_lastpackage"
+                            tools:listitem="@layout/rv_newanime"
+                            android:nestedScrollingEnabled="false"
                             android:layout_width="match_parent"
-                            android:layout_height="190dp"
-                            android:scrollbars="horizontal"
-                            tools:layout_editor_absoluteX="8dp"
-                            tools:layout_editor_absoluteY="50dp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                            android:layout_height="wrap_content"/>
+                            <!--app:dsv_orientation="horizontal"-->
+
+                        <com.facebook.shimmer.ShimmerFrameLayout
+                            android:id="@+id/shimmer_package"
+                            android:layout_width="match_parent"
+                            android:layout_height="220dp">
+                            <include layout="@layout/shimmer_big"/>
+                        </com.facebook.shimmer.ShimmerFrameLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="5dp" />

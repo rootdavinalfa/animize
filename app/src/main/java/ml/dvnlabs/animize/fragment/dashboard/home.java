@@ -55,8 +55,8 @@ public class home extends Fragment {
     private int page_lastup = 0;
     private ShimmerFrameLayout lastup_loading,package_loading,banner_loading;
     private RelativeLayout dash_button_lastupmore;
-    private DiscreteScrollView listView_lastup,rv_lastpackage,rv_bannerlist;
-    //private RecyclerView rv_lastpackage;
+    private DiscreteScrollView listView_lastup,rv_bannerlist;
+    private RecyclerView rv_lastpackage;
     private ArrayList<home_lastup_model> modeldata_lastup;
     private ArrayList<packagelist> modeldatapackage;
     private ArrayList<bannerlist_model> bannerlist_models;
@@ -342,11 +342,12 @@ public class home extends Fragment {
             }
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
 
-            adapterlastpackage = new lastpackage_adapter(modeldatapackage,getActivity(),R.layout.rv_lastpackage);
+            adapterlastpackage = new lastpackage_adapter(modeldatapackage,getActivity(),R.layout.rv_newanime);
+            rv_lastpackage.setLayoutManager(linearLayoutManager);
             rv_lastpackage.setAdapter(adapterlastpackage);
-            rv_lastpackage.setItemTransformer(new ScaleTransformer.Builder()
+            /*rv_lastpackage.setItemTransformer(new ScaleTransformer.Builder()
                     .setMinScale(0.8f)
-                    .build());
+                    .build());*/
 
         }catch (JSONException e){
             Log.e("JSON ERROR:",e.toString());

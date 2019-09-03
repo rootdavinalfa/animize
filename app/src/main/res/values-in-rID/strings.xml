@@ -25,7 +25,7 @@
     <string name="disclaimer">Semua materi disini hanya fansub,\ntidak untuk dijual.\nSemua barang yang dijual di aplikasi ini,\ntidak ada hubungannya dengan list dan mengendrose\nrumah produksi animasi.</string>
     <string name="search_not_provided">Silahkan masukkan katakunci</string>
     <string name="home_see_more">Lihat Lagi</string>
-    <string name="last_uploaded_txt">Terakhir Diupload</string>
+    <string name="last_uploaded_txt">New Episode</string>
     <string name="nav_home_txt">Home</string>
     <string name="nav_genre_txt">Genre</string>
     <string name="nav_anime_txt">Anime</string>
@@ -37,7 +37,7 @@
     <string name="btn_logout">Logout</string>
     <string name="video_source" >Source Video</string>
     <string name="no_sources">Tidak ada sumber!</string>
-    <string name="last_package">Last Package</string>
+    <string name="last_package">New Anime</string>
     <string name="movies">Movies</string>
     <string name="synopsis">Synopsis</string>
     <string name="videos">Videos</string>

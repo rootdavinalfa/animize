@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.gms.ads.AdRequest;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.app.AppController;
 import ml.dvnlabs.animize.checker.checkNetwork;
