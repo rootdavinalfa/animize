@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONArray;
@@ -25,7 +26,7 @@ import ml.dvnlabs.animize.recyclerview.packagelist.genre_packagelist_adapter;
 
 import ml.dvnlabs.animize.view.AutoGridLayoutManager;
 
-public class multiview extends Fragment{
+public class multiview extends DialogFragment {
     private static final int CODE_GET_REQUEST = 1024;
     private ArrayList<genre_packagelist> modeldatapackage;
     private genre_packagelist_adapter adapterlastpackage;

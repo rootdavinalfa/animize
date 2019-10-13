@@ -60,7 +60,7 @@ class PlayerNotificationManager(private val service: PlayerService) {
                 .addAction(icon, "pause", playPauseAction)
                 .addAction(R.drawable.ic_stop_noti, "stop", stopAction)
                 .setStyle(androidx.media.app.NotificationCompat.MediaStyle()
-                        .setMediaSession(service.mediaSession.sessionToken)
+                        .setMediaSession(service.getMediaSession().sessionToken)
                         .setShowActionsInCompactView(0, 1)
                         .setShowCancelButton(true)
                         .setCancelButtonIntent(stopAction))

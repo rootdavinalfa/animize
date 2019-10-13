@@ -15,7 +15,6 @@ import com.bumptech.glide.request.RequestOptions;
 
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.animplay_activity;
-import ml.dvnlabs.animize.fragment.popup.sourceselector;
 import ml.dvnlabs.animize.model.playlist_model;
 import ml.dvnlabs.animize.model.sourcelist;
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -38,7 +39,7 @@ public class lastpackage_holder extends RecyclerView.ViewHolder implements View.
     private ImageView cover;
     private packagelist data;
     private Context mcontext;
-    private LinearLayout container;
+    private CardView container;
 
 
     public lastpackage_holder(Context context,View view){
@@ -80,15 +81,17 @@ public class lastpackage_holder extends RecyclerView.ViewHolder implements View.
 
         Glide.with(mcontext)
                 .applyDefaultRequestOptions(new RequestOptions()
-                        .placeholder(R.drawable.ic_picture)
-                        .error(R.drawable.ic_picture))
-                .load(data.getCoverur())
+                        .placeholder(R.drawable.ic_picture_light)
+                        .error(R.drawable.ic_picture_light))
+                .load(data.getCoverur()).transform(new RoundedCornersTransformation(10,0))
                 .transition(new DrawableTransitionOptions()
                         .crossFade()).apply(new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL).override(424,600)).into(cover);
+
         MultiTransformation<Bitmap> multi = new MultiTransformation<>(
                 new BlurTransformation(40),new RoundedCornersTransformation(5,0)
         );
+
         Glide.with(mcontext)
                 .applyDefaultRequestOptions(new RequestOptions()
                         .placeholder(R.drawable.ic_picture)
@@ -96,7 +99,7 @@ public class lastpackage_holder extends RecyclerView.ViewHolder implements View.
                 .load(data.getCoverur()).transform(multi)
                 .transition(new DrawableTransitionOptions()
                         .crossFade()).apply(new RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.ALL).override(424,600)).into(new CustomTarget<Drawable>() {
+                .diskCacheStrategy(DiskCacheStrategy.ALL)).into(new CustomTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 container.setBackground(resource);

@@ -2,16 +2,23 @@ package ml.dvnlabs.animize.recyclerview.list;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.animplay_activity;
 import ml.dvnlabs.animize.model.home_lastup_model;
@@ -19,7 +26,8 @@ import ml.dvnlabs.animize.recyclerview.lastup_listener;
 
 public class home_lastup_holder extends RecyclerView.ViewHolder implements View.OnClickListener{
     TextView title,episode;
-    ImageView img_src;
+    //ImageView img_src;
+    CardView container;
     lastup_listener listener;
     private home_lastup_model model;
     private Context context;
@@ -27,9 +35,9 @@ public class home_lastup_holder extends RecyclerView.ViewHolder implements View.
     public home_lastup_holder(Context context,View view){
         super(view);
         this.context = context;
-        this.episode = (TextView)view.findViewById(R.id.episode_lastupload_home);
-        this.title = (TextView)view.findViewById(R.id.title_lastupload_home);
-        this.img_src = (ImageView)view.findViewById(R.id.img_lastupload_home);
+        this.episode = view.findViewById(R.id.episode_lastupload_home);
+        this.title = view.findViewById(R.id.title_lastupload_home);
+        this.container = view.findViewById(R.id.newepisode_container);
         itemView.setOnClickListener(this);
 
     }
@@ -38,13 +46,24 @@ public class home_lastup_holder extends RecyclerView.ViewHolder implements View.
         this.title.setText(model.getTitle_nm());
         String ep = context.getString(R.string.episode_text)+": "+model.getEp_num();
         this.episode.setText(ep);
-        Glide.with(itemView).applyDefaultRequestOptions(new RequestOptions()
-                .placeholder(R.drawable.ic_picture)
-                .error(R.drawable.ic_picture))
-                .load(model.getUrl_imagetitle())
+        Glide.with(context)
+                .applyDefaultRequestOptions(new RequestOptions()
+                        .placeholder(R.drawable.ic_picture)
+                        .error(R.drawable.ic_picture))
+                .load(model.getUrl_imagetitle()).transform(new RoundedCornersTransformation(5,0))
                 .transition(new DrawableTransitionOptions()
                         .crossFade()).apply(new RequestOptions()
-                .diskCacheStrategy(DiskCacheStrategy.ALL).override(464,261).fitCenter()).into(img_src);
+                .diskCacheStrategy(DiskCacheStrategy.ALL)).into(new CustomTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                container.setBackground(resource);
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+                container.setBackground(placeholder);
+            }
+        });
 
     }
     @Override

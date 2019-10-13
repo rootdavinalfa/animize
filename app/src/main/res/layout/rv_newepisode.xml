@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="220dp"
+    android:layout_margin="15dp"
+    app:cardCornerRadius="5dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardElevation="5dp"
+    android:backgroundTint="@color/blacktrans"
+    android:backgroundTintMode="src_over"
+    android:foreground="@drawable/ripple_forrounded"
+    android:id="@+id/newepisode_container">
+    <RelativeLayout
+        android:layout_margin="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <TextView
+            android:background="@drawable/round_layout"
+            android:backgroundTint="@color/blacktrans2"
+            android:id="@+id/title_lastupload_home"
+            android:textAlignment="center"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            tools:text="aisdihsaidhsiahdihsaidhhwehfwehf9bhwe98fh98whf98hwqfhwhqeohfo"
+            android:textSize="22sp"
+            android:ellipsize="end"
+            android:textColor="@color/design_default_color_background"
+            />
+        <TextView
+            android:id="@+id/episode_lastupload_home"
+            android:textAlignment="center"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Episode 2"
+            android:textSize="18sp"
+            android:textColor="@color/design_default_color_background"
+            />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

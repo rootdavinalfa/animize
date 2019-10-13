@@ -17,6 +17,8 @@
             android:clickable="true"
             android:focusable="true"
             app:surface_type="surface_view"
+            app:use_artwork="true"
+            app:default_artwork="@drawable/ic_picture_light"
             android:id="@+id/animplay_views"
             android:layout_width="match_parent"
             android:layout_height="220dp"

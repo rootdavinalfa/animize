@@ -42,7 +42,7 @@ public class packagelist_holder extends RecyclerView.ViewHolder implements View.
         this.id_anim.setText(playlist_model.getId_anim());
         String ep = context.getString(R.string.episode_text)+": "+playlist_model.getEpisode();
         this.episode.setText(ep);
-        Glide.with(itemView).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_picture).error(R.drawable.ic_picture)).load(playlist_model.getUrl_image()).transition(new DrawableTransitionOptions().crossFade()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).override(600,200).fitCenter()).into(thumbnail);
+        Glide.with(itemView).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_picture_light).error(R.drawable.ic_picture_light)).load(playlist_model.getUrl_image()).transition(new DrawableTransitionOptions().crossFade()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).override(600,200).fitCenter()).into(thumbnail);
 
     }
     @Override

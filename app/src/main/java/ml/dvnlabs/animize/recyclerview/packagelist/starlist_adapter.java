@@ -12,37 +12,40 @@ import java.util.ArrayList;
 
 import ml.dvnlabs.animize.database.model.starland;
 import ml.dvnlabs.animize.model.starmodel;
+import ml.dvnlabs.animize.recyclerview.interfaces.addingQueue;
+import org.jetbrains.annotations.NotNull;
 
-public class starlist_adapter extends RecyclerView.Adapter<starlist_holder>{
+public class starlist_adapter extends RecyclerView.Adapter<StarlistHolder> implements addingQueue {
     private Context mcontext;
-    //private ArrayList<starmodel> packagelists;
-    private ArrayList<starland> packagelists;
-    private ArrayList<starlist_holder.index_model> index_models;
-    private ArrayList<String> queue;
+    public static ArrayList<starland> packagelists;
+    private ArrayList<requestQueue> queue;
     private int itemResor;
+
+    //
+    public static ArrayList<readyStar> readyStars = new ArrayList<>();
 
     public starlist_adapter(ArrayList<starland>data, Context context, int itemResource){
         this.mcontext = context;
         this.itemResor = itemResource;
-        this.packagelists = data;
-        index_models = new ArrayList<>();
+        packagelists = data;
+        readyStars.clear();
         queue = new ArrayList<>();
 
     }
+    @NotNull
     @Override
-    public starlist_holder onCreateViewHolder(ViewGroup parent, int viewType){
-        View view = LayoutInflater.from(parent.getContext()).inflate(this.itemResor,parent,false);
-        return new starlist_holder(this.mcontext,view,listener);
+    public StarlistHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType){
+        View view = LayoutInflater.from(mcontext).inflate(this.itemResor,parent,false);
+        return new StarlistHolder(this.mcontext,view,this);
 
     }
 
     @Override
-    public void onBindViewHolder(starlist_holder holder,int position){
+    public void onBindViewHolder(StarlistHolder holder,int position){
         holder.setIsRecyclable(false);
         //System.out.println("CDATA:POS:"+position+":PKG:"+this.packagelists.get(position).getPackageid());
-        starland slm = this.packagelists.get(holder.getAdapterPosition());
-        holder.bind_playlist(slm,holder.getAdapterPosition(),this.packagelists.size(),packagelists);
-
+        starland slm = packagelists.get(holder.getAdapterPosition());
+        holder.bindPlaylist(slm);
     }
     @Override
     public int getItemCount(){
@@ -53,40 +56,59 @@ public class starlist_adapter extends RecyclerView.Adapter<starlist_holder>{
             return packagelists.size();
         }
     }
-
-    /*@Override
-    public void addmodel(starlist_holder.index_model models) {
-        this.index_models.add(models);
+    //Callback for adding / remove queue
+    @Override
+    public void addQueue(String pkganim, int position) {
+        queue.add(new requestQueue(pkganim,position));
     }
 
     @Override
-    public ArrayList<starlist_holder.index_model> getIndexer() {
-        return index_models;
-    }*/
-    starlist_holder.index2_adapter listener = new starlist_holder.index2_adapter() {
-        @Override
-        public void addmodel(starlist_holder.index_model models) {
-            index_models.add(models);
+    public void removeQueue(int position) {
+        for (int i=0;i<queue.size();i++){
+            if (queue.get(i).pos == position){
+                queue.remove(i);
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<requestQueue> getQueue() {
+        return queue;
+    }
+
+    //Model for request queue
+    public class requestQueue{
+        String pkg;
+        int pos;
+        requestQueue(String pkganim,int position){
+            this.pkg = pkganim;
+            this.pos = position;
         }
 
-        @Override
-        public ArrayList<starlist_holder.index_model> getIndexer() {
-            return index_models;
+        public int getPos() {
+            return pos;
         }
 
-        @Override
-        public void rem_queue(int posss) {
-            queue.remove(posss);
+        public String getPkg() {
+            return pkg;
+        }
+    }
+
+    public static class readyStar{
+        starmodel model;
+        int pos;
+        readyStar(starmodel models,int poss){
+            this.model = models;
+            this.pos = poss;
         }
 
-        @Override
-        public ArrayList<String> getQueue() {
-            return queue;
+        public int getPos() {
+            return pos;
         }
 
-        @Override
-        public void add_queue(String pkg) {
-            queue.add(pkg);
+        public starmodel getModel() {
+            return model;
         }
-    };
+    }
+
 }

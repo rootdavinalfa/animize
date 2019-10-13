@@ -68,6 +68,9 @@ public class star extends Fragment {
     private void refresh_list(){
         if (packageStarDBHelper.isAvail()){
             voided.setVisibility(View.GONE);
+            if (adapter != null){
+                adapter.notifyDataSetChanged();
+            }
             getStarredPackage getStarredPackage = new getStarredPackage();
             getStarredPackage.execute();
         }else {
@@ -124,11 +127,10 @@ public class star extends Fragment {
             counter = pa.size();
             System.out.println("COUNTER: "+counter);
             if (!pa.isEmpty()){
-                LayoutManager = new AutoGridLayoutManager(getContext(),500);
+                LayoutManager = new AutoGridLayoutManager(getActivity(),500);
                 adapter = new starlist_adapter(pa,getActivity(),R.layout.rv_starredpackage);
-                rv_starred.setLayoutManager(LayoutManager);
-                rv_starred.setHasFixedSize(true);
                 rv_starred.setAdapter(adapter);
+                rv_starred.setLayoutManager(LayoutManager);
             }else{
                 voided.setVisibility(View.VISIBLE);
             }

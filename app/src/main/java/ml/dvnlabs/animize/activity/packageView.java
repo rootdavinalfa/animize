@@ -1,10 +1,13 @@
 package ml.dvnlabs.animize.activity;
 
+import android.app.Activity;
+import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ShareCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -34,17 +37,23 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.facebook.ads.AudienceNetworkAds;
-import com.heyzap.sdk.ads.BannerAdView;
-import com.heyzap.sdk.ads.HeyzapAds;
+import com.google.android.material.appbar.AppBarLayout;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import io.branch.referral.Branch;
+import io.branch.referral.BranchError;
+import ml.dvnlabs.animize.database.InitInternalDBHelper;
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,21 +77,22 @@ import static ml.dvnlabs.animize.activity.MainActivity.setWindowFlag;
 
 public class packageView extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private AppBarLayout appBarLayout;
+    private RelativeLayout notfoundContainer,loadingcontainer;
     private ImageView cover_toolbar,recent_img;
     private static final int CODE_GET_REQUEST = 1024;
     private ArrayList<playlist_model> playlist_models;
     private ArrayList<packageinfo> modelinfo;
     packagelist_adapter adapter;
     private RecyclerView listview,genrelist;
-    private TextView genr,synops,recent_title,recent_episode;
+    private TextView genr,synops,recent_title,recent_episode,rate,animeid;
     private CoordinatorLayout package_parent;
     private RelativeLayout recent_container;
-    private FrameLayout adContainer;
     String pkganim;
 
     private MenuItem pack_star;
+    private MenuItem pack_share;
 
-    private BannerAdView bannerAdView;
 
     PackageStarDBHelper packageStarDBHelper;
     RecentPlayDBHelper recentPlayDBHelper;
@@ -90,43 +100,52 @@ public class packageView extends AppCompatActivity {
     private NestedScrollView container;
     private AVLoadingIndicatorView loading;
 
+    private Branch branch;
+    InitInternalDBHelper initInternalDBHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_package_view);
+        initInternalDBHelper = new InitInternalDBHelper(this);
 
-        //make translucent statusBar on kitkat devices
+        if (initInternalDBHelper.getUserCount()){
+            setContentView(R.layout.activity_package_view);
+            //make translucent statusBar on kitkat devices
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+            //make fully Android Transparent Status bar
+            setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            pkganim = "";
+            initialize();
+            Intent intent = getIntent();
+            if(getIntent().getStringExtra("package") != null){
+                //setIdanim(intent.getStringExtra("id_anim"));
+                pkganim = intent.getStringExtra("package");
+                //intent.removeExtra("id_anim");
+            }
+            if(!pkganim.isEmpty()){
 
-
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-
-        //make fully Android Transparent Status bar
-
-        setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false);
-        getWindow().setStatusBarColor(Color.TRANSPARENT);
-
-
-
-
-        initialize();
-        Intent intent = getIntent();
-        if(getIntent().getStringExtra("package") != null){
-            //setIdanim(intent.getStringExtra("id_anim"));
-            pkganim = intent.getStringExtra("package");
-            //intent.removeExtra("id_anim");
+                //System.out.println(pkganim);
+                //initializeADSandDB();
+                GetInfo();
+            }
+            initializeADSandDB();
+            branch = Branch.getInstance();
+        }else {
+            Intent intent = new Intent(packageView.this, MainActivity.class);
+            startActivity(intent);
         }
-        if(!pkganim.isEmpty()){
 
-            System.out.println(pkganim);
-            packageStarDBHelper = new PackageStarDBHelper(this);
-            recentPlayDBHelper = new RecentPlayDBHelper(this);
-            AudienceNetworkAds.initialize(this);
-            //MobileAds.initialize(this,"pub-2736984372955523");
-            HeyzapAds.start("0cab52e102b54b73b63c898d3c8e5e40", this);
-        }
-        GetInfo();
     }
-
+    private void initializeADSandDB(){
+        packageStarDBHelper = new PackageStarDBHelper(this);
+        recentPlayDBHelper = new RecentPlayDBHelper(this);
+    }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        this.setIntent(intent);
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -155,24 +174,83 @@ public class packageView extends AppCompatActivity {
         recent_episode = findViewById(R.id.packageview_recent_episode);
         recent_title = findViewById(R.id.packageview_recent_title);
         recent_img = findViewById(R.id.packageview_recent_img);
-        adContainer = findViewById(R.id.packageview_ads);
+        rate = findViewById(R.id.package_rate);
+        animeid = findViewById(R.id.package_animeid);
+        appBarLayout = findViewById(R.id.packageview_barlayout);
+        notfoundContainer = findViewById(R.id.packageview_notfoundcont);
+        loadingcontainer = findViewById(R.id.packageview_loading_container);
         //container.setVisibility(View.GONE);
-
         modelinfo = new ArrayList<>();
+        collapsingToolbarLayout.setMaxLines(3);
+        loadingcontainer.setVisibility(View.VISIBLE);
+        container.setVisibility(GONE);
+        appBarLayout.setVisibility(GONE);
+    }
+    /*Function for refreshing activity data due to usage of multiview fragment*/
+    public void refreshActivity(String pkgid){
+        pkganim = pkgid;
+        if(!pkganim.isEmpty()){
+            if (modelinfo.size() > 0){
+                modelinfo.clear();
+            }
+            loadingcontainer.setVisibility(View.VISIBLE);
+            container.setVisibility(GONE);
+            appBarLayout.setVisibility(GONE);
+            GetInfo();
+        }
+        initializeADSandDB();
+    }
 
+
+    @Override
+    public void onBackPressed() {
+        if (isTaskRoot()){
+            finish();
+            Intent intent = new Intent(packageView.this, dashboard_activity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }else {
+            super.onBackPressed();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        show_recent();
-        invalidateOptionsMenu();
-    }
-
-    @Override
-    protected void onDestroy() {
-        bannerAdView.destroy();
-        super.onDestroy();
+        if (initInternalDBHelper.getUserCount()){
+            // Branch init
+            if (branch != null){
+                branch.initSession(new Branch.BranchReferralInitListener() {
+                    @Override
+                    public void onInitFinished(JSONObject referringParams,         BranchError error) {
+                        if (error == null) {
+                            // params are the deep linked params associated with the link      that the user clicked -> was re-directed to this app
+                            // params will be empty if no data found
+                            try {
+                                if (referringParams.getBoolean("+clicked_branch_link")){
+                                    //Log.e("BRANCH SDK", referringParams.toString());
+                                    //Log.e("STR",referringParams.toString());
+                                    pkganim = referringParams.getString("pack");
+                                    //Log.e("BRANCH PACK",pkganim);
+                                    GetInfo();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Log.e("BRANCH SDKE", error.getMessage());
+                        }
+                    }
+                }, this.getIntent().getData(), this);
+            }
+            if (!pkganim.isEmpty()){
+                show_recent();
+                invalidateOptionsMenu();
+            }
+        }else {
+            Intent intent = new Intent(packageView.this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -181,6 +259,7 @@ public class packageView extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.package_toolbar, menu);
         pack_star = menu.findItem(R.id.package_star);
+        pack_share = menu.findItem(R.id.package_share);
         if(packageStarDBHelper.isAvail()){
             System.out.println("ON Read DB star");
             readStarStatus read = new readStarStatus();
@@ -193,17 +272,35 @@ public class packageView extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         ChangeStar star = new ChangeStar();
-        if(id == R.id.package_star){
+        switch (id){
+            case R.id.package_star:
+                if(packageStarDBHelper.isStarred(pkganim)){
+                    Log.e("CLICKED","UNSTAR");
+                    star.execute("UNSTAR");
+                }else {
+                    Log.e("CLICKED","STAR");
+                    star.execute("STAR");
+                }
 
-            if(packageStarDBHelper.isStarred(pkganim)){
-                Log.e("CLICKED","UNSTAR");
-                star.execute("UNSTAR");
-            }else {
-                Log.e("CLICKED","STAR");
-                star.execute("STAR");
-            }
-
-            return true;
+                return true;
+            case R.id.package_share:
+                if (modelinfo!=null){
+                    // Add data to the intent, the receiving app will decide
+                    // what to do with it.
+                    String urlShare = null;
+                    try {
+                        urlShare = "https://animize.app.link/share/package?pack="+pkganim+"&titname="+ URLEncoder.encode(modelinfo.get(0).getname(),"utf-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, urlShare);
+                    //Here we're setting the title of the content
+                    sendIntent.putExtra(Intent.EXTRA_TITLE, "Share "+modelinfo.get(0).getname()+ " to your friend!");
+                    sendIntent.setType("text/plain");
+                    // Show the Sharesheet
+                    startActivity(Intent.createChooser(sendIntent, null));
+                }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -228,12 +325,19 @@ public class packageView extends AppCompatActivity {
                 JSONObject object = new JSONObject(data);
                 if (!object.getBoolean("error")) {
                     parserInfo(object.getJSONArray("anim"));
+                }else {
+                    getWindow().setStatusBarColor(Color.RED);
+                    appBarLayout.setVisibility(GONE);
+                    container.setVisibility(GONE);
+                    loadingcontainer.setVisibility(GONE);
+                    loading.setVisibility(GONE);
+                    notfoundContainer.setVisibility(View.VISIBLE);
+                    package_parent.setBackground(null);
                 }
             }catch (JSONException e){
                 e.printStackTrace();
 
             }
-            getplaylist();
         }
 
         @Override
@@ -245,7 +349,8 @@ public class packageView extends AppCompatActivity {
         public void onFetchStart() {
             loading.setVisibility(View.VISIBLE);
             container.setVisibility(GONE);
-
+            appBarLayout.setVisibility(GONE);
+            notfoundContainer.setVisibility(GONE);
         }
     };
 
@@ -255,14 +360,17 @@ public class packageView extends AppCompatActivity {
             try{
                 JSONObject object = new JSONObject(data);
                 if (!object.getBoolean("error")) {
+                    loadingcontainer.setVisibility(GONE);
+                    loading.setVisibility(GONE);
+                    notfoundContainer.setVisibility(GONE);
+                    appBarLayout.setVisibility(View.VISIBLE);
+                    container.setVisibility(View.VISIBLE);
                     parseplaylist(object.getJSONArray("anim"));
                 }
             }catch (JSONException e){
                 e.printStackTrace();
 
             }
-            loading.setVisibility(GONE);
-            container.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -337,17 +445,14 @@ public class packageView extends AppCompatActivity {
                     coverview alertDialog = new coverview();
                     alertDialog.setUrl(modelinfo.get(0).getCover());
                     alertDialog.show(fm, "coverview");
-
-
                 }
             });
+            rate.setText(modelinfo.get(0).getRate());
+            String animeID = modelinfo.get(0).getPack()+" / "+modelinfo.get(0).getMal();
+            animeid.setText(animeID);
             show_recent();
-            bannerAdView = new BannerAdView(this);
-            adContainer.addView(bannerAdView);
-            //AdSettings.addTestDevice("e9e9d5f9-4782-4688-945e-2b27e89ba7d0");
-            //AdSettings.setDebugBuild(true);
-            bannerAdView.load();
-
+            invalidateOptionsMenu();
+            getplaylist();
         }catch (JSONException e){
             Log.e("JSON ERROR:",e.toString());
         }

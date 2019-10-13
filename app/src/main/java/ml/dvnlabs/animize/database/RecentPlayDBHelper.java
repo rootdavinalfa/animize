@@ -100,8 +100,11 @@ public class RecentPlayDBHelper extends SQLiteOpenHelper {
     public ArrayList<recentland> getrecentlist(){
         try {
             model = new ArrayList<>();
-
-            String selectquery = "SELECT * FROM "+recentland.table_name+" ORDER BY "+recentland.col_lastmodified+" DESC";
+            long nowTimestamp = System.currentTimeMillis();
+            //Max Days is 15 days
+            long maxTimestamp = nowTimestamp - ((24 * 60 * 60 * 1000) * 15);
+            Log.e("MAX:",String.valueOf(maxTimestamp));
+            String selectquery = "SELECT * FROM "+recentland.table_name+" WHERE "+recentland.col_lastmodified+" >= "+maxTimestamp+" ORDER BY "+recentland.col_lastmodified+" DESC";
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery(selectquery,null);
 

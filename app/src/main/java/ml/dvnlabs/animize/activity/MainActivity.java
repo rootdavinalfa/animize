@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initializa();
+        //initializa();
         Log.e("INITIALIZE:","dvnlabs.ml 2019,Animize Loader.Animize entertainment 2019.");
         Log.e("MESSAGE:","メインプログラムではなく、サイドプロジェクト専用のプログラムです。" +
                 "\nこのプログラムはペースの遅いアップデートになると述べてください。");
@@ -62,6 +62,12 @@ public class MainActivity extends AppCompatActivity{
                 "\nPlease be state this program will be slow paced update.");
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initializa();
     }
 
     private void initializa(){

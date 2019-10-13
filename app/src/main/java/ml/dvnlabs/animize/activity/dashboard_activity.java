@@ -34,13 +34,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.ads.AudienceNetworkAds;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import com.heyzap.sdk.ads.HeyzapAds;
 
 
 public class dashboard_activity extends AppCompatActivity implements checkNetwork.ConnectivityReceiverListener{
@@ -79,10 +75,6 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
             this.getWindow().setStatusBarColor(getColor(R.color.colorAccent));
         }
         initializes();
-        AudienceNetworkAds.initialize(this);
-        //MobileAds.initialize(this,"pub-2736984372955523");
-        HeyzapAds.start("0cab52e102b54b73b63c898d3c8e5e40", this);
-        //HeyzapAds.startTestActivity(this);
         SqliteReadUser sqliteReadUser = new SqliteReadUser();
         sqliteReadUser.execute("OK");
 
