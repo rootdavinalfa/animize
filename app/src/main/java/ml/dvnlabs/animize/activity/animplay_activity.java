@@ -14,6 +14,7 @@ import ml.dvnlabs.animize.database.InitInternalDBHelper;
 import ml.dvnlabs.animize.database.RecentPlayDBHelper;
 import ml.dvnlabs.animize.database.model.recentland;
 import ml.dvnlabs.animize.database.model.userland;
+import ml.dvnlabs.animize.driver.util.RequestQueueVolley;
 import ml.dvnlabs.animize.fragment.comment.threadComment;
 import ml.dvnlabs.animize.fragment.popup.sourceSelector;
 import ml.dvnlabs.animize.fragment.tabs.animplay.more;
@@ -69,6 +70,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static ml.dvnlabs.animize.player.PlayerManager.getService;
 
@@ -466,13 +468,13 @@ FetchDataListener getvideo = new FetchDataListener() {
                 //super.onCounting(count);
             }
         });
-
-        Glide.with(this).applyDefaultRequestOptions(new RequestOptions()
-                .placeholder(R.drawable.ic_picture).error(R.drawable.ic_picture))
-                .load(modeldata.get(0).getUrl_thmb())
-                .transition(new DrawableTransitionOptions().crossFade())
-                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()).into(video_artwork);
+        playerView.setUseArtwork(true);
+        playerView.setDefaultArtwork(getResources().getDrawable(R.drawable.ic_astronaut));
         playerView.setPlayer(getService().getExoPlayer());
+        Glide.with(this).applyDefaultRequestOptions(new RequestOptions()
+                .placeholder(R.drawable.ic_picture_light).error(R.drawable.ic_picture_light))
+                .load(modeldata.get(0).getUrl_thmb())
+                .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()).into(video_artwork);
         recentplayed();
     }
     private void show_locker(){
@@ -581,7 +583,7 @@ FetchDataListener getvideo = new FetchDataListener() {
             Log.e("CLEARING:","CLEAR SharedPreference");
             SharedPreferences.Editor editor = pref.edit();
             editor.clear();
-            editor.commit();
+            editor.apply();
 
         }
         handler_player_recent.removeCallbacks(update_recent);
@@ -619,12 +621,16 @@ FetchDataListener getvideo = new FetchDataListener() {
                     Log.e("CLEARING:","CLEAR SharedPreference");
                     SharedPreferences.Editor editor = pref.edit();
                     editor.clear();
-                    editor.commit();
+                    editor.apply();
 
                 }
-                handler_player_recent.removeCallbacks(update_recent);
+                if (handler_player_recent != null){
+                    handler_player_recent.removeCallbacks(update_recent);
+                }
+                RequestQueueVolley queue = new RequestQueueVolley(this);
+                queue.clearRequest();
                 super.onBackPressed();
-                finish();
+                //finish();
                 //unbindService(serviceConnection);
                 //Intent intent = new Intent(this, dashboard_activity.class);
                 //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -671,7 +677,7 @@ FetchDataListener getvideo = new FetchDataListener() {
     }
     private void update_rect(){
         if (getService() !=null){
-            if (getService().getExoPlayer().getPlaybackState() == Player.STATE_READY || getService().getExoPlayer().getPlaybackState() == Player.STATE_BUFFERING){
+            if (Objects.requireNonNull(getService().getExoPlayer()).getPlaybackState() == Player.STATE_READY || getService().getExoPlayer().getPlaybackState() == Player.STATE_BUFFERING){
                 update_recent = new Runnable() {
                     @Override
                     public void run() {

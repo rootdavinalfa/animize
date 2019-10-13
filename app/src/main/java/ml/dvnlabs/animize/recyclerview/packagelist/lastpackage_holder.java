@@ -83,7 +83,7 @@ public class lastpackage_holder extends RecyclerView.ViewHolder implements View.
                 .applyDefaultRequestOptions(new RequestOptions()
                         .placeholder(R.drawable.ic_picture_light)
                         .error(R.drawable.ic_picture_light))
-                .load(data.getCoverur()).transform(new RoundedCornersTransformation(5,0))
+                .load(data.getCoverur()).transform(new RoundedCornersTransformation(10,0))
                 .transition(new DrawableTransitionOptions()
                         .crossFade()).apply(new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL).override(424,600)).into(cover);

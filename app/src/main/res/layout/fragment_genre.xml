@@ -73,7 +73,8 @@
                     android:orientation="vertical">
                     <TextView
                         android:layout_margin="5dp"
-                        android:layout_width="wrap_content"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="List Genre"
                         android:textSize="20sp"

@@ -21,86 +21,84 @@
         android:layout_gravity="center">
 
         <!-- Video surface will be inserted as the first child of the content frame. -->
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ImageView
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:visibility="gone"
-        android:id="@+id/exo_controller_lock"
-        android:layout_margin="2dp"
-        android:padding="5dp"
-        android:elevation="10dp"
-        android:foreground="@drawable/ripple_forrounded"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:tint="@color/secondaryLightColor"
-        android:background="@color/blacktrans"
-        android:src="@drawable/ic_locked"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:visibility="gone"
+                android:id="@+id/exo_controller_lock"
+                android:layout_margin="2dp"
+                android:padding="5dp"
+                android:elevation="10dp"
+                android:foreground="@drawable/ripple_forrounded"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:tint="@color/secondaryLightColor"
+                android:background="@color/blacktrans"
+                android:src="@drawable/ic_locked"/>
 
 
-    <View
-        android:id="@id/exo_shutter"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/black" />
+            <View
+                android:id="@id/exo_shutter"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/black" />
 
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/exo_buffering"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_centerInParent="true"
-        app:indicatorColor="@color/design_default_color_background"
-        app:indicatorName="LineScalePulseOutRapidIndicator"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-    <ImageView
-        android:id="@id/exo_artwork"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY" />
+            <com.wang.avi.AVLoadingIndicatorView
+                android:id="@+id/exo_buffering"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerInParent="true"
+                app:indicatorColor="@color/design_default_color_background"
+                app:indicatorName="LineScalePulseOutRapidIndicator"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@id/exo_artwork"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
 
-    <com.google.android.exoplayer2.ui.SubtitleView
-        android:id="@id/exo_subtitles"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+            <com.google.android.exoplayer2.ui.SubtitleView
+                android:id="@id/exo_subtitles"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@id/exo_error_message"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:textSize="26sp"
-        android:gravity="center"
-        android:padding="16dp"
-        android:textColor="@color/design_default_color_background" />
-    <TextView
+            <TextView
+                android:id="@id/exo_error_message"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:textSize="26sp"
+                android:gravity="center"
+                android:padding="16dp"
+                android:textColor="@color/design_default_color_background" />
+            <TextView
 
-        android:visibility="gone"
-        android:id="@+id/exo_seektime"
-        android:background="@drawable/round_layout"
-        android:backgroundTint="@color/blacktrans"
-        android:layout_centerInParent="true"
-        android:layout_below="@+id/exo_buffering"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textColor="@color/design_default_color_background"
-        android:text="Rewind : 10 Second"/>
+                android:visibility="gone"
+                android:id="@+id/exo_seektime"
+                android:background="@drawable/round_layout"
+                android:backgroundTint="@color/blacktrans"
+                android:layout_centerInParent="true"
+                android:layout_below="@+id/exo_buffering"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/design_default_color_background"
+                android:text="Rewind : 10 Second"/>
 
-    <FrameLayout
-        android:id="@id/exo_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</RelativeLayout>
-
-
+            <FrameLayout
+                android:id="@id/exo_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
     </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
 
     <com.google.android.exoplayer2.ui.PlaybackControlView

@@ -92,6 +92,7 @@
                 </RelativeLayout>
                 <!--Head of Title conpartment-->
                 <androidx.cardview.widget.CardView
+                    android:layout_margin="5dp"
                     android:id="@+id/video_det_comp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -101,55 +102,48 @@
                     android:orientation="horizontal"
                     app:cardBackgroundColor="@color/colorPrimaryDark"
                     app:contentPadding="5dp">
-
-                    <RelativeLayout
+                    <LinearLayout
+                        android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:orientation="vertical"
+                        >
 
-                        <TextView
-                            android:id="@+id/details_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_toStartOf="@id/titlename_drop"
-                            android:text="青春ブタ野郎はバニーガール先輩の夢を見ない"
-                            android:textColor="@color/design_default_color_background"
-                            android:textSize="32sp"
-                            android:maxLines="2"
-                            android:singleLine="false"
-                            android:ellipsize="end"/>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-                        <ImageView
-                            android:layout_centerInParent="true"
-                            android:id="@+id/titlename_drop"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:foregroundGravity="center"
-                            android:padding="5dp"
-                            android:src="@drawable/ic_expand_collapse"
-                            android:tint="@color/design_default_color_background" />
-                    </RelativeLayout>
-                </androidx.cardview.widget.CardView>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_toStartOf="@id/titlename_drop"
+                                android:text="Synopsis"
+                                android:textColor="@color/primaryLightColor"
+                                android:textStyle="italic"
+                                android:textSize="32sp"
+                                android:maxLines="2"
+                                android:singleLine="false"
+                                android:ellipsize="end"/>
 
-                <net.cachapa.expandablelayout.ExpandableLayout
-                    android:id="@+id/video_details"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorPrimary"
-                    app:el_duration="500"
-                    app:el_expanded="true"
-                    app:el_parallax="1">
+                            <ImageView
+                                android:layout_centerInParent="true"
+                                android:id="@+id/titlename_drop"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:foregroundGravity="center"
+                                android:padding="5dp"
+                                android:src="@drawable/ic_expand_collapse"
+                                android:tint="@color/primaryLightColor" />
+                        </RelativeLayout>
 
-                    <ScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <LinearLayout
+                        <net.cachapa.expandablelayout.ExpandableLayout
+                            android:id="@+id/video_details"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
+                            app:el_duration="500"
+                            app:el_expanded="true"
+                            app:el_parallax="1">
                             <TextView
                                 android:id="@+id/synop_play"
                                 android:layout_width="match_parent"
@@ -158,165 +152,104 @@
                                 android:text="afhufdsasadsaauhfuas\nfsdfdsfds\ndsfsdf\n\ndsfdsf\ndsfdsfh"
                                 android:textColor="@color/textOnPrimary" />
 
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginStart="4dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginEnd="4dp"
-                                android:background="@color/dividerAplay" />
+                        </net.cachapa.expandablelayout.ExpandableLayout>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
 
-                                <TextView
-                                    android:id="@+id/aplay_txt_idanimes"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="ID Anim:"
-                                    android:textColor="@color/primaryLightColor"
-                                    android:textSize="16sp" />
+                    </LinearLayout>
 
-                                <TextView
-                                    android:id="@+id/aplay_txt_idanime"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="2dp"
-                                    android:layout_centerInParent="true"
-                                    android:layout_toEndOf="@id/aplay_txt_idanimes"
-                                    android:text="ANMsdhu1"
-                                    android:textColor="@color/textOnPrimary"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <TextView
-                                    android:id="@+id/aplay_txt_idsource"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="ID Source:"
-                                    android:textColor="@color/primaryLightColor"
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="2dp"
-                                    android:layout_centerInParent="true"
-                                    android:layout_toEndOf="@id/aplay_txt_idsource"
-                                    android:text="ANM1"
-                                    android:textColor="@color/textOnPrimary"
-                                    android:textSize="14sp"
-                                    android:textStyle="bold" />
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <TextView
-                                    android:id="@+id/aplay_txt_category"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/category"
-                                    android:textColor="@color/primaryLightColor"
-                                    android:textSize="16sp" />
-
-                                <TextView
-                                    android:id="@+id/aplay_details_genres"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="2dp"
-                                    android:layout_centerInParent="true"
-                                    android:layout_toEndOf="@id/aplay_txt_category"
-                                    android:text="Romance,Action,Supernatural"
-                                    android:textColor="@color/textOnPrimary"
-                                    android:textSize="14sp" />
-                            </RelativeLayout>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginStart="4dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginEnd="4dp"
-                                android:background="@color/dividerAplay" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/uploaded_by"
-                                android:textColor="@color/primaryLightColor"
-                                android:textSize="16sp" />
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="15dp">
-
-                                <ImageView
-                                    android:id="@+id/aplay_img_upload_by"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
-                                    android:src="@drawable/ic_profile" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toEndOf="@+id/aplay_img_upload_by"
-                                    android:text="Davin"
-                                    android:textColor="@color/textOnPrimary"
-                                    android:textSize="16sp" />
-                            </RelativeLayout>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/last_modified_by"
-                                android:textColor="@color/primaryLightColor"
-                                android:textSize="16sp" />
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingStart="15dp">
-
-                                <ImageView
-                                    android:id="@+id/aplay_img_modified_by"
-                                    android:layout_width="40dp"
-                                    android:layout_height="40dp"
-                                    android:src="@drawable/ic_profile" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_toEndOf="@+id/aplay_img_modified_by"
-                                    android:text="Alex"
-                                    android:textColor="@color/textOnPrimary"
-                                    android:textSize="16sp" />
-                            </RelativeLayout>
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:layout_marginStart="4dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_marginEnd="4dp"
-                                android:background="@color/dividerAplay" />
-
-                        </LinearLayout>
-                    </ScrollView>
-                </net.cachapa.expandablelayout.ExpandableLayout>
-                <!--<TextView
-                    android:layout_width="wrap_content"
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Favorite"
-                    android:textColor="@color/primaryLightColor"
-                    android:textSize="16sp" />-->
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    app:cardBackgroundColor="@color/colorPrimaryDark"
+                    app:contentPadding="5dp"
+                    android:layout_margin="5dp"
+                    >
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/aplay_txt_idanimes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ID Anim:"
+                                android:textColor="@color/primaryLightColor"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/aplay_txt_idanime"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_centerInParent="true"
+                                android:layout_toEndOf="@id/aplay_txt_idanimes"
+                                android:text="ANMsdhu1"
+                                android:textColor="@color/textOnPrimary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/aplay_txt_idsource"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ID Source:"
+                                android:textColor="@color/primaryLightColor"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_centerInParent="true"
+                                android:layout_toEndOf="@id/aplay_txt_idsource"
+                                android:text="ANM1"
+                                android:textColor="@color/textOnPrimary"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/aplay_txt_category"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/category"
+                                android:textColor="@color/primaryLightColor"
+                                android:textSize="16sp" />
+
+                            <TextView
+                                android:id="@+id/aplay_details_genres"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:layout_centerInParent="true"
+                                android:layout_toEndOf="@id/aplay_txt_category"
+                                android:text="Romance,Action,Supernatural"
+                                android:maxLines="2"
+                                android:ellipsize="end"
+                                android:textColor="@color/textOnPrimary"
+                                android:textSize="14sp" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
                 <FrameLayout
                     android:id="@+id/aplay_fragment_comment"
                     android:name="ml.dvnlabs.animize.fragment.mainComment"

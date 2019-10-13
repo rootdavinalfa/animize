@@ -8,12 +8,15 @@
     android:fitsSystemWindows="true"
     android:id="@+id/package_parent"
     tools:context="ml.dvnlabs.animize.activity.packageView">
+
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/packageview_barlayout"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
         android:background="@color/blacktrans"
         android:fitsSystemWindows="true"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
         >
+
         <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
             android:fitsSystemWindows="true"
             android:theme="@style/CustomToolbarTheme"
@@ -21,80 +24,119 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="@color/blacktrans"
+            app:collapsedTitleTextAppearance="@style/CollapsedAppBar"
+            app:expandedTitleTextAppearance="@style/ExpandedAppBar"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
+            app:collapsedTitleGravity="top"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="@drawable/layoutrippleeffect"
-            android:fitsSystemWindows="true"
-            android:tint="@color/blacktrans"
-            android:id="@+id/toolbar_cover"
-            android:src="@drawable/ic_picture"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            app:layout_collapseMode="parallax"
-            android:minHeight="100dp" />
+                android:id="@+id/toolbar_cover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:fitsSystemWindows="true"
+                android:focusable="true"
+                android:foreground="@drawable/layoutrippleeffect"
+                android:minHeight="100dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_picture_light"
+                android:tint="@color/blacktrans"
+                app:layout_collapseMode="parallax"
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed" />
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/pv_toolbar"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:titleTextColor="@color/primaryColor"
-                app:subtitleTextColor="@color/design_default_color_background">
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:menu="@menu/package_toolbar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             </androidx.appcompat.widget.Toolbar>
+
         </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:id="@+id/packageview_loading_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/packageview_loading"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/blacktrans2"
+            app:indicatorName="BallClipRotateIndicator" />
+    </RelativeLayout>
+
     <RelativeLayout
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+        android:id="@+id/packageview_notfoundcont"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <com.wang.avi.AVLoadingIndicatorView
-            app:indicatorName="BallClipRotateIndicator"
-            app:indicatorColor="@color/blacktrans2"
-            android:layout_centerInParent="true"
-            android:id="@+id/packageview_loading"
-            android:visibility="gone"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/packageview_notfoundcont_img"
             android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_astronaut" />
+
+        <TextView
+            android:id="@+id/packageview_notfoundcont_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/packageview_notfoundcont_img"
+            android:layout_centerInParent="true"
+            android:text="Anime Not found!"
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/packageview_notfoundcont_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/packageview_notfoundcont_head"
+            android:layout_centerInParent="true"
+            android:text="Please check URL again!" />
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:visibility="visible"
         android:id="@+id/packageview_container"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
             <androidx.cardview.widget.CardView
-                android:layout_margin="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:cardBackgroundColor="@color/blacktrans2"
                 app:cardCornerRadius="2dp"
-                app:contentPadding="5dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/blacktrans2">
+                app:contentPadding="5dp">
+
                 <LinearLayout
-                    android:background="@android:color/transparent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
                     android:orientation="vertical">
+
                     <RelativeLayout
-                        android:background="@android:color/transparent"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -104,14 +146,58 @@
                             android:textSize="34sp" />
                     </RelativeLayout>
 
+                    <RelativeLayout
+                        android:id="@+id/packageview_recent_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="@drawable/layoutrippleeffect"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/packageview_recent_img"
+                            android:layout_width="80dp"
+                            android:layout_height="120dp"
+                            android:layout_margin="5dp"
+                            tools:src="@drawable/ic_picture_light" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@+id/packageview_recent_img"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/packageview_recent_title"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="3"
+                                android:textColor="@color/primaryLightColor"
+                                android:textSize="22sp"
+                                tools:text="青春ぶた野郎はゆめを見てない、異世界にお母さんがすきですか？僕じゃないみたいからだよね。今すぐに帰ります。" />
+
+                            <TextView
+                                android:id="@+id/packageview_recent_episode"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/OverWhite"
+                                android:textSize="14sp"
+                                tools:text="Episode : 1" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
                     <TextView
-                        android:background="@android:color/transparent"
                         android:id="@+id/packageview_synopsis"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
                         android:padding="5dp"
                         android:textColor="@color/OverWhite"
                         tools:text="afhufdsasadsa\n\n\n\n\n\nauhfuas\nfsdfdsfds\ndsfsdf\n\ndsfdsf\ndsfdsfh" />
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/packageview_genrelist"
                         android:layout_width="match_parent"
@@ -119,66 +205,119 @@
                         tools:listitem="@layout/rv_staggered">
 
                     </androidx.recyclerview.widget.RecyclerView>
-                    <FrameLayout
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="5dp"
-                        android:id="@+id/packageview_ads"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-                    <RelativeLayout
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="@drawable/layoutrippleeffect"
-                        android:visibility="gone"
-                        android:id="@+id/packageview_recent_container"
-                        android:layout_marginTop="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_margin="5dp"
-                            android:id="@+id/packageview_recent_img"
-                            android:layout_width="80dp"
-                            android:layout_height="120dp"
-                            tools:src="@drawable/ic_picture_light"/>
-                        <LinearLayout
-                            android:layout_toEndOf="@+id/packageview_recent_img"
-                            android:layout_width="match_parent"
-                            android:orientation="vertical"
-                            android:layout_height="wrap_content">
-                            <TextView
-                                android:id="@+id/packageview_recent_title"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/primaryLightColor"
-                                tools:text="青春ぶた野郎はゆめを見てない、異世界にお母さんがすきですか？僕じゃないみたいからだよね。今すぐに帰ります。"
-                                android:textSize="22sp"
-                                android:maxLines="3"
-                                android:ellipsize="end"
-                                />
-                            <TextView
-                                android:textSize="14sp"
-                                android:id="@+id/packageview_recent_episode"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/OverWhite"
-                                tools:text="Episode : 1"/>
-                        </LinearLayout>
-                    </RelativeLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-            <LinearLayout
-                android:layout_marginTop="5dp"
-                android:orientation="vertical"
-                android:background="@color/blacktrans2"
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:cardBackgroundColor="@color/blacktrans2"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+                    <RelativeLayout
+                        android:layout_width="50dp"
+                        android:layout_height="55dp"
+                        android:background="@drawable/ic_star">
+
+                        <TextView
+                            android:id="@+id/package_rate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+
+                            android:textColor="@color/design_default_color_background"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            tools:text="9.99" />
+                    </RelativeLayout>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="@color/design_default_color_background" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Last Update"
+                            android:textAlignment="center"
+                            android:textColor="@color/design_default_color_background"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/design_default_color_background"
+                            tools:text="2 days ago" />
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="@color/design_default_color_background" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Anime ID"
+                            android:textAlignment="center"
+                            android:textColor="@color/design_default_color_background"
+                            android:textSize="22sp" />
+
+                        <TextView
+                            android:id="@+id/package_animeid"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/design_default_color_background"
+                            tools:text="PKG1 / 333212" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/blacktrans2"
+                android:orientation="vertical">
+
                 <TextView
-                    android:layout_margin="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:text="@string/videos"
                     android:textColor="@color/primaryLightColor"
-                    android:textSize="30sp"/>
+                    android:textSize="30sp" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/packageview_list"
                     android:layout_width="match_parent"
@@ -187,9 +326,7 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
-
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -9,18 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
-import com.facebook.ads.AdSettings;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.heyzap.sdk.ads.BannerAdView;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
-import com.yarolegovich.discretescrollview.InfiniteScrollAdapter;
-import com.yarolegovich.discretescrollview.transform.DiscreteScrollItemTransformer;
-import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,12 +25,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.dashboard_activity;
-import ml.dvnlabs.animize.app.AppController;
 import ml.dvnlabs.animize.model.bannerlist_model;
 import ml.dvnlabs.animize.model.packagelist;
 import ml.dvnlabs.animize.recyclerview.banner.banner_adapter;
@@ -51,12 +42,11 @@ import ml.dvnlabs.animize.recyclerview.packagelist.lastpackage_adapter;
 public class home extends Fragment {
 
     private static final int CODE_GET_REQUEST = 1024;
-    private static final int CODE_POST_REQUEST = 1025;
     private int page_lastup = 0;
     private ShimmerFrameLayout lastup_loading,package_loading,banner_loading;
     private RelativeLayout dash_button_lastupmore;
     private DiscreteScrollView listView_lastup,rv_bannerlist;
-    private RecyclerView rv_lastpackage;
+    private DiscreteScrollView rv_lastpackage;
     private ArrayList<home_lastup_model> modeldata_lastup;
     private ArrayList<packagelist> modeldatapackage;
     private ArrayList<bannerlist_model> bannerlist_models;
@@ -72,7 +62,6 @@ public class home extends Fragment {
     private SwipeRefreshLayout refresh_home;
     private FrameLayout adContainer,adcontainer1;
     private Context mContext;
-    private BannerAdView bannerAdView;
     public home(){
 
     }
@@ -94,14 +83,6 @@ public class home extends Fragment {
         rv_bannerlist = view.findViewById(R.id.rv_banner);
         refresh_home = view.findViewById(R.id.dash_refresh_home);
 
-
-        adContainer = view.findViewById(R.id.dash_ads);
-        //Ads
-        bannerAdView = new BannerAdView(getActivity());
-        adContainer.addView(bannerAdView);
-        //AdSettings.addTestDevice("e9e9d5f9-4782-4688-945e-2b27e89ba7d0");
-        //AdSettings.setDebugBuild(true);
-        bannerAdView.load();
         initial_setup();
         swipe_refresh();
         return view;
@@ -340,10 +321,10 @@ public class home extends Fragment {
                 }
                 modeldatapackage.add(new packagelist(packages,nameanim,nowep,totep,rate,mal,genres,cover));
             }
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+            //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
 
             adapterlastpackage = new lastpackage_adapter(modeldatapackage,getActivity(),R.layout.rv_newanime);
-            rv_lastpackage.setLayoutManager(linearLayoutManager);
+            //rv_lastpackage.setLayoutManager(linearLayoutManager);
             rv_lastpackage.setAdapter(adapterlastpackage);
             /*rv_lastpackage.setItemTransformer(new ScaleTransformer.Builder()
                     .setMinScale(0.8f)
@@ -373,47 +354,8 @@ public class home extends Fragment {
                 //adapter.notifyDataSetChanged();
 
             }
-            adapater_lastup = new home_lastup_adapter(modeldata_lastup,getActivity(),R.layout.rv_lastupload);
+            adapater_lastup = new home_lastup_adapter(modeldata_lastup,getActivity(),R.layout.rv_newepisode);
             listView_lastup.setAdapter(adapater_lastup);
-            listView_lastup.setHasFixedSize(true);
-            DiscreteScrollItemTransformer transformer = new DiscreteScrollItemTransformer() {
-                private static final float MIN_SCALE = 0.75f;
-                @Override
-                public void transformItem(View item, float position) {
-                    int pageWidth = item.getWidth();
-
-                    if (position < -1) { // [-Infinity,-1)
-                        // This page is way off-screen to the left.
-                        item.setAlpha(0f);
-
-                    } else if (position <= 0) { // [-1,0]
-                        // Use the default slide transition when moving to the left page
-                        item.setAlpha(1f);
-                        item.setTranslationX(0f);
-                        item.setScaleX(1f);
-                        item.setScaleY(1f);
-
-                    } else if (position <= 1) { // (0,1]
-                        // Fade the page out.
-                        item.setAlpha(1 - position);
-
-                        // Counteract the default slide transition
-                        item.setTranslationX(pageWidth * -position);
-
-                        // Scale the page down (between MIN_SCALE and 1)
-                        float scaleFactor = MIN_SCALE
-                                + (1 - MIN_SCALE) * (1 - Math.abs(position));
-                        item.setScaleX(scaleFactor);
-                        item.setScaleY(scaleFactor);
-
-                    } else { // (1,+Infinity]
-                        // This page is way off-screen to the right.
-                        item.setAlpha(0f);
-                    }
-
-                }
-            };
-            listView_lastup.setItemTransformer(transformer);
             page_lastup = listView_lastup.getCurrentItem();
 
 
@@ -437,10 +379,6 @@ public class home extends Fragment {
         if(!modeldata_lastup.isEmpty()){
             modeldata_lastup.clear();
         }
-        bannerAdView.destroy();
-        /*if (adView != null) {
-            adView.destroy();
-        }*/
         super.onDestroy();
     }
 

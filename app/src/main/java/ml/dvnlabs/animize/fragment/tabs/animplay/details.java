@@ -46,7 +46,7 @@ public class details extends Fragment {
     private PackageStarDBHelper packageStarDBHelper;
     private CardView video_det_compartment;
     private ExpandableLayout video_dets;
-    private TextView synop_play,detailname,idanime,genreer,title_pack,status_star;
+    private TextView synop_play,idanime,genreer,title_pack,status_star;
     private RelativeLayout add_star_lay;
     private ImageView drop,add_btn,covers;
     private AVLoadingIndicatorView loadbar;
@@ -66,7 +66,6 @@ public class details extends Fragment {
         video_det_compartment = view.findViewById(R.id.video_det_comp);
         video_dets = view.findViewById(R.id.video_details);
         synop_play = view.findViewById(R.id.synop_play);
-        detailname = view.findViewById(R.id.details_name);
         idanime = view.findViewById(R.id.aplay_txt_idanime);
         title_pack = view.findViewById(R.id.fragment_details_title);
         covers = view.findViewById(R.id.details_img_cover);
@@ -172,7 +171,6 @@ public class details extends Fragment {
             models = data;
             synop_play.setText(models.get(0).getSysnop());
             title_pack.setText(models.get(0).getName_anim());
-            detailname.setText(models.get(0).getName_anim());
             idanime.setText(idan);
             List<String> genree = new ArrayList<>();
             genree = models.get(0).getGenres();

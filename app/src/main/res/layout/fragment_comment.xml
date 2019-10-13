@@ -36,26 +36,14 @@
 
             <TextView
                 android:layout_marginStart="10dp"
+                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
                 android:text="@string/comment"
                 android:textColor="@color/primaryLightColor"
                 android:textSize="26sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:foregroundGravity="center"
-                android:padding="5dp"
-                android:text="220's"
-                android:textColor="@color/design_default_color_background" />
         </RelativeLayout>
-        <View
-            android:layout_width="150dp"
-            android:background="@color/design_default_color_background"
-            android:layout_height="2dp"/>
         <RelativeLayout
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
@@ -63,6 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+                android:layout_margin="5dp"
                 android:windowSoftInputMode="adjustPan"
                 android:isScrollContainer="true"
                 android:backgroundTint="@color/secondaryTextColor"

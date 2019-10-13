@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 
+import io.branch.referral.Branch;
 import ml.dvnlabs.animize.checker.checkNetwork;
 
 public class AppController extends Application {
@@ -25,6 +26,8 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        // Initialize the Branch object
+        Branch.getAutoInstance(this);
     }
 
     public static synchronized AppController getInstance() {

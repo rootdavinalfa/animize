@@ -12,7 +12,7 @@ public class RequestQueueVolley {
     private RequestQueue requestQueue;
     private static Context mContex;
 
-    private RequestQueueVolley(Context context){
+    public RequestQueueVolley(Context context){
         mContex = context;
         requestQueue = getRequestQueue();
 
@@ -37,7 +37,7 @@ public class RequestQueueVolley {
     public <T> void addToRequestQueue(Request<T> req) {
         req.setRetryPolicy(new DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        getRequestQueue().add(req);
+        getRequestQueue().add(req).setTag("NewReq");
     }
     public void clearCache() {
         requestQueue.getCache().clear();
@@ -45,5 +45,9 @@ public class RequestQueueVolley {
 
     public void removeCache(String key) {
         requestQueue.getCache().remove(key);
+    }
+
+    public void clearRequest(){
+        requestQueue.cancelAll("NewReq");
     }
 }

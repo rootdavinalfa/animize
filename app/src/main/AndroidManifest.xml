@@ -38,7 +38,20 @@
             android:configChanges="orientation|keyboard"
             android:parentActivityName=".activity.dashboard_activity"
             android:theme="@style/AppThemePackageView"
+            android:launchMode="singleTask"
             >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="animize"
+                    android:host="open.app"
+                    android:pathPrefix="/share/package"/>
+                <data android:scheme="https" android:host="animize.app.link" android:pathPrefix="/share/package" />
+                <data android:scheme="https" android:host="animize-alternate.app.link" android:pathPrefix="/share/package"/>
+            </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ml.dvnlabs.animize.activity.dashboard_activity" />
@@ -76,6 +89,7 @@
         </activity>
         <activity android:name=".activity.MainActivity"
             android:windowSoftInputMode="adjustResize"
+            android:launchMode="singleTask"
             >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -102,20 +116,22 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.heyzap.sdk.ads.PackageAddedReceiver">
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+
+
+        <!-- Branch init -->
+        <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_dbGxNYnGdI8CGUndI5FappfiBqk1XoWL" />
+        <!--<meta-data android:name="io.branch.sdk.BranchKey.test" android:value="undefined" />-->
+
+        <!-- Branch testing (TestMode "true" to simulate fresh installs on dev environment) -->
+        <meta-data android:name="io.branch.sdk.TestMode" android:value="false" />
+
+        <!-- Branch install referrer tracking -->
+        <receiver android:name="io.branch.referral.InstallListener" android:exported="true">
             <intent-filter>
-                <data android:scheme="package"/>
-                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
         </receiver>
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-2736984372955523~5382604601"/>
-        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
-        <meta-data android:name="com.google.android.gms.ads.AD_MANAGER_APP"
-            android:value="true" />
-
-
     </application>
 
 </manifest>

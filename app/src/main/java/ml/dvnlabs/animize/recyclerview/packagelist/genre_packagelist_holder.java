@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +36,8 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.activity.animplay_activity;
 import ml.dvnlabs.animize.activity.packageView;
+import ml.dvnlabs.animize.database.PackageStarDBHelper;
+import ml.dvnlabs.animize.fragment.tabs.multiview.multiview;
 import ml.dvnlabs.animize.model.genre_packagelist;
 import ml.dvnlabs.animize.model.playlist_model;
 
@@ -45,6 +50,7 @@ public class genre_packagelist_holder extends RecyclerView.ViewHolder implements
 
     private genre_packagelist data;
     private Context context;
+    private PackageStarDBHelper packageStarDBHelper;
 
     public genre_packagelist_holder(Context context, View view){
         super(view);
@@ -57,6 +63,7 @@ public class genre_packagelist_holder extends RecyclerView.ViewHolder implements
         this.container = view.findViewById(R.id.genrepack_container);
         itemView.setOnClickListener(this);
         itemView.setOnLongClickListener(this);
+        packageStarDBHelper = new PackageStarDBHelper(context);
     }
 
     public void bind_playlist(genre_packagelist plm){
@@ -100,22 +107,40 @@ public class genre_packagelist_holder extends RecyclerView.ViewHolder implements
     @Override
     public void onClick(View v){
         if(this.data!=null){
-            Intent intent = new Intent(context, packageView.class);
-            intent.putExtra("package",this.data.getPack());
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
-            Log.e("CLICK:",this.data.getPack());
-
+            AppCompatActivity activity = (AppCompatActivity)context;
+            if (activity instanceof packageView){
+                Fragment fragment = activity.getSupportFragmentManager().findFragmentByTag("genreFragment");
+                if (fragment instanceof multiview){
+                    ((multiview) fragment).dismiss();
+                }
+                ((packageView) activity).refreshActivity(this.data.getPack());
+            }else {
+                Intent intent = new Intent(context, packageView.class);
+                intent.putExtra("package",this.data.getPack());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+                Log.e("CLICK:",this.data.getPack());
+            }
         }
     }
 
     @Override
     public boolean onLongClick(View v) {
         if(this.data!=null){
+            Boolean isStarred;
             AppCompatActivity activity = (AppCompatActivity) context;
+            Menu menu = new MenuBuilder(context);
+            if (packageStarDBHelper.isStarred(this.data.getPack())){
+                isStarred = true;
+                menu.add(0,Menu.FIRST,0,"UnStar This Package").setIcon(R.drawable.ic_star_nofill);
+            }else {
+                isStarred = false;
+                menu.add(0,Menu.FIRST,0,"Star This Package").setIcon(R.drawable.ic_star);
+            }
+            changeStar change = new changeStar();
             new BottomSheetMenuDialogFragment.Builder(context)
                     .dark()
-                    .setSheet(R.menu.package_select)
+                    .setMenu(menu)
                     .setTitle("What do you want ?")
                     .setListener(new BottomSheetListener() {
                         @Override
@@ -125,7 +150,11 @@ public class genre_packagelist_holder extends RecyclerView.ViewHolder implements
 
                         @Override
                         public void onSheetItemSelected(@NonNull BottomSheetMenuDialogFragment bottomSheet, MenuItem item, @Nullable Object object) {
-                            Toast.makeText(context,"Not implemented",Toast.LENGTH_SHORT).show();
+                            if (isStarred){
+                                change.execute("UNSTAR");
+                            }else {
+                                change.execute("STAR");
+                            }
                         }
 
                         @Override
@@ -136,5 +165,37 @@ public class genre_packagelist_holder extends RecyclerView.ViewHolder implements
                     .show(activity.getSupportFragmentManager(),"select_package");
         }
         return true;
+    }
+
+
+    private class changeStar extends AsyncTask<String,Void,Boolean>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... strings) {
+            String change = strings[0];
+            if(change.equals("UNSTAR")){
+                System.out.println("UNSTAR");
+                packageStarDBHelper.unStar(data.getPack());
+            }else if(change.equals("STAR")){
+                System.out.println("STAR");
+                packageStarDBHelper.add_star(data.getPack());
+            }
+            return packageStarDBHelper.isStarred(data.getPack());
+        }
+
+        @Override
+        protected void onPostExecute(Boolean pa) {
+            String status;
+            if(pa){
+                status = "Add to Star Success";
+            }else {
+                status = "Remove Star Success";
+            }
+            Toast.makeText(context,status,Toast.LENGTH_SHORT).show();
+        }
     }
 }
