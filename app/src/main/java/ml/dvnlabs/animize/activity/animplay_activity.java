@@ -17,7 +17,7 @@ import ml.dvnlabs.animize.database.model.userland;
 import ml.dvnlabs.animize.driver.util.RequestQueueVolley;
 import ml.dvnlabs.animize.fragment.comment.threadComment;
 import ml.dvnlabs.animize.fragment.popup.sourceSelector;
-import ml.dvnlabs.animize.fragment.tabs.animplay.more;
+import ml.dvnlabs.animize.fragment.tabs.animplay.PlaylistFragment;
 import ml.dvnlabs.animize.model.commentMainModel;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
@@ -52,7 +52,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
@@ -279,6 +278,7 @@ FetchDataListener getvideo = new FetchDataListener() {
         isFullscreen = false;
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     public void btn_fullscreen(View view){
         Drawable buttun_fullscren;
 
@@ -507,7 +507,7 @@ FetchDataListener getvideo = new FetchDataListener() {
     //send pkg id to more fragment
     private void sendpkg(String pkg,String anim){
         String tag = "android:switcher:" + R.id.aplay_pager + ":" + 1;
-        more f = (more) getSupportFragmentManager().findFragmentByTag(tag);
+        PlaylistFragment f = (PlaylistFragment) getSupportFragmentManager().findFragmentByTag(tag);
         if(f != null){
             f.receivedata(pkg,anim);
         }
@@ -589,6 +589,7 @@ FetchDataListener getvideo = new FetchDataListener() {
         handler_player_recent.removeCallbacks(update_recent);
     }
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     public void onBackPressed(){
         Drawable buttun_fullscren;

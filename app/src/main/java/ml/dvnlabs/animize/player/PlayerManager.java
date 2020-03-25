@@ -10,6 +10,7 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
+import ml.dvnlabs.animize.activity.StreamActivity;
 import ml.dvnlabs.animize.activity.animplay_activity;
 
 public class PlayerManager {
@@ -88,7 +89,7 @@ public class PlayerManager {
             serviceBound = true;
             //((animplay_activity)context).playerServiceInit();
             //String id=((animplay_activity) context).getIntent().getStringExtra("id_anim");
-            ((animplay_activity)context).getVideo();
+            ((StreamActivity)context).getVideo();
             Log.e("BINDER STATUS:","OK");
             //service = ((PlayerService.PlayerBinder) binder).getService();
 

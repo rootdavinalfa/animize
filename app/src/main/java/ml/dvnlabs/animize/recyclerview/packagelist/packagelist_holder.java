@@ -14,6 +14,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.activity.StreamActivity;
 import ml.dvnlabs.animize.activity.animplay_activity;
 import ml.dvnlabs.animize.model.playlist_model;
 
@@ -48,7 +49,7 @@ public class packagelist_holder extends RecyclerView.ViewHolder implements View.
     @Override
     public void onClick(View v){
         if(this.playlist_model!=null){
-            Intent intent = new Intent(context.getApplicationContext(), animplay_activity.class);
+            Intent intent = new Intent(context.getApplicationContext(), StreamActivity.class);
             intent.putExtra("id_anim",this.playlist_model.getId_anim());
             context.startActivity(intent);
         }

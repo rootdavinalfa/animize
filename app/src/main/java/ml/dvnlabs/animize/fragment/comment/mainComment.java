@@ -61,11 +61,11 @@ public class mainComment extends Fragment {
         loads = view.findViewById(R.id.aplay_fragment_comment_loading);
         commentedit = view.findViewById(R.id.aplay_comments_edittext);
         addsbtn = view.findViewById(R.id.aplay_comments_adds);
-        commenteditlistener();
+        commentEditListener();
         addsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addcomments();
+                addComments();
             }
         });
         contain.setVisibility(View.GONE);
@@ -80,13 +80,13 @@ public class mainComment extends Fragment {
         String url = Api.url_commentlist+idanim;
         APINetworkRequest networkRequest = new APINetworkRequest(getContext(),fetchcomment,url,1024,null);
     }
-    public void receivedata(String id_anim){
+    public void receiveData(String id_anim){
         this.idanim = id_anim;
         fetchingComment();
     }
 
     //Listener for commentedit
-    private void commenteditlistener(){
+    private void commentEditListener(){
         addsbtn.setVisibility(View.GONE);
         commentedit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -113,7 +113,7 @@ public class mainComment extends Fragment {
     }
 
     //SHOW COMMENT AFTER GET String data from web
-    private void showingcomment(JSONArray comment){
+    private void showingComment(JSONArray comment){
         try {
             commentMainModels = new ArrayList<>();
             for (int i=0;i<comment.length();i++){
@@ -138,7 +138,7 @@ public class mainComment extends Fragment {
 
             //Get token and iduser
             token = pref.getString("token",null);
-            id_user = pref.getString("iduser",null);
+            id_user = pref.getString("idUser",null);
 
         }catch (JSONException e){
             e.printStackTrace();
@@ -153,7 +153,7 @@ public class mainComment extends Fragment {
             try {
                 JSONObject object = new JSONObject(data);
                 if (!object.getBoolean("error")){
-                    showingcomment(object.getJSONArray("comment"));
+                    showingComment(object.getJSONArray("comment"));
                 }
             }catch (JSONException e){
                 e.printStackTrace();
@@ -174,7 +174,7 @@ public class mainComment extends Fragment {
         }
     };
 
-    private void addcomments(){
+    private void addComments(){
         String url = Api.url_commentadd;
         String content =  commentedit.getText().toString();
         HashMap<String,String> params = new HashMap<>();
@@ -220,6 +220,6 @@ public class mainComment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        pref = context.getSharedPreferences("aplay",0);
+        pref = context.getSharedPreferences("aPlay",0);
     }
 }

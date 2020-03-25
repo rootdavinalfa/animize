@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import androidx.recyclerview.widget.RecyclerView;
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.activity.StreamActivity;
 import ml.dvnlabs.animize.activity.animplay_activity;
 import ml.dvnlabs.animize.model.search_list_model;
 
@@ -50,7 +51,7 @@ public class search_list_holder extends RecyclerView.ViewHolder implements View.
     @Override
     public void onClick(View v){
         if(this.vl_model!=null){
-            Intent intent = new Intent(context.getApplicationContext(), animplay_activity.class);
+            Intent intent = new Intent(context.getApplicationContext(), StreamActivity.class);
             intent.putExtra("id_anim",this.vl_model.getIdn());
             context.startActivity(intent);
         }

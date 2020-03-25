@@ -594,7 +594,7 @@ public class packageView extends AppCompatActivity {
             recent_container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), animplay_activity.class);
+                    Intent intent = new Intent(getApplicationContext(), StreamActivity.class);
                     intent.putExtra("id_anim",recentland.getAnmid());
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     //Log.e("CLICKED",this.vl_model.getIdn());

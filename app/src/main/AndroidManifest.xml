@@ -57,7 +57,7 @@
                 android:value="ml.dvnlabs.animize.activity.dashboard_activity" />
         </activity>
         <activity
-            android:name=".activity.animplay_activity"
+            android:name=".activity.StreamActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:keepScreenOn="true"
             android:label="Animize Player"

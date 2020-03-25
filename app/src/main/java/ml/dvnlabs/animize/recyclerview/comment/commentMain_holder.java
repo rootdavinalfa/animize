@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.activity.animplay_activity;
-import ml.dvnlabs.animize.fragment.comment.threadComment;
+import ml.dvnlabs.animize.activity.StreamActivity;
 import ml.dvnlabs.animize.model.api_usermodel;
 import ml.dvnlabs.animize.model.commentMainModel;
 
@@ -34,7 +33,7 @@ public class commentMain_holder extends RecyclerView.ViewHolder implements View.
 
     }
 
-    public void bindComment(commentMainModel commentMainModel){
+    void bindComment(commentMainModel commentMainModel){
         this.model = commentMainModel;
         ArrayList<api_usermodel> usermodels = model.getUsermodels();
         this.user.setText(usermodels.get(0).getName_user());
@@ -55,7 +54,7 @@ public class commentMain_holder extends RecyclerView.ViewHolder implements View.
 
             //data.add(new commentMainModel(idcomment,status,content,
               //      usermodels));
-            ((animplay_activity)context).showreplyfragment(data);
+            ((StreamActivity)context).showReplyFragment(data);
         }
     }
 

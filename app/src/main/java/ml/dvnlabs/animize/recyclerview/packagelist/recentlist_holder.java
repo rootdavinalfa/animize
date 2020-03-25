@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.activity.StreamActivity;
 import ml.dvnlabs.animize.activity.animplay_activity;
 import ml.dvnlabs.animize.database.model.recentland;
 
@@ -112,7 +113,7 @@ public class recentlist_holder extends RecyclerView.ViewHolder implements View.O
     @Override
     public void onClick(View v) {
         if(this.recs!=null){
-            Intent intent = new Intent(context.getApplicationContext(), animplay_activity.class);
+            Intent intent = new Intent(context.getApplicationContext(), StreamActivity.class);
             intent.putExtra("id_anim",this.recs.getAnmid());
             context.startActivity(intent);
 

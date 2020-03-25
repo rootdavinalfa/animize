@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.jetbrains.annotations.NotNull;
+
 import ml.dvnlabs.animize.model.playlist_model;
 
 public class playlist_adapter extends RecyclerView.Adapter<playlist_holder> {
@@ -25,6 +28,7 @@ public class playlist_adapter extends RecyclerView.Adapter<playlist_holder> {
             }
         }
     }
+    @NotNull
     @Override
     public playlist_holder onCreateViewHolder(ViewGroup parent,int viewType){
         View view = LayoutInflater.from(parent.getContext()).inflate(this.itemResor,parent,false);

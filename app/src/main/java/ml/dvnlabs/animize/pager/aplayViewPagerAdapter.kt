@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.fragment.tabs.animplay.details
-import ml.dvnlabs.animize.fragment.tabs.animplay.more
+import ml.dvnlabs.animize.fragment.tabs.animplay.PlaylistFragment
 
 class aplayViewPagerAdapter(fm : FragmentManager, numOfTabs : Int,context : Context) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     var numOfTabss : Int = numOfTabs
@@ -15,7 +15,7 @@ class aplayViewPagerAdapter(fm : FragmentManager, numOfTabs : Int,context : Cont
     override fun getItem(position: Int): Fragment {
         when(position){
             0 -> return details()
-            1 -> return more()
+            1 -> return PlaylistFragment()
         }
         return null!!
     }

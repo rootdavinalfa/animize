@@ -11,7 +11,8 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
 
-import ml.dvnlabs.animize.activity.animplay_activity;
+import ml.dvnlabs.animize.activity.StreamActivity;
+
 
 public class VideoOnSwipeTouchListener implements View.OnTouchListener {
 
@@ -60,7 +61,7 @@ public class VideoOnSwipeTouchListener implements View.OnTouchListener {
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            if ((player.getPlaybackState() == Player.STATE_READY || player.getPlaybackState() == Player.STATE_BUFFERING) && !((animplay_activity)mContext).isLocked){
+            if ((player.getPlaybackState() == Player.STATE_READY || player.getPlaybackState() == Player.STATE_BUFFERING) && !((StreamActivity)mContext).isLocked){
                 long nowTime = player.getCurrentPosition();
                 long endTime = player.getDuration();
                 isCounting = true;

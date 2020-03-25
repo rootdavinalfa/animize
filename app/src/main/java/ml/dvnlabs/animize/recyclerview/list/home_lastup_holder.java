@@ -18,8 +18,12 @@ import com.bumptech.glide.request.RequestOptions;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+
+import java.util.stream.Stream;
+
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.activity.StreamActivity;
 import ml.dvnlabs.animize.activity.animplay_activity;
 import ml.dvnlabs.animize.model.home_lastup_model;
 import ml.dvnlabs.animize.recyclerview.lastup_listener;
@@ -69,7 +73,7 @@ public class home_lastup_holder extends RecyclerView.ViewHolder implements View.
     @Override
     public void onClick(View v){
         if(this.model!=null){
-            Intent intent = new Intent(context.getApplicationContext(), animplay_activity.class);
+            Intent intent = new Intent(context.getApplicationContext(), StreamActivity.class);
             intent.putExtra("id_anim",this.model.getIdn());
             context.startActivity(intent);
 

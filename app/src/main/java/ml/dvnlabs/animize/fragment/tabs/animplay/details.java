@@ -199,7 +199,7 @@ public class details extends Fragment {
     }
     private void senddata2mainComment(String idanim){
         mainComment mc = (mainComment) getChildFragmentManager().findFragmentByTag("COMMENT_MAIN");
-        mc.receivedata(idanim);
+        mc.receiveData(idanim);
 
     }
     private class readStarStatus extends AsyncTask<String,Void,Boolean> {

@@ -11,10 +11,11 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.activity.animplay_activity;
+import ml.dvnlabs.animize.activity.StreamActivity;
 import ml.dvnlabs.animize.model.playlist_model;
-import ml.dvnlabs.animize.player.PlayerManager;
 
 public class playlist_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView episode;
@@ -46,14 +47,19 @@ public class playlist_holder extends RecyclerView.ViewHolder implements View.OnC
         if (now == pos){
             this.now_sign.setVisibility(View.VISIBLE);
         }
-        Glide.with(itemView).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_picture).error(R.drawable.ic_picture)).load(playlist_model.getUrl_image()).transition(new DrawableTransitionOptions().crossFade()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).override(600,200).fitCenter()).into(thumbnail);
+        Glide.with(itemView)
+                .applyDefaultRequestOptions(new RequestOptions()
+                        .placeholder(R.drawable.ic_picture).error(R.drawable.ic_picture))
+                .load(playlist_model.getUrl_image()).transition(new DrawableTransitionOptions().crossFade()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).override(600,200).fitCenter())
+                .apply(RequestOptions.bitmapTransform(new RoundedCornersTransformation(10,0)))
+                .into(thumbnail);
 
     }
     @Override
     public void onClick(View v){
         if(this.playlist_model!=null){
-            ((animplay_activity)context).setIdanim(this.playlist_model.getId_anim());
-            ((animplay_activity)context).getVideo();
+            ((StreamActivity)context).setIdAnim(this.playlist_model.getId_anim());
+            ((StreamActivity)context).getVideo();
 
 
         }

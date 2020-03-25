@@ -100,7 +100,7 @@
                 android:layout_height="18dp"
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
-                android:onClick="btn_fullscreen"
+                android:onClick="btnFullscreen"
                 android:scaleType="fitCenter"
                 android:clickable="true"
                 android:focusable="true"

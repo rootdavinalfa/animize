@@ -25,8 +25,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.activity.StreamActivity;
 import ml.dvnlabs.animize.activity.animplay_activity;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
@@ -73,7 +75,7 @@ public class threadComment extends Fragment {
         closebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((animplay_activity)getActivity()).closereplyfragment();
+                ((StreamActivity) Objects.requireNonNull(getActivity())).closeReplyFragment();
             }
         });
         receivedata();
@@ -155,7 +157,7 @@ public class threadComment extends Fragment {
 
             //GET preferences
             token = pref.getString("token",null);
-            id_user = pref.getString("iduser",null);
+            id_user = pref.getString("idUser",null);
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -236,7 +238,7 @@ public class threadComment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        pref = context.getSharedPreferences("aplay",0);
+        pref = context.getSharedPreferences("aPlay",0);
 
     }
 }
