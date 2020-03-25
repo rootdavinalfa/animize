@@ -41,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="220dp"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_picture" />
+                    android:src="@drawable/ic_picture_light" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -50,14 +50,16 @@
 
                 <TextView
                     android:id="@+id/star_name"
+                    android:layout_margin="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:layout_centerInParent="true"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textAlignment="center"
-                    android:textColor="@color/secondaryTextColor"
+                    android:textColor="@color/OverWhite"
                     android:textSize="22sp"
+                    android:textStyle="bold"
                     tools:text="seishun buta ashdihsadihiashdi sadsa adasdyaro senapi wo minai de" />
             </RelativeLayout>
 

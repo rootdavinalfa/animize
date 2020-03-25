@@ -29,7 +29,7 @@
                     android:layout_marginStart="5dp"
                     android:fontFamily="@font/slackey"
                     android:text="@string/app_name"
-                    android:textColor="@color/primaryDarkColor"
+                    android:textColor="@color/primaryLightColor"
                     android:textSize="40sp" />
             </RelativeLayout>
 
@@ -72,9 +72,9 @@
                 android:layout_alignParentStart="true"
                 app:tabIndicatorHeight="0dp"
                 app:tabRippleColor="@null"
-                app:tabSelectedTextColor="@color/primaryDarkColor"
+                app:tabSelectedTextColor="@color/primaryLightColor"
                 app:tabTextAppearance="@style/MyCustomTabTextAppearance"
-                app:tabTextColor="@color/secondaryDarkColor">
+                app:tabTextColor="@color/OverWhite">
 
                 <com.google.android.material.tabs.TabItem
                     android:id="@+id/dash_tab_home"
@@ -104,7 +104,7 @@
                     android:foreground="@drawable/layoutrippleeffect"
                     android:padding="10dp"
                     android:src="@drawable/ic_search"
-                    android:tint="@color/secondaryTextColor" />
+                     />
 
             </RelativeLayout>
         </RelativeLayout>
@@ -157,8 +157,7 @@
         android:id="@+id/DashnavigationView"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@color/design_default_color_background"
-        android:foreground="@drawable/layoutrippleeffect"
+        android:background="@color/colorPrimaryDark"
         app:itemIconTint="@drawable/nav_color_state"
         app:itemTextColor="@drawable/nav_color_state"
         app:menu="@menu/dash_bottom_nav"

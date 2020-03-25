@@ -23,9 +23,8 @@ public class webview : AppCompatActivity(){
         setContentView(R.layout.activity_webview)
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             var flags = window.decorView.systemUiVisibility
-            flags = flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             window.decorView.systemUiVisibility = flags
-            this.window.statusBarColor = getColor(R.color.colorAccent)
+            this.window.statusBarColor = getColor(R.color.colorPrimaryDark)
         }
         initialize()
         val intent = intent

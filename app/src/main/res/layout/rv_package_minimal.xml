@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="266dp"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="5dp"
+    android:layout_margin="8dp"
     android:clickable="true"
     android:focusable="true"
     android:foreground="@drawable/layoutrippleeffect"
@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_picture" />
+                android:src="@drawable/ic_picture_light" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -124,4 +124,4 @@
             </RelativeLayout>
         </RelativeLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

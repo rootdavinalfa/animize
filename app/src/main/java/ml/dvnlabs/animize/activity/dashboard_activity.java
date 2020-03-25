@@ -70,9 +70,9 @@ public class dashboard_activity extends AppCompatActivity implements checkNetwor
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
             int flags = getWindow().getDecorView().getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+
             getWindow().getDecorView().setSystemUiVisibility(flags);
-            this.getWindow().setStatusBarColor(getColor(R.color.colorAccent));
+            this.getWindow().setStatusBarColor(getColor(R.color.colorPrimaryDark));
         }
         initializes();
         SqliteReadUser sqliteReadUser = new SqliteReadUser();

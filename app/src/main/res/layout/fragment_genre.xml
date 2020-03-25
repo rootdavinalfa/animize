@@ -15,14 +15,14 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            app:indicatorColor="@color/primaryDarkColor"
+            app:indicatorColor="@color/OverWhite"
             app:indicatorName="BallClipRotateIndicator"/>
         <TextView
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:textColor="@color/primaryColor"
+            android:textColor="@color/primaryLightColor"
             android:text="Waiting divine message..."/>
     </LinearLayout>
 
@@ -45,9 +45,9 @@
                 app:tabIndicatorHeight="1dp"
                 app:tabIndicatorColor="@color/primaryColor"
                 app:tabRippleColor="@null"
-                app:tabSelectedTextColor="@color/primaryDarkColor"
+                app:tabSelectedTextColor="@color/primaryLightColor"
                 app:tabTextAppearance="@style/MyCustomTabTextAppearance"
-                app:tabTextColor="@color/secondaryDarkColor"
+                app:tabTextColor="@color/OverWhite"
                 app:tabMode="scrollable">
             </com.google.android.material.tabs.TabLayout>
             <ImageView
@@ -57,7 +57,7 @@
                 android:layout_height="50dp"
                 android:padding="15dp"
                 android:rotation="180"
-                android:tint="@color/secondaryTextColor"
+                android:tint="@color/OverWhite"
                 android:src="@drawable/ic_expand_collapse"/>
             <net.cachapa.expandablelayout.ExpandableLayout
                 android:id="@+id/genre_meta_container"
@@ -78,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:text="List Genre"
                         android:textSize="20sp"
-                        android:textColor="@color/secondaryTextColor"/>
+                        android:textColor="@color/OverWhite"/>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/genre_rv_meta_staggered"
                         android:layout_width="match_parent"

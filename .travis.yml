@@ -3,7 +3,7 @@ jdk: oraclejdk8
 env:
  global:
     - ANDROID_API_LEVEL=28
-    - ANDROID_BUILD_TOOLS_VERSION=28.0.3
+    - ANDROID_BUILD_TOOLS_VERSION=29.0.3
 android:
  licenses:
     - 'android-sdk-preview-license-.+'
@@ -28,4 +28,4 @@ before_script:
 before_install:
     - chmod +x gradlew
 script:
-    - ./gradlew build check
+    - ./gradlew build

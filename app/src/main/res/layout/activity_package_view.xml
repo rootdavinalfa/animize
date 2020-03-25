@@ -118,12 +118,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 app:cardBackgroundColor="@color/blacktrans2"
-                app:cardCornerRadius="2dp"
+                app:cardCornerRadius="5dp"
                 app:cardElevation="0dp"
                 app:contentPadding="5dp">
 
@@ -206,9 +206,9 @@
 
                     </androidx.recyclerview.widget.RecyclerView>
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -301,31 +301,37 @@
                     </LinearLayout>
 
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
+                app:cardCornerRadius="5dp"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                app:cardBackgroundColor="@color/blacktrans2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@color/blacktrans2"
-                android:orientation="vertical">
-
-                <TextView
+                android:layout_height="wrap_content">
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@string/videos"
-                    android:textColor="@color/primaryLightColor"
-                    android:textSize="30sp" />
+                    android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/packageview_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:listitem="@layout/playlist_view">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="@string/videos"
+                        android:textColor="@color/primaryLightColor"
+                        android:textSize="30sp" />
 
-                </androidx.recyclerview.widget.RecyclerView>
-            </LinearLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/packageview_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:listitem="@layout/playlist_view">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

@@ -356,6 +356,7 @@ public class home extends Fragment {
             }
             adapater_lastup = new home_lastup_adapter(modeldata_lastup,getActivity(),R.layout.rv_newepisode);
             listView_lastup.setAdapter(adapater_lastup);
+            listView_lastup.setSlideOnFling(true);
             page_lastup = listView_lastup.getCurrentItem();
 
 

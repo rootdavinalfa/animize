@@ -35,7 +35,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:textColor="@color/secondaryTextColor"
+                    android:textColor="@color/OverWhite"
                     android:id="@+id/srctitle_video_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:textColor="@color/secondaryTextColor"
+                        android:textColor="@color/OverWhite"
                         android:id="@+id/srcid_anime"
                         android:layout_width="195dp"
                         android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:textColor="@color/secondaryDarkColor"
+                        android:textColor="@color/OverWhite"
                         android:id="@+id/srcepisode_view"
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"

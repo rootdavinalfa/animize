@@ -33,8 +33,8 @@
                 android:backgroundTint="@color/blacktrans"
 
                 android:hint="@string/search_anime"
-                android:textColor="@color/secondaryDarkColor"
-                android:textColorHint="@color/secondaryTextColor" />
+                android:textColor="@color/OverWhite"
+                android:textColorHint="@color/OverWhite" />
 
         </LinearLayout>
         <View
@@ -43,7 +43,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="4dp"
-            android:background="@color/secondaryDarkColor" />
+            android:background="@color/OverWhite" />
 
         <RelativeLayout
             android:layout_width="match_parent"

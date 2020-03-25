@@ -17,7 +17,7 @@
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/primaryDarkColor"
+                android:textColor="@color/primaryLightColor"
                 android:textSize="26sp"
                 android:text="Information"/>
             <ImageView
@@ -25,7 +25,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="@drawable/ripple_forrounded"
-                android:tint="@color/secondaryDarkColor2"
+                android:tint="@color/OverWhite"
                 android:padding="15dp"
                 android:src="@drawable/ic_close"
                 android:layout_alignParentEnd="true"

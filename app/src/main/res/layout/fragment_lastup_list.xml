@@ -19,7 +19,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondaryTextColor"
+                android:textColor="@color/primaryLightColor"
                 android:text="@string/last_uploaded_txt"
                 android:textSize="32sp"/>
         </LinearLayout>

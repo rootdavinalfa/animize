@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_video_card"
     android:layout_width="match_parent"
@@ -7,44 +7,11 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-
-    app:cardCornerRadius="0dp"
+    app:cardCornerRadius="5dp"
     app:cardElevation="7dp"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="0dp">
-
-    <androidx.cardview.widget.CardView
-
-        android:clickable="false"
-        android:focusable="false"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginBottom="50dp"
-        app:cardElevation="5dp"
-        app:contentPadding="5dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <TextView
-                android:textColor="@color/secondaryTextColor"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="Posted By:"/>
-            <TextView
-                android:layout_marginStart="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textStyle="bold"
-                android:textColor="@color/primaryDarkColor"
-                android:text="Davin Alfarizky"/>
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
+    android:layout_margin="5dp"
+    app:contentPadding="5dp">
     <LinearLayout
-        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -75,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/advent_pro_bold"
                     android:text="KSJWkdjhiahdihwiuhiawakddkahdksa"
-                    android:textColor="@color/secondaryTextColor"
+                    android:textColor="@color/OverWhite"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -90,7 +57,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="TextView"
-                        android:textColor="@color/secondaryDarkColor"
+                        android:textColor="@color/OverWhite"
                         android:textStyle="bold" />
 
                     <TextView
@@ -98,7 +65,7 @@
                         android:layout_width="300dp"
                         android:layout_height="wrap_content"
                         android:text="kewisiwie"
-                        android:textColor="@color/secondaryDarkColor" />
+                        android:textColor="@color/OverWhite" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -106,4 +73,4 @@
     </LinearLayout>
 
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

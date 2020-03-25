@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="250dp"
     android:layout_height="wrap_content"
     android:layout_margin="15dp"
     app:cardCornerRadius="5dp"
@@ -29,13 +29,15 @@
             android:maxLines="1"
             android:ellipsize="end"
             tools:text="Romance,Sci-fi,Slice of Life"/>
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
             <ImageView
+                android:layout_gravity="center_horizontal"
                 android:elevation="5dp"
                 android:scaleType="fitXY"
                 android:layout_margin="2dp"
@@ -43,19 +45,19 @@
                 android:layout_width="80dp"
                 android:layout_height="100dp"
                 tools:src="@drawable/ic_astronaut"/>
+
             <TextView
-                android:layout_centerVertical="true"
                 android:id="@+id/package_name"
-                android:layout_marginStart="3dp"
-                android:layout_toEndOf="@+id/package_cover"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:maxLines="2"
                 android:ellipsize="end"
+                android:maxLines="2"
+                android:textAlignment="center"
                 android:textColor="@color/design_default_color_background"
-                tools:text="Seishun buta yaroutasdsadas safgusagf usafuasfg usagfusa"/>
-        </RelativeLayout>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:text="Seishun buta yaroutasdsadas safgusagf usafuasfg usagfusa" />
+        </LinearLayout>
         <GridLayout
             android:background="@color/blacktrans2"
             android:layout_width="match_parent"

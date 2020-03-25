@@ -56,7 +56,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginStart="4dp"
                             android:text="@string/last_uploaded_txt"
-                            android:textColor="@color/primaryDarkColor"
+                            android:textColor="@color/primaryLightColor"
                             android:textSize="26sp" />
                     </RelativeLayout>
 
@@ -84,14 +84,6 @@
 
 
                 </LinearLayout>
-            <View
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/primaryDarkColor"/>
             <LinearLayout
                 android:layout_marginTop="5dp"
                 android:elevation="5dp"
@@ -112,7 +104,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginStart="4dp"
                         android:text="@string/last_package"
-                        android:textColor="@color/primaryDarkColor"
+                        android:textColor="@color/primaryLightColor"
                         android:textSize="26sp" />
                 </RelativeLayout>
                 <RelativeLayout
@@ -146,7 +138,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textColor="@color/exo_error_message_background_color"
+                        android:textColor="@color/OverWhite"
                         android:textSize="12sp"
                         android:layout_centerInParent="true"
                         android:textAlignment="center"

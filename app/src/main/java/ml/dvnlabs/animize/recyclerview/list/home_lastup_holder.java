@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.stream.Stream;
 
@@ -31,7 +32,7 @@ import ml.dvnlabs.animize.recyclerview.lastup_listener;
 public class home_lastup_holder extends RecyclerView.ViewHolder implements View.OnClickListener{
     TextView title,episode;
     //ImageView img_src;
-    CardView container;
+    MaterialCardView container;
     lastup_listener listener;
     private home_lastup_model model;
     private Context context;

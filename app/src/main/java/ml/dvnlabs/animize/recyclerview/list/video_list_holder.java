@@ -48,7 +48,7 @@ public class video_list_holder extends RecyclerView.ViewHolder implements View.O
       //  Log.e("DATAAA:",vl_model.getTitle_nm());
         this.title_nm.setText(vl_model.getTitle_nm());
         //Log.e("INFOEW",vl_model.getTitle_nm());
-        Glide.with(itemView).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_picture).error(R.drawable.ic_picture)).load(vl_model.getUrl_imagetitle()).transition(new DrawableTransitionOptions().crossFade()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)).into(title_image);
+        Glide.with(itemView).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_picture_light).error(R.drawable.ic_picture)).load(vl_model.getUrl_imagetitle()).transition(new DrawableTransitionOptions().crossFade()).apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL)).into(title_image);
         this.idn.setText(vl_model.getIdn());
         String ep = context.getString(R.string.list_view_episode)+vl_model.getEp_num();
         this.ep_num.setText(ep);

@@ -14,9 +14,9 @@
         app:tabIndicatorHeight="1dp"
         app:tabRippleColor="@null"
         app:tabIndicatorColor="@color/primaryColor"
-        app:tabSelectedTextColor="@color/primaryDarkColor"
+        app:tabSelectedTextColor="@color/primaryLightColor"
         app:tabTextAppearance="@style/MyCustomTabTextAppearance"
-        app:tabTextColor="@color/secondaryDarkColor">
+        app:tabTextColor="@color/OverWhite">
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

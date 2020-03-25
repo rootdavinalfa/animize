@@ -21,7 +21,8 @@
             android:id="@+id/recentlist_friendlyday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/primaryDarkColor"
+            android:textColor="@color/primaryLightColor"
+            android:textStyle="bold"
             android:textSize="20sp"
             tools:text="Today" />
 
@@ -33,8 +34,8 @@
                 android:id="@+id/recentlist_cover"
                 android:layout_width="100dp"
                 android:layout_height="150dp"
-                android:layout_margin="5dp"
-                tools:src="@drawable/ic_picture" />
+                android:layout_margin="10dp"
+                tools:src="@drawable/ic_picture_light" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,20 +44,23 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:layout_margin="5dp"
                     android:id="@+id/recentlist_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:textColor="@color/secondaryDarkColor2"
+                    android:textAlignment="center"
+                    android:textColor="@color/OverWhite"
                     android:textSize="20sp"
+                    android:textStyle="bold"
                     tools:text="makakakakak asuuas gudsaug uasdugu" />
 
                 <TextView
                     android:id="@+id/recentlist_episode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/secondaryDarkColor2"
+                    android:textColor="@color/OverWhite"
                     android:textSize="16sp"
                     tools:text="Episode : 1" />
 
@@ -64,7 +68,7 @@
                     android:id="@+id/recentlist_lasttime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/secondaryDarkColor"
+                    android:textColor="@color/OverWhite"
                     android:textSize="14sp"
                     tools:text="Last Time : 12:22" />
 
@@ -72,7 +76,7 @@
                     android:id="@+id/recentlist_playedon"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/secondaryDarkColor"
+                    android:textColor="@color/OverWhite"
                     android:textSize="14sp"
                     tools:text="Last Played On : 12 February 2019" />
             </LinearLayout>

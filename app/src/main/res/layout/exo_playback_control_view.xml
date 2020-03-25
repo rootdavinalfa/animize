@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#99070707"
     android:animateLayoutChanges="true"
     android:layout_width="match_parent"
@@ -105,6 +106,7 @@
             android:paddingRight="4dp"
             android:textColor="#FFFFFFFF"
             android:textSize="14sp"
+            tools:text="00:00"
             android:textStyle="bold" />
 
         <com.google.android.exoplayer2.ui.DefaultTimeBar
@@ -127,6 +129,7 @@
             android:paddingRight="4dp"
             android:textColor="#FFFFFFFF"
             android:textSize="14sp"
+            tools:text="22:22"
             android:textStyle="bold" />
 
         <LinearLayout
