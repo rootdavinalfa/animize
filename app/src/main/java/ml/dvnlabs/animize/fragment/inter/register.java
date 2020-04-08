@@ -1,5 +1,6 @@
 package ml.dvnlabs.animize.fragment.inter;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -28,13 +30,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import ml.dvnlabs.animize.R;
+import ml.dvnlabs.animize.activity.MainActivity;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
 
-public class register extends Fragment {
+public class register extends DialogFragment {
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
 
@@ -78,7 +82,7 @@ public class register extends Fragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.activity_webview, null);
         WebView webView = dialogView.findViewById(R.id.animize_webview);
-        webView.loadUrl("http://dvnlabs.ml/animize/tos.html");
+        webView.loadUrl("https://dvnlabs.xyz/animize/tos.php");
         webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
@@ -159,13 +163,15 @@ public class register extends Fragment {
             try{
                 JSONObject object = new JSONObject(data);
                 if(!object.getBoolean("error")){
+                    String email = reg_email.getText().toString();
+                    String password = reg_password.getText().toString();
+                    ((MainActivity) Objects.requireNonNull(getActivity())).autoFillFromRegister(email, password);
                     reg_name.setText(null);
                     reg_email.setText(null);
                     reg_password.setText(null);
                     reg_tos_ok.setChecked(false);
-                    Toast toast = Toast.makeText(getActivity(),"Register OK ,Swipe Left to login!",Toast.LENGTH_LONG);
-                    toast.show();
                     bottom_info(false,"Registered,click anywhere then login!");
+                    dismiss();
                 }
                 else{
                     Toast toast = Toast.makeText(getActivity(),object.getString("message"),Toast.LENGTH_LONG);
@@ -195,7 +201,7 @@ public class register extends Fragment {
         }
     };
     private void bottom_info(boolean error,String msg){
-        BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
+        BottomSheetDialog dialog = new BottomSheetDialog(Objects.requireNonNull(getActivity()));
         View sheetView = getActivity().getLayoutInflater().inflate(R.layout.bottom_info, null);
         dialog.setContentView(sheetView);
         dialog.show();
@@ -219,6 +225,5 @@ public class register extends Fragment {
                 dialog.dismiss();
             }
         },3000);
-
     }
 }

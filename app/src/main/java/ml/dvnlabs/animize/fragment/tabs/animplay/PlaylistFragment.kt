@@ -38,7 +38,7 @@ class PlaylistFragment : Fragment(){
     }
     private fun getplaylist(){
         val url : String = Api.url_playlist_play + pkganim
-        APINetworkRequest(mcontext,getPlaylist,url,CODE_GET_REQUEST,null)
+        mcontext?.let { APINetworkRequest(it, getPlaylist, url, CODE_GET_REQUEST, null) }
     }
     private var getPlaylist : FetchDataListener = object : FetchDataListener{
         override fun onFetchComplete(data: String?) {

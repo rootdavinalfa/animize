@@ -61,7 +61,7 @@ class sourceSelector : BottomSheetDialogFragment(){
         this.mcontext = context
         val url = Api.url_sourcelist + idanim + "/lang=" + lang
         println("URL SOURCES GET: $url")
-        APINetworkRequest(getContext(), fetchSource, url, CODE_GET_REQUEST, null)
+        getContext()?.let { APINetworkRequest(it, fetchSource, url, CODE_GET_REQUEST, null) }
     }
     private var fetchSource : FetchDataListener = object : FetchDataListener{
         override fun onFetchComplete(data: String?) {

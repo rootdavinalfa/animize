@@ -1,6 +1,7 @@
 package ml.dvnlabs.animize.driver;
 
 public class Api {
+    //private static final String url_base = "http://192.168.1.200/animize/";
     private static final String url_base = "https://api.dvnlabs.xyz/animize/";
     public static final String api_animlist = url_base+"anim/list/all";
     public static final String api_animplay = url_base+"anim/detail/play/";

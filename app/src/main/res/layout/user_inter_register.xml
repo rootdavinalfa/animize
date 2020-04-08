@@ -4,64 +4,65 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    android:layout_marginStart="5dp"
-    android:layout_marginEnd="5dp"
     >
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_register"
+        android:layout_margin="15dp"
+        android:textSize="32sp" />
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
+        android:layout_margin="8dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/OverWhite"
         android:hint="@string/txt_regist_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/regist_name_tf"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/bg_edit"
-            android:hint="@string/txt_regist_name"
-            android:textColorHint="@color/secondaryDarkColor2"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_rounded"
+            android:foreground="@drawable/layoutrippleeffect"
             android:textColor="@color/secondaryLightColor"
             android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
+        android:layout_margin="8dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
+        android:textColorHint="@color/OverWhite"
         android:hint="@string/login_username_txt">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/regist_email_tf"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/bg_edit"
-            android:hint="@string/login_username_txt"
-            android:textColorHint="@color/secondaryDarkColor2"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_rounded"
+            android:foreground="@drawable/layoutrippleeffect"
             android:textColor="@color/secondaryLightColor"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
+        android:layout_margin="8dp"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         android:hint="@string/login_password_txt"
-        app:passwordToggleEnabled="true"
-
+        app:endIconMode="password_toggle"
+        android:textColorHint="@color/OverWhite"
         >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/regist_password_tf"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/bg_edit"
-            android:hint="@string/login_password_txt"
-            android:textColorHint="@color/secondaryDarkColor2"
+            android:layout_height="wrap_content"
+            android:background="@drawable/textbox_rounded"
+            android:foreground="@drawable/layoutrippleeffect"
             android:textColor="@color/secondaryLightColor"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -96,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T.O.S"
-            android:textColor="@color/secondaryDarkColor2"
+            android:textColor="@color/yellow"
             android:textSize="28sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -105,11 +106,12 @@
             app:layout_constraintTop_toTopOf="parent" />
     </RelativeLayout>
     <RelativeLayout
+        android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="5dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <CheckBox
@@ -118,8 +120,7 @@
             android:id="@+id/checkbox_regist_tos_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/roundbutton"
-            android:backgroundTint="@color/secondaryDarkColor"
+            android:background="@drawable/textbox_rounded"
             android:foreground="@drawable/layoutrippleeffect"
             android:text="@string/cb_tos"
             android:textColor="@color/design_default_color_on_primary"
