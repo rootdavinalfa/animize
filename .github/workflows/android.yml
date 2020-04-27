@@ -2,9 +2,9 @@ name: Check Animize CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ animize-beta ]
   pull_request:
-    branches: [ master ]
+    branches: [ animize-beta ]
 
 jobs:
   build:
