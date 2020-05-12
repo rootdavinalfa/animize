@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2020.
+ * Animize Devs
+ * Copyright 2019 - 2020
+ * Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+ * This program used for watching anime without ads.
+ *
+ */
+
 package ml.dvnlabs.animize.database;
 
 import android.content.ContentValues;
@@ -15,7 +24,7 @@ import ml.dvnlabs.animize.database.model.userland;
 
 public class InitInternalDBHelper extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = dbversion.DatabaseVer;
+    private static final int DATABASE_VERSION = DBVersion.DatabaseVer;
 
     // Database Name
     private static final String DATABASE_NAME = "local_animize_db";
@@ -57,7 +66,8 @@ public class InitInternalDBHelper extends SQLiteOpenHelper {
         // Create tables again
         //onCreate(db);
     }
-    private boolean checktablenotexist(SQLiteDatabase db,String table_name){
+
+    private boolean checktablenotexist(SQLiteDatabase db, String table_name){
         Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"
                 + table_name + "'", null);
         if (cursor.getCount() == 0){
@@ -65,7 +75,8 @@ public class InitInternalDBHelper extends SQLiteOpenHelper {
         }
         return false;
     }
-    public void insertuser(String token,String idus,String ema,String nameus){
+
+    public void insertuser(String token, String idus, String ema, String nameus){
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -85,6 +96,7 @@ public class InitInternalDBHelper extends SQLiteOpenHelper {
 
         //return id_db;
     }
+
     public String sign_out(){
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -99,6 +111,7 @@ public class InitInternalDBHelper extends SQLiteOpenHelper {
         return null;
 
     }
+
     public String delete_starred(){
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -112,6 +125,7 @@ public class InitInternalDBHelper extends SQLiteOpenHelper {
         return null;
 
     }
+
     public userland getUser(){
         try {
             String selectquery = "SELECT * FROM "+userland.table_name+" ";
@@ -137,6 +151,7 @@ public class InitInternalDBHelper extends SQLiteOpenHelper {
         return null;
 
     }
+
     public boolean getUserCount() {
         try {
             String countQuery = "SELECT  * FROM " + userland.table_name;

@@ -1,8 +1,17 @@
+<!--
+  ~ Copyright (c) 2020.
+  ~ Animize Devs
+  ~ Copyright 2019 - 2020
+  ~ Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+  ~ This program used for watching anime without ads.
+  ~
+  -->
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ml.dvnlabs.animize.fragment.profile"
+    tools:context=".ui.fragment.Profile"
     android:background="@color/graylight">
 
     <LinearLayout
@@ -11,14 +20,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/graylight">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="250dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="@drawable/gradientprofilebg"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/text_prof_name"
                     android:layout_marginTop="50dp"
@@ -32,28 +44,31 @@
 
 
             </LinearLayout>
+
             <androidx.cardview.widget.CardView
                 android:layout_width="400dp"
                 android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="150dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="2">
+
                     <LinearLayout
                         android:gravity="center"
                         android:orientation="vertical"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Edit Profile"
-                            android:textSize="20sp"
-                            />
+                            android:textSize="20sp" />
 
 
                     </LinearLayout>
@@ -64,12 +79,12 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent">
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="About"
-                            android:textSize="20sp"
-                            />
+                            android:textSize="20sp" />
 
                     </LinearLayout>
 
@@ -77,20 +92,24 @@
 
             </androidx.cardview.widget.CardView>
         </RelativeLayout>
+
         <LinearLayout
             android:layout_width="360dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center">
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:paddingLeft="25dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:src="@drawable/ic_email_black"/>
+
                 <TextView
                     android:id="@+id/text_prof_email"
                     android:textStyle="bold"
@@ -101,20 +120,24 @@
                     android:text="davin@dvnlabs.ml"/>
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="5dp"
                 android:background="@android:color/darker_gray"/>
+
             <LinearLayout
                 android:orientation="horizontal"
                 android:paddingLeft="25dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:src="@drawable/ic_id_card"/>
+
                 <TextView
                     android:id="@+id/text_prof_id"
                     android:textStyle="bold"
@@ -125,6 +148,7 @@
                     android:text="abcd"/>
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -152,7 +176,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
 
 
     </LinearLayout>

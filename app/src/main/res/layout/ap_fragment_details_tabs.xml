@@ -1,10 +1,19 @@
+<!--
+  ~ Copyright (c) 2020.
+  ~ Animize Devs
+  ~ Copyright 2019 - 2020
+  ~ Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+  ~ This program used for watching anime without ads.
+  ~
+  -->
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
-    tools:context="ml.dvnlabs.animize.fragment.tabs.animplay.details">
+    tools:context=".ui.fragment.tabs.animplay.details">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -13,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -21,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:id="@+id/aplay_add_star_layout"
                     android:clickable="true"
@@ -29,20 +40,22 @@
                     android:padding="2dp"
                     android:layout_width="match_parent"
                     android:layout_height="130dp">
+
                     <ImageView
                         android:id="@+id/details_img_cover"
                         android:layout_width="120dp"
                         android:layout_height="120dp"
                         android:layout_margin="5dp"
                         android:src="@drawable/ic_picture_light"/>
+
                     <LinearLayout
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
                         android:layout_toEndOf="@+id/details_img_cover"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        >
+                        android:layout_height="wrap_content">
+
                         <TextView
                             android:background="@drawable/round_layout"
                             android:backgroundTint="@color/blacktrans2"
@@ -55,37 +68,40 @@
                             android:textSize="26sp"
                             android:textColor="@color/secondaryLightColor"
                             android:text="seisheuh saasdsadhuheu asuhue ashuhueahuasdu aeuhu"/>
+
                         <Space
                             android:layout_width="match_parent"
                             android:layout_height="5dp" />
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" >
-                                <TextView
-                                    android:background="@drawable/round_layout"
-                                    android:backgroundTint="@color/blacktrans2"
-                                    android:id="@+id/aplay_add_star_status"
-                                    android:layout_marginEnd="5dp"
-                                    android:layout_centerInParent="true"
-                                    android:layout_toStartOf="@+id/aplay_add_star"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="This Anime not starred!"
-                                    android:textColor="@color/secondaryLightColor"/>
-                                <ImageView
-                                    android:id="@+id/aplay_add_star"
-                                    android:foreground="@drawable/ripple_forrounded"
-                                    android:clickable="true"
-                                    android:focusable="true"
-                                    android:layout_centerInParent="true"
-                                    android:layout_alignParentBottom="true"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_add"
-                                    />
 
-                            </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:background="@drawable/round_layout"
+                                android:backgroundTint="@color/blacktrans2"
+                                android:id="@+id/aplay_add_star_status"
+                                android:layout_marginEnd="5dp"
+                                android:layout_centerInParent="true"
+                                android:layout_toStartOf="@+id/aplay_add_star"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="This Anime not starred!"
+                                android:textColor="@color/secondaryLightColor" />
+
+                            <ImageView
+                                android:id="@+id/aplay_add_star"
+                                android:foreground="@drawable/ripple_forrounded"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:layout_centerInParent="true"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_add" />
+
+                        </RelativeLayout>
 
                     </LinearLayout>
 
@@ -102,11 +118,11 @@
                     android:orientation="horizontal"
                     app:cardBackgroundColor="@color/colorPrimaryDark"
                     app:contentPadding="5dp">
+
                     <LinearLayout
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -144,6 +160,7 @@
                             app:el_duration="500"
                             app:el_expanded="true"
                             app:el_parallax="1">
+
                             <TextView
                                 android:id="@+id/synop_play"
                                 android:layout_width="match_parent"
@@ -158,6 +175,7 @@
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -166,8 +184,8 @@
                     android:orientation="horizontal"
                     app:cardBackgroundColor="@color/colorPrimaryDark"
                     app:contentPadding="5dp"
-                    android:layout_margin="5dp"
-                    >
+                    android:layout_margin="5dp">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

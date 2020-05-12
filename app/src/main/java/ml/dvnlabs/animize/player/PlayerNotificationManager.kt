@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2020. 
+ * Animize Devs 
+ * Copyright 2019 - 2020
+ * Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+ * This program used for watching anime without ads.
+ *   
+ */
+
 package ml.dvnlabs.animize.player
 
 import android.app.Notification
@@ -6,10 +15,10 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.BitmapFactory
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.activity.animplay_activity
+import ml.dvnlabs.animize.ui.activity.AnimPlayActivity
 
 class PlayerNotificationManager(private val service: PlayerService) {
 
@@ -41,7 +50,7 @@ class PlayerNotificationManager(private val service: PlayerService) {
 
         val stopAction = createAction(PlayerService.ACTION_STOP, REQUEST_CODE_STOP)
 
-        val intent = Intent(service, animplay_activity::class.java)
+        val intent = Intent(service, AnimPlayActivity::class.java)
         intent.action = Intent.ACTION_MAIN
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
         val pendingIntent = PendingIntent.getActivity(service, 0, intent, 0)
@@ -71,7 +80,6 @@ class PlayerNotificationManager(private val service: PlayerService) {
     fun cancelNotify() {
         service.stopForeground(true)
     }
-
 
 
     companion object {

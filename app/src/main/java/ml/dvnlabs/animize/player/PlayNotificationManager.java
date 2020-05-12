@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2020.
+ * Animize Devs
+ * Copyright 2019 - 2020
+ * Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+ * This program used for watching anime without ads.
+ *
+ */
+
 package ml.dvnlabs.animize.player;
 
 import android.app.Notification;
@@ -6,7 +15,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -14,8 +22,9 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.activity.animplay_activity;
+import ml.dvnlabs.animize.ui.activity.AnimPlayActivity;
 
 public class PlayNotificationManager {
     private static NotificationManager notificationManager;
@@ -48,6 +57,7 @@ public class PlayNotificationManager {
         return PendingIntent.getActivity(service,requestCode,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
     }
+
     public void startNotify(String playbackStatus){
         int icon = R.drawable.ic_pause_noti;
         PendingIntent playPauseAction = createAction(PlayerService.ACTION_PAUSE,REQUEST_CODE_PAUSE);
@@ -58,7 +68,7 @@ public class PlayNotificationManager {
         }
 
         PendingIntent stopAction =createAction(PlayerService.ACTION_STOP, REQUEST_CODE_STOP);
-        Intent intent = new Intent(service, animplay_activity.class);
+        Intent intent = new Intent(service, AnimPlayActivity.class);
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
         PendingIntent pendingIntent = PendingIntent.getActivity(service,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -68,8 +78,7 @@ public class PlayNotificationManager {
             channel.setSound(null,null);
             getNotificationManager().createNotificationChannel(channel);
 
-        }
-        else {
+        } else {
             NotificationManagerCompat.from(service).cancel(NOTIFICATION_ID);
         }
 
@@ -93,8 +102,6 @@ public class PlayNotificationManager {
         service.startForeground(NOTIFICATION_ID,builder.build());
 
 
-
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -109,14 +116,13 @@ public class PlayNotificationManager {
         //notificationChannel.setLightColor(getResources.getColor(R.color.colorAccent));
         getNotificationManager().createNotificationChannel(notificationChannel);
     }
+
     private NotificationManager getNotificationManager(){
         if(notificationManager == null) {
             notificationManager = (NotificationManager) base.getSystemService(Context.NOTIFICATION_SERVICE);
         }
         return notificationManager;
     }
-
-
 
 
     public void cancelNotify(){

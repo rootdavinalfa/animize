@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2020.
+ * Animize Devs
+ * Copyright 2019 - 2020
+ * Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+ * This program used for watching anime without ads.
+ *
+ */
+
 package ml.dvnlabs.animize.database;
 
 import android.content.ContentValues;
@@ -14,7 +23,7 @@ import ml.dvnlabs.animize.database.model.recentland;
 
 public class RecentPlayDBHelper extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = dbversion.DatabaseVer;
+    private static final int DATABASE_VERSION = DBVersion.DatabaseVer;
 
     // Database Name
     private static final String DATABASE_NAME = "local_animize_db";
@@ -34,8 +43,9 @@ public class RecentPlayDBHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
     //Function for adding recent played
-    public void add_recent(String package_id,String package_name,String anmid,int episode,String url_cover,long timestamp){
+    public void add_recent(String package_id, String package_name, String anmid, int episode, String url_cover, long timestamp) {
         SQLiteDatabase db = this.getWritableDatabase();
         try{
             ContentValues values = new ContentValues();
@@ -56,8 +66,9 @@ public class RecentPlayDBHelper extends SQLiteOpenHelper {
             Log.e("Error Add: ",e.getMessage());
         }
     }
+
     //Function for updateing recent
-    public void update_recent(String package_id,String package_name,String anmid,int episode,String url_cover,long timestamp){
+    public void update_recent(String package_id, String package_name, String anmid, int episode, String url_cover, long timestamp){
         SQLiteDatabase db = this.getWritableDatabase();
         try{
             ContentValues values = new ContentValues();
@@ -76,6 +87,7 @@ public class RecentPlayDBHelper extends SQLiteOpenHelper {
             Log.e("Error Add: ",e.getMessage());
         }
     }
+
     private int check_lastindex(){
         try {
             String lastquery = "SELECT  * FROM " + recentland.table_name+" ORDER BY "+recentland.col_indexlist+" DESC LIMIT 0,1";
@@ -96,6 +108,7 @@ public class RecentPlayDBHelper extends SQLiteOpenHelper {
         }
         return 0;
     }
+
     //Function for get list of recent played
     public ArrayList<recentland> getrecentlist(){
         try {
@@ -130,6 +143,7 @@ public class RecentPlayDBHelper extends SQLiteOpenHelper {
         }
         return null;
     }
+
     //function for read model recent played
     public recentland read_recent(String anmid){
         try {
@@ -216,6 +230,7 @@ public class RecentPlayDBHelper extends SQLiteOpenHelper {
         }
         return false;
     }
+
     public boolean isRecentPackAvail(String pkgid){
         try {
             String countQuery = "SELECT  * FROM " + recentland.table_name+" WHERE "+recentland.col_packageid+" = '"+pkgid+"'";
@@ -234,6 +249,7 @@ public class RecentPlayDBHelper extends SQLiteOpenHelper {
         }
         return false;
     }
+
     public boolean isRecentAvailLis(){
         try {
             String countQuery = "SELECT  * FROM " + recentland.table_name;

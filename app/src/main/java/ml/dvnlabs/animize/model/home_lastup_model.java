@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2020.
+ * Animize Devs
+ * Copyright 2019 - 2020
+ * Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+ * This program used for watching anime without ads.
+ *
+ */
+
 package ml.dvnlabs.animize.model;
 
 public class home_lastup_model {
@@ -6,7 +15,7 @@ public class home_lastup_model {
     private String ep_num;
     private String idn;
 
-    public home_lastup_model(String ur,String id,String tn,String en){
+    public home_lastup_model(String ur, String id, String tn, String en) {
         this.ep_num = en;
         this.title_nm = tn;
         this.url_imagetitle = ur;

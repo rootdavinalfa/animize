@@ -1,3 +1,12 @@
+<!--
+  ~ Copyright (c) 2020.
+  ~ Animize Devs
+  ~ Copyright 2019 - 2020
+  ~ Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+  ~ This program used for watching anime without ads.
+  ~
+  -->
+
 <vector android:height="24dp" android:viewportHeight="511.999"
     android:viewportWidth="511.999" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
     <path android:fillColor="#E50027" android:pathData="M501.449,368.914L320.566,66.207C306.751,43.384 282.728,29.569 256,29.569s-50.752,13.815 -64.567,36.638L10.55,368.914c-13.812,23.725 -14.113,51.954 -0.599,75.678c13.513,23.723 37.836,37.838 65.165,37.838h361.766c27.329,0 51.653,-14.115 65.165,-37.838C515.563,420.868 515.262,392.639 501.449,368.914z"/>

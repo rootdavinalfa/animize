@@ -1,17 +1,25 @@
+/*
+ * Copyright (c) 2020.
+ * Animize Devs
+ * Copyright 2019 - 2020
+ * Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+ * This program used for watching anime without ads.
+ *
+ */
+
 package ml.dvnlabs.animize.app;
 
 import android.app.Application;
 import android.content.Context;
+
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
-
 
 import java.io.File;
 import java.io.IOException;
 
-
 import io.branch.referral.Branch;
-import ml.dvnlabs.animize.checker.checkNetwork;
+import ml.dvnlabs.animize.checker.CheckNetwork;
 
 public class AppController extends Application {
     public static final String TAG = AppController.class
@@ -20,8 +28,8 @@ public class AppController extends Application {
     public static long max_cache_size = 1024*1024*40;
 
 
-
     private static AppController mInstance;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -36,6 +44,7 @@ public class AppController extends Application {
         }
         return mInstance;
     }
+
     public static boolean isDebug(Context context){
         //Check is PACKAGE_NAME is debug or not,if not return false;otherwise return true if release version
         return context.getPackageName().equals("ml.dvnlabs.animize.ima.debug");
@@ -48,8 +57,6 @@ public class AppController extends Application {
         }
         return sDownloadCache;
     }
-
-
 
 
     private static void cleanDirectory(File file) throws IOException {
@@ -81,7 +88,8 @@ public class AppController extends Application {
             }
         }
     }
-    public void setConnectivityListener(checkNetwork.ConnectivityReceiverListener listener) {
-        checkNetwork.connectivityReceiverListener = listener;
+
+    public void setConnectivityListener(CheckNetwork.ConnectivityReceiverListener listener) {
+        CheckNetwork.connectivityReceiverListener = listener;
     }
 }

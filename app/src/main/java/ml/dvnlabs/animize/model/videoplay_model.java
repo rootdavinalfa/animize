@@ -1,7 +1,13 @@
-package ml.dvnlabs.animize.model;
+/*
+ * Copyright (c) 2020.
+ * Animize Devs
+ * Copyright 2019 - 2020
+ * Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+ * This program used for watching anime without ads.
+ *
+ */
 
-import android.os.Parcel;
-import android.os.Parcelable;
+package ml.dvnlabs.animize.model;
 
 import java.util.List;
 
@@ -10,7 +16,7 @@ public class videoplay_model {
     private List<String> genres;
 
 
-    public videoplay_model(String name, String ep, String total, String rate, String synop, String pkg, String url,List<String>genre,String url_thm,String cover){
+    public videoplay_model(String name, String ep, String total, String rate, String synop, String pkg, String url, List<String> genre, String url_thm, String cover) {
         this.episode = ep;
         this.name_anim = name;
         this.rating = rate;

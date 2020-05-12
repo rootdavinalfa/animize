@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2020.
+ * Animize Devs
+ * Copyright 2019 - 2020
+ * Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+ * This program used for watching anime without ads.
+ *
+ */
+
 package ml.dvnlabs.animize.driver;
 
 public class Api {
@@ -22,11 +31,6 @@ public class Api {
     public static final String url_commentthread = url_base+"comment/thread/";
     public static final String url_commentadd = url_base+"comment/add";
     public static final String url_banner = url_base+"banner/get/";
-
-
-
-
-
 
 
     //JSON TAG

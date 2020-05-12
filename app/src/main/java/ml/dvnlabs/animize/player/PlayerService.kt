@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2020. 
+ * Animize Devs 
+ * Copyright 2019 - 2020
+ * Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+ * This program used for watching anime without ads.
+ *   
+ */
+
 package ml.dvnlabs.animize.player
 
 import android.app.Service
@@ -91,6 +100,7 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
         exoPlayer!!.addListener(this)
         status = PlaybackStatus.IDLE
     }
+
     override fun onBind(intent: Intent): IBinder? {
         return playerBind
     }
@@ -162,6 +172,7 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
                 exoPlayer!!.volume = 0.1f
         }
     }
+
     override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
 
     }
@@ -189,6 +200,7 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
         //EventBus.getDefault().post(status);
             EventBus.getDefault().post(PlayerBusStatus(status))
     }
+
     override fun onRepeatModeChanged(repeatMode: Int) {
 
     }
@@ -218,6 +230,7 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
             }
         }
     }
+
     override fun onPositionDiscontinuity(reason: Int) {
 
     }
@@ -229,6 +242,7 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
     override fun onSeekProcessed() {
 
     }
+
     private fun buildMediaSource(uri: Uri): MediaSource {
         val bandwidthMeter = DefaultBandwidthMeter()
         val userAgent = Util.getUserAgent(applicationContext, "Animize")
@@ -240,6 +254,7 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
         return ProgressiveMediaSource.Factory(cacheDataSourceFactory, extractorsFactory)
                 .createMediaSource(uri)
     }
+
     fun getStatus(): String {
         return status!!
     }
@@ -265,6 +280,7 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
 
         audioManager!!.abandonAudioFocus(this)
     }
+
     fun init(streamUrl: String) {
         this.streamUrl = streamUrl
 
@@ -274,6 +290,7 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
         exoPlayer!!.videoScalingMode=C.VIDEO_SCALING_MODE_SCALE_TO_FIT
         exoPlayer!!.playWhenReady= true
     }
+
     fun playOrPause(urli: String?) {
         //Log.e("STREAM-OK:",urli);
         if (urli != null) {

@@ -1,9 +1,17 @@
+/*
+ * Copyright (c) 2020.
+ * Animize Devs
+ * Copyright 2019 - 2020
+ * Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+ * This program used for watching anime without ads.
+ *
+ */
+
 package ml.dvnlabs.animize.database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -15,7 +23,7 @@ import ml.dvnlabs.animize.database.model.starland;
 
 public class PackageStarDBHelper extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = dbversion.DatabaseVer;
+    private static final int DATABASE_VERSION = DBVersion.DatabaseVer;
 
     // Database Name
     private static final String DATABASE_NAME = "local_animize_db";
@@ -25,6 +33,7 @@ public class PackageStarDBHelper extends SQLiteOpenHelper {
     public PackageStarDBHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -63,7 +72,7 @@ public class PackageStarDBHelper extends SQLiteOpenHelper {
             Log.e("Error Add: ",e.getMessage());
         }
 
-         
+
     }
 
     //Function to show list to library
@@ -103,7 +112,7 @@ public class PackageStarDBHelper extends SQLiteOpenHelper {
             Log.e("Error Delete: ",e.getMessage());
         }
 
-         
+
     }
 
     //Check if package starred

@@ -1,22 +1,32 @@
+<!--
+  ~ Copyright (c) 2020.
+  ~ Animize Devs
+  ~ Copyright 2019 - 2020
+  ~ Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+  ~ This program used for watching anime without ads.
+  ~
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="ml.dvnlabs.animize.fragment.library_n.recent">
+    tools:context=".ui.fragment.library_n.Recent">
+
     <RelativeLayout
         android:id="@+id/recent_void"
         android:layout_centerInParent="true"
         android:layout_width="200dp"
         android:layout_height="200dp">
+
         <ImageView
             android:layout_centerHorizontal="true"
             android:id="@+id/starred_nulled"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:src="@drawable/ic_nulled"
-            android:tint="@color/primaryDarkColor"
-            />
+            android:tint="@color/primaryDarkColor" />
+
         <TextView
             android:layout_centerHorizontal="true"
             android:gravity="center"
@@ -27,10 +37,12 @@
             android:textColor="@color/secondaryTextColor"
             android:text="No Recent Watch One Anime!"/>
     </RelativeLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/recent_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recent_list"
             android:layout_width="match_parent"

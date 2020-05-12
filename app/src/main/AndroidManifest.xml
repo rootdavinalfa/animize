@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2020.
+  ~ Animize Devs
+  ~ Copyright 2019 - 2020
+  ~ Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+  ~ This program used for watching anime without ads.
+  ~
+  -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="ml.dvnlabs.animize">
@@ -8,7 +16,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
@@ -18,79 +26,87 @@
     <application
         android:name=".app.AppController"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher_animize"
         android:label="@string/app_names"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_animize_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:networkSecurityConfig="@xml/network_security_config"
-        tools:replace="android:label"
-        android:hardwareAccelerated="true">
+        tools:ignore="AllowBackup"
+        tools:replace="android:label">
         <activity
-            android:name=".activity.webview"
-            android:parentActivityName=".activity.dashboard_activity">
+            android:name="ml.dvnlabs.animize.ui.activity.WebView"
+            android:parentActivityName="ml.dvnlabs.animize.ui.activity.DashboardActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ml.dvnlabs.animize.activity.dashboard_activity" />
+                android:value="ml.dvnlabs.animize.ui.activity.DashboardActivity" />
         </activity>
         <activity
-            android:name=".activity.packageView"
+            android:name="ml.dvnlabs.animize.ui.activity.PackageView"
             android:configChanges="orientation|keyboard"
-            android:parentActivityName=".activity.dashboard_activity"
-            android:theme="@style/AppThemePackageView"
             android:launchMode="singleTask"
-            >
+            android:parentActivityName="ml.dvnlabs.animize.ui.activity.DashboardActivity"
+            android:theme="@style/AppThemePackageView">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                    android:scheme="animize"
                     android:host="open.app"
-                    android:pathPrefix="/share/package"/>
-                <data android:scheme="https" android:host="animize.app.link" android:pathPrefix="/share/package" />
-                <data android:scheme="https" android:host="animize-alternate.app.link" android:pathPrefix="/share/package"/>
+                    android:pathPrefix="/share/package"
+                    android:scheme="animize" />
+                <data
+                    android:host="animize.app.link"
+                    android:pathPrefix="/share/package"
+                    android:scheme="https" />
+                <data
+                    android:host="animize-alternate.app.link"
+                    android:pathPrefix="/share/package"
+                    android:scheme="https" />
             </intent-filter>
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ml.dvnlabs.animize.activity.dashboard_activity" />
+                android:value="ml.dvnlabs.animize.ui.activity.DashboardActivity" />
         </activity>
         <activity
-            android:name=".activity.StreamActivity"
+            android:name="ml.dvnlabs.animize.ui.activity.StreamActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:keepScreenOn="true"
             android:label="Animize Player"
-            android:windowSoftInputMode="adjustResize"
-            android:parentActivityName=".activity.dashboard_activity">
+            android:parentActivityName="ml.dvnlabs.animize.ui.activity.DashboardActivity"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ml.dvnlabs.animize.activity.dashboard_activity" />
+                android:value="ml.dvnlabs.animize.ui.activity.DashboardActivity" />
         </activity>
         <activity
-            android:name=".activity.dashboard_activity"
+            android:name="ml.dvnlabs.animize.ui.activity.DashboardActivity"
             android:configChanges="orientation|keyboard"
             android:label="Dashboard"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityName="ml.dvnlabs.animize.ui.activity.MainActivity"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ml.dvnlabs.animize.activity.MainActivity" />
+                android:value="ml.dvnlabs.animize.ui.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".activity.settings"
+            android:name="ml.dvnlabs.animize.ui.activity.settings"
             android:configChanges="orientation|keyboard"
             android:label="Animize Settings"
-            android:parentActivityName=".activity.dashboard_activity"
+            android:parentActivityName="ml.dvnlabs.animize.ui.activity.DashboardActivity"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ml.dvnlabs.animize.activity.dashboard_activity" />
+                android:value="ml.dvnlabs.animize.ui.activity.DashboardActivity" />
         </activity>
-        <activity android:name=".activity.MainActivity"
-            android:windowSoftInputMode="adjustResize"
+        <activity
+            android:name="ml.dvnlabs.animize.ui.activity.MainActivity"
             android:launchMode="singleTask"
-            >
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
@@ -110,24 +126,32 @@
             android:resource="@array/preloaded_fonts" />
 
         <receiver
-            android:name=".checker.checkNetwork"
+            android:name=".checker.CheckNetwork"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
 
         <!-- Branch init -->
-        <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_dbGxNYnGdI8CGUndI5FappfiBqk1XoWL" />
+        <meta-data
+            android:name="io.branch.sdk.BranchKey"
+            android:value="key_live_dbGxNYnGdI8CGUndI5FappfiBqk1XoWL" />
         <!--<meta-data android:name="io.branch.sdk.BranchKey.test" android:value="undefined" />-->
 
         <!-- Branch testing (TestMode "true" to simulate fresh installs on dev environment) -->
-        <meta-data android:name="io.branch.sdk.TestMode" android:value="false" />
+        <meta-data
+            android:name="io.branch.sdk.TestMode"
+            android:value="false" />
 
         <!-- Branch install referrer tracking -->
-        <receiver android:name="io.branch.referral.InstallListener" android:exported="true">
+        <receiver
+            android:name="io.branch.referral.InstallListener"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>

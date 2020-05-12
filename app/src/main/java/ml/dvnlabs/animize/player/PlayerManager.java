@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2020.
+ * Animize Devs
+ * Copyright 2019 - 2020
+ * Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+ * This program used for watching anime without ads.
+ *
+ */
+
 package ml.dvnlabs.animize.player;
 
 
@@ -10,8 +19,7 @@ import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
-import ml.dvnlabs.animize.activity.StreamActivity;
-import ml.dvnlabs.animize.activity.animplay_activity;
+import ml.dvnlabs.animize.ui.activity.StreamActivity;
 
 public class PlayerManager {
     private static PlayerManager instance = null;
@@ -49,6 +57,7 @@ public class PlayerManager {
         }
 
     }
+
     public void pause_video(){
         service.pause();
     }
@@ -69,15 +78,16 @@ public class PlayerManager {
         if (service != null)
             EventBus.getDefault().post(service.getStatus());
     }
- public void unbind() {
-     Log.e("UNBINDING:","OK");
-     //if (serviceBound){
-     //context.getApplicationContext().stopService(new Intent(context,PlayerService.class));
-     context.unbindService(serviceConnection);
-     serviceBound = false;
-     service = null;
 
-     //}
+    public void unbind() {
+        Log.e("UNBINDING:", "OK");
+        //if (serviceBound){
+        //context.getApplicationContext().stopService(new Intent(context,PlayerService.class));
+        context.unbindService(serviceConnection);
+        serviceBound = false;
+        service = null;
+
+        //}
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {

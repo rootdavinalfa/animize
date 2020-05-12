@@ -1,13 +1,24 @@
+<!--
+  ~ Copyright (c) 2020.
+  ~ Animize Devs
+  ~ Copyright 2019 - 2020
+  ~ Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+  ~ This program used for watching anime without ads.
+  ~
+  -->
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="ml.dvnlabs.animize.fragment.library_n.download">
+    tools:context=".ui.fragment.library_n.Download">
+
     <RelativeLayout
         android:layout_centerInParent="true"
         android:layout_width="200dp"
         android:layout_height="200dp">
+
         <com.wang.avi.AVLoadingIndicatorView
             android:layout_centerInParent="true"
             android:id="@+id/download_loadbar"
@@ -15,6 +26,7 @@
             android:layout_height="100dp"
             app:indicatorColor="@color/primaryColor"
             app:indicatorName="BallClipRotateIndicator"/>
+
         <TextView
             android:layout_centerInParent="true"
             android:layout_below="@+id/download_loadbar"

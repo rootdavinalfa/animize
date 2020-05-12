@@ -1,9 +1,18 @@
+/*
+ * Copyright (c) 2020.
+ * Animize Devs
+ * Copyright 2019 - 2020
+ * Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+ * This program used for watching anime without ads.
+ *
+ */
+
 package ml.dvnlabs.animize.model;
 
 public class starmodel {
     private String packageid,name,total_ep,rating,mal,cover;
 
-    public starmodel(String packageid,String name,String total_ep,String rating,String mal,String cover){
+    public starmodel(String packageid, String name, String total_ep, String rating, String mal, String cover) {
         this.packageid = packageid;
         this.name = name;
         this.total_ep = total_ep;

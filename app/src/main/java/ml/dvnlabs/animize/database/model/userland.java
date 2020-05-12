@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2020.
+ * Animize Devs
+ * Copyright 2019 - 2020
+ * Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+ * This program used for watching anime without ads.
+ *
+ */
+
 package ml.dvnlabs.animize.database.model;
 
 public class userland {
@@ -18,7 +27,8 @@ public class userland {
     public userland(){
 
     }
-    public userland(String id_user,String name_user,String email,String tokeen){
+
+    public userland(String id_user, String name_user, String email, String tokeen){
         this.email = email;
         this.id = id_user;
         this.name = name_user;
