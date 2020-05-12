@@ -11,7 +11,7 @@ Copyright 2019 - 2020 Davin Alfarizky Putra Basudewa
 ## Download
 This application has been published on Play Store,check this
 
-[![PLAY STORE](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png =150x65)](https://play.google.com/store/apps/details?id=ml.dvnlabs.animize.ima)
+<a href='https://play.google.com/store/apps/details?id=ml.dvnlabs.animize.ima&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="150" height="65"/></a>
 
 ## Contribute
 You can make issues or make a PR for improving this project.
