@@ -29,8 +29,8 @@ import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
-import ml.dvnlabs.animize.model.search_list_model
-import ml.dvnlabs.animize.model.search_list_pack_model
+import ml.dvnlabs.animize.model.SearchListModel
+import ml.dvnlabs.animize.model.SearchListPackageModel
 import ml.dvnlabs.animize.ui.recyclerview.list.search_list_adapter
 import ml.dvnlabs.animize.ui.recyclerview.packagelist.search_package_adapter
 import org.json.JSONArray
@@ -41,8 +41,8 @@ import java.util.*
 class Search : Fragment() {
     private var listView: RecyclerView? = null
     private var packview: DiscreteScrollView? = null
-    private var modeldata: ArrayList<search_list_model>? = null
-    private var pack_models: ArrayList<search_list_pack_model>? = null
+    private var modeldata: ArrayList<SearchListModel>? = null
+    private var pack_models: ArrayList<SearchListPackageModel>? = null
     private var adapter: search_list_adapter? = null
     private var package_adapter: search_package_adapter? = null
     private var srch_txt: EditText? = null
@@ -80,7 +80,7 @@ class Search : Fragment() {
     }
 
     private fun searchTextListener() {
-        srch_txt!!.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+        srch_txt!!.setOnKeyListener(View.OnKeyListener { v, keyCode, _ ->
             if (keyCode == 66) {
                 srch_txt!!.clearFocus()
                 hideKeyboard(v)
@@ -93,7 +93,7 @@ class Search : Fragment() {
             var handler = Handler()
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                search_handler!!.removeCallbacks(search_runnable)
+                search_handler!!.removeCallbacks(search_runnable!!)
                 src_error!!.visibility = View.GONE
                 srch_txt_get = s.toString()
                 val searchTextCount = srch_txt!!.text.length
@@ -115,7 +115,7 @@ class Search : Fragment() {
                     /*search_text_count = search_text_count % 2;
                     if(search_text_count == 0 || isReadyForNextReq){
                         getSearch();
-                    }*/search_handler!!.postDelayed(search_runnable, 2000)
+                    }*/search_handler!!.postDelayed(search_runnable!!, 2000)
                 } else {
                     title_pack!!.visibility = View.GONE
                     title_ep!!.visibility = View.GONE
@@ -150,15 +150,15 @@ class Search : Fragment() {
     }
 
     private var search: FetchDataListener = object : FetchDataListener {
-        override fun onFetchComplete(data: String) {
+        override fun onFetchComplete(data: String?) {
             isReadyForNextReq = true
             title_ep!!.visibility = View.VISIBLE
             srch_iv!!.visibility = View.GONE
             src_error!!.visibility = View.GONE
-            jsonParserSearch(data)
+            jsonParserSearch(data!!)
         }
 
-        override fun onFetchFailure(msg: String) {
+        override fun onFetchFailure(msg: String?) {
             isReadyForNextReq = false
             title_ep!!.visibility = View.GONE
             srch_iv!!.visibility = View.VISIBLE
@@ -172,13 +172,13 @@ class Search : Fragment() {
         }
     }
     var search_pack: FetchDataListener = object : FetchDataListener {
-        override fun onFetchComplete(data: String) {
+        override fun onFetchComplete(data: String?) {
             isReadyForNextReq = true
             title_pack!!.visibility = View.VISIBLE
-            searchPackageJSONParser(data)
+            searchPackageJSONParser(data!!)
         }
 
-        override fun onFetchFailure(msg: String) {
+        override fun onFetchFailure(msg: String?) {
             isReadyForNextReq = false
             title_pack!!.visibility = View.GONE
         }
@@ -225,7 +225,7 @@ class Search : Fragment() {
                 val total = jsonObject.getString("total_ep_anim")
                 val rating = jsonObject.getString("rating")
                 val cover = jsonObject.getString("cover")
-                pack_models!!.add(search_list_pack_model(pkgid, title, now, total, rating, cover))
+                pack_models!!.add(SearchListPackageModel(pkgid, title, now, total, rating, cover))
             }
             package_adapter = search_package_adapter(pack_models, activity, R.layout.rv_package_minimal)
             packview!!.adapter = package_adapter
@@ -244,7 +244,7 @@ class Search : Fragment() {
                 val title_name = jsonObject.getString(Api.JSON_name_anim)
                 val episode = jsonObject.getString(Api.JSON_episode_anim)
                 //Log.e("INF::",title_name);
-                modeldata!!.add(search_list_model(url_tb, id, title_name, episode))
+                modeldata!!.add(SearchListModel(url_tb, id, title_name, episode))
             }
             adapter = search_list_adapter(modeldata, activity, R.layout.search_list_view)
             val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(activity)

@@ -23,14 +23,14 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import java.util.ArrayList;
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.model.video_list_model;
+import ml.dvnlabs.animize.model.VideoListModel;
 import ml.dvnlabs.animize.ui.recyclerview.interfaces.OnLoadMoreListener;
 
 
 public class video_list_adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context mcontext;
-    private ArrayList<video_list_model> video_data;
+    private ArrayList<VideoListModel> video_data;
     //private int itemResor;
     private RecyclerView itemResor;
     private OnLoadMoreListener listener;
@@ -41,7 +41,7 @@ public class video_list_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private final int VIEW_TYPE_LOADING = 1;
 
 
-    public video_list_adapter(ArrayList<video_list_model>data,Context context,RecyclerView itemResource){
+    public video_list_adapter(ArrayList<VideoListModel>data, Context context, RecyclerView itemResource){
         //super(context, R.layout.video_list_view,data);
         this.video_data = data;
         this.mcontext = context;
@@ -104,7 +104,7 @@ public class video_list_adapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         switch (holder.getItemViewType()){
             case 0:
                 //log.e("DATSA:","OK");
-                video_list_model slm = this.video_data.get(position);
+                VideoListModel slm = this.video_data.get(position);
                 video_list_holder hold = (video_list_holder) holder;
                 hold.bindvideo_list(slm);
                 break;

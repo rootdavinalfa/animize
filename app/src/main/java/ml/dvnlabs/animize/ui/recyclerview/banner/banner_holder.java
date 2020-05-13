@@ -23,7 +23,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.model.bannerlist_model;
+import ml.dvnlabs.animize.model.BannerListMdl;
 import ml.dvnlabs.animize.ui.activity.WebView;
 
 public class banner_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -31,7 +31,7 @@ public class banner_holder extends RecyclerView.ViewHolder implements View.OnCli
     private TextView title;
 
 
-    private bannerlist_model model;
+    private BannerListMdl model;
     private Context context;
     public banner_holder(Context context, View view){
         super(view);
@@ -42,8 +42,8 @@ public class banner_holder extends RecyclerView.ViewHolder implements View.OnCli
 
     }
 
-    public void bindBanner(bannerlist_model bannerlist_model){
-        this.model = bannerlist_model;
+    public void bindBanner(BannerListMdl BannerListMdl){
+        this.model = BannerListMdl;
         Glide.with(itemView).applyDefaultRequestOptions(new RequestOptions()
                 .placeholder(R.drawable.ic_picture)
                 .error(R.drawable.ic_picture))

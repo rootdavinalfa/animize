@@ -25,7 +25,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.model.video_list_model;
+import ml.dvnlabs.animize.model.VideoListModel;
 import ml.dvnlabs.animize.ui.activity.StreamActivity;
 
 public class video_list_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -37,7 +37,7 @@ public class video_list_holder extends RecyclerView.ViewHolder implements View.O
     private final CardView cardView;
     //private final ProgressBar progressBar;
 
-    private video_list_model vl_model;
+    private VideoListModel vl_model;
     private Context context;
     public video_list_holder(Context context,View view){
         super(view);
@@ -52,7 +52,7 @@ public class video_list_holder extends RecyclerView.ViewHolder implements View.O
         itemView.setOnClickListener(this);
     }
 
-    public void bindvideo_list(video_list_model vlm){
+    public void bindvideo_list(VideoListModel vlm){
         this.vl_model = vlm;
       //  Log.e("DATAAA:",vl_model.getTitle_nm());
         this.title_nm.setText(vl_model.getTitle_nm());

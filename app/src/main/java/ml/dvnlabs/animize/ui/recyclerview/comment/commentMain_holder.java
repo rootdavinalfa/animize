@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.model.api_usermodel;
-import ml.dvnlabs.animize.model.commentMainModel;
+import ml.dvnlabs.animize.model.APIUserModel;
+import ml.dvnlabs.animize.model.CommentMainModel;
 import ml.dvnlabs.animize.ui.activity.StreamActivity;
 
 public class commentMain_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -28,7 +28,7 @@ public class commentMain_holder extends RecyclerView.ViewHolder implements View.
     private ImageView replys;
 
 
-    private commentMainModel model;
+    private CommentMainModel model;
     private Context context;
 
     public commentMain_holder(Context context, View view){
@@ -42,9 +42,9 @@ public class commentMain_holder extends RecyclerView.ViewHolder implements View.
 
     }
 
-    void bindComment(commentMainModel commentMainModel){
+    void bindComment(CommentMainModel commentMainModel){
         this.model = commentMainModel;
-        ArrayList<api_usermodel> usermodels = model.getUsermodels();
+        ArrayList<APIUserModel> usermodels = model.getUserModels();
         this.user.setText(usermodels.get(0).getName_user());
         this.contents.setText(model.getContents());
 
@@ -53,7 +53,7 @@ public class commentMain_holder extends RecyclerView.ViewHolder implements View.
     @Override
     public void onClick(View v) {
         if(this.model!=null){
-            ArrayList<commentMainModel> data = new ArrayList<>();
+            ArrayList<CommentMainModel> data = new ArrayList<>();
             data.add(model);
             //String idcomment = model.getIdcomment();
             //String status = model.getStatus();

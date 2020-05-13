@@ -11,8 +11,8 @@ package ml.dvnlabs.animize.pager;
 
 import java.util.ArrayList;
 
-import ml.dvnlabs.animize.model.videoplay_model;
+import ml.dvnlabs.animize.model.VideoPlayModel;
 
 public interface passdata_arraylist {
-    void onDataReceived(ArrayList<videoplay_model> data, String id);
+    void onDataReceived(ArrayList<VideoPlayModel> data, String id);
 }

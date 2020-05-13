@@ -16,13 +16,13 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.model.sourcelist;
+import ml.dvnlabs.animize.model.SourceList;
 import ml.dvnlabs.animize.ui.activity.AnimPlayActivity;
 
 public class sourcelist_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView ids,by;
 
-    private sourcelist sources;
+    private SourceList sources;
     private Context context;
 
     public sourcelist_holder(Context context, View view){
@@ -33,7 +33,7 @@ public class sourcelist_holder extends RecyclerView.ViewHolder implements View.O
         itemView.setOnClickListener(this);
     }
 
-    public void bind_playlist(sourcelist plm){
+    public void bind_playlist(SourceList plm){
         this.sources = plm;
         this.ids.setText(sources.getIds());
         this.by.setText(sources.getBy_user());

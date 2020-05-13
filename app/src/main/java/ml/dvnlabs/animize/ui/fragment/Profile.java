@@ -76,8 +76,8 @@ public class Profile extends Fragment {
         @Override
         protected String doInBackground(String... params){
 
-            initInternalDBHelper.sign_out();
-            initInternalDBHelper.delete_starred();
+            initInternalDBHelper.signOut();
+            initInternalDBHelper.deleteStarred();
             return null;
 
             }

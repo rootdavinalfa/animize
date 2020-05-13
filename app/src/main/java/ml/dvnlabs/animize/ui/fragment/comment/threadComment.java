@@ -39,15 +39,15 @@ import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
-import ml.dvnlabs.animize.model.api_usermodel;
-import ml.dvnlabs.animize.model.commentMainModel;
+import ml.dvnlabs.animize.model.APIUserModel;
+import ml.dvnlabs.animize.model.CommentMainModel;
 import ml.dvnlabs.animize.ui.activity.StreamActivity;
 import ml.dvnlabs.animize.ui.recyclerview.comment.commentThread_adapter;
 
 public class threadComment extends Fragment {
 
     private TextView commentuser,content;
-    private ArrayList<commentMainModel>models,repliedmodel;
+    private ArrayList<CommentMainModel>models,repliedmodel;
     private ImageView closebutton,addsreply;
     private commentThread_adapter adapter;
     private RecyclerView listreply;
@@ -58,7 +58,7 @@ public class threadComment extends Fragment {
     private String id_anim,parentcomment,id_user,token;
 
 
-    private threadComment(ArrayList<commentMainModel> models,String idanim){
+    private threadComment(ArrayList<CommentMainModel> models, String idanim){
         this.models = models;
         this.id_anim = idanim;
     }
@@ -90,7 +90,7 @@ public class threadComment extends Fragment {
         return view;
     }
 
-    public static threadComment newInstance(ArrayList<commentMainModel> models,String idanim){
+    public static threadComment newInstance(ArrayList<CommentMainModel> models, String idanim){
         return new threadComment(models,idanim);
     }
 
@@ -123,19 +123,19 @@ public class threadComment extends Fragment {
 
     private void receivedata(){
         if (models !=null){
-            ArrayList<api_usermodel>users = models.get(0).getUsermodels();
+            ArrayList<APIUserModel>users = models.get(0).getUserModels();
             String name = users.get(0).getName_user();
             String contents = models.get(0).getContents();
             System.out.println(name+contents);
             commentuser.setText(name);
             content.setText(contents);
-            parentcomment = models.get(0).getIdcomment();
+            parentcomment = models.get(0).getIdComment();
             requestreply();
         }
     }
 
     private void requestreply(){
-        String url = Api.url_commentthread+id_anim+"/parent/"+models.get(0).getIdcomment();
+        String url = Api.url_commentthread+id_anim+"/parent/"+models.get(0).getIdComment();
         APINetworkRequest networkRequest = new APINetworkRequest(getContext(),fetchReply,url,1024,null);
     }
 
@@ -148,14 +148,14 @@ public class threadComment extends Fragment {
                 String status = object.getString("status");
                 String content = object.getString("content");
                 JSONArray user = object.getJSONArray("user");
-                ArrayList<api_usermodel>usermodels = new ArrayList<>();
+                ArrayList<APIUserModel>usermodels = new ArrayList<>();
                 for (int j=0;j<user.length();j++){
                     JSONObject jsonObject = user.getJSONObject(j);
                     String username = jsonObject.getString("username");
                     String nameus = jsonObject.getString("name_user");
-                    usermodels.add(new api_usermodel(username,nameus));
+                    usermodels.add(new APIUserModel(username,nameus));
                 }
-                repliedmodel.add(new commentMainModel(ids,status,content,usermodels));
+                repliedmodel.add(new CommentMainModel(ids,status,content,usermodels));
             }
             adapter = new commentThread_adapter(repliedmodel,getContext(),R.layout.rv_comments_thread);
             LinearLayoutManager lnm = new LinearLayoutManager(getContext());

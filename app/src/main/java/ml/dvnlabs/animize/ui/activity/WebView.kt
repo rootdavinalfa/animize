@@ -9,6 +9,7 @@
 
 package ml.dvnlabs.animize.ui.activity
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -27,6 +28,7 @@ public class WebView : AppCompatActivity() {
     private var close: ImageView? = null
 
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_webview)
@@ -38,8 +40,7 @@ public class WebView : AppCompatActivity() {
         initialize()
         val intent = intent
         if (intent.getStringExtra("url") != null) {
-            bannerurl = intent.getStringExtra("url")
-            Log.e("URL:", bannerurl)
+            bannerurl = intent.getStringExtra("url")!!
             //intent.removeExtra("id_anim");
         }
         webView?.settings?.domStorageEnabled=true
@@ -47,7 +48,7 @@ public class WebView : AppCompatActivity() {
         webView?.settings?.loadWithOverviewMode = true
         webView?.settings?.useWideViewPort = true
         webView?.setLayerType(View.LAYER_TYPE_HARDWARE, null)
-        webView?.setWebViewClient(object : WebViewClient() {
+        webView?.webViewClient = object : WebViewClient() {
 
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 //progDailog.show();
@@ -63,7 +64,7 @@ public class WebView : AppCompatActivity() {
                 loading?.hide()
                 Log.e("URL FINISH:", url)
             }
-        })
+        }
         if (!bannerurl.startsWith("http://")) {
             bannerurl = "http://$bannerurl"
         }
@@ -77,7 +78,7 @@ public class WebView : AppCompatActivity() {
         loading = findViewById(R.id.animize_webview_loading)
         close = findViewById(R.id.informa_close)
         close?.setOnClickListener(View.OnClickListener { onBackPressed() })
-        loading?.setElevation(10f)
+        loading?.elevation = 10f
 
     }
 

@@ -18,16 +18,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import ml.dvnlabs.animize.model.search_list_model;
+import ml.dvnlabs.animize.model.SearchListModel;
 
 public class search_list_adapter extends RecyclerView.Adapter<search_list_holder> {
 
 
     private Context mcontext;
-    private ArrayList<search_list_model> video_data;
+    private ArrayList<SearchListModel> video_data;
     private int itemResor;
 
-    public search_list_adapter(ArrayList<search_list_model>data,Context context,int itemResource){
+    public search_list_adapter(ArrayList<SearchListModel>data, Context context, int itemResource){
         //super(context, R.layout.video_list_view,data);
         this.video_data = data;
         this.mcontext = context;
@@ -43,7 +43,7 @@ public class search_list_adapter extends RecyclerView.Adapter<search_list_holder
 
     @Override
     public void onBindViewHolder(search_list_holder holder,int position){
-        search_list_model slm = this.video_data.get(position);
+        SearchListModel slm = this.video_data.get(position);
         holder.bindsearch_list(slm);
 
     }

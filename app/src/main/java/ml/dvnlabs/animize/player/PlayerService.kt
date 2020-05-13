@@ -33,9 +33,9 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
 import com.google.android.exoplayer2.util.Util
-import ml.dvnlabs.animize.Event.PlayerBusError
-import ml.dvnlabs.animize.Event.PlayerBusStatus
 import ml.dvnlabs.animize.app.AppController
+import ml.dvnlabs.animize.event.PlayerBusError
+import ml.dvnlabs.animize.event.PlayerBusStatus
 import org.greenrobot.eventbus.EventBus
 
 class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Player.EventListener{
@@ -198,7 +198,7 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
         //notificationManager.startNotify(status);
 
         //EventBus.getDefault().post(status);
-            EventBus.getDefault().post(PlayerBusStatus(status))
+            EventBus.getDefault().post(PlayerBusStatus(status!!))
     }
 
     override fun onRepeatModeChanged(repeatMode: Int) {
@@ -210,23 +210,23 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
     }
 
     override fun onPlayerError(error: ExoPlaybackException?) {
-        var errorDetails: String? = null
+        val errorDetails: String?
         //EventBus.getDefault().post(PlaybackStatus.ERROR);
         when (error!!.type) {
             ExoPlaybackException.TYPE_OUT_OF_MEMORY->{}
             ExoPlaybackException.TYPE_REMOTE->{}
             ExoPlaybackException.TYPE_SOURCE -> {
                 errorDetails = error.sourceException.message
-                EventBus.getDefault().post(PlayerBusError(errorDetails))
+                EventBus.getDefault().post(PlayerBusError(errorDetails!!))
             }
             ExoPlaybackException.TYPE_RENDERER -> {
                 errorDetails = error.rendererException.message
-                EventBus.getDefault().post(PlayerBusError(errorDetails))
+                EventBus.getDefault().post(PlayerBusError(errorDetails!!))
             }
 
             ExoPlaybackException.TYPE_UNEXPECTED -> {
                 errorDetails = error.unexpectedException.message
-                EventBus.getDefault().post(PlayerBusError(errorDetails))
+                EventBus.getDefault().post(PlayerBusError(errorDetails!!))
             }
         }
     }
@@ -244,9 +244,8 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
     }
 
     private fun buildMediaSource(uri: Uri): MediaSource {
-        val bandwidthMeter = DefaultBandwidthMeter()
         val userAgent = Util.getUserAgent(applicationContext, "Animize")
-        val dataSourceFactory = DefaultDataSourceFactory(this, bandwidthMeter, DefaultHttpDataSourceFactory(userAgent, null, DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
+        val dataSourceFactory = DefaultDataSourceFactory(this, DefaultHttpDataSourceFactory(userAgent, null, DefaultHttpDataSource.DEFAULT_CONNECT_TIMEOUT_MILLIS,
                 DefaultHttpDataSource.DEFAULT_READ_TIMEOUT_MILLIS,
                 true))
         val extractorsFactory = DefaultExtractorsFactory().setConstantBitrateSeekingEnabled(true)

@@ -37,7 +37,7 @@ import java.util.List;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.model.packagelist;
+import ml.dvnlabs.animize.model.PackageList;
 import ml.dvnlabs.animize.ui.activity.PackageView;
 
 public class lastpackage_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -45,7 +45,7 @@ public class lastpackage_holder extends RecyclerView.ViewHolder implements View.
     private List<String>genres = new ArrayList<>();
     private TextView rate,mal,ep,name,genre;
     private ImageView cover;
-    private packagelist data;
+    private PackageList data;
     private Context mcontext;
     private CardView container;
 
@@ -63,7 +63,7 @@ public class lastpackage_holder extends RecyclerView.ViewHolder implements View.
         itemView.setOnClickListener(this);
     }
 
-    public void binding(packagelist data){
+    public void binding(PackageList data){
         this.data = data;
         rate.setText(data.getRate());
         String ep_string = data.getNow()+" "+mcontext.getString(R.string.string_of)+" "+data.getTot();
@@ -82,7 +82,7 @@ public class lastpackage_holder extends RecyclerView.ViewHolder implements View.
         String genree =sb.toString();
 
         
-        name.setText(data.getname());
+        name.setText(data.getName());
         genre.setText(genree);
         String mals = "MAL: "+ data.getMal();
         mal.setText(mals);
@@ -91,7 +91,7 @@ public class lastpackage_holder extends RecyclerView.ViewHolder implements View.
                 .applyDefaultRequestOptions(new RequestOptions()
                         .placeholder(R.drawable.ic_picture_light)
                         .error(R.drawable.ic_picture_light))
-                .load(data.getCoverur()).transform(new RoundedCornersTransformation(10,0))
+                .load(data.getCoverUrl()).transform(new RoundedCornersTransformation(10,0))
                 .transition(new DrawableTransitionOptions()
                         .crossFade()).apply(new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL).override(424,600)).into(cover);
@@ -104,7 +104,7 @@ public class lastpackage_holder extends RecyclerView.ViewHolder implements View.
                 .applyDefaultRequestOptions(new RequestOptions()
                         .placeholder(R.drawable.ic_picture)
                         .error(R.drawable.ic_picture))
-                .load(data.getCoverur()).transform(multi)
+                .load(data.getCoverUrl()).transform(multi)
                 .transition(new DrawableTransitionOptions()
                         .crossFade()).apply(new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)).into(new CustomTarget<Drawable>() {

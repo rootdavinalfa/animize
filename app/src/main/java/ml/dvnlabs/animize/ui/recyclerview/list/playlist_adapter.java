@@ -20,14 +20,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import ml.dvnlabs.animize.model.playlist_model;
+import ml.dvnlabs.animize.model.PlaylistModel;
 
 public class playlist_adapter extends RecyclerView.Adapter<playlist_holder> {
     private Context mcontext;
-    private ArrayList<playlist_model> playlistdata;
+    private ArrayList<PlaylistModel> playlistdata;
     private int itemResor,now;
 
-    public playlist_adapter(ArrayList<playlist_model>data,Context context,int itemResource,String idanim){
+    public playlist_adapter(ArrayList<PlaylistModel>data, Context context, int itemResource, String idanim){
         this.mcontext = context;
         this.itemResor = itemResource;
         this.playlistdata = data;
@@ -47,7 +47,7 @@ public class playlist_adapter extends RecyclerView.Adapter<playlist_holder> {
 
     @Override
     public void onBindViewHolder(playlist_holder holder,int position){
-        playlist_model slm = this.playlistdata.get(position);
+        PlaylistModel slm = this.playlistdata.get(position);
         holder.bind_playlist(slm,now,holder.getAdapterPosition());
 
     }

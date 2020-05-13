@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 import ml.dvnlabs.animize.database.model.starland;
-import ml.dvnlabs.animize.model.starmodel;
+import ml.dvnlabs.animize.model.StarredModel;
 import ml.dvnlabs.animize.ui.recyclerview.interfaces.addingQueue;
 
 public class starlist_adapter extends RecyclerView.Adapter<StarlistHolder> implements addingQueue {
@@ -104,9 +104,9 @@ public class starlist_adapter extends RecyclerView.Adapter<StarlistHolder> imple
     }
 
     public static class readyStar{
-        starmodel model;
+        StarredModel model;
         int pos;
-        readyStar(starmodel models,int poss){
+        readyStar(StarredModel models, int poss){
             this.model = models;
             this.pos = poss;
         }
@@ -115,7 +115,7 @@ public class starlist_adapter extends RecyclerView.Adapter<StarlistHolder> imple
             return pos;
         }
 
-        public starmodel getModel() {
+        public StarredModel getModel() {
             return model;
         }
     }

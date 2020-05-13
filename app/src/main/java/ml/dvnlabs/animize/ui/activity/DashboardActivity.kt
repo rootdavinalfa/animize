@@ -71,13 +71,13 @@ class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
         }
         NetworkChecker = CheckNetwork()
         registerReceiver(NetworkChecker, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-        bottomnavlogic()
+        bottomNavigationLogic()
         dash_serach_btn!!.setOnClickListener { display_search() }
     }
 
     //inetCheck for check on fragment
     fun inetCheck() {
-        val isConnect = CheckNetwork.isConnected()
+        val isConnect = CheckNetwork.isConnected
         showSnack(isConnect)
     }
 
@@ -158,7 +158,7 @@ class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
 
     override fun onResume() {
         super.onResume()
-        AppController.getInstance().setConnectivityListener(this)
+        AppController.instance?.setConnectivityListener(this)
         if (bottomNavigationView!!.menu.getItem(1).isChecked) {
             //display_library();
             close_home()
@@ -189,7 +189,7 @@ class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
         }
     }
 
-    private fun bottomnavlogic() {
+    private fun bottomNavigationLogic() {
         bottomNavigationView!!.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
@@ -286,7 +286,7 @@ class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
         withContext(Dispatchers.IO) {
             val user = initInternalDBHelper!!.user
             withContext(Dispatchers.Main) {
-                dash_profile_username!!.text = user.nameUser
+                dash_profile_username!!.text = user!!.nameUser
             }
         }
     }

@@ -21,15 +21,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import ml.dvnlabs.animize.model.packagelist;
+import ml.dvnlabs.animize.model.PackageList;
 
 public class lastpackage_adapter extends RecyclerView.Adapter<lastpackage_holder> {
 
 
-    private ArrayList<packagelist> data;
+    private ArrayList<PackageList> data;
     private Context mcontext;
     private int itemRes;
-    public lastpackage_adapter(ArrayList<packagelist> data, Context context, int itemResource){
+    public lastpackage_adapter(ArrayList<PackageList> data, Context context, int itemResource){
         this.data = data;
         this.mcontext = context;
         this.itemRes = itemResource;
@@ -45,7 +45,7 @@ public class lastpackage_adapter extends RecyclerView.Adapter<lastpackage_holder
 
     @Override
     public void onBindViewHolder(@NonNull lastpackage_holder holder, int position) {
-        packagelist slm = this.data.get(position);
+        PackageList slm = this.data.get(position);
         holder.binding(slm);
 
     }

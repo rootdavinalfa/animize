@@ -125,13 +125,13 @@ class Register : DialogFragment() {
         params["email"] = reg_email!!.text.toString().trim { it <= ' ' }
         params["password"] = reg_password!!.text.toString().trim { it <= ' ' }
         val url = Api.url_createuser
-        val networkRequest = APINetworkRequest(requireContext(), registeruser, url, CODE_POST_REQUEST, params)
+        APINetworkRequest(requireContext(), registeruser, url, CODE_POST_REQUEST, params)
     }
 
     var registeruser: FetchDataListener = object : FetchDataListener {
-        override fun onFetchComplete(data: String) {
+        override fun onFetchComplete(data: String?) {
             try {
-                val `object` = JSONObject(data)
+                val `object` = JSONObject(data!!)
                 if (!`object`.getBoolean("error")) {
                     val email = reg_email!!.text.toString()
                     val password = reg_password!!.text.toString()
@@ -152,15 +152,13 @@ class Register : DialogFragment() {
             }
         }
 
-        override fun onFetchFailure(msg: String) {
-            Log.e("ERROR:", msg)
+        override fun onFetchFailure(msg: String?) {
+            Log.e("ERROR:", msg!!)
             bottomInfo(true, msg)
         }
 
         override fun onFetchStart() {
             bottomInfo(false, "Registering...")
-
-            //commentedit.setEnabled(false);
         }
     }
 

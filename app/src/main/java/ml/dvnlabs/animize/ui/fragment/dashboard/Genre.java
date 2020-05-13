@@ -39,7 +39,7 @@ import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
-import ml.dvnlabs.animize.model.metagenre_model;
+import ml.dvnlabs.animize.model.MetaGenreModel;
 import ml.dvnlabs.animize.pager.MultiTabPager;
 import ml.dvnlabs.animize.ui.recyclerview.staggered.metagenre_adapter;
 import ml.dvnlabs.animize.ui.recyclerview.staggered.metagenre_holder;
@@ -49,7 +49,7 @@ public class Genre extends Fragment {
     private static final int CODE_GET_REQUEST = 1024;
     private TabLayout tabLayout;
     private ViewPager pager;
-    private ArrayList<metagenre_model>metagenre_models;
+    private ArrayList<MetaGenreModel>metagenre_models;
     private LinearLayout loading;
     private ExpandableLayout expand_meta;
 
@@ -126,7 +126,7 @@ public class Genre extends Fragment {
                 JSONObject object = titles.getJSONObject(i);
                 String title = object.getString("name_genre");
                 String count = object.getString("sum_genre");
-                metagenre_models.add(new metagenre_model(title,count));
+                metagenre_models.add(new MetaGenreModel(title,count));
             }
             initializetab();
         }catch (JSONException e){

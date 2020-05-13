@@ -18,14 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import ml.dvnlabs.animize.model.sourcelist;
+import ml.dvnlabs.animize.model.SourceList;
 
 public class sourcelist_adapter extends RecyclerView.Adapter<sourcelist_holder> {
     private Context mcontext;
-    private ArrayList<sourcelist> sources;
+    private ArrayList<SourceList> sources;
     private int itemResor;
 
-    public sourcelist_adapter(ArrayList<sourcelist>data, Context context, int itemResource){
+    public sourcelist_adapter(ArrayList<SourceList>data, Context context, int itemResource){
         this.mcontext = context;
         this.itemResor = itemResource;
         this.sources = data;
@@ -40,7 +40,7 @@ public class sourcelist_adapter extends RecyclerView.Adapter<sourcelist_holder> 
 
     @Override
     public void onBindViewHolder(sourcelist_holder holder,int position){
-        sourcelist slm = this.sources.get(position);
+        SourceList slm = this.sources.get(position);
         holder.bind_playlist(slm);
 
     }

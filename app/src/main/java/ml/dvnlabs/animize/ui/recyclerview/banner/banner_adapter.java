@@ -19,14 +19,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import ml.dvnlabs.animize.model.bannerlist_model;
+import ml.dvnlabs.animize.model.BannerListMdl;
 
 public class banner_adapter extends RecyclerView.Adapter<banner_holder> {
     private Context mcontext;
-    private ArrayList<bannerlist_model> bannermodel;
+    private ArrayList<BannerListMdl> bannermodel;
     private int itemResor;
 
-    public banner_adapter(ArrayList<bannerlist_model> data, Context context, int itemResource){
+    public banner_adapter(ArrayList<BannerListMdl> data, Context context, int itemResource){
         this.mcontext = context;
         this.itemResor = itemResource;
         this.bannermodel = data;
@@ -34,7 +34,7 @@ public class banner_adapter extends RecyclerView.Adapter<banner_holder> {
     }
     @Override
     public void onBindViewHolder(@NonNull banner_holder holder, int position) {
-        bannerlist_model slm = this.bannermodel.get(position);
+        BannerListMdl slm = this.bannermodel.get(position);
         holder.bindBanner(slm);
     }
 

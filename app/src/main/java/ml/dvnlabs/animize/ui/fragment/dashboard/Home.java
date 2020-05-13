@@ -38,9 +38,9 @@ import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
-import ml.dvnlabs.animize.model.bannerlist_model;
-import ml.dvnlabs.animize.model.home_lastup_model;
-import ml.dvnlabs.animize.model.packagelist;
+import ml.dvnlabs.animize.model.BannerListMdl;
+import ml.dvnlabs.animize.model.HomeLastUploadModel;
+import ml.dvnlabs.animize.model.PackageList;
 import ml.dvnlabs.animize.ui.activity.DashboardActivity;
 import ml.dvnlabs.animize.ui.recyclerview.banner.banner_adapter;
 import ml.dvnlabs.animize.ui.recyclerview.list.home_lastup_adapter;
@@ -54,9 +54,9 @@ public class Home extends Fragment {
     private RelativeLayout dash_button_lastupmore;
     private DiscreteScrollView listView_lastup,rv_bannerlist;
     private DiscreteScrollView rv_lastpackage;
-    private ArrayList<home_lastup_model> modeldata_lastup;
-    private ArrayList<packagelist> modeldatapackage;
-    private ArrayList<bannerlist_model> bannerlist_models;
+    private ArrayList<HomeLastUploadModel> modeldata_lastup;
+    private ArrayList<PackageList> modeldatapackage;
+    private ArrayList<BannerListMdl> bannerlist_models;
 
 
     private Handler banner_scrolling;
@@ -276,7 +276,7 @@ public class Home extends Fragment {
                 String banner_image = object.getString("banner_image");
                 String banner_url = object.getString("banner_url");
                 String banner_title = object.getString("banner_title");
-                bannerlist_models.add(new bannerlist_model(banner_image,banner_title,banner_url));
+                bannerlist_models.add(new BannerListMdl(banner_image,banner_title,banner_url));
             }
             adapter_banner = new banner_adapter(bannerlist_models,getActivity(),R.layout.rv_banner);
             rv_bannerlist.setAdapter(adapter_banner);
@@ -327,7 +327,7 @@ public class Home extends Fragment {
                     genres.add(genre_json.getString(j));
                     //Log.e("GENRES:",genre_json.getString(j));
                 }
-                modeldatapackage.add(new packagelist(packages,nameanim,nowep,totep,rate,mal,genres,cover));
+                modeldatapackage.add(new PackageList(packages,nameanim,nowep,totep,rate,mal,genres,cover));
             }
             //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
 
@@ -356,7 +356,7 @@ public class Home extends Fragment {
                 String title_name = jsonObject.getString(Api.JSON_name_anim);
                 String episode = jsonObject.getString(Api.JSON_episode_anim);
 
-                modeldata_lastup.add(new home_lastup_model(url_tb,id,title_name,episode));
+                modeldata_lastup.add(new HomeLastUploadModel(url_tb,id,title_name,episode));
                 //adapter.notifyItemInserted(i);
 
                 //adapter.notifyDataSetChanged();

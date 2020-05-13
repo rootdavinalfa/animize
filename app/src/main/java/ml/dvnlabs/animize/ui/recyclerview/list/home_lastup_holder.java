@@ -29,7 +29,7 @@ import com.google.android.material.card.MaterialCardView;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.model.home_lastup_model;
+import ml.dvnlabs.animize.model.HomeLastUploadModel;
 import ml.dvnlabs.animize.ui.activity.StreamActivity;
 import ml.dvnlabs.animize.ui.recyclerview.lastup_listener;
 
@@ -38,7 +38,7 @@ public class home_lastup_holder extends RecyclerView.ViewHolder implements View.
     //ImageView img_src;
     MaterialCardView container;
     lastup_listener listener;
-    private home_lastup_model model;
+    private HomeLastUploadModel model;
     private Context context;
 
     public home_lastup_holder(Context context,View view){
@@ -50,7 +50,7 @@ public class home_lastup_holder extends RecyclerView.ViewHolder implements View.
         itemView.setOnClickListener(this);
 
     }
-    public void bind_lastup(home_lastup_model plm){
+    public void bind_lastup(HomeLastUploadModel plm){
         this.model = plm;
         this.title.setText(model.getTitle_nm());
         String ep = context.getString(R.string.episode_text)+": "+model.getEp_num();
@@ -59,7 +59,7 @@ public class home_lastup_holder extends RecyclerView.ViewHolder implements View.
                 .applyDefaultRequestOptions(new RequestOptions()
                         .placeholder(R.drawable.ic_picture)
                         .error(R.drawable.ic_picture))
-                .load(model.getUrl_imagetitle()).transform(new RoundedCornersTransformation(5,0))
+                .load(model.getUrlImageTitle()).transform(new RoundedCornersTransformation(5,0))
                 .transition(new DrawableTransitionOptions()
                         .crossFade()).apply(new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)).into(new CustomTarget<Drawable>() {

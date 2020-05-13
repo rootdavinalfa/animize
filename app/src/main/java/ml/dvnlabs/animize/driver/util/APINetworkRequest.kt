@@ -18,17 +18,13 @@ import com.android.volley.toolbox.StringRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
 import java.util.*
 
-class APINetworkRequest {
-    var REQ_CODE = 0
-
-    constructor() {}
-    constructor(context: Context, listen: FetchDataListener?, urli: String, REQUEST_CODE: Int,
-                params: HashMap<String, String>?) {
+class APINetworkRequest(context: Context, listen: FetchDataListener?, uri: String, REQUEST_CODE: Int, params: HashMap<String, String>?) {
+    init {
         if (REQUEST_CODE == CODE_GET_REQUEST) {
-            getRequest(context, listen, urli)
+            getRequest(context, listen, uri)
         }
         if (REQUEST_CODE == CODE_POST_REQUEST) {
-            postRequest(context, listen, urli, params!!)
+            postRequest(context, listen, uri, params!!)
         }
     }
 
@@ -59,8 +55,6 @@ class APINetworkRequest {
 
             @Throws(AuthFailureError::class)
             override fun getParams(): Map<String, String> {
-                //Map<String, String> params = new HashMap<>();
-                //params.put("token","eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9kdm5sYWJzLm1sIiwiYXVkIjoiZGJhc3VkZXdhQGdtYWlsLmNvbSIsImlhdCI6MTU1MjAyOTM0NCwibmJmIjoxNTUyMDI5MzU0LCJkYXRhIjp7ImlkX3VzZXIiOiJVU1IxIiwibmFtZV91c2VyIjoiRGF2aW4iLCJlbWFpbCI6ImRiYXN1ZGV3YUBnbWFpbC5jb20ifX0.-C7rmoi7z_tMePlBFPLVUtObC3OcG9y_0qRQIx1_xrY");
                 return param
             }
         }

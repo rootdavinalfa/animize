@@ -18,14 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.model.api_usermodel;
-import ml.dvnlabs.animize.model.commentMainModel;
+import ml.dvnlabs.animize.model.APIUserModel;
+import ml.dvnlabs.animize.model.CommentMainModel;
 
 public class commentThread_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView user,dateadded,contents;
 
 
-    private commentMainModel model;
+    private CommentMainModel model;
     private Context context;
 
     public commentThread_holder(Context context, View view){
@@ -38,9 +38,9 @@ public class commentThread_holder extends RecyclerView.ViewHolder implements Vie
 
     }
 
-    public void bindComment(commentMainModel commentMainModel){
+    public void bindComment(CommentMainModel commentMainModel){
         this.model = commentMainModel;
-        ArrayList<api_usermodel> usermodels = model.getUsermodels();
+        ArrayList<APIUserModel> usermodels = model.getUserModels();
         this.user.setText(usermodels.get(0).getName_user());
         this.contents.setText(model.getContents());
 

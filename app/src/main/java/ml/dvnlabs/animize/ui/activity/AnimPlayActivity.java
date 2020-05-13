@@ -58,8 +58,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import ml.dvnlabs.animize.Event.PlayerBusError;
-import ml.dvnlabs.animize.Event.PlayerBusStatus;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.database.InitInternalDBHelper;
 import ml.dvnlabs.animize.database.RecentPlayDBHelper;
@@ -69,8 +67,10 @@ import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.RequestQueueVolley;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
-import ml.dvnlabs.animize.model.commentMainModel;
-import ml.dvnlabs.animize.model.videoplay_model;
+import ml.dvnlabs.animize.event.PlayerBusError;
+import ml.dvnlabs.animize.event.PlayerBusStatus;
+import ml.dvnlabs.animize.model.CommentMainModel;
+import ml.dvnlabs.animize.model.VideoPlayModel;
 import ml.dvnlabs.animize.pager.AplayViewPagerAdapter;
 import ml.dvnlabs.animize.pager.passdata_arraylist;
 import ml.dvnlabs.animize.player.PlaybackStatus;
@@ -98,7 +98,7 @@ public class AnimPlayActivity extends AppCompatActivity {
     private Handler handler_player_recent;
     private Runnable update_recent;
 
-    ArrayList<videoplay_model> modeldata;
+    ArrayList<VideoPlayModel> modeldata;
     private TextView errortxt;
     private AVLoadingIndicatorView loadbar;
     private ImageView errorIMG;
@@ -347,7 +347,7 @@ FetchDataListener getvideo = new FetchDataListener() {
                 }
                 String thmb = jsonObject.getString("thumbnail");
                 //Log.e("DATA: ",nm+tot);
-                modeldata.add(new videoplay_model(nm,epi,tot,rat,syi,pack,ur,genres,thmb,cover));
+                modeldata.add(new VideoPlayModel(nm,epi,tot,rat,syi,pack,ur,genres,thmb,cover));
 
             }
         }catch (Exception e)
@@ -529,7 +529,7 @@ FetchDataListener getvideo = new FetchDataListener() {
     }
 
     //Sending arraylist to details fragment
-    private void sendmodelplay(ArrayList<videoplay_model>data,passdata_arraylist senddata){
+    private void sendmodelplay(ArrayList<VideoPlayModel>data, passdata_arraylist senddata){
         Log.e("CHECK ID ANIM",idanim);
         if (!data.isEmpty()){
             senddata.onDataReceived(data,idanim);
@@ -538,7 +538,7 @@ FetchDataListener getvideo = new FetchDataListener() {
     }
     passdata_arraylist datasender = new passdata_arraylist() {
         @Override
-        public void onDataReceived(ArrayList<videoplay_model> data,String id) {
+        public void onDataReceived(ArrayList<VideoPlayModel> data, String id) {
             String tag = "android:switcher:" + R.id.aplay_pager + ":" + 0;
             details f = (details) getSupportFragmentManager().findFragmentByTag(tag);
             f.receivedata(data,id);
@@ -655,7 +655,7 @@ FetchDataListener getvideo = new FetchDataListener() {
         sourceselector.language(lang,idanim,this);
     }
 
-    public void showreplyfragment(ArrayList<commentMainModel> model){
+    public void showreplyfragment(ArrayList<CommentMainModel> model){
         aplay_tabs.setVisibility(View.GONE);
         aplay_viewpager.setVisibility(View.GONE);
 
@@ -729,7 +729,7 @@ FetchDataListener getvideo = new FetchDataListener() {
                     int episode= Integer.valueOf(modeldata.get(0).getEpisode());
                     String url_cover = modeldata.get(0).getCover();
                     long timestamp = getCurrentPlayTime();
-                    recentPlayDBHelper.add_recent(package_id,package_name,anmid,episode,url_cover,timestamp);
+                    recentPlayDBHelper.addRecent(package_id,package_name,anmid,episode,url_cover,timestamp);
 
                 }
                 if (params[0].equals("UPDATE")){
@@ -739,7 +739,7 @@ FetchDataListener getvideo = new FetchDataListener() {
                     int episode= Integer.valueOf(modeldata.get(0).getEpisode());
                     String url_cover = modeldata.get(0).getCover();
                     long timestamp = getCurrentPlayTime();
-                    recentPlayDBHelper.update_recent(package_id,package_name,anmid,episode,url_cover,timestamp);
+                    recentPlayDBHelper.updateRecent(package_id,package_name,anmid,episode,url_cover,timestamp);
                 }
             }
 
@@ -761,7 +761,7 @@ FetchDataListener getvideo = new FetchDataListener() {
 
         @Override
         protected recentland doInBackground(String... strings) {
-            return recentPlayDBHelper.read_recent(idanim);
+            return recentPlayDBHelper.readRecent(idanim);
         }
 
         @Override

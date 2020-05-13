@@ -26,7 +26,7 @@ import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
-import ml.dvnlabs.animize.model.sourcelist
+import ml.dvnlabs.animize.model.SourceList
 import ml.dvnlabs.animize.ui.recyclerview.list.sourcelist_adapter
 import org.json.JSONArray
 import org.json.JSONException
@@ -35,7 +35,7 @@ import java.util.*
 
 class sourceSelector : BottomSheetDialogFragment(){
     private val CODE_GET_REQUEST = 1024
-    private var sourcess: ArrayList<sourcelist>? = null
+    private var sourcess: ArrayList<SourceList>? = null
     private var listview: RecyclerView? = null
     private var loading: AVLoadingIndicatorView? = null
     private var errors: TextView? = null
@@ -75,7 +75,7 @@ class sourceSelector : BottomSheetDialogFragment(){
     private var fetchSource : FetchDataListener = object : FetchDataListener{
         override fun onFetchComplete(data: String?) {
             try {
-                val `object` = JSONObject(data)
+                val `object` = JSONObject(data!!)
                 if (!`object`.getBoolean("error")) {
                     listview!!.visibility =View.VISIBLE
                     infocontainer!!.visibility=View.GONE
@@ -93,7 +93,7 @@ class sourceSelector : BottomSheetDialogFragment(){
             }
         }
         override fun onFetchFailure(msg: String?) {
-            Log.e("WEB ERROR:", msg)
+            Log.e("WEB ERROR:", msg!!)
         }
         override fun onFetchStart() {
         }
@@ -107,7 +107,7 @@ class sourceSelector : BottomSheetDialogFragment(){
                 val id = `object`.getString("id_source")
                 val by_user = `object`.getString("by_user")
                 val sources = `object`.getString("source")
-                sourcess!!.add(sourcelist(id, by_user, sources))
+                sourcess!!.add(SourceList(id, by_user, sources))
             }
             adapter = sourcelist_adapter(sourcess, mcontext, R.layout.rv_sources)
             listview!!.layoutManager =linearLayoutManager

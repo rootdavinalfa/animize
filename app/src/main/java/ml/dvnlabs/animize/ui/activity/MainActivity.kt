@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loginFunc(id: String, name: String, email: String) {
         GlobalScope.launch(Dispatchers.Main) {
-            initInternalDBHelper!!.insertuser(tokeen, id, email, name)
+            initInternalDBHelper!!.insertUser(tokeen, id, email, name)
         }
         val intent = Intent(this, DashboardActivity::class.java)
         startActivity(intent)
@@ -138,20 +138,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var fetchLoginListenerStep1: FetchDataListener = object : FetchDataListener {
-        override fun onFetchComplete(data: String) {
+        override fun onFetchComplete(data: String?) {
             progressDialogs!!.hide()
-            Log.e(TAG, data)
-            jsonLogin(data)
+            jsonLogin(data!!)
         }
 
-        override fun onFetchFailure(msg: String) {
+        override fun onFetchFailure(msg: String?) {
             //errorAuth()
             progressDialogs!!.hide()
             alert {
                 title = "Credential Error!"
                 message = "Email / Password wrong,please provide a correct one!"
             }
-            Log.e(TAG, msg)
+            Log.e(TAG, msg!!)
         }
 
         override fun onFetchStart() {
@@ -198,14 +197,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     var fetchLoginListenerStep2: FetchDataListener = object : FetchDataListener {
-        override fun onFetchComplete(data: String) {
+        override fun onFetchComplete(data: String?) {
             progressDialogs!!.hide()
-            Log.e(TAG, data)
-            loginDecode(data)
+            loginDecode(data!!)
         }
 
-        override fun onFetchFailure(msg: String) {
-            Log.e(TAG, msg)
+        override fun onFetchFailure(msg: String?) {
+            Log.e(TAG, msg!!)
             errorAuth()
         }
 

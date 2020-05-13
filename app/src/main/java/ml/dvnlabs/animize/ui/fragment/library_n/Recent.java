@@ -117,7 +117,7 @@ public class Recent extends Fragment {
 
         @Override
         protected ArrayList<recentland> doInBackground(String... strings) {
-            return recentPlayDBHelper.getrecentlist();
+            return recentPlayDBHelper.getRecentList();
         }
 
         @Override

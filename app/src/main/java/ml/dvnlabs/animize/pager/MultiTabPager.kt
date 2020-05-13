@@ -13,13 +13,13 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import ml.dvnlabs.animize.model.metagenre_model
+import ml.dvnlabs.animize.model.MetaGenreModel
 import ml.dvnlabs.animize.ui.fragment.tabs.multiview.MultiView
 import java.util.*
 
-class MultiTabPager(fm: FragmentManager, private val numOfTabs: Int, meta: ArrayList<metagenre_model>) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class MultiTabPager(fm: FragmentManager, private val numOfTabs: Int, meta: ArrayList<MetaGenreModel>) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     private var fragment: Fragment? = null
-    private var meta = ArrayList<metagenre_model>()
+    private var meta = ArrayList<MetaGenreModel>()
     private var bundle: Bundle? = null
     private val fragmentManager: FragmentManager
     override fun getItem(position: Int): Fragment {

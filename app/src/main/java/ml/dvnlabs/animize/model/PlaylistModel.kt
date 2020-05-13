@@ -6,9 +6,6 @@
  * This program used for watching anime without ads.
  *
  */
+package ml.dvnlabs.animize.model
 
-package ml.dvnlabs.animize.database;
-
-class DBVersion {
-    static final int DatabaseVer = 3;
-}
+class PlaylistModel(val url_image: String, val title: String, val episode: String, val id_anim: String, val packageAnim: String)

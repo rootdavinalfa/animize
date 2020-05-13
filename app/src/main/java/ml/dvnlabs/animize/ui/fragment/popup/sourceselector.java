@@ -37,12 +37,12 @@ import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
-import ml.dvnlabs.animize.model.sourcelist;
+import ml.dvnlabs.animize.model.SourceList;
 import ml.dvnlabs.animize.ui.recyclerview.list.sourcelist_adapter;
 
 public class sourceselector extends BottomSheetDialogFragment {
     private static final int CODE_GET_REQUEST = 1024;
-    private ArrayList<sourcelist> sourcess;
+    private ArrayList<SourceList> sourcess;
     private RecyclerView listview;
     private AVLoadingIndicatorView loading;
     private TextView errors;
@@ -133,7 +133,7 @@ public class sourceselector extends BottomSheetDialogFragment {
                 String id = object.getString("id_source");
                 String by_user = object.getString("by_user");
                 String sources = object.getString("source");
-                sourcess.add(new sourcelist(id,by_user,sources));
+                sourcess.add(new SourceList(id,by_user,sources));
             }
             adapter = new sourcelist_adapter(sourcess,mcontext,R.layout.rv_sources);
             listview.setLayoutManager(linearLayoutManager);

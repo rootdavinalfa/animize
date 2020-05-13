@@ -26,7 +26,7 @@ import ml.dvnlabs.animize.database.model.starland
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
-import ml.dvnlabs.animize.model.starmodel
+import ml.dvnlabs.animize.model.StarredModel
 import ml.dvnlabs.animize.ui.activity.PackageView
 import ml.dvnlabs.animize.ui.recyclerview.interfaces.addingQueue
 import org.json.JSONArray
@@ -48,7 +48,7 @@ class StarlistHolder(context : Context, view: View,listener : addingQueue): Recy
     private var listeners = listener
     //private lateinit var listener : addingQueue
 
-    private var starmodel : starmodel? = null
+    private var starmodel : StarredModel? = null
     private var ready  = starlist_adapter.readyStars
 
     init {
@@ -126,7 +126,7 @@ class StarlistHolder(context : Context, view: View,listener : addingQueue): Recy
                 val rate: String? = `object`.getString("rating")
                 val mal: String? = `object`.getString("mal_id")
                 val cover: String? = `object`.getString("cover")
-                starmodel = starmodel(packages,nameanim,totep,rate,mal,cover)
+                starmodel = StarredModel(packages, nameanim!!, totep!!, rate!!, mal!!, cover!!)
             }
             ready.add(starlist_adapter.readyStar(starmodel, absoluteAdapterPosition))
             starlist_adapter.readyStars = ready

@@ -19,13 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import ml.dvnlabs.animize.model.search_list_pack_model;
+import ml.dvnlabs.animize.model.SearchListPackageModel;
 
 public class search_package_adapter extends RecyclerView.Adapter<search_package_holder> {
     private Context context;
-    private ArrayList<search_list_pack_model> data;
+    private ArrayList<SearchListPackageModel> data;
     private int itemRes;
-    public search_package_adapter(ArrayList<search_list_pack_model> models, Context context,int itemResor){
+    public search_package_adapter(ArrayList<SearchListPackageModel> models, Context context, int itemResor){
         this.data = models;
         this.context = context;
         this.itemRes = itemResor;
@@ -33,7 +33,7 @@ public class search_package_adapter extends RecyclerView.Adapter<search_package_
 
     @Override
     public void onBindViewHolder(@NonNull search_package_holder holder, int position) {
-        search_list_pack_model model = this.data.get(holder.getAdapterPosition());
+        SearchListPackageModel model = this.data.get(holder.getAdapterPosition());
         holder.bind_search_package(model);
 
     }

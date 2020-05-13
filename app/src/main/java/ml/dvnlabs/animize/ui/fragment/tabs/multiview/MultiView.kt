@@ -21,7 +21,7 @@ import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
-import ml.dvnlabs.animize.model.genre_packagelist
+import ml.dvnlabs.animize.model.GenrePackageList
 import ml.dvnlabs.animize.ui.recyclerview.packagelist.genre_packagelist_adapter
 import ml.dvnlabs.animize.view.AutoGridLayoutManager
 import org.json.JSONArray
@@ -30,7 +30,7 @@ import org.json.JSONObject
 import java.util.*
 
 class MultiView : DialogFragment() {
-    private var modeldatapackage: ArrayList<genre_packagelist>? = null
+    private var modeldatapackage: ArrayList<GenrePackageList>? = null
     private var adapterlastpackage: genre_packagelist_adapter? = null
     private var LayoutManager: AutoGridLayoutManager? = null
     private var rv_listgenre: RecyclerView? = null
@@ -60,11 +60,11 @@ class MultiView : DialogFragment() {
     }
 
     private var genrePackage: FetchDataListener = object : FetchDataListener {
-        override fun onFetchComplete(data: String) {
+        override fun onFetchComplete(data: String?) {
             rv_listgenre!!.visibility = View.VISIBLE
             genreloading!!.visibility = View.GONE
             try {
-                val `object` = JSONObject(data)
+                val `object` = JSONObject(data!!)
                 if (!`object`.getBoolean("error")) {
                     genrePackageList(`object`.getJSONArray("anim"))
                 }
@@ -73,7 +73,7 @@ class MultiView : DialogFragment() {
             }
         }
 
-        override fun onFetchFailure(msg: String) {}
+        override fun onFetchFailure(msg: String?) {}
         override fun onFetchStart() {
             rv_listgenre!!.visibility = View.GONE
             genreloading!!.visibility = View.VISIBLE
@@ -92,7 +92,7 @@ class MultiView : DialogFragment() {
                 val rate = `object`.getString("rating")
                 val mal = `object`.getString("mal_id")
                 val cover = `object`.getString("cover")
-                modeldatapackage!!.add(genre_packagelist(packages, nameanim, nowep, totep, rate, mal, cover))
+                modeldatapackage!!.add(GenrePackageList(packages, nameanim, nowep, totep, rate, mal, cover))
             }
             //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             LayoutManager = AutoGridLayoutManager(context, 500)

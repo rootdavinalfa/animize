@@ -44,7 +44,7 @@ import java.util.List;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.database.PackageStarDBHelper;
-import ml.dvnlabs.animize.model.videoplay_model;
+import ml.dvnlabs.animize.model.VideoPlayModel;
 import ml.dvnlabs.animize.ui.fragment.comment.mainComment;
 
 /**
@@ -58,7 +58,7 @@ public class details extends Fragment {
     private RelativeLayout add_star_lay;
     private ImageView drop,add_btn,covers;
     private AVLoadingIndicatorView loadbar;
-    private ArrayList<videoplay_model> models;
+    private ArrayList<VideoPlayModel> models;
     private String pkganim;
 
     public details() {
@@ -173,7 +173,7 @@ public class details extends Fragment {
             read.execute();
         }
     }
-    public void receivedata(ArrayList<videoplay_model>data,String idan){
+    public void receivedata(ArrayList<VideoPlayModel>data, String idan){
 
         if(data!=null){
             models = data;
@@ -247,7 +247,7 @@ public class details extends Fragment {
                 packageStarDBHelper.unStar(pkganim);
             }else if(change.equals("STAR")){
                 System.out.println("STAR");
-                packageStarDBHelper.add_star(pkganim);
+                packageStarDBHelper.addStar(pkganim);
             }
             return packageStarDBHelper.isStarred(pkganim);
 

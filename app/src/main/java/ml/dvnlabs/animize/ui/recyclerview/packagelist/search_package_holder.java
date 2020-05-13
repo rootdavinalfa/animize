@@ -31,12 +31,12 @@ import com.bumptech.glide.request.transition.Transition;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.model.search_list_pack_model;
+import ml.dvnlabs.animize.model.SearchListPackageModel;
 import ml.dvnlabs.animize.ui.activity.PackageView;
 
 public class search_package_holder extends RecyclerView.ViewHolder implements View.OnClickListener{
     private Context context;
-    private search_list_pack_model model;
+    private SearchListPackageModel model;
 
     private CardView container;
     private TextView titlename,rate,episode;
@@ -51,7 +51,7 @@ public class search_package_holder extends RecyclerView.ViewHolder implements Vi
         this.episode = view.findViewById(R.id.searchpackage_episode);
         this.container.setOnClickListener(this);
     }
-    public void bind_search_package(search_list_pack_model model){
+    public void bind_search_package(SearchListPackageModel model){
         this.model = model;
         this.titlename.setText(model.getTitle());
         this.rate.setText(model.getRating());

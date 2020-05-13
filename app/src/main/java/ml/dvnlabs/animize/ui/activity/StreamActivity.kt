@@ -38,8 +38,6 @@ import com.wang.avi.AVLoadingIndicatorView
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import ml.dvnlabs.animize.Event.PlayerBusError
-import ml.dvnlabs.animize.Event.PlayerBusStatus
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.database.InitInternalDBHelper
 import ml.dvnlabs.animize.database.PackageStarDBHelper
@@ -48,8 +46,10 @@ import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.RequestQueueVolley
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
-import ml.dvnlabs.animize.model.commentMainModel
-import ml.dvnlabs.animize.model.videoplay_model
+import ml.dvnlabs.animize.event.PlayerBusError
+import ml.dvnlabs.animize.event.PlayerBusStatus
+import ml.dvnlabs.animize.model.CommentMainModel
+import ml.dvnlabs.animize.model.VideoPlayModel
 import ml.dvnlabs.animize.player.PlaybackStatus
 import ml.dvnlabs.animize.player.PlayerManager
 import ml.dvnlabs.animize.ui.fragment.comment.mainComment
@@ -81,7 +81,7 @@ class StreamActivity : AppCompatActivity() {
     var isLocked = false
 
     private val isInit = true
-    var modeldata: ArrayList<videoplay_model>? = null
+    var modeldata: ArrayList<VideoPlayModel>? = null
 
     private var playerManager: PlayerManager? = null
 
@@ -357,14 +357,14 @@ class StreamActivity : AppCompatActivity() {
     }
 
     private var getVideo: FetchDataListener = object : FetchDataListener {
-        override fun onFetchComplete(data: String) {
+        override fun onFetchComplete(data: String?) {
             mainView!!.visibility = View.VISIBLE
             infoContainer!!.visibility = View.GONE
             infoImg!!.visibility = View.VISIBLE
             infoText!!.visibility = View.VISIBLE
             infoLoading!!.visibility = View.GONE
             try {
-                val `object` = JSONObject(data)
+                val `object` = JSONObject(data!!)
                 if (!`object`.getBoolean("error")) {
                     showVideo(`object`.getJSONArray("anim"))
                 }
@@ -373,13 +373,13 @@ class StreamActivity : AppCompatActivity() {
             }
         }
 
-        override fun onFetchFailure(msg: String) {
+        override fun onFetchFailure(msg: String?) {
             mainView!!.visibility = View.GONE
             infoContainer!!.visibility = View.VISIBLE
             infoImg!!.visibility = View.VISIBLE
             infoText!!.visibility = View.VISIBLE
             infoLoading!!.visibility = View.GONE
-            infoText!!.text = msg
+            infoText!!.text = msg!!
         }
 
         override fun onFetchStart() {
@@ -414,7 +414,7 @@ class StreamActivity : AppCompatActivity() {
                 }
                 val thmb = jsonObject.getString("thumbnail")
                 //Log.e("DATA: ",nm+tot);
-                modeldata!!.add(videoplay_model(nm, epi, tot, rat, syi, pack, ur, genres, thmb, cover))
+                modeldata!!.add(VideoPlayModel(nm, epi, tot, rat, syi, pack, ur, genres, thmb, cover))
                 val sb = StringBuilder()
                 for (gnr in 0 until genres.size) {
                     sb.append(genres[gnr])
@@ -461,7 +461,7 @@ class StreamActivity : AppCompatActivity() {
         f!!.receiveData(anim)
     }
 
-    fun showReplyFragment(model: ArrayList<commentMainModel?>?) {
+    fun showReplyFragment(model: ArrayList<CommentMainModel?>?) {
         mainViewDetails!!.visibility = View.GONE
         mainViewMore!!.visibility = View.GONE
         val se = threadComment.newInstance(model, idanim)
@@ -643,7 +643,7 @@ class StreamActivity : AppCompatActivity() {
                 detailsAdd!!.setImageResource(R.drawable.ic_add)
                 "Remove Star Success"
             } else {
-                packageStarDBHelper!!.add_star(packageAnim)
+                packageStarDBHelper!!.addStar(packageAnim)
                 detailsAdd!!.setImageResource(R.drawable.ic_star)
                 "Add to Star Success"
             }
@@ -692,7 +692,7 @@ class StreamActivity : AppCompatActivity() {
     @UiThread
     private fun readRecent() {
         GlobalScope.run {
-            val recent = recentPlayDBHelper!!.read_recent(idanim)
+            val recent = recentPlayDBHelper!!.readRecent(idanim!!)
             if (recent != null) {
                 if (getCurrentPlayTime() < recent.timestamp) {
                     seekPlayer(recent.timestamp)
@@ -710,14 +710,14 @@ class StreamActivity : AppCompatActivity() {
                 val episode = Integer.valueOf(modeldata!![0].episode)
                 val urlCover = modeldata!![0].cover
                 val timestamp = getCurrentPlayTime()
-                recentPlayDBHelper!!.update_recent(packageId, packageName, idanim, episode, urlCover, timestamp)
+                recentPlayDBHelper!!.updateRecent(packageId, packageName, idanim!!, episode, urlCover, timestamp)
             } else {
                 val packageId = modeldata!![0].pack
                 val packageName = modeldata!![0].name_anim
                 val episode = Integer.valueOf(modeldata!![0].episode)
                 val urlCover = modeldata!![0].cover
                 val timestamp = getCurrentPlayTime()
-                recentPlayDBHelper!!.add_recent(packageId, packageName, idanim, episode, urlCover, timestamp)
+                recentPlayDBHelper!!.addRecent(packageId, packageName, idanim, episode, urlCover, timestamp)
             }
             updateRecent()
         }

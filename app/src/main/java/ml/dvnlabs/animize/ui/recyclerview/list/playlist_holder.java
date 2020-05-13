@@ -23,7 +23,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.model.playlist_model;
+import ml.dvnlabs.animize.model.PlaylistModel;
 import ml.dvnlabs.animize.ui.activity.StreamActivity;
 
 public class playlist_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -33,7 +33,7 @@ public class playlist_holder extends RecyclerView.ViewHolder implements View.OnC
     private ImageView thumbnail;
     private View now_sign;
 
-    private playlist_model playlist_model;
+    private PlaylistModel playlist_model;
     private Context context;
 
     public playlist_holder(Context context,View view){
@@ -47,7 +47,7 @@ public class playlist_holder extends RecyclerView.ViewHolder implements View.OnC
         itemView.setOnClickListener(this);
     }
 
-    public void bind_playlist(playlist_model plm,int now,int pos){
+    public void bind_playlist(PlaylistModel plm, int now, int pos){
         this.playlist_model = plm;
         this.title.setText(playlist_model.getTitle());
         this.id_anim.setText(playlist_model.getId_anim());

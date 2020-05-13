@@ -18,14 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import ml.dvnlabs.animize.model.metagenre_model;
+import ml.dvnlabs.animize.model.MetaGenreModel;
 
 public class metagenre_adapter extends RecyclerView.Adapter<metagenre_holder> {
-    private ArrayList<metagenre_model> data;
+    private ArrayList<MetaGenreModel> data;
     metagenre_holder.gotopage_genre calls;
     private Context mcontext;
     private int itemResor;
-    public metagenre_adapter(ArrayList<metagenre_model> data, Context context, int itemResource, metagenre_holder.gotopage_genre call){
+    public metagenre_adapter(ArrayList<MetaGenreModel> data, Context context, int itemResource, metagenre_holder.gotopage_genre call){
         this.mcontext = context;
         this.itemResor = itemResource;
         this.data = data;
@@ -41,7 +41,7 @@ public class metagenre_adapter extends RecyclerView.Adapter<metagenre_holder> {
 
     @Override
     public void onBindViewHolder(metagenre_holder holder,int position){
-        metagenre_model slm = this.data.get(position);
+        MetaGenreModel slm = this.data.get(position);
         holder.bind_data(slm,position);
 
     }

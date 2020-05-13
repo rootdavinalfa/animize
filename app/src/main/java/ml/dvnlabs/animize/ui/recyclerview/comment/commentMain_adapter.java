@@ -19,15 +19,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import ml.dvnlabs.animize.model.commentMainModel;
+import ml.dvnlabs.animize.model.CommentMainModel;
 
 public class commentMain_adapter extends RecyclerView.Adapter<commentMain_holder> {
 
     private Context mcontext;
-    private ArrayList<commentMainModel> commentMainModels;
+    private ArrayList<CommentMainModel> commentMainModels;
     private int itemResor;
 
-    public commentMain_adapter(ArrayList<commentMainModel> data, Context context, int itemResource){
+    public commentMain_adapter(ArrayList<CommentMainModel> data, Context context, int itemResource){
         this.mcontext = context;
         this.itemResor = itemResource;
         this.commentMainModels = data;
@@ -35,7 +35,7 @@ public class commentMain_adapter extends RecyclerView.Adapter<commentMain_holder
     }
     @Override
     public void onBindViewHolder(@NonNull commentMain_holder holder, int position) {
-        commentMainModel slm = this.commentMainModels.get(position);
+        CommentMainModel slm = this.commentMainModels.get(position);
         holder.bindComment(slm);
     }
 

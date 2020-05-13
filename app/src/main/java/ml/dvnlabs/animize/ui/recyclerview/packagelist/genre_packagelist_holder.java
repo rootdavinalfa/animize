@@ -45,7 +45,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.database.PackageStarDBHelper;
-import ml.dvnlabs.animize.model.genre_packagelist;
+import ml.dvnlabs.animize.model.GenrePackageList;
 import ml.dvnlabs.animize.ui.activity.PackageView;
 import ml.dvnlabs.animize.ui.fragment.tabs.multiview.MultiView;
 
@@ -56,7 +56,7 @@ public class genre_packagelist_holder extends RecyclerView.ViewHolder implements
     private ImageView thumbnail;
     private CardView container;
 
-    private genre_packagelist data;
+    private GenrePackageList data;
     private Context context;
     private PackageStarDBHelper packageStarDBHelper;
 
@@ -74,9 +74,9 @@ public class genre_packagelist_holder extends RecyclerView.ViewHolder implements
         packageStarDBHelper = new PackageStarDBHelper(context);
     }
 
-    public void bind_playlist(genre_packagelist plm){
+    public void bind_playlist(GenrePackageList plm){
         this.data = plm;
-        this.title.setText(data.getname());
+        this.title.setText(data.getName());
         String ep_string = data.getNow()+" "+context.getString(R.string.string_of)+" "+data.getTot();
         this.episode.setText(ep_string);
         this.rate.setText(data.getRate());
@@ -190,7 +190,7 @@ public class genre_packagelist_holder extends RecyclerView.ViewHolder implements
                 packageStarDBHelper.unStar(data.getPack());
             }else if(change.equals("STAR")){
                 System.out.println("STAR");
-                packageStarDBHelper.add_star(data.getPack());
+                packageStarDBHelper.addStar(data.getPack());
             }
             return packageStarDBHelper.isStarred(data.getPack());
         }

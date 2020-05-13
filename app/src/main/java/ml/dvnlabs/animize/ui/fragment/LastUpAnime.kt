@@ -28,7 +28,7 @@ import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
-import ml.dvnlabs.animize.model.video_list_model
+import ml.dvnlabs.animize.model.VideoListModel
 import ml.dvnlabs.animize.ui.activity.DashboardActivity
 import ml.dvnlabs.animize.ui.recyclerview.EndlessRecyclerScrollListener
 import ml.dvnlabs.animize.ui.recyclerview.list.video_list_adapter
@@ -43,7 +43,7 @@ import java.util.*
 class LastUpAnime : Fragment(), View.OnClickListener {
     private val recyclerViewState: Parcelable? = null
     var listView: RecyclerView? = null
-    var modeldata: ArrayList<video_list_model>? = null
+    var modeldata: ArrayList<VideoListModel>? = null
     var adapter: video_list_adapter? = null
     var progressBar: AVLoadingIndicatorView? = null
     var textload: TextView? = null
@@ -167,12 +167,12 @@ class LastUpAnime : Fragment(), View.OnClickListener {
     }
 
     var getvideolist: FetchDataListener = object : FetchDataListener {
-        override fun onFetchComplete(data: String) {
-            videoListJSON(data)
+        override fun onFetchComplete(data: String?) {
+            videoListJSON(data!!)
         }
 
-        override fun onFetchFailure(msg: String) {
-            (activity as DashboardActivity?)!!.snackError(msg, 1)
+        override fun onFetchFailure(msg: String?) {
+            (activity as DashboardActivity?)!!.snackError(msg!!, 1)
             iv_error!!.visibility = View.VISIBLE
             texterrorload!!.visibility = View.VISIBLE
             btn_retry!!.visibility = View.VISIBLE
@@ -203,7 +203,7 @@ class LastUpAnime : Fragment(), View.OnClickListener {
                 val id = jsonObject.getString(Api.JSON_id_anim)
                 val title_name = jsonObject.getString(Api.JSON_name_anim)
                 val episode = jsonObject.getString(Api.JSON_episode_anim)
-                modeldata!!.add(video_list_model(url_tb, id, title_name, episode))
+                modeldata!!.add(VideoListModel(url_tb, id, title_name, episode))
             }
             if (page_list == 1) {
                 adapter = video_list_adapter(modeldata, activity, listView)
@@ -232,7 +232,7 @@ class LastUpAnime : Fragment(), View.OnClickListener {
     private fun onItemScrolled() {
         listView!!.addOnScrollListener(object : EndlessRecyclerScrollListener(layoutManager!!) {
             override fun onLoadMore(current_page: Int) {
-                modeldata!!.add(video_list_model(null, null, null, null))
+                modeldata!!.add(VideoListModel(null, null, null, null))
                 //adapter.notifyItemInserted(modeldata.size());
                 adapter!!.notifyDataSetChanged()
                 handler!!.postDelayed({

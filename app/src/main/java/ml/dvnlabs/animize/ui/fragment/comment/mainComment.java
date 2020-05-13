@@ -40,13 +40,13 @@ import ml.dvnlabs.animize.R;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
-import ml.dvnlabs.animize.model.api_usermodel;
-import ml.dvnlabs.animize.model.commentMainModel;
+import ml.dvnlabs.animize.model.APIUserModel;
+import ml.dvnlabs.animize.model.CommentMainModel;
 import ml.dvnlabs.animize.ui.recyclerview.comment.commentMain_adapter;
 
 public class mainComment extends Fragment {
 
-    private ArrayList<commentMainModel> commentMainModels;
+    private ArrayList<CommentMainModel> commentMainModels;
     private RecyclerView commentar;
     private commentMain_adapter adapter;
     private LinearLayout contain;
@@ -131,14 +131,14 @@ public class mainComment extends Fragment {
                 String status = object.getString("status");
                 String content = object.getString("content");
                 JSONArray user = object.getJSONArray("user");
-                ArrayList<api_usermodel>usermodels = new ArrayList<>();
+                ArrayList<APIUserModel>usermodels = new ArrayList<>();
                 for (int j=0;j<user.length();j++){
                     JSONObject jsonObject = user.getJSONObject(j);
                     String username = jsonObject.getString("username");
                     String nameus = jsonObject.getString("name_user");
-                    usermodels.add(new api_usermodel(username,nameus));
+                    usermodels.add(new APIUserModel(username,nameus));
                 }
-                commentMainModels.add(new commentMainModel(ids,status,content,usermodels));
+                commentMainModels.add(new CommentMainModel(ids,status,content,usermodels));
             }
             adapter = new commentMain_adapter(commentMainModels,getContext(),R.layout.rv_comments);
             LinearLayoutManager lnm = new LinearLayoutManager(getContext());

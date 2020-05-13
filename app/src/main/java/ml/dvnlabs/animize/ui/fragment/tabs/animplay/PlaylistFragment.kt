@@ -21,7 +21,7 @@ import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
-import ml.dvnlabs.animize.model.playlist_model
+import ml.dvnlabs.animize.model.PlaylistModel
 import ml.dvnlabs.animize.ui.recyclerview.list.playlist_adapter
 import org.json.JSONArray
 import org.json.JSONException
@@ -31,7 +31,7 @@ import java.util.*
 class PlaylistFragment : Fragment(){
     var mcontext : Context? = null
     val CODE_GET_REQUEST : Int = 1024
-    private var playlist_models: ArrayList<playlist_model>? = null
+    private var playlist_models: ArrayList<PlaylistModel>? = null
     var adapter: playlist_adapter?= null
     private var listview: RecyclerView? = null
     var pkganim: String? = null;var id_anim:String? = null
@@ -45,14 +45,14 @@ class PlaylistFragment : Fragment(){
         listview = view.findViewById(R.id.playlist_list)
         return  view
     }
-    private fun getplaylist(){
+    private fun getPlayList(){
         val url : String = Api.url_playlist_play + pkganim
         mcontext?.let { APINetworkRequest(it, getPlaylist, url, CODE_GET_REQUEST, null) }
     }
     private var getPlaylist : FetchDataListener = object : FetchDataListener{
         override fun onFetchComplete(data: String?) {
             try {
-                val `object` = JSONObject(data)
+                val `object` = JSONObject(data!!)
                 if (!`object`.getBoolean("error")) {
                     parsePlaylist(`object`.getJSONArray("anim"))
                 }
@@ -83,7 +83,7 @@ class PlaylistFragment : Fragment(){
                 val episode = `object`.getString("episode_anim")
                 val id_an = `object`.getString("id_anim")
                 val pkg = `object`.getString("package_anim")
-                playlist_models!!.add(playlist_model(url_img, title, episode, id_an, pkg))
+                playlist_models!!.add(PlaylistModel(url_img, title, episode, id_an, pkg))
 
             }
             adapter = playlist_adapter(playlist_models, activity, R.layout.playlist_view, id_anim)
@@ -95,6 +95,6 @@ class PlaylistFragment : Fragment(){
     fun receivedata(pkg: String, anim: String) {
         pkganim = pkg
         id_anim = anim
-        getplaylist()
+        getPlayList()
     }
 }

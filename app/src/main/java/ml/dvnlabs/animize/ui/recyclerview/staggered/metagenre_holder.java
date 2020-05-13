@@ -17,10 +17,10 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.model.metagenre_model;
+import ml.dvnlabs.animize.model.MetaGenreModel;
 
 public class metagenre_holder extends RecyclerView.ViewHolder implements View.OnClickListener{
-    private metagenre_model data;
+    private MetaGenreModel data;
     private Context context;
 
     private TextView texts;
@@ -38,7 +38,7 @@ public class metagenre_holder extends RecyclerView.ViewHolder implements View.On
         this.gotopage_genre = cal;
         cards.setOnClickListener(this);
     }
-    public void bind_data(metagenre_model dat,int poss){
+    public void bind_data(MetaGenreModel dat, int poss){
         this.data = dat;
         String genre_count = data.getTitle()+" ("+data.getCount()+")";
         this.texts.setText(genre_count);

@@ -23,7 +23,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.model.playlist_model;
+import ml.dvnlabs.animize.model.PlaylistModel;
 import ml.dvnlabs.animize.ui.activity.StreamActivity;
 
 public class packagelist_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -32,7 +32,7 @@ public class packagelist_holder extends RecyclerView.ViewHolder implements View.
     private TextView title;
     private ImageView thumbnail;
 
-    private playlist_model playlist_model;
+    private PlaylistModel playlist_model;
     private Context context;
 
     public packagelist_holder(Context context, View view){
@@ -45,7 +45,7 @@ public class packagelist_holder extends RecyclerView.ViewHolder implements View.
         itemView.setOnClickListener(this);
     }
 
-    public void bind_playlist(playlist_model plm){
+    public void bind_playlist(PlaylistModel plm){
         this.playlist_model = plm;
         this.title.setText(playlist_model.getTitle());
         this.id_anim.setText(playlist_model.getId_anim());

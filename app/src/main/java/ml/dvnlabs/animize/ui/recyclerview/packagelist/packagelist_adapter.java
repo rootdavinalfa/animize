@@ -18,14 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import ml.dvnlabs.animize.model.playlist_model;
+import ml.dvnlabs.animize.model.PlaylistModel;
 
 public class packagelist_adapter extends RecyclerView.Adapter<packagelist_holder> {
     private Context mcontext;
-    private ArrayList<playlist_model> playlistdata;
+    private ArrayList<PlaylistModel> playlistdata;
     private int itemResor;
 
-    public packagelist_adapter(ArrayList<playlist_model>data, Context context, int itemResource){
+    public packagelist_adapter(ArrayList<PlaylistModel>data, Context context, int itemResource){
         this.mcontext = context;
         this.itemResor = itemResource;
         this.playlistdata = data;
@@ -40,7 +40,7 @@ public class packagelist_adapter extends RecyclerView.Adapter<packagelist_holder
 
     @Override
     public void onBindViewHolder(packagelist_holder holder,int position){
-        playlist_model slm = this.playlistdata.get(position);
+        PlaylistModel slm = this.playlistdata.get(position);
         holder.bind_playlist(slm);
 
     }

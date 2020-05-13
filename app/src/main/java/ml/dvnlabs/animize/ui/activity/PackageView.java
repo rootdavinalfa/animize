@@ -68,8 +68,8 @@ import ml.dvnlabs.animize.database.model.recentland;
 import ml.dvnlabs.animize.driver.Api;
 import ml.dvnlabs.animize.driver.util.APINetworkRequest;
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener;
-import ml.dvnlabs.animize.model.packageinfo;
-import ml.dvnlabs.animize.model.playlist_model;
+import ml.dvnlabs.animize.model.PackageInfo;
+import ml.dvnlabs.animize.model.PlaylistModel;
 import ml.dvnlabs.animize.ui.fragment.information.CoverView;
 import ml.dvnlabs.animize.ui.recyclerview.packagelist.packagelist_adapter;
 import ml.dvnlabs.animize.ui.recyclerview.staggered.package_metagenre_adapter;
@@ -83,8 +83,8 @@ public class PackageView extends AppCompatActivity {
     private RelativeLayout notfoundContainer,loadingcontainer;
     private ImageView cover_toolbar,recent_img;
     private static final int CODE_GET_REQUEST = 1024;
-    private ArrayList<playlist_model> playlist_models;
-    private ArrayList<packageinfo> modelinfo;
+    private ArrayList<PlaylistModel> playlist_models;
+    private ArrayList<PackageInfo> modelinfo;
     packagelist_adapter adapter;
     private RecyclerView listview,genrelist;
     private TextView genr,synops,recent_title,recent_episode,rate,animeid;
@@ -292,14 +292,14 @@ public class PackageView extends AppCompatActivity {
                     // what to do with it.
                     String urlShare = null;
                     try {
-                        urlShare = "https://animize.app.link/share/package?pack="+pkganim+"&titname="+ URLEncoder.encode(modelinfo.get(0).getname(),"utf-8");
+                        urlShare = "https://animize.app.link/share/package?pack="+pkganim+"&titname="+ URLEncoder.encode(modelinfo.get(0).getName(),"utf-8");
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
                     Intent sendIntent = new Intent(Intent.ACTION_SEND);
                     sendIntent.putExtra(Intent.EXTRA_TEXT, urlShare);
                     //Here we're setting the title of the content
-                    sendIntent.putExtra(Intent.EXTRA_TITLE, "Share "+modelinfo.get(0).getname()+ " to your friend!");
+                    sendIntent.putExtra(Intent.EXTRA_TITLE, "Share "+modelinfo.get(0).getName()+ " to your friend!");
                     sendIntent.setType("text/plain");
                     // Show the Sharesheet
                     startActivity(Intent.createChooser(sendIntent, null));
@@ -404,9 +404,9 @@ public class PackageView extends AppCompatActivity {
                     genres.add(genre_json.getString(j));
                     //Log.e("GENRES:",genre_json.getString(j));
                 }
-                modelinfo.add(new packageinfo(packages,nameanim,synop,totep,rate,mal,genres,cover));
+                modelinfo.add(new PackageInfo(packages,nameanim,synop,totep,rate,mal,genres,cover));
             }
-            collapsingToolbarLayout.setTitle(modelinfo.get(0).getname());
+            collapsingToolbarLayout.setTitle(modelinfo.get(0).getName());
             synops.setText(modelinfo.get(0).getSynopsis());
             /*List<String> genres = new ArrayList<>();
             genres = modelinfo.get(0).getGenre();*/
@@ -485,7 +485,7 @@ public class PackageView extends AppCompatActivity {
                 String episode = object.getString("episode_anim");
                 String id_an = object.getString("id_anim");
                 String pkg = object.getString("package_anim");
-                playlist_models.add(new playlist_model(url_img,title,episode,id_an,pkg));
+                playlist_models.add(new PlaylistModel(url_img,title,episode,id_an,pkg));
 
             }
 
@@ -534,7 +534,7 @@ public class PackageView extends AppCompatActivity {
                 packageStarDBHelper.unStar(pkganim);
             }else if(change.equals("STAR")){
                 System.out.println("STAR");
-                packageStarDBHelper.add_star(pkganim);
+                packageStarDBHelper.addStar(pkganim);
             }
             return packageStarDBHelper.isStarred(pkganim);
 
@@ -566,7 +566,7 @@ public class PackageView extends AppCompatActivity {
 
         @Override
         protected recentland doInBackground(String... strings) {
-            return recentPlayDBHelper.read_recent_pn_package(pkganim);
+            return recentPlayDBHelper.readRecentOnPackage(pkganim);
         }
 
         @Override

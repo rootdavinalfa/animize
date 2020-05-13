@@ -15,13 +15,13 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 
-class RequestQueueVolley(private val mContex: Context) {
+class RequestQueueVolley(private val mContext: Context) {
     private var requestQueue: RequestQueue?
     private fun getRequestQueue(): RequestQueue? {
         if (requestQueue == null) {
             // getApplicationContext() is key, it keeps you from leaking the
             // Activity or BroadcastReceiver if someone passes one in.
-            requestQueue = Volley.newRequestQueue(mContex.applicationContext)
+            requestQueue = Volley.newRequestQueue(mContext.applicationContext)
         }
         return requestQueue
     }
