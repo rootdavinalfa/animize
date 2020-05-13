@@ -10,19 +10,18 @@
 package ml.dvnlabs.animize.ui.activity
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 import com.wang.avi.AVLoadingIndicatorView
 import ml.dvnlabs.animize.R
+import ml.dvnlabs.animize.base.BaseActivity
 
-public class WebView : AppCompatActivity() {
-    private var bannerurl : String = ""
+class WebView : BaseActivity() {
+    private var bannerURL : String = ""
     private var loading: AVLoadingIndicatorView? = null
     private var webView: WebView? = null
     private var close: ImageView? = null
@@ -32,15 +31,11 @@ public class WebView : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_webview)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            var flags = window.decorView.systemUiVisibility
-            window.decorView.systemUiVisibility = flags
-            this.window.statusBarColor = getColor(R.color.colorPrimaryDark)
-        }
+        changeStatusBar(this,R.color.colorPrimaryDark,false)
         initialize()
         val intent = intent
         if (intent.getStringExtra("url") != null) {
-            bannerurl = intent.getStringExtra("url")!!
+            bannerURL = intent.getStringExtra("url")!!
             //intent.removeExtra("id_anim");
         }
         webView?.settings?.domStorageEnabled=true
@@ -65,11 +60,11 @@ public class WebView : AppCompatActivity() {
                 Log.e("URL FINISH:", url)
             }
         }
-        if (!bannerurl.startsWith("http://")) {
-            bannerurl = "http://$bannerurl"
+        if (!bannerURL.startsWith("http://")) {
+            bannerURL = "http://$bannerURL"
         }
-        Log.e("URL WEB:", bannerurl)
-        webView?.loadUrl(bannerurl)
+        Log.e("URL WEB:", bannerURL)
+        webView?.loadUrl(bannerURL)
 
 
     }

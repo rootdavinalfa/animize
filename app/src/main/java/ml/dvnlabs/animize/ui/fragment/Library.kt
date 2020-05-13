@@ -33,7 +33,7 @@ class Library : Fragment() {
     }
     private fun initialize() {
         tabLayout?.setupWithViewPager(pager)
-        val adapter = LibraryPager(childFragmentManager, tabLayout?.tabCount!!, context)
+        val adapter = LibraryPager(childFragmentManager, tabLayout?.tabCount!!, requireContext())
         pager?.adapter = adapter
         pager?.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
     }

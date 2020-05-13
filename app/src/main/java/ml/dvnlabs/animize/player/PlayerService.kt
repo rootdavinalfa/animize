@@ -38,8 +38,8 @@ import ml.dvnlabs.animize.event.PlayerBusError
 import ml.dvnlabs.animize.event.PlayerBusStatus
 import org.greenrobot.eventbus.EventBus
 
-class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Player.EventListener{
-    companion object{
+class PlayerService : Service(), AudioManager.OnAudioFocusChangeListener, Player.EventListener {
+    companion object {
         const val ACTION_PLAY = "ml.dvnlabs.animize.player.PlayerService.ACTION_PLAY"
         const val ACTION_PAUSE = "ml.dvnlabs.animize.player.PlayerService.ACTION_PAUSE"
         const val ACTION_STOP = "ml.dvnlabs.animize.player.PlayerService.ACTION_STOP"
@@ -49,8 +49,7 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
 
     var exoPlayer: SimpleExoPlayer? = null
     private var mediaSession: MediaSessionCompat? = null
-
-    private val notificationManager: ml.dvnlabs.animize.player.PlayNotificationManager? = null
+    
     private var transportControls: MediaControllerCompat.TransportControls? = null
     private var audioManager: AudioManager? = null
     private var status: String? = null
@@ -85,11 +84,10 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
         //notificationManager = new PlayNotificationManager(this,getApplicationContext());
         mediaSession = MediaSessionCompat(this, javaClass.simpleName)
         transportControls = mediaSession!!.controller.transportControls
-        mediaSession!!.isActive =true
+        mediaSession!!.isActive = true
         mediaSession!!.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
         mediaSession!!.setCallback(mediasSessionCallback)
 
-        val renderersFactory = DefaultRenderersFactory(applicationContext)
         val bandwidthMeter = DefaultBandwidthMeter()
         val videoTrackSelectionFactory = AdaptiveTrackSelection.Factory(bandwidthMeter)
         val trackSelector = DefaultTrackSelector(videoTrackSelectionFactory)
@@ -109,12 +107,13 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
         val action = intent!!.action
 
         if (TextUtils.isEmpty(action))
-            return Service.START_NOT_STICKY
+            return START_NOT_STICKY
 
         val result = audioManager!!.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN)
+
         if (result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
             stop()
-            return Service.START_NOT_STICKY
+            return START_NOT_STICKY
         }
         if (action!!.equals(ACTION_PLAY, ignoreCase = true)) {
             transportControls!!.play()
@@ -129,22 +128,12 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
             pause()
             //notificationManager.cancelNotify();
         }
-        return Service.START_NOT_STICKY
+        return START_NOT_STICKY
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
         if (status == PlaybackStatus.IDLE)
             stopSelf()
-
-        // TODO: clear cache
-//        MainApplication.getProxy(getApplicationContext()).unregisterCacheListener(this);
-//        try {
-//            Utils.cleanVideoCacheDir(getApplicationContext());
-//            Log.d("__onDestroy", "clear cache");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            Log.d("__IOException", e.toString());
-//        }
         return super.onUnbind(intent)
     }
 
@@ -160,7 +149,7 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
     override fun onAudioFocusChange(focusChange: Int) {
         when (focusChange) {
             AudioManager.AUDIOFOCUS_GAIN -> {
-                exoPlayer!!.volume =0.8f
+                exoPlayer!!.volume = 0.8f
                 resume()
             }
 
@@ -213,8 +202,10 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
         val errorDetails: String?
         //EventBus.getDefault().post(PlaybackStatus.ERROR);
         when (error!!.type) {
-            ExoPlaybackException.TYPE_OUT_OF_MEMORY->{}
-            ExoPlaybackException.TYPE_REMOTE->{}
+            ExoPlaybackException.TYPE_OUT_OF_MEMORY -> {
+            }
+            ExoPlaybackException.TYPE_REMOTE -> {
+            }
             ExoPlaybackException.TYPE_SOURCE -> {
                 errorDetails = error.sourceException.message
                 EventBus.getDefault().post(PlayerBusError(errorDetails!!))
@@ -263,7 +254,7 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
     }
 
     fun pause() {
-        exoPlayer!!.playWhenReady =false
+        exoPlayer!!.playWhenReady = false
 
         audioManager!!.abandonAudioFocus(this)
     }
@@ -286,19 +277,19 @@ class PlayerService : Service() , AudioManager.OnAudioFocusChangeListener, Playe
         val mediaSource = buildMediaSource(Uri.parse(streamUrl))
 
         exoPlayer!!.prepare(mediaSource)
-        exoPlayer!!.videoScalingMode=C.VIDEO_SCALING_MODE_SCALE_TO_FIT
-        exoPlayer!!.playWhenReady= true
+        exoPlayer!!.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
+        exoPlayer!!.playWhenReady = true
     }
 
-    fun playOrPause(urli: String?) {
+    fun playOrPause(uri: String?) {
         //Log.e("STREAM-OK:",urli);
-        if (urli != null) {
+        if (uri != null) {
             println("OK")
-            if (streamUrl != null && streamUrl == urli) {
+            if (streamUrl != null && streamUrl == uri) {
                 play()
             } else {
                 //Log.e("Service",urli);
-                init(urli)
+                init(uri)
 
             }
         }

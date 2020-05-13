@@ -28,10 +28,10 @@ open class BaseActivity : AppCompatActivity() {
      *
      * [color] Fill with ID
      *
-     * [iconLight] Statement using light icon or not
+     * [iconLight] Statement using light icon or not (Default True)
      *
      * */
-    protected open fun changeStatusBar(activity: Activity, color: Int, iconLight: Boolean) {
+    protected open fun changeStatusBar(activity: Activity, color: Int, iconLight: Boolean = true) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             var flags = window.decorView.systemUiVisibility
             if (iconLight) {

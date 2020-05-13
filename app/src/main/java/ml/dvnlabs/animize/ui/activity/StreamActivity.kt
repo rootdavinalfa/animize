@@ -140,7 +140,7 @@ class StreamActivity : AppCompatActivity() {
             println(idanim)
         }
         playerManager = PlayerManager(this)
-        if (PlayerManager.getService() == null) {
+        if (PlayerManager.service == null) {
             playerManager!!.bind()
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -186,7 +186,7 @@ class StreamActivity : AppCompatActivity() {
                 isLocked = false
             }
             if (!isFullscreen) {
-                if (PlayerManager.getService() != null && playerManager!!.isServiceBound) {
+                if (PlayerManager.service != null && playerManager!!.isServiceBound) {
                     playerManager!!.unbind()
                     if (!modeldata!!.isEmpty()) {
                         modeldata!!.clear()
@@ -492,7 +492,7 @@ class StreamActivity : AppCompatActivity() {
     }
 
     private fun playerConstant() {
-        PlayerManager.getService().playOrPause(url)
+        PlayerManager.service!!.playOrPause(url)
         playerView!!.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
         playerView!!.useArtwork = true
         playerView!!.setShowBuffering(PlayerView.SHOW_BUFFERING_ALWAYS)
@@ -523,7 +523,7 @@ class StreamActivity : AppCompatActivity() {
                         View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             }
         }
-        playerView!!.setOnTouchListener(object : VideoOnSwipeTouchListener(this, playerView!!, PlayerManager.getService().exoPlayer!!) {
+        playerView!!.setOnTouchListener(object : VideoOnSwipeTouchListener(this, playerView!!, PlayerManager.service!!.exoPlayer!!) {
             private var counting = 0
             private val handler = Handler()
             override fun onSwipeRight() {
@@ -583,7 +583,7 @@ class StreamActivity : AppCompatActivity() {
         })
         playerView!!.useArtwork = true
         playerView!!.defaultArtwork = resources.getDrawable(R.drawable.ic_astronaut, null)
-        playerView!!.player = PlayerManager.getService().exoPlayer
+        playerView!!.player = PlayerManager.service!!.exoPlayer
         Glide.with(this).applyDefaultRequestOptions(RequestOptions()
                 .placeholder(R.drawable.ic_picture_light).error(R.drawable.ic_picture_light))
                 .load(modeldata!![0].url_thmb)
@@ -669,9 +669,9 @@ class StreamActivity : AppCompatActivity() {
     //Recent Method
 
     private fun updateRecent() {
-        if (PlayerManager.getService() != null) {
-            val playbackState = PlayerManager.getService().exoPlayer!!.playbackState
-            if (playbackState == Player.STATE_READY || PlayerManager.getService().exoPlayer!!.playbackState == Player.STATE_BUFFERING) {
+        if (PlayerManager.service != null) {
+            val playbackState = PlayerManager.service!!.exoPlayer!!.playbackState
+            if (playbackState == Player.STATE_READY || PlayerManager.service!!.exoPlayer!!.playbackState == Player.STATE_BUFFERING) {
                 updateRecent = Runnable {
                     updatingRecent()
                 }
@@ -682,11 +682,11 @@ class StreamActivity : AppCompatActivity() {
     }
 
     private fun getCurrentPlayTime(): Long {
-        return PlayerManager.getService().exoPlayer!!.currentPosition
+        return PlayerManager.service!!.exoPlayer!!.currentPosition
     }
 
     private fun seekPlayer(position: Long) {
-        PlayerManager.getService().exoPlayer!!.seekTo(position)
+        PlayerManager.service!!.exoPlayer!!.seekTo(position)
     }
 
     @UiThread
