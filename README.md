@@ -2,6 +2,7 @@
 # Animize
 [![Build Status](https://travis-ci.com/rootdavinalfa/animize.svg?token=Upo4nw2yQwggpVyYTmWY&branch=animize-beta)](https://travis-ci.com/rootdavinalfa/animize)
 ![Check Animize CI](https://github.com/rootdavinalfa/animize/workflows/Check%20Animize%20CI/badge.svg)
+[![Build Status](https://rootdavinalfa.visualstudio.com/animize/_apis/build/status/rootdavinalfa.animize?branchName=animize-beta)](https://rootdavinalfa.visualstudio.com/animize/_build/latest?definitionId=3&branchName=animize-beta)
 
 Animize,is Application to streaming Anime online free without ads. Right now just served on Indonesia language.
 
