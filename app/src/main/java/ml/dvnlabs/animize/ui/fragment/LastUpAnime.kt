@@ -31,7 +31,7 @@ import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
 import ml.dvnlabs.animize.model.VideoListModel
 import ml.dvnlabs.animize.ui.activity.DashboardActivity
 import ml.dvnlabs.animize.ui.recyclerview.EndlessRecyclerScrollListener
-import ml.dvnlabs.animize.ui.recyclerview.list.video_list_adapter
+import ml.dvnlabs.animize.ui.recyclerview.list.VideoListAdapter
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -43,7 +43,7 @@ import java.util.*
 class LastUpAnime : Fragment(), View.OnClickListener {
     private var listView: RecyclerView? = null
     var modelData: ArrayList<VideoListModel>? = null
-    var adapter: video_list_adapter? = null
+    var adapter: VideoListAdapter? = null
     private var progressBar: AVLoadingIndicatorView? = null
     private var textload: TextView? = null
     var textErrorLoad: TextView? = null
@@ -189,7 +189,7 @@ class LastUpAnime : Fragment(), View.OnClickListener {
                 modelData!!.add(VideoListModel(url_tb, id, title_name, episode))
             }
             if (pageList == 1) {
-                adapter = video_list_adapter(modelData, activity, listView)
+                adapter = VideoListAdapter(modelData, requireActivity(), listView!!)
                 listView!!.adapter = adapter
             }
             Log.e("INFO COUNT ADAPT:", adapter!!.itemCount.toString())

@@ -6,9 +6,8 @@
  * This program used for watching anime without ads.
  *
  */
+package ml.dvnlabs.animize.ui.recyclerview.interfaces
 
-package ml.dvnlabs.animize.ui.recyclerview.interfaces;
-
-public interface OnLoadMoreListener {
-    void onLoadMore();
+interface OnLoadMoreListener {
+    fun onLoadMore()
 }

@@ -22,7 +22,7 @@ import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
 import ml.dvnlabs.animize.model.GenrePackageList
-import ml.dvnlabs.animize.ui.recyclerview.packagelist.genre_packagelist_adapter
+import ml.dvnlabs.animize.ui.recyclerview.packagelist.GenrePackageListAdapter
 import ml.dvnlabs.animize.view.AutoGridLayoutManager
 import org.json.JSONArray
 import org.json.JSONException
@@ -31,7 +31,7 @@ import java.util.*
 
 class MultiView : DialogFragment() {
     private var modeldatapackage: ArrayList<GenrePackageList>? = null
-    private var adapterlastpackage: genre_packagelist_adapter? = null
+    private var adapterlastpackage: GenrePackageListAdapter? = null
     private var LayoutManager: AutoGridLayoutManager? = null
     private var rv_listgenre: RecyclerView? = null
     private var genreloading: RelativeLayout? = null
@@ -96,7 +96,7 @@ class MultiView : DialogFragment() {
             }
             //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             LayoutManager = AutoGridLayoutManager(context, 500)
-            adapterlastpackage = genre_packagelist_adapter(modeldatapackage, activity, R.layout.rv_genrepackage)
+            adapterlastpackage = GenrePackageListAdapter(modeldatapackage, requireActivity(), R.layout.rv_genrepackage)
             rv_listgenre!!.layoutManager = LayoutManager
             rv_listgenre!!.adapter = adapterlastpackage
         } catch (e: JSONException) {

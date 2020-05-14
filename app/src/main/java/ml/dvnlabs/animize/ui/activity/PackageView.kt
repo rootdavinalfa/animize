@@ -54,7 +54,7 @@ import ml.dvnlabs.animize.model.PackageInfo
 import ml.dvnlabs.animize.model.PlaylistModel
 import ml.dvnlabs.animize.ui.activity.MainActivity.Companion.setWindowFlag
 import ml.dvnlabs.animize.ui.fragment.information.CoverView
-import ml.dvnlabs.animize.ui.recyclerview.packagelist.packagelist_adapter
+import ml.dvnlabs.animize.ui.recyclerview.packagelist.PackageListAdapter
 import ml.dvnlabs.animize.ui.recyclerview.staggered.package_metagenre_adapter
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
 import org.json.JSONArray
@@ -73,7 +73,7 @@ class PackageView : AppCompatActivity() {
     private var recentImg: ImageView? = null
     private var playlistModels: ArrayList<PlaylistModel>? = null
     private var modelinfo: ArrayList<PackageInfo>? = null
-    var adapter: packagelist_adapter? = null
+    var adapter: PackageListAdapter? = null
     private var listview: RecyclerView? = null
     private var genrelist: RecyclerView? = null
     private var synops: TextView? = null
@@ -429,7 +429,7 @@ class PackageView : AppCompatActivity() {
                 val pkg = `object`.getString("package_anim")
                 playlistModels!!.add(PlaylistModel(urlImg, title, episode, idAnim, pkg))
             }
-            adapter = packagelist_adapter(playlistModels, this, R.layout.package_playlist_view)
+            adapter = PackageListAdapter(playlistModels, this, R.layout.package_playlist_view)
             listview!!.adapter = adapter
         } catch (e: Exception) {
             e.printStackTrace()

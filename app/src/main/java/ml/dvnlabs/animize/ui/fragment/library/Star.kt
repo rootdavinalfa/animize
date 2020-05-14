@@ -24,14 +24,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.database.PackageStarDBHelper
-import ml.dvnlabs.animize.ui.recyclerview.packagelist.starlist_adapter
+import ml.dvnlabs.animize.ui.recyclerview.packagelist.StarListAdapter
 import ml.dvnlabs.animize.view.AutoGridLayoutManager
 
 class Star : Fragment() {
     private var packageStarDBHelper: PackageStarDBHelper? = null
     private var counter = 0
     private var rvStarred: RecyclerView? = null
-    private var adapter: starlist_adapter? = null
+    private var adapter: StarListAdapter? = null
     private var autoGridLayoutManager: AutoGridLayoutManager? = null
     private var voided: RelativeLayout? = null
     private var refreshLayout: SwipeRefreshLayout? = null
@@ -83,15 +83,17 @@ class Star : Fragment() {
     private suspend fun getStarredPackage(){
         withContext(Dispatchers.IO){
             val pa = packageStarDBHelper!!.starredList
-            if (!pa.isNullOrEmpty())
-                if (pa.isNotEmpty()) {
-                    autoGridLayoutManager = AutoGridLayoutManager(activity, 500)
-                    adapter = starlist_adapter(pa, activity, R.layout.rv_starredpackage)
-                    rvStarred!!.adapter = adapter
-                    rvStarred!!.layoutManager = autoGridLayoutManager
-                } else {
-                    voided!!.visibility = View.VISIBLE
-                }
+            withContext(Dispatchers.Main){
+                if (!pa.isNullOrEmpty())
+                    if (pa.isNotEmpty()) {
+                        autoGridLayoutManager = AutoGridLayoutManager(activity, 500)
+                        adapter = StarListAdapter(pa, requireContext(), R.layout.rv_starredpackage)
+                        rvStarred!!.adapter = adapter
+                        rvStarred!!.layoutManager = autoGridLayoutManager
+                    } else {
+                        voided!!.visibility = View.VISIBLE
+                    }
+            }
         }
     }
 }

@@ -22,7 +22,7 @@ import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
 import ml.dvnlabs.animize.model.PlaylistModel
-import ml.dvnlabs.animize.ui.recyclerview.list.playlist_adapter
+import ml.dvnlabs.animize.ui.recyclerview.list.PlayListAdapter
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -32,7 +32,7 @@ class PlaylistFragment : Fragment(){
     var mcontext : Context? = null
     val CODE_GET_REQUEST : Int = 1024
     private var playlist_models: ArrayList<PlaylistModel>? = null
-    var adapter: playlist_adapter?= null
+    var adapter: PlayListAdapter?= null
     private var listview: RecyclerView? = null
     var pkganim: String? = null;var id_anim:String? = null
 
@@ -86,13 +86,13 @@ class PlaylistFragment : Fragment(){
                 playlist_models!!.add(PlaylistModel(url_img, title, episode, id_an, pkg))
 
             }
-            adapter = playlist_adapter(playlist_models, activity, R.layout.playlist_view, id_anim)
+            adapter = PlayListAdapter(playlist_models!!, requireActivity(), R.layout.playlist_view, id_anim!!)
             listview!!.adapter = adapter
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-    fun receivedata(pkg: String, anim: String) {
+    fun receiveData(pkg: String, anim: String) {
         pkganim = pkg
         id_anim = anim
         getPlayList()

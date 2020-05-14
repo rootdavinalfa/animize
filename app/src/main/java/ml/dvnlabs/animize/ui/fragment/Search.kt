@@ -31,8 +31,8 @@ import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
 import ml.dvnlabs.animize.model.SearchListModel
 import ml.dvnlabs.animize.model.SearchListPackageModel
-import ml.dvnlabs.animize.ui.recyclerview.list.search_list_adapter
-import ml.dvnlabs.animize.ui.recyclerview.packagelist.search_package_adapter
+import ml.dvnlabs.animize.ui.recyclerview.list.SearchListAdapter
+import ml.dvnlabs.animize.ui.recyclerview.packagelist.SearchPackageAdapter
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -43,8 +43,8 @@ class Search : Fragment() {
     private var packview: DiscreteScrollView? = null
     private var modeldata: ArrayList<SearchListModel>? = null
     private var pack_models: ArrayList<SearchListPackageModel>? = null
-    private var adapter: search_list_adapter? = null
-    private var package_adapter: search_package_adapter? = null
+    private var adapter: SearchListAdapter? = null
+    private var package_adapter: SearchPackageAdapter? = null
     private var srch_txt: EditText? = null
     private var src_error: TextView? = null
     private var title_pack: TextView? = null
@@ -227,7 +227,7 @@ class Search : Fragment() {
                 val cover = jsonObject.getString("cover")
                 pack_models!!.add(SearchListPackageModel(pkgid, title, now, total, rating, cover))
             }
-            package_adapter = search_package_adapter(pack_models, activity, R.layout.rv_package_minimal)
+            package_adapter = SearchPackageAdapter(pack_models, requireActivity(), R.layout.rv_package_minimal)
             packview!!.adapter = package_adapter
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -246,7 +246,7 @@ class Search : Fragment() {
                 //Log.e("INF::",title_name);
                 modeldata!!.add(SearchListModel(url_tb, id, title_name, episode))
             }
-            adapter = search_list_adapter(modeldata, activity, R.layout.search_list_view)
+            adapter = SearchListAdapter(modeldata, requireActivity(), R.layout.search_list_view)
             val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(activity)
             listView!!.layoutManager = layoutManager
             listView!!.adapter = adapter

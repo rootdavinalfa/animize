@@ -30,7 +30,7 @@ import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
 import ml.dvnlabs.animize.model.APIUserModel
 import ml.dvnlabs.animize.model.CommentMainModel
-import ml.dvnlabs.animize.ui.recyclerview.comment.commentMain_adapter
+import ml.dvnlabs.animize.ui.recyclerview.comment.CommentMainAdapter
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -39,7 +39,7 @@ import java.util.*
 class MainComment : Fragment() {
     private var commentMainModels: ArrayList<CommentMainModel>? = null
     private var commentar: RecyclerView? = null
-    private var adapter: commentMain_adapter? = null
+    private var adapter: CommentMainAdapter? = null
     private var contain: LinearLayout? = null
     private var loads: RelativeLayout? = null
     private var commentedit: EditText? = null
@@ -111,7 +111,7 @@ class MainComment : Fragment() {
                 }
                 commentMainModels!!.add(CommentMainModel(ids, status, content, usermodels))
             }
-            adapter = commentMain_adapter(commentMainModels, context, R.layout.rv_comments)
+            adapter = CommentMainAdapter(commentMainModels, requireContext(), R.layout.rv_comments)
             val lnm = LinearLayoutManager(context)
             commentar!!.layoutManager = lnm
             commentar!!.adapter = adapter

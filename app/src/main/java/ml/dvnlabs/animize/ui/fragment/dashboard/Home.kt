@@ -30,9 +30,9 @@ import ml.dvnlabs.animize.model.BannerListMdl
 import ml.dvnlabs.animize.model.HomeLastUploadModel
 import ml.dvnlabs.animize.model.PackageList
 import ml.dvnlabs.animize.ui.activity.DashboardActivity
-import ml.dvnlabs.animize.ui.recyclerview.banner.banner_adapter
-import ml.dvnlabs.animize.ui.recyclerview.list.home_lastup_adapter
-import ml.dvnlabs.animize.ui.recyclerview.packagelist.lastpackage_adapter
+import ml.dvnlabs.animize.ui.recyclerview.banner.BannerAdapter
+import ml.dvnlabs.animize.ui.recyclerview.list.HomeLastUpAdapter
+import ml.dvnlabs.animize.ui.recyclerview.packagelist.LastPackageAdapter
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -52,9 +52,9 @@ class Home : Fragment() {
     private var bannerListModels: ArrayList<BannerListMdl>? = null
     private var bannerScrolling: Handler? = null
     private var bannerRunnable: Runnable? = null
-    private var adapterLastUp: home_lastup_adapter? = null
-    private var adapterlastpackage: lastpackage_adapter? = null
-    private var adapterBanner: banner_adapter? = null
+    private var adapterLastUp: HomeLastUpAdapter? = null
+    private var adapterlastpackage: LastPackageAdapter? = null
+    private var adapterBanner: BannerAdapter? = null
     private var linearLayoutManager: LinearLayoutManager? = null
     private var refreshHome: SwipeRefreshLayout? = null
     private var mContext: Context? = null
@@ -230,7 +230,7 @@ class Home : Fragment() {
                 val bannerTitle = `object`.getString("banner_title")
                 bannerListModels!!.add(BannerListMdl(bannerImage, bannerTitle, bannerUrl))
             }
-            adapterBanner = banner_adapter(bannerListModels, activity, R.layout.rv_banner)
+            adapterBanner = BannerAdapter(bannerListModels, requireActivity(), R.layout.rv_banner)
             rvBannerList!!.adapter = adapterBanner
 
             bannerScrolling = Handler()
@@ -276,7 +276,7 @@ class Home : Fragment() {
                 }
                 modeldatapackage!!.add(PackageList(packages, nameanim, nowep, totep, rate, mal, genres, cover))
             }
-            adapterlastpackage = lastpackage_adapter(modeldatapackage, activity, R.layout.rv_newanime)
+            adapterlastpackage = LastPackageAdapter(modeldatapackage, requireActivity(), R.layout.rv_newanime)
             rvLastPackage!!.adapter = adapterlastpackage
         } catch (e: JSONException) {
             Log.e("JSON ERROR:", e.toString())
@@ -295,7 +295,7 @@ class Home : Fragment() {
                 val episode = jsonObject.getString(Api.JSON_episode_anim)
                 modelDataLastUp!!.add(HomeLastUploadModel(url_tb, id, title_name, episode))
             }
-            adapterLastUp = home_lastup_adapter(modelDataLastUp, activity, R.layout.rv_newepisode)
+            adapterLastUp = HomeLastUpAdapter(modelDataLastUp, requireActivity(), R.layout.rv_newepisode)
             listViewLastUp!!.adapter = adapterLastUp
             listViewLastUp!!.setSlideOnFling(true)
             pageLastUp = listViewLastUp!!.currentItem

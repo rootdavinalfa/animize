@@ -28,12 +28,12 @@ import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
 import ml.dvnlabs.animize.model.StarredModel
 import ml.dvnlabs.animize.ui.activity.PackageView
-import ml.dvnlabs.animize.ui.recyclerview.interfaces.addingQueue
+import ml.dvnlabs.animize.ui.recyclerview.interfaces.AddingQueue
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-class StarlistHolder(context : Context, view: View,listener : addingQueue): RecyclerView.ViewHolder(view), View.OnClickListener {
+class StarListHolder(context : Context, view: View, listener : AddingQueue, private val sizePackageList : Int): RecyclerView.ViewHolder(view), View.OnClickListener {
     private val mContext = context
     private val episode: TextView = view.findViewById(R.id.star_episode)
     private val rate: TextView = view.findViewById(R.id.star_rate)
@@ -49,7 +49,7 @@ class StarlistHolder(context : Context, view: View,listener : addingQueue): Recy
     //private lateinit var listener : addingQueue
 
     private var starmodel : StarredModel? = null
-    private var ready  = starlist_adapter.readyStars
+    private var ready  = StarListAdapter.readyStars
 
     init {
         itemView.setOnClickListener(this)
@@ -62,13 +62,13 @@ class StarlistHolder(context : Context, view: View,listener : addingQueue): Recy
         //println(ready.size)
         if (ready.size != 0){
             for (i in ready){
-                if (i.pos == absoluteAdapterPosition && i.model != null) {
+                if (i.pos == absoluteAdapterPosition) {
                     //println("USE READY")
                     starmodel = i.model
                     copyData()
                 }
             }
-            if (ready.size < starlist_adapter.packagelists.size){
+            if (ready.size < sizePackageList){
                 makeRequest(pkgid!!)
             }
         }else{
@@ -80,7 +80,7 @@ class StarlistHolder(context : Context, view: View,listener : addingQueue): Recy
     private fun makeRequest(pkg : String){
         val url : String = Api.url_packageinfo+pkg
         APINetworkRequest(mContext,fetchPackage,url,1024,null)
-        listeners.addQueue(pkgid, absoluteAdapterPosition)
+        listeners.addQueue(pkgid!!, absoluteAdapterPosition)
     }
 
     private val fetchPackage : FetchDataListener = object : FetchDataListener{
@@ -102,9 +102,9 @@ class StarlistHolder(context : Context, view: View,listener : addingQueue): Recy
 
         override fun onFetchFailure(msg: String?) {
             val queue = listeners.queue
-            for (i in 0 until queue.size){
-                if (queue[i].pos == absoluteAdapterPosition) {
-                    makeRequest(queue[i].pkg)
+            for (i in 0 until queue!!.size){
+                if (queue[i]!!.pos == absoluteAdapterPosition) {
+                    makeRequest(queue[i]!!.pkg)
                 }
             }
         }
@@ -128,8 +128,8 @@ class StarlistHolder(context : Context, view: View,listener : addingQueue): Recy
                 val cover: String? = `object`.getString("cover")
                 starmodel = StarredModel(packages, nameanim!!, totep!!, rate!!, mal!!, cover!!)
             }
-            ready.add(starlist_adapter.readyStar(starmodel, absoluteAdapterPosition))
-            starlist_adapter.readyStars = ready
+            ready.add(StarListAdapter.readyStar(starmodel!!, absoluteAdapterPosition))
+            StarListAdapter.readyStars = ready
             copyData()
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -141,7 +141,7 @@ class StarlistHolder(context : Context, view: View,listener : addingQueue): Recy
             if (i.pos == absoluteAdapterPosition) {
                 val model = i.model
                 title.text = model.name
-                val ep_string: String = mContext.getString(R.string.list_view_episode) + model!!.total_ep
+                val ep_string: String = mContext.getString(R.string.list_view_episode) + model.total_ep
                 episode.text = ep_string
                 rate.text = model.rating
                 val mals = "MAL: " + model.mal
@@ -165,7 +165,6 @@ class StarlistHolder(context : Context, view: View,listener : addingQueue): Recy
             intent.putExtra("package", data!!.packageid)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             mContext.startActivity(intent)
-            ////Log.e("CLICK:",this.data.getPackageid());
         }
     }
 

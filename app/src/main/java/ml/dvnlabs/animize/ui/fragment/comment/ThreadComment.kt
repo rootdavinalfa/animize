@@ -30,7 +30,7 @@ import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
 import ml.dvnlabs.animize.model.APIUserModel
 import ml.dvnlabs.animize.model.CommentMainModel
 import ml.dvnlabs.animize.ui.activity.StreamActivity
-import ml.dvnlabs.animize.ui.recyclerview.comment.commentThread_adapter
+import ml.dvnlabs.animize.ui.recyclerview.comment.CommentThreadAdapter
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -43,7 +43,7 @@ class ThreadComment private constructor(models: ArrayList<CommentMainModel>, ida
     private var repliedmodel: ArrayList<CommentMainModel>? = null
     private var closebutton: ImageView? = null
     private var addsreply: ImageView? = null
-    private var adapter: commentThread_adapter? = null
+    private var adapter: CommentThreadAdapter? = null
     private var listreply: RecyclerView? = null
     private var replybox: EditText? = null
     private var pref: SharedPreferences? = null
@@ -124,7 +124,7 @@ class ThreadComment private constructor(models: ArrayList<CommentMainModel>, ida
                 }
                 repliedmodel!!.add(CommentMainModel(ids, status, content, usermodels))
             }
-            adapter = commentThread_adapter(repliedmodel, context, R.layout.rv_comments_thread)
+            adapter = CommentThreadAdapter(repliedmodel, requireContext(), R.layout.rv_comments_thread)
             val lnm = LinearLayoutManager(context)
             listreply!!.layoutManager = lnm
             listreply!!.adapter = adapter

@@ -25,13 +25,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.database.RecentPlayDBHelper
-import ml.dvnlabs.animize.ui.recyclerview.packagelist.recentlist_adapter
+import ml.dvnlabs.animize.ui.recyclerview.packagelist.RecentListAdapter
 
 class Recent : Fragment() {
     private var refreshLayout: SwipeRefreshLayout? = null
     private var rvList: RecyclerView? = null
     private var voidedLayout: RelativeLayout? = null
-    private var adapter: recentlist_adapter? = null
+    private var adapter: RecentListAdapter? = null
     private var recentPlayDBHelper: RecentPlayDBHelper? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -91,7 +91,7 @@ class Recent : Fragment() {
             if (!recentLands.isNullOrEmpty()){
                 withContext(Dispatchers.Main){
                     val layoutManager = LinearLayoutManager(activity)
-                    adapter = recentlist_adapter(recentLands, activity, R.layout.rv_recentview)
+                    adapter = RecentListAdapter(recentLands, requireActivity(), R.layout.rv_recentview)
                     rvList!!.layoutManager = layoutManager
                     rvList!!.adapter = adapter
                 }

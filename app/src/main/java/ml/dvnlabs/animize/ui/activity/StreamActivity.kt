@@ -488,7 +488,7 @@ class StreamActivity : AppCompatActivity() {
 
     private fun sendPKG(pkg: String, anim: String) {
         val f = supportFragmentManager.findFragmentById(R.id.playlist_fragment) as PlaylistFragment?
-        f!!.receivedata(pkg, anim)
+        f!!.receiveData(pkg, anim)
     }
 
     private fun playerConstant() {
