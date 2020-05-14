@@ -16,9 +16,5 @@
         android:id="@+id/nav_library"
         android:icon="@drawable/ic_library"
         android:title="Library"/>
-    <item
-        android:id="@+id/nav_feed"
-        android:icon="@drawable/ic_koinobori"
-        android:title="Feed"/>
 
 </menu>

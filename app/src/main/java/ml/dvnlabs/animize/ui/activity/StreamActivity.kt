@@ -52,8 +52,8 @@ import ml.dvnlabs.animize.model.CommentMainModel
 import ml.dvnlabs.animize.model.VideoPlayModel
 import ml.dvnlabs.animize.player.PlaybackStatus
 import ml.dvnlabs.animize.player.PlayerManager
-import ml.dvnlabs.animize.ui.fragment.comment.mainComment
-import ml.dvnlabs.animize.ui.fragment.comment.threadComment
+import ml.dvnlabs.animize.ui.fragment.comment.MainComment
+import ml.dvnlabs.animize.ui.fragment.comment.ThreadComment
 import ml.dvnlabs.animize.ui.fragment.tabs.animplay.PlaylistFragment
 import ml.dvnlabs.animize.view.VideoOnSwipeTouchListener
 import net.cachapa.expandablelayout.ExpandableLayout
@@ -173,7 +173,7 @@ class StreamActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val buttonFullscreen: Drawable?
         val imageView = findViewById<ImageView>(R.id.exo_fullscreen_icon)
-        val threadComment = supportFragmentManager.findFragmentByTag("COMMENT_THREAD") as threadComment?
+        val threadComment = supportFragmentManager.findFragmentByTag("COMMENT_THREAD") as ThreadComment?
         if (threadComment != null && threadComment.isVisible) {
             println("THREAD COMMENT UNVISIBLING")
             closeReplyFragment()
@@ -319,7 +319,7 @@ class StreamActivity : AppCompatActivity() {
 
         val fm = supportFragmentManager.beginTransaction().replace(R.id.playlist_fragment, PlaylistFragment())
         fm.commit()
-        val fm1 = supportFragmentManager.beginTransaction().replace(R.id.comment_fragment, mainComment())
+        val fm1 = supportFragmentManager.beginTransaction().replace(R.id.comment_fragment, MainComment())
         fm1.commit()
     }
 
@@ -424,7 +424,7 @@ class StreamActivity : AppCompatActivity() {
                 }
                 detailsTitle!!.text = nm
                 detailsGenre!!.text = sb.toString()
-                detailsEpisode!!.text = "${getString(R.string.episode_text)} ${epi}"
+                detailsEpisode!!.text = "${getString(R.string.episode_text)} $epi"
                 detailsIDAnim!!.text = idanim
                 detailsSynopsis!!.text = syi
                 Glide.with(this)
@@ -457,14 +457,14 @@ class StreamActivity : AppCompatActivity() {
     }
 
     private fun commentFragment(anim: String) {
-        val f = supportFragmentManager.findFragmentById(R.id.comment_fragment) as mainComment?
+        val f = supportFragmentManager.findFragmentById(R.id.comment_fragment) as MainComment?
         f!!.receiveData(anim)
     }
 
-    fun showReplyFragment(model: ArrayList<CommentMainModel?>?) {
+    fun showReplyFragment(model: ArrayList<CommentMainModel>?) {
         mainViewDetails!!.visibility = View.GONE
         mainViewMore!!.visibility = View.GONE
-        val se = threadComment.newInstance(model, idanim)
+        val se = ThreadComment.newInstance(model!!, idanim!!)
         supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.slide_up, R.anim.slide_down)
                 .replace(R.id.comment_fragment, se, "COMMENT_THREAD")
@@ -478,7 +478,7 @@ class StreamActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         // Check to see if the fragment is already showing.
         val simpleFragment = fragmentManager
-                .findFragmentById(R.id.comment_fragment) as threadComment?
+                .findFragmentById(R.id.comment_fragment) as ThreadComment?
         if (simpleFragment != null) {
             // Create and commit the transaction to remove the fragment.
             val fragmentTransaction = fragmentManager.beginTransaction()

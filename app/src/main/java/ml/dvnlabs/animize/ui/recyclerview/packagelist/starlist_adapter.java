@@ -20,20 +20,20 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import ml.dvnlabs.animize.database.model.starland;
+import ml.dvnlabs.animize.database.model.StarLand;
 import ml.dvnlabs.animize.model.StarredModel;
 import ml.dvnlabs.animize.ui.recyclerview.interfaces.addingQueue;
 
 public class starlist_adapter extends RecyclerView.Adapter<StarlistHolder> implements addingQueue {
     private Context mcontext;
-    public static ArrayList<starland> packagelists;
+    public static ArrayList<StarLand> packagelists;
     private ArrayList<requestQueue> queue;
     private int itemResor;
 
     //
     public static ArrayList<readyStar> readyStars = new ArrayList<>();
 
-    public starlist_adapter(ArrayList<starland>data, Context context, int itemResource){
+    public starlist_adapter(ArrayList<StarLand>data, Context context, int itemResource){
         this.mcontext = context;
         this.itemResor = itemResource;
         packagelists = data;
@@ -53,7 +53,7 @@ public class starlist_adapter extends RecyclerView.Adapter<StarlistHolder> imple
     public void onBindViewHolder(StarlistHolder holder,int position){
         holder.setIsRecyclable(false);
         //System.out.println("CDATA:POS:"+position+":PKG:"+this.packagelists.get(position).getPackageid());
-        starland slm = packagelists.get(holder.getAdapterPosition());
+        StarLand slm = packagelists.get(holder.getAdapterPosition());
         holder.bindPlaylist(slm);
     }
     @Override

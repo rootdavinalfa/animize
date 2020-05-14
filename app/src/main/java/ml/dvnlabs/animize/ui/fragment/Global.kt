@@ -14,9 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import ml.dvnlabs.animize.R
 
-public class global{
+class Global{
     companion object{
-        public fun addFragment(fragmentManager: FragmentManager,fragment: Fragment,id: Int ,name: String,anim_res: String){
+        fun addFragment(fragmentManager: FragmentManager,fragment: Fragment,id: Int ,name: String,anim_res: String){
             //val newBackStackLength = fragmentManager.backStackEntryCount + 1
             var anim_enter = 0
             var anim_exit = 0

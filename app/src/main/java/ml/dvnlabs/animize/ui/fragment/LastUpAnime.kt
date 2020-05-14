@@ -18,6 +18,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -93,10 +94,10 @@ class LastUpAnime : Fragment(), View.OnClickListener {
             }, 2000) // Delay in millis
         }
         swipeList!!.setColorSchemeColors(
-                resources.getColor(android.R.color.holo_blue_bright),
-                resources.getColor(android.R.color.holo_green_light),
-                resources.getColor(android.R.color.holo_orange_light),
-                resources.getColor(android.R.color.holo_red_light)
+                ContextCompat.getColor(requireContext(),android.R.color.holo_blue_bright),
+                ContextCompat.getColor(requireContext(),android.R.color.holo_green_light),
+                ContextCompat.getColor(requireContext(),android.R.color.holo_orange_light),
+                ContextCompat.getColor(requireContext(),android.R.color.holo_red_light)
         )
         return view
     }

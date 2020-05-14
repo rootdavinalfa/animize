@@ -29,14 +29,14 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import ml.dvnlabs.animize.R;
-import ml.dvnlabs.animize.database.model.recentland;
+import ml.dvnlabs.animize.database.model.RecentLand;
 import ml.dvnlabs.animize.ui.activity.StreamActivity;
 
 public class recentlist_holder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView friendlytime,name,episode,lasttime,playedon;
     private ImageView cover;
 
-    private recentland recs;
+    private RecentLand recs;
     private Context context;
 
     public  recentlist_holder(Context context, View view){
@@ -50,7 +50,7 @@ public class recentlist_holder extends RecyclerView.ViewHolder implements View.O
         this.playedon = view.findViewById(R.id.recentlist_playedon);
         itemView.setOnClickListener(this);
     }
-    public void bind_recent(recentland rec){
+    public void bind_recent(RecentLand rec){
         this.recs = rec;
         Date date_modified = new Date(rec.getModified());
         Date time_player = new Date(rec.getTimestamp());
@@ -103,7 +103,7 @@ public class recentlist_holder extends RecyclerView.ViewHolder implements View.O
 
         this.friendlytime.setText(friendly);
         this.playedon.setText(played);
-        this.name.setText(rec.getPackage_name());
+        this.name.setText(rec.getPackageName());
         this.lasttime.setText(format_playtime);
 
         String episodee = "Episode: "+rec.getEpisode();
@@ -112,7 +112,7 @@ public class recentlist_holder extends RecyclerView.ViewHolder implements View.O
                 .applyDefaultRequestOptions(new RequestOptions()
                         .placeholder(R.drawable.ic_picture)
                         .error(R.drawable.ic_picture))
-                .load(recs.getUrl_cover())
+                .load(recs.getUrlCover())
                 .transition(new DrawableTransitionOptions()
                         .crossFade()).apply(new RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.ALL).override(424,600)).into(cover);

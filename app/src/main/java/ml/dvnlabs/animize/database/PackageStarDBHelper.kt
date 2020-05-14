@@ -14,11 +14,11 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import ml.dvnlabs.animize.database.model.starland
+import ml.dvnlabs.animize.database.model.StarLand
 import java.util.*
 
 class PackageStarDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-    private var model: ArrayList<starland>? = null
+    private var model: ArrayList<StarLand>? = null
 
     // Creating Tables
     override fun onCreate(db: SQLiteDatabase) {
@@ -42,28 +42,28 @@ class PackageStarDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABAS
         try {
             val values = ContentValues()
             //INSERT ALL DATA
-            values.put(starland.col_package_id, packageid)
+            values.put(StarLand.col_package_id, packageid)
             println("INSERTED: $packageid")
             //long id_db = db.insert(userland.table_name,null,values);
-            db.insert(starland.table_name, null, values)
+            db.insert(StarLand.table_name, null, values)
             db.close()
         } catch (e: SQLiteException) {
-            Log.e("Error Add: ", e.message)
+            Log.e("Error Add: ", e.message!!)
         }
     }
 
     //Function to show list to library
-    val starredList: ArrayList<starland>?
+    val starredList: ArrayList<StarLand>?
         get() {
             try {
                 model = ArrayList()
-                val selectquery = "SELECT * FROM " + starland.table_name + " ORDER BY " + starland.col_indexlist + " DESC"
+                val selectquery = "SELECT * FROM " + StarLand.table_name + " ORDER BY " + StarLand.col_indexlist + " DESC"
                 val db = this.readableDatabase
                 val cursor = db.rawQuery(selectquery, null)
                 if (cursor != null && cursor.moveToFirst()) {
                     while (!cursor.isAfterLast) {
-                        val packageid = cursor.getString(cursor.getColumnIndex(starland.col_package_id))
-                        model!!.add(starland(packageid))
+                        val packageid = cursor.getString(cursor.getColumnIndex(StarLand.col_package_id))
+                        model!!.add(StarLand(packageid))
                         cursor.moveToNext()
                     }
                     cursor.close()
@@ -80,7 +80,7 @@ class PackageStarDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABAS
     fun unStar(packageID: String) {
         try {
             val db = this.writableDatabase
-            db.delete(starland.table_name, starland.col_package_id + "= '" + packageID + "'", null)
+            db.delete(StarLand.table_name, StarLand.col_package_id + "= '" + packageID + "'", null)
             db.close()
         } catch (e: SQLiteException) {
             Log.e("Error Delete: ", e.message!!)
@@ -90,7 +90,7 @@ class PackageStarDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABAS
     //Check if package starred
     fun isStarred(packageid: String): Boolean {
         try {
-            val countQuery = "SELECT  * FROM " + starland.table_name + " WHERE " + starland.col_package_id + " = '" + packageid + "'"
+            val countQuery = "SELECT  * FROM " + StarLand.table_name + " WHERE " + StarLand.col_package_id + " = '" + packageid + "'"
             val db = this.readableDatabase
             val cursor = db.rawQuery(countQuery, null)
             val count = cursor.count
@@ -110,7 +110,7 @@ class PackageStarDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABAS
     val isAvail: Boolean
         get() {
             try {
-                val countQuery = "SELECT  * FROM " + starland.table_name
+                val countQuery = "SELECT  * FROM " + StarLand.table_name
                 val db = this.readableDatabase
                 val cursor = db.rawQuery(countQuery, null)
                 val count = cursor.count

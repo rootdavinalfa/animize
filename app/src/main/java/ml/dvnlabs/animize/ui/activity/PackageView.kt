@@ -475,14 +475,14 @@ class PackageView : AppCompatActivity() {
             val recentLand = recentPlayDBHelper!!.readRecentOnPackage(pkganim!!)
             withContext(Dispatchers.Main){
                 recentContainer!!.visibility = View.VISIBLE
-                recentTitle!!.text = recentLand!!.package_name
+                recentTitle!!.text = recentLand!!.packageName
                 val ep = "Episode: " + recentLand.episode
                 recentEpisode!!.text = ep
                 Glide.with(baseContext)
                         .applyDefaultRequestOptions(RequestOptions()
                                 .placeholder(R.drawable.ic_picture)
                                 .error(R.drawable.ic_picture))
-                        .load(recentLand.url_cover).transform(RoundedCornersTransformation(10, 0))
+                        .load(recentLand.urlCover).transform(RoundedCornersTransformation(10, 0))
                         .transition(DrawableTransitionOptions()
                                 .crossFade()).apply(RequestOptions()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL).override(424, 600)).into(object : CustomTarget<Drawable?>() {

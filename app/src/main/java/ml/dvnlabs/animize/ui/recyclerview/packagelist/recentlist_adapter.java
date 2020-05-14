@@ -18,15 +18,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import ml.dvnlabs.animize.database.model.recentland;
+import ml.dvnlabs.animize.database.model.RecentLand;
 
 public class recentlist_adapter extends RecyclerView.Adapter<recentlist_holder> {
     private Context mcontext;
-    private ArrayList<recentland> recentlands;
+    private ArrayList<RecentLand> recentLands;
     private int itemResor;
-    public recentlist_adapter(ArrayList<recentland> data, Context context,int itemResource){
+    public recentlist_adapter(ArrayList<RecentLand> data, Context context, int itemResource){
         this.mcontext = context;
-        this.recentlands = data;
+        this.recentLands = data;
         this.itemResor = itemResource;
     }
     @Override
@@ -38,17 +38,17 @@ public class recentlist_adapter extends RecyclerView.Adapter<recentlist_holder> 
 
     @Override
     public void onBindViewHolder(recentlist_holder holder,int position){
-        recentland slm = this.recentlands.get(position);
+        RecentLand slm = this.recentLands.get(position);
         holder.bind_recent(slm);
 
     }
     @Override
     public int getItemCount(){
         //Log.e("SIZE:",String.valueOf(video_data.size()));
-        if(recentlands == null){
+        if(recentLands == null){
             return 0;
         }else{
-            return recentlands.size();
+            return recentLands.size();
         }
 
     }

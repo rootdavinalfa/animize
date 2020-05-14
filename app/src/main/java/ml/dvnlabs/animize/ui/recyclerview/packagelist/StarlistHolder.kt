@@ -22,7 +22,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.facebook.shimmer.ShimmerFrameLayout
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.model.starland
+import ml.dvnlabs.animize.database.model.StarLand
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
@@ -41,7 +41,7 @@ class StarlistHolder(context : Context, view: View,listener : addingQueue): Recy
     private val title: TextView = view.findViewById(R.id.star_name)
     private val thumbnail: ImageView = view.findViewById(R.id.star_cover)
 
-    private var data: starland? = null
+    private var data: StarLand? = null
     private val loading: ShimmerFrameLayout = view.findViewById(R.id.rv_shimmer_recent)
     private val recent_layout: LinearLayout = view.findViewById(R.id.rv_item_recent)
     private var pkgid : String? = null
@@ -55,7 +55,7 @@ class StarlistHolder(context : Context, view: View,listener : addingQueue): Recy
         itemView.setOnClickListener(this)
     }
 
-    fun bindPlaylist(model : starland){
+    fun bindPlaylist(model : StarLand){
         println(ready.size)
         data = model
         pkgid = data!!.packageid
@@ -89,14 +89,14 @@ class StarlistHolder(context : Context, view: View,listener : addingQueue): Recy
             loading.visibility= View.GONE
             recent_layout.visibility = View.VISIBLE
             try {
-                val objects = JSONObject(data!!);
+                val objects = JSONObject(data!!)
                 if (!objects.getBoolean("error")){
                     listeners.removeQueue(absoluteAdapterPosition)
 
                     addToArrayPackage(objects.getJSONArray("anim"))
                 }
             }catch (e : JSONException){
-                e.printStackTrace();
+                e.printStackTrace()
             }
         }
 

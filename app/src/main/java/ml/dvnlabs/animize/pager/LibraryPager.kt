@@ -13,9 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.ui.fragment.library_n.Download
-import ml.dvnlabs.animize.ui.fragment.library_n.Recent
-import ml.dvnlabs.animize.ui.fragment.library_n.Star
+import ml.dvnlabs.animize.ui.fragment.library.Recent
+import ml.dvnlabs.animize.ui.fragment.library.Star
 
 class LibraryPager(fm: FragmentManager?, private val numOfTabss: Int, private val mContext: Context) : FragmentPagerAdapter(fm!!, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getCount(): Int {
@@ -26,7 +25,6 @@ class LibraryPager(fm: FragmentManager?, private val numOfTabss: Int, private va
         return when (position) {
             0 -> Star()
             1 -> Recent()
-            2 -> Download()
             else -> Star()
         }
     }
@@ -35,7 +33,6 @@ class LibraryPager(fm: FragmentManager?, private val numOfTabss: Int, private va
         when (position) {
             0 -> return mContext.getString(R.string.tab_star)
             1 -> return mContext.getString(R.string.tab_recent)
-            2 -> return mContext.getString(R.string.tab_download)
         }
         return super.getPageTitle(position)
     }

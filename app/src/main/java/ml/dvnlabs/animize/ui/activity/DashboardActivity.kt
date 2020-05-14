@@ -21,6 +21,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -37,10 +38,10 @@ import ml.dvnlabs.animize.checker.CheckNetwork
 import ml.dvnlabs.animize.checker.CheckNetwork.ConnectivityReceiverListener
 import ml.dvnlabs.animize.database.InitInternalDBHelper
 import ml.dvnlabs.animize.pager.DashboardPager
+import ml.dvnlabs.animize.ui.fragment.Global.Companion.addFragment
 import ml.dvnlabs.animize.ui.fragment.LastUpAnime
 import ml.dvnlabs.animize.ui.fragment.Library
 import ml.dvnlabs.animize.ui.fragment.Search
-import ml.dvnlabs.animize.ui.fragment.global.Companion.addFragment
 import ml.dvnlabs.animize.ui.fragment.popup.ProfilePop
 
 class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
@@ -72,7 +73,7 @@ class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
         NetworkChecker = CheckNetwork()
         registerReceiver(NetworkChecker, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
         bottomNavigationLogic()
-        dash_serach_btn!!.setOnClickListener { display_search() }
+        dash_serach_btn!!.setOnClickListener { displaySearch() }
     }
 
     //inetCheck for check on fragment
@@ -100,7 +101,7 @@ class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
                 //hm.getLastPackage();
             }.setActionTextColor(color)
             val sbView = snackbar.view
-            sbView.setBackgroundColor(resources.getColor(R.color.design_default_color_error))
+            sbView.setBackgroundColor(ContextCompat.getColor(this,R.color.design_default_color_error))
             val textView = sbView.findViewById<View>(R.id.snackbar_text) as TextView
             textView.setTextColor(color)
             snackbar.show()
@@ -124,13 +125,13 @@ class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
             }
         }.setActionTextColor(color)
         val sbView = snackBar.view
-        sbView.setBackgroundColor(resources.getColor(R.color.design_default_color_error))
+        sbView.setBackgroundColor(ContextCompat.getColor(this,R.color.design_default_color_error))
         val textView = sbView.findViewById<View>(R.id.snackbar_text) as TextView
         textView.setTextColor(color)
         snackBar.show()
     }
 
-    fun initializes() {
+    private fun initializes() {
         header_layout = findViewById<View>(R.id.header) as LinearLayout
 
         //Set pager and tab
@@ -161,9 +162,9 @@ class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
         AppController.instance?.setConnectivityListener(this)
         if (bottomNavigationView!!.menu.getItem(1).isChecked) {
             //display_library();
-            close_home()
+            closeHome()
         } else {
-            display_home()
+            displayHome()
         }
     }
 
@@ -173,9 +174,6 @@ class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
     }
 
     override fun onBackPressed() {
-        //header.setVisibility(View.VISIBLE);
-        //int count = getSupportFragmentManager().getBackStackEntryCount()-1;
-        //Log.e("COUNTED-:",String.valueOf(count));
         if (isHome) {
             val startMain = Intent(Intent.ACTION_MAIN)
             startMain.addCategory(Intent.CATEGORY_HOME)
@@ -185,7 +183,7 @@ class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
             //additional code
         } else {
             bottomNavigationView!!.menu.getItem(0).isChecked = true
-            display_home()
+            displayHome()
         }
     }
 
@@ -193,43 +191,42 @@ class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
         bottomNavigationView!!.setOnNavigationItemSelectedListener(BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    display_home()
+                    displayHome()
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.nav_library -> {
-                    close_home()
+                    closeHome()
                     display_library()
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.nav_feed -> return@OnNavigationItemSelectedListener true
             }
             false
         })
     }
 
-    fun display_home() {
+    private fun displayHome() {
         isHome = true
-        close_search()
+        closeSearch()
         close_library()
         close_lastup()
         dash_pager!!.visibility = View.VISIBLE
         header_layout!!.visibility = View.VISIBLE
     }
 
-    fun close_home() {
+    private fun closeHome() {
         isHome = false
         dash_pager!!.visibility = View.GONE
         header_layout!!.visibility = View.GONE
     }
 
-    fun display_search() {
-        close_home()
+    private fun displaySearch() {
+        closeHome()
         close_library()
         val se = Search.newInstance()
         addFragment(supportFragmentManager, se, R.id.search_fragment, "FRAGMENT_OTHER", "SLIDE")
     }
 
-    fun close_search() {
+    private fun closeSearch() {
         // Get the FragmentManager.
         val fragmentManager = supportFragmentManager
         // Check to see if the fragment is already showing.
@@ -242,13 +239,13 @@ class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
         }
     }
 
-    fun display_lastup() {
-        close_home()
+    fun displayLastup() {
+        closeHome()
         val se = LastUpAnime.newInstance()
         addFragment(supportFragmentManager, se, R.id.video_list_fragment, "FRAGMENT_OTHER", "SLIDE")
     }
 
-    fun close_lastup() {
+    private fun close_lastup() {
         // Get the FragmentManager.
         val fragmentManager = supportFragmentManager
         // Check to see if the fragment is already showing.
@@ -262,8 +259,8 @@ class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
     }
 
     fun display_library() {
-        close_home()
-        close_search()
+        closeHome()
+        closeSearch()
         close_lastup()
         val se = Library()
         addFragment(supportFragmentManager, se, R.id.library_fragment, "FRAGMENT_OTHER", "NULL")

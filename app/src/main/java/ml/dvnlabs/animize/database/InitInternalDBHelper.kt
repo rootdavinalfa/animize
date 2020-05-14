@@ -13,33 +13,33 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
-import ml.dvnlabs.animize.database.model.recentland
-import ml.dvnlabs.animize.database.model.starland
-import ml.dvnlabs.animize.database.model.userland
+import ml.dvnlabs.animize.database.model.RecentLand
+import ml.dvnlabs.animize.database.model.StarLand
+import ml.dvnlabs.animize.database.model.UserLand
 import java.util.*
 
 class InitInternalDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-    private val model: ArrayList<starland>? = null
+    private val model: ArrayList<StarLand>? = null
 
     // Creating Tables
     override fun onCreate(db: SQLiteDatabase) {
 
         // create notes table
-        db.execSQL(userland.CREATE_TABLE)
-        db.execSQL(starland.CREATE_TABLE)
-        db.execSQL(recentland.CREATE_TABLE)
+        db.execSQL(UserLand.CREATE_TABLE)
+        db.execSQL(StarLand.CREATE_TABLE)
+        db.execSQL(RecentLand.CREATE_TABLE)
     }
 
     // Upgrading database
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         if (oldVersion < 2) {
             if (checkTableNotExist(db, "star_package")) {
-                db.execSQL(starland.CREATE_TABLE)
+                db.execSQL(StarLand.CREATE_TABLE)
             }
         }
         if (oldVersion < 3) {
-            if (checkTableNotExist(db, recentland.table_name)) {
-                db.execSQL(recentland.CREATE_TABLE)
+            if (checkTableNotExist(db, RecentLand.table_name)) {
+                db.execSQL(RecentLand.CREATE_TABLE)
             }
         }
 
@@ -60,13 +60,13 @@ class InitInternalDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABA
             val db = this.writableDatabase
             val values = ContentValues()
             //INSERT ALL DATA
-            values.put(userland.col_id_user, idus)
-            values.put(userland.col_name_user, nameus)
-            values.put(userland.col_email, ema)
-            values.put(userland.col_access_token, token)
+            values.put(UserLand.col_id_user, idus)
+            values.put(UserLand.col_name_user, nameus)
+            values.put(UserLand.col_email, ema)
+            values.put(UserLand.col_access_token, token)
 
             //long id_db = db.insert(userland.table_name,null,values);
-            db.insert(userland.table_name, null, values)
+            db.insert(UserLand.table_name, null, values)
             db.close()
         } catch (e: SQLiteException) {
             e.printStackTrace()
@@ -78,7 +78,7 @@ class InitInternalDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABA
     fun signOut(): String? {
         try {
             val db = this.writableDatabase
-            db.delete(userland.table_name, null, null)
+            db.delete(UserLand.table_name, null, null)
             val status = "signout"
             db.close()
             deleteStarred()
@@ -92,7 +92,7 @@ class InitInternalDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABA
     fun deleteStarred(): String? {
         try {
             val db = this.writableDatabase
-            db.delete(starland.table_name, null, null)
+            db.delete(StarLand.table_name, null, null)
             val status = "deleted"
             db.close()
             return status
@@ -102,21 +102,21 @@ class InitInternalDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABA
         return null
     }
 
-    val user: userland?
+    val user: UserLand?
         get() {
             try {
-                val selectquery = "SELECT * FROM " + userland.table_name + " "
+                val selectquery = "SELECT * FROM " + UserLand.table_name + " "
                 val db = this.readableDatabase
                 val cursor = db.rawQuery(selectquery, null)
 
                 //if(cursor!=null)
                 //cursor.moveToFirst();
-                val userlandd = userland()
+                val userlandd = UserLand()
                 if (cursor != null && cursor.moveToFirst()) {
-                    userlandd.email = cursor.getString(cursor.getColumnIndex(userland.col_email))
-                    userlandd.idUser = cursor.getString(cursor.getColumnIndex(userland.col_id_user))
-                    userlandd.nameUser = cursor.getString(cursor.getColumnIndex(userland.col_name_user))
-                    userlandd.token = cursor.getString(cursor.getColumnIndex(userland.col_access_token))
+                    userlandd.email = cursor.getString(cursor.getColumnIndex(UserLand.col_email))
+                    userlandd.idUser = cursor.getString(cursor.getColumnIndex(UserLand.col_id_user))
+                    userlandd.nameUser = cursor.getString(cursor.getColumnIndex(UserLand.col_name_user))
+                    userlandd.token = cursor.getString(cursor.getColumnIndex(UserLand.col_access_token))
                     cursor.close()
                 }
                 db.close()
@@ -131,7 +131,7 @@ class InitInternalDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABA
     val userCount: Boolean
         get() {
             try {
-                val countQuery = "SELECT  * FROM " + userland.table_name
+                val countQuery = "SELECT  * FROM " + UserLand.table_name
                 val db = this.readableDatabase
                 val cursor = db.rawQuery(countQuery, null)
                 val count = cursor.count
