@@ -55,7 +55,7 @@ import ml.dvnlabs.animize.model.PlaylistModel
 import ml.dvnlabs.animize.ui.activity.MainActivity.Companion.setWindowFlag
 import ml.dvnlabs.animize.ui.fragment.information.CoverView
 import ml.dvnlabs.animize.ui.recyclerview.packagelist.PackageListAdapter
-import ml.dvnlabs.animize.ui.recyclerview.staggered.package_metagenre_adapter
+import ml.dvnlabs.animize.ui.recyclerview.staggered.PackageMetaGenreAdapter
 import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
 import org.json.JSONArray
 import org.json.JSONException
@@ -361,7 +361,7 @@ class PackageView : AppCompatActivity() {
             }
             collapsingToolbarLayout!!.title = modelinfo!![0].getName()
             synops!!.text = modelinfo!![0].synopsis
-            val adapterGenre = package_metagenre_adapter(modelinfo!![0].genre, this, R.layout.rv_staggered)
+            val adapterGenre = PackageMetaGenreAdapter(modelinfo!![0].genre, this, R.layout.rv_staggered)
             val spanStaggered = if (adapterGenre.itemCount < 7) 1 else 2
             val layoutManager = StaggeredGridLayoutManager(spanStaggered, StaggeredGridLayoutManager.HORIZONTAL)
             genrelist!!.layoutManager = layoutManager

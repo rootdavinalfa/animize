@@ -28,8 +28,8 @@ import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
 import ml.dvnlabs.animize.model.MetaGenreModel
 import ml.dvnlabs.animize.pager.MultiTabPager
-import ml.dvnlabs.animize.ui.recyclerview.staggered.metagenre_adapter
-import ml.dvnlabs.animize.ui.recyclerview.staggered.metagenre_holder.gotopage_genre
+import ml.dvnlabs.animize.ui.recyclerview.staggered.MetaGenreAdapter
+import ml.dvnlabs.animize.ui.recyclerview.staggered.MetaGenreHolder.GotoPageGenre
 import net.cachapa.expandablelayout.ExpandableLayout
 import org.json.JSONArray
 import org.json.JSONException
@@ -43,7 +43,7 @@ class Genre : Fragment() {
     private var loading: LinearLayout? = null
     private var expand_meta: ExpandableLayout? = null
     private var rv_meta: RecyclerView? = null
-    private var metagenre_adapter: metagenre_adapter? = null
+    private var metagenre_adapter: MetaGenreAdapter? = null
     private var staggeredLayout: StaggeredGridLayoutManager? = null
     private var btn_expand: ImageView? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -74,7 +74,7 @@ class Genre : Fragment() {
     private fun getPageTitle() {
         metagenre_models = ArrayList()
         val url = Api.url_genremeta
-        APINetworkRequest(requireContext(), fetchgenre, url, CODE_GET_REQUEST, null)
+        APINetworkRequest(requireContext(), fetchGenre, url, CODE_GET_REQUEST, null)
     }
 
     private fun initializeTab() {
@@ -85,7 +85,7 @@ class Genre : Fragment() {
         pager!!.adapter = adapter
         pager!!.addOnPageChangeListener(TabLayoutOnPageChangeListener(tabLayout))
         staggeredLayout = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.HORIZONTAL)
-        metagenre_adapter = metagenre_adapter(metagenre_models, activity, R.layout.rv_staggered, gotopage_genre)
+        metagenre_adapter = MetaGenreAdapter(metagenre_models, requireActivity(), R.layout.rv_staggered, gotoPageGenre)
         rv_meta!!.layoutManager = staggeredLayout
         rv_meta!!.adapter = metagenre_adapter
     }
@@ -104,8 +104,12 @@ class Genre : Fragment() {
         }
     }
 
-    var gotopage_genre = gotopage_genre { page -> gotoPagers(page) }
-    var fetchgenre: FetchDataListener = object : FetchDataListener {
+    var gotoPageGenre = object : GotoPageGenre {
+        override fun gotoPager(page: Int) {
+            gotoPagers(page)
+        }
+    }
+    private var fetchGenre: FetchDataListener = object : FetchDataListener {
         override fun onFetchComplete(data: String?) {
             loading!!.visibility = View.GONE
             try {

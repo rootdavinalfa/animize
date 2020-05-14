@@ -25,7 +25,6 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.model.HomeLastUploadModel
 import ml.dvnlabs.animize.ui.activity.StreamActivity
-import ml.dvnlabs.animize.ui.recyclerview.lastup_listener
 
 class HomeLastUpHolder(private val context: Context, view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
     var title: TextView
@@ -33,7 +32,6 @@ class HomeLastUpHolder(private val context: Context, view: View) : RecyclerView.
 
     //ImageView img_src;
     var container: MaterialCardView
-    var listener: lastup_listener? = null
     private var model: HomeLastUploadModel? = null
     fun bindLastUp(plm: HomeLastUploadModel?) {
         model = plm
