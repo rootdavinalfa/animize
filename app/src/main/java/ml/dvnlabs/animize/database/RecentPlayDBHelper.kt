@@ -139,9 +139,10 @@ class RecentPlayDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE
                     cursor.moveToNext()
                 }
                 cursor.close()
+                db.close()
+                return rec
             }
-            db.close()
-            return rec
+            return null
         } catch (e: SQLiteException) {
             Log.e("Error get: ", e.message!!)
         }

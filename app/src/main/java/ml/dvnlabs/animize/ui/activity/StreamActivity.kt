@@ -581,7 +581,6 @@ class StreamActivity : AppCompatActivity() {
                 //super.onCounting(count);
             }
         })
-        playerView!!.useArtwork = true
         playerView!!.defaultArtwork = resources.getDrawable(R.drawable.ic_astronaut, null)
         playerView!!.player = PlayerManager.service!!.exoPlayer
         Glide.with(this).applyDefaultRequestOptions(RequestOptions()
@@ -693,12 +692,14 @@ class StreamActivity : AppCompatActivity() {
     private fun readRecent() {
         GlobalScope.run {
             val recent = recentPlayDBHelper!!.readRecent(idanim!!)
+            var seeker : Long = 0
             if (recent != null) {
                 if (getCurrentPlayTime() < recent.timestamp) {
-                    seekPlayer(recent.timestamp)
+                    seeker = recent.timestamp
                 }
-                updateRecent()
             }
+            seekPlayer(seeker)
+            updateRecent()
         }
     }
 
