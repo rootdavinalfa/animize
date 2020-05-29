@@ -38,8 +38,7 @@ class MultiView : DialogFragment() {
 
     var genre: String? = null
     override fun onDetach() {
-        val queue = RequestQueueVolley(requireActivity())
-        queue.clearRequest()
+        RequestQueueVolley.getInstance(requireActivity())!!.clearRequest()
         super.onDetach()
     }
 

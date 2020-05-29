@@ -381,8 +381,7 @@ class Dashboard : Fragment() {
         if (bannerScrolling != null) {
             bannerScrolling!!.removeCallbacks(bannerRunnable!!)
         }
-        val queue = RequestQueueVolley(requireContext())
-        queue.clearRequest()
+        RequestQueueVolley.getInstance(requireContext())!!.clearRequest()
         super.onPause()
     }
 }

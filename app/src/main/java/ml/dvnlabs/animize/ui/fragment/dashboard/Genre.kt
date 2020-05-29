@@ -49,8 +49,7 @@ class Genre : Fragment() {
     }
 
     override fun onPause() {
-        val queue = RequestQueueVolley(requireContext())
-        queue.clearRequest()
+        RequestQueueVolley.getInstance(requireContext())!!.clearRequest()
         super.onPause()
     }
 

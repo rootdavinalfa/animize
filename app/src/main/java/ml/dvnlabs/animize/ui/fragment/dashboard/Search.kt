@@ -28,6 +28,7 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.RequestQueueVolley
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
 import ml.dvnlabs.animize.model.SearchListModel
 import ml.dvnlabs.animize.model.SearchListPackageModel
@@ -72,6 +73,11 @@ class Search : Fragment() {
         searchTextListener()
         // Inflate the layout for this fragment
         return view
+    }
+
+    override fun onPause() {
+        RequestQueueVolley.getInstance(requireActivity())!!.clearRequest()
+        super.onPause()
     }
 
     private fun initHandler() {

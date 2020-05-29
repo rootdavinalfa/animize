@@ -21,6 +21,7 @@ import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.databinding.FragmentLastPackageBinding
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.RequestQueueVolley
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
 import ml.dvnlabs.animize.model.PackageList
 import ml.dvnlabs.animize.ui.recyclerview.EndlessRecyclerScrollListener
@@ -54,6 +55,11 @@ class LastPackageAnime : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         layoutManager = LinearLayoutManager(requireContext())
         lastAnimeRequest
+    }
+
+    override fun onPause() {
+        RequestQueueVolley.getInstance(requireActivity())!!.clearRequest()
+        super.onPause()
     }
 
     private val lastAnimeRequest: Unit
