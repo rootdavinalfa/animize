@@ -8,19 +8,10 @@
  */
 package ml.dvnlabs.animize.database.model
 
-class UserLand {
-    var idUser: String? = null
-    var token: String? = null
-    var nameUser: String? = null
-    var email: String? = null
-
-    constructor() {}
-    constructor(id_user: String?, name_user: String?, email: String?, tokeen: String?) {
-        this.email = email
-        idUser = id_user
-        nameUser = name_user
-        token = tokeen
-    }
+class UserLand(id_user: String?, name_user: String?, var email: String?, tokeen: String?) {
+    var idUser: String? = id_user
+    var token: String? = tokeen
+    var nameUser: String? = name_user
 
     companion object {
         const val table_name = "userland"

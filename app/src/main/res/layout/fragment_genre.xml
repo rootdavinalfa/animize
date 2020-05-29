@@ -10,6 +10,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
 
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
@@ -44,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <com.google.android.material.tabs.TabLayout
+                android:background="@color/colorPrimaryDark"
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/genre_tabshow"
                 android:id="@+id/genre_tablayout"
@@ -90,9 +92,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/genre_rv_meta_staggered"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    </androidx.recyclerview.widget.RecyclerView>
+                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
             </net.cachapa.expandablelayout.ExpandableLayout>

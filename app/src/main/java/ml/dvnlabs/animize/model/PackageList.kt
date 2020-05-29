@@ -8,7 +8,7 @@
  */
 package ml.dvnlabs.animize.model
 
-class PackageList(val pack: String, private val name: String, val now: String, val tot: String, val rate: String, val mal: String, var genre: List<String>, val coverUrl: String) {
+class PackageList(val pack: String, private val name: String, val now: String, val tot: String, val rate: String, val mal: String, var genre: List<String>?, val coverUrl: String) {
 
     fun getName(): String {
         return name

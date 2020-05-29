@@ -14,61 +14,51 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener
 import ml.dvnlabs.animize.R
+import ml.dvnlabs.animize.databinding.FragmentGenreBinding
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.RequestQueueVolley
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
 import ml.dvnlabs.animize.model.MetaGenreModel
-import ml.dvnlabs.animize.pager.MultiTabPager
+import ml.dvnlabs.animize.ui.pager.MultiTabPager
 import ml.dvnlabs.animize.ui.recyclerview.staggered.MetaGenreAdapter
 import ml.dvnlabs.animize.ui.recyclerview.staggered.MetaGenreHolder.GotoPageGenre
-import net.cachapa.expandablelayout.ExpandableLayout
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
 
 class Genre : Fragment() {
-    private var tabLayout: TabLayout? = null
-    private var pager: ViewPager? = null
+    private var binding : FragmentGenreBinding? = null
     private var metagenre_models: ArrayList<MetaGenreModel>? = null
-    private var loading: LinearLayout? = null
-    private var expand_meta: ExpandableLayout? = null
-    private var rv_meta: RecyclerView? = null
     private var metagenre_adapter: MetaGenreAdapter? = null
-    private var staggeredLayout: StaggeredGridLayoutManager? = null
-    private var btn_expand: ImageView? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_genre, container, false)
-        tabLayout = view.findViewById(R.id.genre_tablayout)
-        tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
-        pager = view.findViewById(R.id.genre_viewpager)
-        loading = view.findViewById(R.id.genre_title_load)
-        rv_meta = view.findViewById(R.id.genre_rv_meta_staggered)
-        expand_meta = view.findViewById(R.id.genre_meta_container)
-        btn_expand = view.findViewById(R.id.genre_tabshow)
-        btn_expand!!.setOnClickListener {
-            expand_meta!!.toggle()
-            val deg = if (btn_expand!!.rotation == 180f) 0f else 180f
-            btn_expand!!.animate().rotation(deg).interpolator = AccelerateDecelerateInterpolator()
+        inflater.inflate(R.layout.fragment_genre, container, false)
+        binding = FragmentGenreBinding.inflate(inflater)
+        binding!!.genreTabshow.setOnClickListener {
+            binding!!.genreMetaContainer.toggle()
+            val deg = if (binding!!.genreTabshow.rotation == 180f) 0f else 180f
+            binding!!.genreTabshow.animate().rotation(deg).interpolator = AccelerateDecelerateInterpolator()
         }
         getPageTitle()
-        return view
+        return binding!!.root
+    }
+
+    override fun onPause() {
+        val queue = RequestQueueVolley(requireContext())
+        queue.clearRequest()
+        super.onPause()
     }
 
     private fun gotoPagers(page: Int) {
-        pager!!.setCurrentItem(page, true)
-        expand_meta!!.toggle()
-        val deg = if (btn_expand!!.rotation == 180f) 0f else 180f
-        btn_expand!!.animate().rotation(deg).interpolator = AccelerateDecelerateInterpolator()
+        binding!!.genreViewpager.setCurrentItem(page, true)
+        binding!!.genreMetaContainer.toggle()
+        val deg = if (binding!!.genreTabshow.rotation == 180f) 0f else 180f
+        binding!!.genreTabshow.animate().rotation(deg).interpolator = AccelerateDecelerateInterpolator()
     }
 
     private fun getPageTitle() {
@@ -79,15 +69,16 @@ class Genre : Fragment() {
 
     private fun initializeTab() {
         Log.e("INITIALIZE", "CHECK!")
-        tabLayout!!.setupWithViewPager(pager)
+        binding!!.genreTablayout.setupWithViewPager(binding!!.genreViewpager)
         //num is number of tabs,pagetitle is List<>;
-        val adapter = MultiTabPager(childFragmentManager, metagenre_models!!.size, metagenre_models!!)
-        pager!!.adapter = adapter
-        pager!!.addOnPageChangeListener(TabLayoutOnPageChangeListener(tabLayout))
-        staggeredLayout = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.HORIZONTAL)
+        val adapter = MultiTabPager(requireActivity().supportFragmentManager, metagenre_models!!.size, metagenre_models!!)
+        binding!!.genreViewpager.adapter = adapter
+        binding!!.genreViewpager.addOnPageChangeListener(TabLayoutOnPageChangeListener(binding!!.genreTablayout))
+        val staggeredLayout = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+        staggeredLayout.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
         metagenre_adapter = MetaGenreAdapter(metagenre_models, requireActivity(), R.layout.rv_staggered, gotoPageGenre)
-        rv_meta!!.layoutManager = staggeredLayout
-        rv_meta!!.adapter = metagenre_adapter
+        binding!!.genreRvMetaStaggered.layoutManager = staggeredLayout
+        binding!!.genreRvMetaStaggered.adapter = metagenre_adapter!!
     }
 
     private fun setTabTitle(titles: JSONArray) {
@@ -111,7 +102,7 @@ class Genre : Fragment() {
     }
     private var fetchGenre: FetchDataListener = object : FetchDataListener {
         override fun onFetchComplete(data: String?) {
-            loading!!.visibility = View.GONE
+            binding!!.genreTitleLoad.visibility = View.GONE
             try {
                 val `object` = JSONObject(data!!)
                 if (!`object`.getBoolean("error")) {
@@ -123,12 +114,12 @@ class Genre : Fragment() {
         }
 
         override fun onFetchFailure(msg: String?) {
-            loading!!.visibility = View.GONE
+            binding!!.genreTitleLoad.visibility = View.GONE
             Log.e("ERROR:", msg!!)
         }
 
         override fun onFetchStart() {
-            loading!!.visibility = View.VISIBLE
+            binding!!.genreTitleLoad.visibility = View.VISIBLE
         }
     }
 

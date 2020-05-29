@@ -30,7 +30,7 @@ import ml.dvnlabs.animize.database.InitInternalDBHelper
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
-import ml.dvnlabs.animize.ui.fragment.inter.Register
+import ml.dvnlabs.animize.ui.fragment.Register
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.indeterminateProgressDialog
 import org.json.JSONException
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             initViews()
         } else {
             println("OnCREATE DB")
-            val intent = Intent(this@MainActivity, DashboardActivity::class.java)
+            val intent = Intent(this@MainActivity, AnimizeActivity::class.java)
             startActivity(intent)
         }
     }
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.Main) {
             initInternalDBHelper!!.insertUser(tokeen, id, email, name)
         }
-        val intent = Intent(this, DashboardActivity::class.java)
+        val intent = Intent(this, AnimizeActivity::class.java)
         startActivity(intent)
     }
 

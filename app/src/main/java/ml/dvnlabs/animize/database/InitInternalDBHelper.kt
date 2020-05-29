@@ -71,8 +71,6 @@ class InitInternalDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABA
         } catch (e: SQLiteException) {
             e.printStackTrace()
         }
-
-        //return id_db;
     }
 
     fun signOut(): String? {
@@ -89,7 +87,7 @@ class InitInternalDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABA
         return null
     }
 
-    fun deleteStarred(): String? {
+    private fun deleteStarred(): String? {
         try {
             val db = this.writableDatabase
             db.delete(StarLand.table_name, null, null)
@@ -105,22 +103,23 @@ class InitInternalDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABA
     val user: UserLand?
         get() {
             try {
-                val selectquery = "SELECT * FROM " + UserLand.table_name + " "
+                val selectQuery = "SELECT * FROM " + UserLand.table_name + " "
                 val db = this.readableDatabase
-                val cursor = db.rawQuery(selectquery, null)
+                val cursor = db.rawQuery(selectQuery, null)
 
                 //if(cursor!=null)
                 //cursor.moveToFirst();
-                val userlandd = UserLand()
+                var userland : UserLand? = null
                 if (cursor != null && cursor.moveToFirst()) {
-                    userlandd.email = cursor.getString(cursor.getColumnIndex(UserLand.col_email))
-                    userlandd.idUser = cursor.getString(cursor.getColumnIndex(UserLand.col_id_user))
-                    userlandd.nameUser = cursor.getString(cursor.getColumnIndex(UserLand.col_name_user))
-                    userlandd.token = cursor.getString(cursor.getColumnIndex(UserLand.col_access_token))
+                    val email = cursor.getString(cursor.getColumnIndex(UserLand.col_email))
+                    val idUser = cursor.getString(cursor.getColumnIndex(UserLand.col_id_user))
+                    val nameUser = cursor.getString(cursor.getColumnIndex(UserLand.col_name_user))
+                    val token = cursor.getString(cursor.getColumnIndex(UserLand.col_access_token))
+                    userland = UserLand(idUser,nameUser,email,token)
                     cursor.close()
                 }
                 db.close()
-                return userlandd
+                return userland
             } catch (e: SQLiteException) {
                 e.printStackTrace()
             }

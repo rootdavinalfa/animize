@@ -94,6 +94,16 @@
                 android:value="ml.dvnlabs.animize.ui.activity.MainActivity" />
         </activity>
         <activity
+            android:name="ml.dvnlabs.animize.ui.activity.AnimizeActivity"
+            android:configChanges="orientation|keyboard"
+            android:label="@string/app_name"
+            android:parentActivityName="ml.dvnlabs.animize.ui.activity.MainActivity"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ml.dvnlabs.animize.ui.activity.MainActivity" />
+        </activity>
+        <activity
             android:name="ml.dvnlabs.animize.ui.activity.settings"
             android:configChanges="orientation|keyboard"
             android:label="Animize Settings"

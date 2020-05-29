@@ -31,12 +31,9 @@ class VideoListAdapter(private val video_data: ArrayList<VideoListModel>?, priva
     private val VIEW_TYPE_ITEM = 0
     private val VIEW_TYPE_LOADING = 1
     override fun getItemViewType(position: Int): Int {
-        val viewtype: Int
-        viewtype = if (video_data!![position].idn == null) {
-            //log.e("LOADINGggg:","OK");
+        val viewtype: Int = if (video_data!![position].idn == null) {
             VIEW_TYPE_LOADING
         } else {
-            //log.e("LOADINGggg:","OK");
             VIEW_TYPE_ITEM
         }
         return viewtype
@@ -51,7 +48,7 @@ class VideoListAdapter(private val video_data: ArrayList<VideoListModel>?, priva
             //log.e("DATA:","OK");
             val view = LayoutInflater.from(parent.context).inflate(R.layout.video_list_view, parent, false)
             VideoListHolder(mcontext, view)
-        } else{
+        } else {
             //log.e("LOADING:","OK");
             val view = LayoutInflater.from(parent.context).inflate(R.layout.video_list_view_load, parent, false)
             LoadingViewHolder(view)
@@ -87,43 +84,9 @@ class VideoListAdapter(private val video_data: ArrayList<VideoListModel>?, priva
     }
 
     private inner class LoadingViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val frame: ShimmerFrameLayout
-
-        init {
-            frame = view.findViewById<View>(R.id.shimmer_lastup) as ShimmerFrameLayout
-        }
-    } /*
-    @Override
-    public video_list_holder onCreateViewHolder(ViewGroup parent,int viewType){
-        View view = LayoutInflater.from(parent.getContext()).inflate(this.itemResor,parent,false);
-        return new video_list_holder(this.mcontext,view);
+        val frame: ShimmerFrameLayout = view.findViewById<View>(R.id.shimmer_lastup) as ShimmerFrameLayout
 
     }
-
-    @Override
-    public void onBindViewHolder(video_list_holder holder,int position){
-        video_list_model vlm = this.video_data.get(position);
-        holder.bindvideo_list(vlm);
-
-    }
-    @Override
-    public int getItemCount(){
-        ////log.e("SIZE:",String.valueOf(video_data.size()));
-        if(video_data == null){
-            return 0;
-        }else{
-            return video_data.size();
-        }
-
-    }
-    @Override
-    public long getItemId(int position){
-        return position;
-    }
-    @Override
-    public int getItemViewType(int position){
-        return position;
-    }*/
 
     init {
         //super(context, R.layout.video_list_view,data);

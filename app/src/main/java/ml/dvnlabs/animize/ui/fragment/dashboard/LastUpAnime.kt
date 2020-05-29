@@ -7,7 +7,7 @@
  *
  */
 
-package ml.dvnlabs.animize.ui.fragment
+package ml.dvnlabs.animize.ui.fragment.dashboard
 
 import android.os.Bundle
 import android.os.Handler
@@ -15,16 +15,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.wang.avi.AVLoadingIndicatorView
 import ml.dvnlabs.animize.R
+import ml.dvnlabs.animize.databinding.FragmentLastupListBinding
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
@@ -41,59 +36,48 @@ import java.util.*
  * A simple [Fragment] subclass.
  */
 class LastUpAnime : Fragment(), View.OnClickListener {
-    private var listView: RecyclerView? = null
     var modelData: ArrayList<VideoListModel>? = null
     var adapter: VideoListAdapter? = null
-    private var progressBar: AVLoadingIndicatorView? = null
-    private var textload: TextView? = null
-    var textErrorLoad: TextView? = null
-    var buttonRetry: Button? = null
-    var ivError: ImageView? = null
-    private var swipeList: SwipeRefreshLayout? = null
     private var pageList = 1
     private var handler: Handler? = null
     private var isRefreshing = false
     private var layoutManager: LinearLayoutManager? = null
+
+    private var binding : FragmentLastupListBinding? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         handler = Handler()
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_lastup_list, container, false)
-        listView = view.findViewById<View>(R.id.PlayVideoList) as RecyclerView
-        swipeList = view.findViewById<View>(R.id.swipe_container) as SwipeRefreshLayout
-        buttonRetry = view.findViewById<View>(R.id.loading_retry) as Button
-        progressBar = view.findViewById<View>(R.id.progressBar) as AVLoadingIndicatorView
-        textload = view.findViewById<View>(R.id.loading_text) as TextView
-        textErrorLoad = view.findViewById<View>(R.id.loading_errortxt) as TextView
-        ivError = view.findViewById<View>(R.id.error_image) as ImageView
-        ivError!!.visibility = View.GONE
-        textErrorLoad!!.visibility = View.GONE
-        buttonRetry!!.visibility = View.GONE
-        buttonRetry!!.setOnClickListener(this)
+        binding = FragmentLastupListBinding.bind(view)
+
+        binding!!.errorImage.visibility = View.GONE
+        binding!!.loadingErrortxt.visibility = View.GONE
+        binding!!.loadingRetry.visibility = View.GONE
+        binding!!.loadingRetry.setOnClickListener(this)
         layoutManager = LinearLayoutManager(activity)
-        val a = "INIT"
-        Log.e("INF", a)
+
         //Call initialize like init array()
         initialize()
         getList()
-        swipeList!!.setOnRefreshListener {
+        binding!!.swipeContainer.setOnRefreshListener {
             isRefreshing = true
 
             modelData!!.clear()
             pageList = 1
             getList()
 
-            buttonRetry!!.visibility = View.GONE
-            textErrorLoad!!.visibility = View.GONE
-            ivError!!.visibility = View.GONE
+            binding!!.loadingRetry.visibility = View.GONE
+            binding!!.loadingErrortxt.visibility = View.GONE
+            binding!!.errorImage.visibility = View.GONE
 
             // To keep animateView for 4 seconds
             Handler().postDelayed({ // Stop animateView (This will be after 3 seconds)
-                swipeList!!.isRefreshing = false
+                binding!!.swipeContainer.isRefreshing = false
                 pageList += 1
             }, 2000) // Delay in millis
         }
-        swipeList!!.setColorSchemeColors(
+        binding!!.swipeContainer.setColorSchemeColors(
                 ContextCompat.getColor(requireContext(),android.R.color.holo_blue_bright),
                 ContextCompat.getColor(requireContext(),android.R.color.holo_green_light),
                 ContextCompat.getColor(requireContext(),android.R.color.holo_orange_light),
@@ -133,16 +117,16 @@ class LastUpAnime : Fragment(), View.OnClickListener {
             val `object` = JSONObject(data)
             if (!`object`.getBoolean("error")) {
                 showVideo(`object`.getJSONArray("anim"))
-                ivError!!.visibility = View.GONE
-                buttonRetry!!.visibility = View.GONE
-                textErrorLoad!!.visibility = View.GONE
+                binding!!.errorImage.visibility = View.GONE
+                binding!!.loadingRetry.visibility = View.GONE
+                binding!!.loadingErrortxt.visibility = View.GONE
             }
             if (`object`.getBoolean("error") && `object`.getString("message") == "page not found") {
                 pageList = 1
                 println("ALL DATA CAUGHT UP!")
-                ivError!!.visibility = View.GONE
-                buttonRetry!!.visibility = View.GONE
-                textErrorLoad!!.visibility = View.GONE
+                binding!!.errorImage.visibility = View.GONE
+                binding!!.loadingRetry.visibility = View.GONE
+                binding!!.loadingErrortxt.visibility = View.GONE
             }
         } catch (e: JSONException) {
             Log.e("JSONE", e.message!!)
@@ -156,9 +140,9 @@ class LastUpAnime : Fragment(), View.OnClickListener {
 
         override fun onFetchFailure(msg: String?) {
             (activity as DashboardActivity?)!!.snackError(msg!!, 1)
-            ivError!!.visibility = View.VISIBLE
-            textErrorLoad!!.visibility = View.VISIBLE
-            buttonRetry!!.visibility = View.VISIBLE
+            binding!!.errorImage.visibility = View.VISIBLE
+            binding!!.loadingRetry.visibility = View.VISIBLE
+            binding!!.loadingErrortxt.visibility = View.VISIBLE
         }
 
         override fun onFetchStart() {
@@ -166,14 +150,14 @@ class LastUpAnime : Fragment(), View.OnClickListener {
     }
 
     private fun retryLoad() {
-        ivError!!.visibility = View.GONE
-        textErrorLoad!!.visibility = View.GONE
+        binding!!.errorImage.visibility = View.GONE
+        binding!!.loadingErrortxt.visibility = View.GONE
         getList()
     }
 
     private fun showVideo(video: JSONArray) {
-        listView!!.layoutManager = layoutManager
-        listView!!.visibility = View.VISIBLE
+        binding!!.PlayVideoList.layoutManager = layoutManager
+        binding!!.PlayVideoList.visibility = View.VISIBLE
 
         //recyclerViewState = layoutManager.onSaveInstanceState();
         if (pageList == 1) {
@@ -189,13 +173,13 @@ class LastUpAnime : Fragment(), View.OnClickListener {
                 modelData!!.add(VideoListModel(url_tb, id, title_name, episode))
             }
             if (pageList == 1) {
-                adapter = VideoListAdapter(modelData, requireActivity(), listView!!)
-                listView!!.adapter = adapter
+                adapter = VideoListAdapter(modelData, requireActivity(), binding!!.PlayVideoList)
+                binding!!.PlayVideoList.adapter = adapter
             }
             Log.e("INFO COUNT ADAPT:", adapter!!.itemCount.toString())
             if (pageList > 1) {
                 adapter!!.notifyItemChanged(0, adapter!!.itemCount)
-                listView!!.invalidate()
+                binding!!.PlayVideoList.invalidate()
             }
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -213,7 +197,7 @@ class LastUpAnime : Fragment(), View.OnClickListener {
     }
 
     private fun onItemScrolled() {
-        listView!!.addOnScrollListener(object : EndlessRecyclerScrollListener(layoutManager!!) {
+        binding!!.PlayVideoList.addOnScrollListener(object : EndlessRecyclerScrollListener(layoutManager!!) {
             override fun onLoadMore(current_page: Int) {
                 modelData!!.add(VideoListModel(null, null, null, null))
                 adapter!!.notifyDataSetChanged()

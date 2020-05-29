@@ -11,6 +11,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     tools:context=".ui.fragment.library.Star">
 
     <RelativeLayout
@@ -33,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxWidth="200dp"
-            android:textColor="@color/secondaryTextColor"
+            android:textColor="@color/OverWhite"
             android:text="No Star From Divine,Please Add One!"/>
     </RelativeLayout>
 

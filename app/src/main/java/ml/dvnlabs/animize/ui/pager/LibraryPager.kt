@@ -6,7 +6,7 @@
  * This program used for watching anime without ads.
  *
  */
-package ml.dvnlabs.animize.pager
+package ml.dvnlabs.animize.ui.pager
 
 import android.content.Context
 import androidx.fragment.app.Fragment

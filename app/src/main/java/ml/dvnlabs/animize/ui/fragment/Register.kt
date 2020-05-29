@@ -7,7 +7,7 @@
  *
  */
 
-package ml.dvnlabs.animize.ui.fragment.inter
+package ml.dvnlabs.animize.ui.fragment
 
 import android.annotation.SuppressLint
 import android.app.Dialog

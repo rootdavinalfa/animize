@@ -15,7 +15,6 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
@@ -24,7 +23,9 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.android.material.card.MaterialCardView
 import jp.wasabeef.glide.transformations.BlurTransformation
+import jp.wasabeef.glide.transformations.ColorFilterTransformation
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.model.PackageList
@@ -33,30 +34,19 @@ import java.util.*
 
 class LastPackageHolder(private val mContext: Context, view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
     private var genres: List<String> = ArrayList()
-    private val rate: TextView
-    private val mal: TextView
-    private val ep: TextView
-    private val name: TextView
-    private val genre: TextView
-    private val cover: ImageView
+    private val rate: TextView = view.findViewById(R.id.package_rate)
+    private val mal: TextView = view.findViewById(R.id.package_mal)
+    private val ep: TextView = view.findViewById(R.id.package_episode)
+    private val name: TextView = view.findViewById(R.id.package_name)
+    private val cover: ImageView = view.findViewById(R.id.package_cover)
     private var data: PackageList? = null
-    private val container: CardView
+    private val container: MaterialCardView = view.findViewById(R.id.rv_lastpackage_container)
     fun binding(data: PackageList) {
         this.data = data
         rate.text = data.rate
         val ep_string = data.now + " " + mContext.getString(R.string.string_of) + " " + data.tot
         ep.text = ep_string
-        genres = data.genre
-        val sb = StringBuilder()
-        for (counter in genres.indices) {
-            sb.append(genres[counter])
-            if (genres.size - 1 > counter) {
-                sb.append(",")
-            }
-        }
-        val genree = sb.toString()
         name.text = data.getName()
-        genre.text = genree
         val mals = "MAL: " + data.mal
         mal.text = mals
         Glide.with(mContext)
@@ -68,7 +58,7 @@ class LastPackageHolder(private val mContext: Context, view: View) : RecyclerVie
                         .crossFade()).apply(RequestOptions()
                         .diskCacheStrategy(DiskCacheStrategy.ALL).override(424, 600)).into(cover)
         val multi = MultiTransformation(
-                BlurTransformation(40), RoundedCornersTransformation(5, 0)
+                BlurTransformation(40), RoundedCornersTransformation(5, 0), ColorFilterTransformation(R.color.blacktrans2)
         )
         Glide.with(mContext)
                 .applyDefaultRequestOptions(RequestOptions()
@@ -99,13 +89,6 @@ class LastPackageHolder(private val mContext: Context, view: View) : RecyclerVie
     }
 
     init {
-        rate = view.findViewById(R.id.package_rate)
-        ep = view.findViewById(R.id.package_episode)
-        name = view.findViewById(R.id.package_name)
-        genre = view.findViewById(R.id.package_genre)
-        mal = view.findViewById(R.id.package_mal)
-        cover = view.findViewById(R.id.package_cover)
-        container = view.findViewById(R.id.rv_lastpackage_container)
         itemView.setOnClickListener(this)
     }
 }

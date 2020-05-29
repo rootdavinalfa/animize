@@ -7,7 +7,7 @@
  *
  */
 
-package ml.dvnlabs.animize.pager
+package ml.dvnlabs.animize.ui.pager
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

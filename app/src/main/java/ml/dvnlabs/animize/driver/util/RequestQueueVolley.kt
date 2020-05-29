@@ -10,6 +10,7 @@
 package ml.dvnlabs.animize.driver.util
 
 import android.content.Context
+import android.util.Log
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.RequestQueue
@@ -41,6 +42,7 @@ class RequestQueueVolley(private val mContext: Context) {
     }
 
     fun clearRequest() {
+        Log.i("RequestQueue:: ","Clearing request")
         requestQueue!!.cancelAll("NewReq")
     }
 

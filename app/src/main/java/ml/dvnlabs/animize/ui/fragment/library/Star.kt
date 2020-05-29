@@ -84,15 +84,14 @@ class Star : Fragment() {
         withContext(Dispatchers.IO){
             val pa = packageStarDBHelper!!.starredList
             withContext(Dispatchers.Main){
-                if (!pa.isNullOrEmpty())
-                    if (pa.isNotEmpty()) {
-                        autoGridLayoutManager = AutoGridLayoutManager(activity, 500)
-                        adapter = StarListAdapter(pa, requireContext(), R.layout.rv_starredpackage)
-                        rvStarred!!.adapter = adapter
-                        rvStarred!!.layoutManager = autoGridLayoutManager
-                    } else {
-                        voided!!.visibility = View.VISIBLE
-                    }
+                if (pa!!.isNotEmpty()) {
+                    autoGridLayoutManager = AutoGridLayoutManager(activity, 500)
+                    adapter = StarListAdapter(pa, requireContext(), R.layout.rv_starredpackage)
+                    rvStarred!!.adapter = adapter
+                    rvStarred!!.layoutManager = autoGridLayoutManager
+                } else {
+                    voided!!.visibility = View.VISIBLE
+                }
             }
         }
     }

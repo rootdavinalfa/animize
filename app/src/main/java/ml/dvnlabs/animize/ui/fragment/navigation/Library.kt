@@ -7,7 +7,7 @@
  *
  */
 
-package ml.dvnlabs.animize.ui.fragment
+package ml.dvnlabs.animize.ui.fragment.navigation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.pager.LibraryPager
+import ml.dvnlabs.animize.ui.pager.LibraryPager
 
 class Library : Fragment() {
     private var tabLayout: TabLayout? = null

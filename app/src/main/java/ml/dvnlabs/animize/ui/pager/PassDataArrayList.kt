@@ -6,7 +6,7 @@
  * This program used for watching anime without ads.
  *
  */
-package ml.dvnlabs.animize.pager
+package ml.dvnlabs.animize.ui.pager
 
 import ml.dvnlabs.animize.model.VideoPlayModel
 import java.util.*

@@ -37,12 +37,12 @@ import ml.dvnlabs.animize.base.BaseActivity
 import ml.dvnlabs.animize.checker.CheckNetwork
 import ml.dvnlabs.animize.checker.CheckNetwork.ConnectivityReceiverListener
 import ml.dvnlabs.animize.database.InitInternalDBHelper
-import ml.dvnlabs.animize.pager.DashboardPager
 import ml.dvnlabs.animize.ui.fragment.Global.Companion.addFragment
-import ml.dvnlabs.animize.ui.fragment.LastUpAnime
-import ml.dvnlabs.animize.ui.fragment.Library
-import ml.dvnlabs.animize.ui.fragment.Search
+import ml.dvnlabs.animize.ui.fragment.dashboard.LastUpAnime
+import ml.dvnlabs.animize.ui.fragment.dashboard.Search
+import ml.dvnlabs.animize.ui.fragment.navigation.Library
 import ml.dvnlabs.animize.ui.fragment.popup.ProfilePop
+import ml.dvnlabs.animize.ui.pager.DashboardPager
 
 class DashboardActivity : BaseActivity(), ConnectivityReceiverListener {
     private val receiver: BroadcastReceiver? = null

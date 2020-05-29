@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020.
+  ~ Animize Devs
+  ~ Copyright 2019 - 2020
+  ~ Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+  ~ This program used for watching anime without ads.
+  ~
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_dashboard"
+    app:startDestination="@id/dashboard">
+
+    <fragment
+        android:id="@+id/dashboard"
+        android:name="ml.dvnlabs.animize.ui.fragment.navigation.Dashboard"
+        android:label="Dashboard" >
+        <action
+            android:id="@+id/action_dashboard_to_genre"
+            app:destination="@id/genre"
+            app:popUpTo="@id/dashboard" />
+        <action
+            android:id="@+id/action_dashboard_to_search"
+            app:destination="@id/search"
+            app:enterAnim="@android:anim/fade_in"
+            app:popUpTo="@id/dashboard" />
+        <action
+            android:id="@+id/action_dashboard_to_lastUpAnime"
+            app:destination="@id/lastUpAnime"
+            app:popUpTo="@id/dashboard" />
+        <action
+            android:id="@+id/action_dashboard_to_lastPackageAnime"
+            app:destination="@id/lastPackageAnime"
+            app:popUpTo="@id/dashboard" />
+    </fragment>
+    <fragment
+        android:id="@+id/genre"
+        android:name="ml.dvnlabs.animize.ui.fragment.dashboard.Genre"
+        android:label="@string/nav_genre_txt" />
+    <fragment
+        android:id="@+id/search"
+        android:name="ml.dvnlabs.animize.ui.fragment.dashboard.Search"
+        android:label="@string/search_anime"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/lastUpAnime"
+        android:name="ml.dvnlabs.animize.ui.fragment.dashboard.LastUpAnime"
+        android:label="@string/last_uploaded_txt"
+        tools:layout="@layout/fragment_lastup_list" />
+    <fragment
+        android:id="@+id/lastPackageAnime"
+        android:name="ml.dvnlabs.animize.ui.fragment.dashboard.LastPackageAnime"
+        android:label="@string/last_package" />
+</navigation>

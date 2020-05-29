@@ -34,7 +34,7 @@
     <string name="search_not_provided">Silahkan masukkan katakunci</string>
     <string name="home_see_more">Lihat Lagi</string>
     <string name="last_uploaded_txt">New Episode</string>
-    <string name="nav_home_txt">Home</string>
+    <string name="nav_home_txt">Dashboard</string>
     <string name="nav_genre_txt">Genre</string>
     <string name="nav_anime_txt">Anime</string>
     <string name="pager_title_details">Details</string>

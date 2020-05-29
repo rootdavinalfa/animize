@@ -7,7 +7,7 @@
  *
  */
 
-package ml.dvnlabs.animize.ui.fragment
+package ml.dvnlabs.animize.ui.fragment.dashboard
 
 import android.content.Context
 import android.os.Bundle

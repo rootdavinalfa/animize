@@ -11,31 +11,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     tools:context=".ui.fragment.library.Recent">
 
     <RelativeLayout
         android:id="@+id/recent_void"
-        android:layout_centerInParent="true"
         android:layout_width="200dp"
-        android:layout_height="200dp">
+        android:layout_height="200dp"
+        android:layout_centerInParent="true">
 
         <ImageView
-            android:layout_centerHorizontal="true"
             android:id="@+id/starred_nulled"
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/ic_nulled"
             android:tint="@color/primaryDarkColor" />
 
         <TextView
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:layout_below="@+id/starred_nulled"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/starred_nulled"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:maxWidth="200dp"
-            android:textColor="@color/secondaryTextColor"
-            android:text="No Recent Watch One Anime!"/>
+            android:text="No Recent Watch One Anime!"
+            android:textColor="@color/OverWhite" />
     </RelativeLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -47,6 +48,6 @@
             android:id="@+id/recent_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/rv_recentview"/>
+            tools:listitem="@layout/rv_recentview" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>

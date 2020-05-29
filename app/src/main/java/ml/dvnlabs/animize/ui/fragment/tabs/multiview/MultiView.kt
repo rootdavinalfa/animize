@@ -14,12 +14,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.RecyclerView
 import ml.dvnlabs.animize.R
+import ml.dvnlabs.animize.databinding.FragmentMultiviewBinding
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.RequestQueueVolley
 import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
 import ml.dvnlabs.animize.model.GenrePackageList
 import ml.dvnlabs.animize.ui.recyclerview.packagelist.GenrePackageListAdapter
@@ -33,18 +33,20 @@ class MultiView : DialogFragment() {
     private var modeldatapackage: ArrayList<GenrePackageList>? = null
     private var adapterlastpackage: GenrePackageListAdapter? = null
     private var LayoutManager: AutoGridLayoutManager? = null
-    private var rv_listgenre: RecyclerView? = null
-    private var genreloading: RelativeLayout? = null
+
+    private var binding : FragmentMultiviewBinding? = null
+
     var genre: String? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onDetach() {
+        val queue = RequestQueueVolley(requireActivity())
+        queue.clearRequest()
+        super.onDetach()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_multiview, container, false)
-        rv_listgenre = view.findViewById(R.id.genre_list_package)
-        genreloading = view.findViewById(R.id.genre_packagelist_loads)
-        rv_listgenre!!.visibility = View.GONE
+        binding = FragmentMultiviewBinding.bind(view)
+        binding!!.genreListPackage.visibility = View.GONE
         if (arguments != null) {
             genre = requireArguments().getString("genre")
             modeldatapackage = ArrayList()
@@ -61,8 +63,8 @@ class MultiView : DialogFragment() {
 
     private var genrePackage: FetchDataListener = object : FetchDataListener {
         override fun onFetchComplete(data: String?) {
-            rv_listgenre!!.visibility = View.VISIBLE
-            genreloading!!.visibility = View.GONE
+            binding!!.genreListPackage.visibility = View.VISIBLE
+            binding!!.genrePackagelistLoadsing.visibility = View.GONE
             try {
                 val `object` = JSONObject(data!!)
                 if (!`object`.getBoolean("error")) {
@@ -75,8 +77,8 @@ class MultiView : DialogFragment() {
 
         override fun onFetchFailure(msg: String?) {}
         override fun onFetchStart() {
-            rv_listgenre!!.visibility = View.GONE
-            genreloading!!.visibility = View.VISIBLE
+            binding!!.genreListPackage.visibility = View.GONE
+            binding!!.genrePackagelistLoadsing.visibility = View.VISIBLE
         }
     }
 
@@ -97,8 +99,8 @@ class MultiView : DialogFragment() {
             //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             LayoutManager = AutoGridLayoutManager(context, 500)
             adapterlastpackage = GenrePackageListAdapter(modeldatapackage, requireActivity(), R.layout.rv_genrepackage)
-            rv_listgenre!!.layoutManager = LayoutManager
-            rv_listgenre!!.adapter = adapterlastpackage
+            binding!!.genreListPackage.layoutManager = LayoutManager
+            binding!!.genreListPackage.adapter = adapterlastpackage
         } catch (e: JSONException) {
             Log.e("JSON ERROR:", e.toString())
         }

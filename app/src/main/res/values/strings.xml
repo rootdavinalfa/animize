@@ -36,7 +36,7 @@
     <string name="search_not_provided">Please provide keyword</string>
     <string name="home_see_more">See More</string>
     <string name="last_uploaded_txt">New Episode!</string>
-    <string name="nav_home_txt">Home</string>
+    <string name="nav_home_txt">Dashboard</string>
     <string name="nav_genre_txt">Genre</string>
     <string name="nav_anime_txt">Anime</string>
 

@@ -9,7 +9,7 @@
 package ml.dvnlabs.animize.driver
 
 object Api {
-    //private static final String url_base = "http://192.168.1.200/animize/";
+    //private const val url_base = "http://192.168.1.200/animize/"
     private const val url_base = "https://api.dvnlabs.xyz/animize/"
     const val api_animlist = url_base + "anim/list/all"
     const val api_animplay = url_base + "anim/detail/play/"

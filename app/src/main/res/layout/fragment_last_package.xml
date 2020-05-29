@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c) 2020.
+  ~ Animize Devs
+  ~ Copyright 2019 - 2020
+  ~ Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+  ~ This program used for watching anime without ads.
+  ~
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvLastPackage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/rv_newanime"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

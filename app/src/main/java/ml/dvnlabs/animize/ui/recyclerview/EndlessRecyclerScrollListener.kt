@@ -16,9 +16,9 @@ public abstract class EndlessRecyclerScrollListener(linearLayoutManager: LinearL
     private var previousTotal = 0 // The total number of items in the dataset after the last load
     private var loading = true // True if we are still waiting for the last set of data to load.
     private val visibleThreshold = 1 // The minimum amount of items to have below your current scroll position before loading more.
-    internal var firstVisibleItem: Int = 0
-    internal var visibleItemCount:Int = 0
-    internal var totalItemCount:Int = 0
+    private var firstVisibleItem: Int = 0
+    private var visibleItemCount:Int = 0
+    private var totalItemCount:Int = 0
 
     private var current_page = 1
 
@@ -29,7 +29,7 @@ public abstract class EndlessRecyclerScrollListener(linearLayoutManager: LinearL
         super.onScrolled(recyclerView, dx, dy)
 
         visibleItemCount = recyclerView.childCount
-        totalItemCount = mLinearLayoutManager.getItemCount()
+        totalItemCount = mLinearLayoutManager.itemCount
         firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition()
 
         if (loading) {
