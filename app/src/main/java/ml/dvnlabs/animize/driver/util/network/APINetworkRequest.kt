@@ -7,7 +7,7 @@
  *
  */
 
-package ml.dvnlabs.animize.driver.util
+package ml.dvnlabs.animize.driver.util.network
 
 import android.content.Context
 import com.android.volley.AuthFailureError
@@ -15,33 +15,32 @@ import com.android.volley.NoConnectionError
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
-import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
 import java.util.*
 
-class APINetworkRequest(context: Context, listen: FetchDataListener?, uri: String, REQUEST_CODE: Int, params: HashMap<String, String>?) {
+class APINetworkRequest(val context: Context, listen: FetchDataListener?, uri: String, REQUEST_CODE: Int, params: HashMap<String, String>?, TAG: String = DEFAULT_TAG) {
     init {
         if (REQUEST_CODE == CODE_GET_REQUEST) {
-            getRequest(context, listen, uri)
+            getRequest(listen, uri).addStringRequestToQueue(TAG)
         }
         if (REQUEST_CODE == CODE_POST_REQUEST) {
-            postRequest(context, listen, uri, params!!)
+            postRequest(listen, uri, params!!).addStringRequestToQueue(TAG)
         }
     }
 
-    private fun getRequest(context: Context, listen: FetchDataListener?, url: String) {
+    private fun getRequest(listen: FetchDataListener?, url: String): StringRequest {
         listen?.onFetchStart()
-        val stringRequest = StringRequest(Request.Method.GET, url,
+        return StringRequest(Request.Method.GET, url,
                 Response.Listener { response -> listen?.onFetchComplete(response) }, Response.ErrorListener { error ->
             if (error is NoConnectionError) {
                 listen!!.onFetchFailure("Network Connectivity Problem!")
             }
         })
-        RequestQueueVolley.getInstance(context)!!.addToRequestQueue(stringRequest.setShouldCache(false))
     }
 
-    private fun postRequest(context: Context, listen: FetchDataListener?, url: String, param: HashMap<String, String>) {
+    private fun postRequest(listen: FetchDataListener?, url: String, param: HashMap<String, String>): StringRequest {
         listen?.onFetchStart()
-        val stringRequest: StringRequest = object : StringRequest(Method.POST, url,
+        return object : StringRequest(Method.POST, url,
                 Response.Listener { response -> listen?.onFetchComplete(response) }, Response.ErrorListener { error ->
             if (error is NoConnectionError) {
                 listen!!.onFetchFailure("Network Connectivity Problem!")
@@ -58,11 +57,20 @@ class APINetworkRequest(context: Context, listen: FetchDataListener?, uri: Strin
                 return param
             }
         }
-        RequestQueueVolley.getInstance(context)!!.addToRequestQueue(stringRequest.setShouldCache(false))
+    }
+
+    /**
+     * This Method just extension, provide one with method which is returning StringRequest <Volley>
+     *
+     * [TAG] Provide TAG for new REQUEST,if not provided will use default one
+     */
+    private fun StringRequest.addStringRequestToQueue(TAG: String) {
+        RequestQueueVolley.getInstance(context)!!.addToRequestQueue(this.setShouldCache(false), TAG)
     }
 
     companion object {
-        private const val CODE_GET_REQUEST = 1024
-        private const val CODE_POST_REQUEST = 1025
+        const val CODE_GET_REQUEST = 1024
+        const val CODE_POST_REQUEST = 1025
+        const val DEFAULT_TAG = "NewReq"
     }
 }

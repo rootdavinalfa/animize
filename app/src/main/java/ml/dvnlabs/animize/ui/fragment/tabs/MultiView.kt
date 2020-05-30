@@ -7,7 +7,7 @@
  *
  */
 
-package ml.dvnlabs.animize.ui.fragment.tabs.multiview
+package ml.dvnlabs.animize.ui.fragment.tabs
 
 import android.os.Bundle
 import android.util.Log
@@ -18,9 +18,9 @@ import androidx.fragment.app.DialogFragment
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.databinding.FragmentMultiviewBinding
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.RequestQueueVolley
-import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.network.RequestQueueVolley
+import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.GenrePackageList
 import ml.dvnlabs.animize.ui.recyclerview.packagelist.GenrePackageListAdapter
 import ml.dvnlabs.animize.view.AutoGridLayoutManager
@@ -30,15 +30,15 @@ import org.json.JSONObject
 import java.util.*
 
 class MultiView : DialogFragment() {
-    private var modeldatapackage: ArrayList<GenrePackageList>? = null
-    private var adapterlastpackage: GenrePackageListAdapter? = null
-    private var LayoutManager: AutoGridLayoutManager? = null
+    private var modelDataPackage: ArrayList<GenrePackageList>? = null
+    private var adapterLastPackage: GenrePackageListAdapter? = null
+    private var layoutManager: AutoGridLayoutManager? = null
 
     private var binding : FragmentMultiviewBinding? = null
 
     var genre: String? = null
     override fun onDetach() {
-        RequestQueueVolley.getInstance(requireActivity())!!.clearRequest()
+        RequestQueueVolley.getInstance(requireActivity())!!.cancelRequestByTAG(genre!!)
         super.onDetach()
     }
 
@@ -48,7 +48,7 @@ class MultiView : DialogFragment() {
         binding!!.genreListPackage.visibility = View.GONE
         if (arguments != null) {
             genre = requireArguments().getString("genre")
-            modeldatapackage = ArrayList()
+            modelDataPackage = ArrayList()
             getGenrePackage()
         }
         return view
@@ -57,7 +57,7 @@ class MultiView : DialogFragment() {
 
     private fun getGenrePackage() {
         val url = Api.url_genrelist + genre
-        APINetworkRequest(requireActivity(), genrePackage, url, CODE_GET_REQUEST, null)
+        APINetworkRequest(requireActivity(), genrePackage, url, CODE_GET_REQUEST, null,genre!!)
     }
 
     private var genrePackage: FetchDataListener = object : FetchDataListener {
@@ -83,7 +83,7 @@ class MultiView : DialogFragment() {
 
     private fun genrePackageList(anim: JSONArray) {
         try {
-            modeldatapackage!!.clear()
+            modelDataPackage!!.clear()
             for (i in 0 until anim.length()) {
                 val `object` = anim.getJSONObject(i)
                 val packages = `object`.getString("package_anim")
@@ -93,13 +93,13 @@ class MultiView : DialogFragment() {
                 val rate = `object`.getString("rating")
                 val mal = `object`.getString("mal_id")
                 val cover = `object`.getString("cover")
-                modeldatapackage!!.add(GenrePackageList(packages, nameanim, nowep, totep, rate, mal, cover))
+                modelDataPackage!!.add(GenrePackageList(packages, nameanim, nowep, totep, rate, mal, cover))
             }
             //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-            LayoutManager = AutoGridLayoutManager(context, 500)
-            adapterlastpackage = GenrePackageListAdapter(modeldatapackage, requireActivity(), R.layout.rv_genrepackage)
-            binding!!.genreListPackage.layoutManager = LayoutManager
-            binding!!.genreListPackage.adapter = adapterlastpackage
+            layoutManager = AutoGridLayoutManager(context, 500)
+            adapterLastPackage = GenrePackageListAdapter(modelDataPackage, requireActivity(), R.layout.rv_genrepackage)
+            binding!!.genreListPackage.layoutManager = layoutManager
+            binding!!.genreListPackage.adapter = adapterLastPackage
         } catch (e: JSONException) {
             Log.e("JSON ERROR:", e.toString())
         }

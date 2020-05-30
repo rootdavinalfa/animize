@@ -21,9 +21,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.databinding.FragmentLastupListBinding
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.RequestQueueVolley
-import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.network.RequestQueueVolley
+import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.VideoListModel
 import ml.dvnlabs.animize.ui.activity.DashboardActivity
 import ml.dvnlabs.animize.ui.recyclerview.EndlessRecyclerScrollListener
@@ -99,7 +99,7 @@ class LastUpAnime : Fragment(), View.OnClickListener {
     }
 
     override fun onPause() {
-        RequestQueueVolley.getInstance(requireActivity())!!.clearRequest()
+        RequestQueueVolley.getInstance(requireActivity())!!.cancelRequestByTAG("LASTEPISODE")
         super.onPause()
     }
 
@@ -112,7 +112,7 @@ class LastUpAnime : Fragment(), View.OnClickListener {
         try {
             println("NOW PAGE::$pageList")
             val url = Api.url_page + pageList
-            APINetworkRequest(requireActivity(), getvideolist, url, CODE_GET_REQUEST, null)
+            APINetworkRequest(requireActivity(), getvideolist, url, CODE_GET_REQUEST, null,"LASTEPISODE")
         } catch (e: Exception) {
             Log.e("ERROR", e.message!!)
         }

@@ -26,9 +26,9 @@ import kotlinx.android.synthetic.main.fragment_dashboard.*
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.databinding.FragmentDashboardBinding
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.RequestQueueVolley
-import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.network.RequestQueueVolley
+import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.BannerListMdl
 import ml.dvnlabs.animize.model.HomeLastUploadModel
 import ml.dvnlabs.animize.model.PackageList
@@ -36,6 +36,7 @@ import ml.dvnlabs.animize.ui.fragment.popup.ProfilePop
 import ml.dvnlabs.animize.ui.recyclerview.banner.BannerAdapter
 import ml.dvnlabs.animize.ui.recyclerview.list.HomeLastUpAdapter
 import ml.dvnlabs.animize.ui.recyclerview.packagelist.LastPackageAdapter
+import ml.dvnlabs.animize.ui.viewmodel.CommonViewModel
 import ml.dvnlabs.animize.ui.viewmodel.DataRequestViewModel
 import org.json.JSONArray
 import org.json.JSONException
@@ -47,6 +48,7 @@ class Dashboard : Fragment() {
     private var bannerRunnable: Runnable? = null
 
     private lateinit var dataViewModel: DataRequestViewModel
+    private lateinit var commonViewModel: CommonViewModel
 
     companion object {
         private const val CODE_GET_REQUEST = 1024
@@ -65,6 +67,16 @@ class Dashboard : Fragment() {
         dataViewModel = activity?.run {
             ViewModelProvider(this)[DataRequestViewModel::class.java]
         } ?: throw Exception("Invalid")
+
+        commonViewModel = activity?.run {
+            ViewModelProvider(this)[CommonViewModel::class.java]
+        } ?: throw Exception("Invalid")
+
+        commonViewModel.dashboardScrolledToTop.observe(viewLifecycleOwner, Observer {
+            if (it){
+                scrollToTop()
+            }
+        })
 
         initialize()
     }
@@ -190,7 +202,7 @@ class Dashboard : Fragment() {
     private val bannerRequest: Unit
         get() {
             val url = Api.url_banner
-            APINetworkRequest(requireActivity(), bannerRequestListener, url, CODE_GET_REQUEST, null)
+            APINetworkRequest(requireActivity(), bannerRequestListener, url, CODE_GET_REQUEST, null,"BANNER")
         }
     private val bannerRequestListener: FetchDataListener = object : FetchDataListener {
         override fun onFetchComplete(data: String?) {
@@ -260,7 +272,7 @@ class Dashboard : Fragment() {
     private val lastAnimeRequest: Unit
         get() {
             val url = Api.url_packagepage + "1"
-            APINetworkRequest(requireActivity(), lastAnimeRequestListener, url, CODE_GET_REQUEST, null)
+            APINetworkRequest(requireActivity(), lastAnimeRequestListener, url, CODE_GET_REQUEST, null,"ANIMELAST")
         }
 
     private val lastAnimeRequestListener: FetchDataListener = object : FetchDataListener {
@@ -322,7 +334,7 @@ class Dashboard : Fragment() {
     private val lastEpisodeRequest: Unit
         get() {
             val url = Api.url_page + "1"
-            APINetworkRequest(requireActivity(), lastEpisodeRequestListener, url, CODE_GET_REQUEST, null)
+            APINetworkRequest(requireActivity(), lastEpisodeRequestListener, url, CODE_GET_REQUEST, null,"EPISODELAST")
         }
 
     private val lastEpisodeRequestListener: FetchDataListener = object : FetchDataListener {
@@ -377,11 +389,16 @@ class Dashboard : Fragment() {
 
     /*End Of Request Section*/
 
+    private fun scrollToTop(){
+        binding!!.dashboardScroll.fullScroll(View.FOCUS_UP)
+        commonViewModel.changeDashboardScrolledToTop()
+    }
+
     override fun onPause() {
         if (bannerScrolling != null) {
             bannerScrolling!!.removeCallbacks(bannerRunnable!!)
         }
-        RequestQueueVolley.getInstance(requireContext())!!.clearRequest()
+        RequestQueueVolley.getInstance(requireContext())!!.cancelRequestByTAG(listOf("BANNER","ANIMELAST","EPISODELAST"))
         super.onPause()
     }
 }

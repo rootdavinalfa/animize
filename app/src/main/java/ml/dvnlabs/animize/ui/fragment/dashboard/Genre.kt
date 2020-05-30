@@ -20,9 +20,9 @@ import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.databinding.FragmentGenreBinding
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.RequestQueueVolley
-import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.network.RequestQueueVolley
+import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.MetaGenreModel
 import ml.dvnlabs.animize.ui.pager.MultiTabPager
 import ml.dvnlabs.animize.ui.recyclerview.staggered.MetaGenreAdapter
@@ -34,8 +34,8 @@ import java.util.*
 
 class Genre : Fragment() {
     private var binding : FragmentGenreBinding? = null
-    private var metagenre_models: ArrayList<MetaGenreModel>? = null
-    private var metagenre_adapter: MetaGenreAdapter? = null
+    private var metaGenreModels: ArrayList<MetaGenreModel>? = null
+    private var metaGenreAdapter: MetaGenreAdapter? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         inflater.inflate(R.layout.fragment_genre, container, false)
         binding = FragmentGenreBinding.inflate(inflater)
@@ -49,7 +49,7 @@ class Genre : Fragment() {
     }
 
     override fun onPause() {
-        RequestQueueVolley.getInstance(requireContext())!!.clearRequest()
+        RequestQueueVolley.getInstance(requireContext())!!.cancelRequestByTAG("GENRE")
         super.onPause()
     }
 
@@ -61,23 +61,23 @@ class Genre : Fragment() {
     }
 
     private fun getPageTitle() {
-        metagenre_models = ArrayList()
+        metaGenreModels = ArrayList()
         val url = Api.url_genremeta
-        APINetworkRequest(requireContext(), fetchGenre, url, CODE_GET_REQUEST, null)
+        APINetworkRequest(requireContext(), fetchGenre, url, CODE_GET_REQUEST, null,"GENRE")
     }
 
     private fun initializeTab() {
         Log.e("INITIALIZE", "CHECK!")
         binding!!.genreTablayout.setupWithViewPager(binding!!.genreViewpager)
         //num is number of tabs,pagetitle is List<>;
-        val adapter = MultiTabPager(requireActivity().supportFragmentManager, metagenre_models!!.size, metagenre_models!!)
+        val adapter = MultiTabPager(requireActivity().supportFragmentManager, metaGenreModels!!.size, metaGenreModels!!)
         binding!!.genreViewpager.adapter = adapter
         binding!!.genreViewpager.addOnPageChangeListener(TabLayoutOnPageChangeListener(binding!!.genreTablayout))
         val staggeredLayout = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
         staggeredLayout.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
-        metagenre_adapter = MetaGenreAdapter(metagenre_models, requireActivity(), R.layout.rv_staggered, gotoPageGenre)
+        metaGenreAdapter = MetaGenreAdapter(metaGenreModels, requireActivity(), R.layout.rv_staggered, gotoPageGenre)
         binding!!.genreRvMetaStaggered.layoutManager = staggeredLayout
-        binding!!.genreRvMetaStaggered.adapter = metagenre_adapter!!
+        binding!!.genreRvMetaStaggered.adapter = metaGenreAdapter!!
     }
 
     private fun setTabTitle(titles: JSONArray) {
@@ -86,7 +86,7 @@ class Genre : Fragment() {
                 val `object` = titles.getJSONObject(i)
                 val title = `object`.getString("name_genre")
                 val count = `object`.getString("sum_genre")
-                metagenre_models!!.add(MetaGenreModel(title, count))
+                metaGenreModels!!.add(MetaGenreModel(title, count))
             }
             initializeTab()
         } catch (e: JSONException) {

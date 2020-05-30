@@ -27,9 +27,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yarolegovich.discretescrollview.DiscreteScrollView
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.RequestQueueVolley
-import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.network.RequestQueueVolley
+import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.SearchListModel
 import ml.dvnlabs.animize.model.SearchListPackageModel
 import ml.dvnlabs.animize.ui.recyclerview.list.SearchListAdapter
@@ -76,7 +76,7 @@ class Search : Fragment() {
     }
 
     override fun onPause() {
-        RequestQueueVolley.getInstance(requireActivity())!!.clearRequest()
+        RequestQueueVolley.getInstance(requireActivity())!!.cancelRequest()
         super.onPause()
     }
 

@@ -28,8 +28,8 @@ import kotlinx.coroutines.launch
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.database.InitInternalDBHelper
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
 import ml.dvnlabs.animize.ui.fragment.Register
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.indeterminateProgressDialog

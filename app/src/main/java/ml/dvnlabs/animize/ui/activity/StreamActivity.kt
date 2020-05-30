@@ -43,9 +43,9 @@ import ml.dvnlabs.animize.database.InitInternalDBHelper
 import ml.dvnlabs.animize.database.PackageStarDBHelper
 import ml.dvnlabs.animize.database.RecentPlayDBHelper
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.RequestQueueVolley
-import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.network.RequestQueueVolley
+import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
 import ml.dvnlabs.animize.event.PlayerBusError
 import ml.dvnlabs.animize.event.PlayerBusStatus
 import ml.dvnlabs.animize.model.CommentMainModel
@@ -54,7 +54,7 @@ import ml.dvnlabs.animize.player.PlaybackStatus
 import ml.dvnlabs.animize.player.PlayerManager
 import ml.dvnlabs.animize.ui.fragment.comment.MainComment
 import ml.dvnlabs.animize.ui.fragment.comment.ThreadComment
-import ml.dvnlabs.animize.ui.fragment.tabs.animplay.PlaylistFragment
+import ml.dvnlabs.animize.ui.fragment.tabs.PlaylistFragment
 import ml.dvnlabs.animize.view.VideoOnSwipeTouchListener
 import net.cachapa.expandablelayout.ExpandableLayout
 import org.greenrobot.eventbus.EventBus
@@ -206,7 +206,7 @@ class StreamActivity : AppCompatActivity() {
                 }
 
                 val queue = RequestQueueVolley(this)
-                queue.clearRequest()
+                queue.cancelRequest()
                 super.onBackPressed()
                 //finish();
                 //unbindService(serviceConnection);

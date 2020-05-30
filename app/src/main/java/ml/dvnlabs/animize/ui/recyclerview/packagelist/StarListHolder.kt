@@ -24,8 +24,8 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.database.model.StarLand
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.StarredModel
 import ml.dvnlabs.animize.ui.activity.PackageView
 import ml.dvnlabs.animize.ui.recyclerview.interfaces.AddingQueue
@@ -79,7 +79,7 @@ class StarListHolder(context : Context, view: View, listener : AddingQueue, priv
 
     private fun makeRequest(pkg : String){
         val url : String = Api.url_packageinfo+pkg
-        APINetworkRequest(mContext,fetchPackage,url,1024,null)
+        APINetworkRequest(mContext, fetchPackage, url, 1024, null)
         listeners.addQueue(pkgid!!, absoluteAdapterPosition)
     }
 

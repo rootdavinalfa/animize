@@ -7,7 +7,7 @@
  *
  */
 
-package ml.dvnlabs.animize.driver.util
+package ml.dvnlabs.animize.driver.util.network
 
 import android.content.Context
 import android.util.Log
@@ -27,10 +27,10 @@ class RequestQueueVolley(private val mContext: Context) {
         return requestQueue
     }
 
-    fun <T> addToRequestQueue(req: Request<T>) {
+    fun <T> addToRequestQueue(req: Request<T>,TAG : String) {
         req.retryPolicy = DefaultRetryPolicy(5000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
-        getRequestQueue()!!.add(req).tag = "NewReq"
+        getRequestQueue()!!.add(req).tag = TAG
     }
 
     fun clearCache() {
@@ -41,9 +41,29 @@ class RequestQueueVolley(private val mContext: Context) {
         requestQueue!!.cache.remove(key)
     }
 
-    fun clearRequest() {
+    fun cancelRequest() {
         Log.i("RequestQueue:: ","Clearing request")
         requestQueue!!.cancelAll("NewReq")
+    }
+
+    /**
+     * cancelRequestByTag is canceller for any request with specific TAG you entered
+     * when making request on APINetworkRequest
+     *
+     * [TAG] This parameter can take form in List or String. Considerate using listOf
+     * if you're using kotlin
+     */
+    fun cancelRequestByTAG(TAG : Any){
+        if (TAG is List<*>){
+            for (tags in TAG){
+                Log.i("RequestQueue:Canceler: ","Clearing request with TAG: $tags")
+                requestQueue!!.cancelAll(tags)
+            }
+        }else if (TAG is String){
+            Log.i("RequestQueue:Canceler: ","Clearing request with TAG: $TAG")
+            requestQueue!!.cancelAll(TAG)
+        }
+
     }
 
     companion object {

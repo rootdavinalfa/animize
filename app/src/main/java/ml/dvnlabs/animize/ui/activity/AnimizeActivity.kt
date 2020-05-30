@@ -44,9 +44,15 @@ class AnimizeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSel
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {
-        if (item.itemId == R.id.nav_home){
-            val navController = findNavController(R.id.dashboardNavHost)
-            navController.popBackStack(navController.graph.startDestination, false)
+        when(item.itemId){
+            R.id.nav_home->{
+                val navController = findNavController(R.id.dashboardNavHost)
+                navController.popBackStack(navController.graph.startDestination, false)
+                commonVM.changeDashboardScrolledToTop()
+            }
+            R.id.nav_library->{
+                commonVM.changeLibraryScrolledToTop()
+            }
         }
     }
 

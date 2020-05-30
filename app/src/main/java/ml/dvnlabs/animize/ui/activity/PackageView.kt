@@ -48,8 +48,8 @@ import ml.dvnlabs.animize.database.InitInternalDBHelper
 import ml.dvnlabs.animize.database.PackageStarDBHelper
 import ml.dvnlabs.animize.database.RecentPlayDBHelper
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.PackageInfo
 import ml.dvnlabs.animize.model.PlaylistModel
 import ml.dvnlabs.animize.ui.activity.MainActivity.Companion.setWindowFlag

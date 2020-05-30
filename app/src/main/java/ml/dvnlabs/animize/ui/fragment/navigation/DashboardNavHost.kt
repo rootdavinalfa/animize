@@ -19,15 +19,14 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.navigateUp
 import ml.dvnlabs.animize.R
 
-class DashboardNavHost : Fragment(){
+class DashboardNavHost : Fragment() {
     private val appBarConfig = AppBarConfiguration(setOf(R.id.dashboard))
-    private lateinit var toolbar : Toolbar
+    private lateinit var toolbar: Toolbar
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dashboard_nav_host,container,false)
+        return inflater.inflate(R.layout.dashboard_nav_host, container, false)
     }
 
     override fun onStart() {
@@ -50,17 +49,5 @@ class DashboardNavHost : Fragment(){
                 else -> toolbar.visibility = View.VISIBLE
             }
         }
-    }
-
-    fun onBackPressed(): Boolean {
-        return requireActivity()
-                .findNavController(R.id.dashboardNavHost)
-                .navigateUp(appBarConfig)
-    }
-
-
-    fun popToRoot() {
-        val navController = requireActivity().findNavController(R.id.dashboardNavHost)
-        navController.popBackStack(navController.graph.startDestination, false)
     }
 }

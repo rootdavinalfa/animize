@@ -14,9 +14,27 @@ import androidx.lifecycle.ViewModel
 import ml.dvnlabs.animize.database.model.UserLand
 
 class CommonViewModel : ViewModel() {
-    var userLand : UserLand? = null
+    var userLand: UserLand? = null
+    var dashboardScrolledToTop = MutableLiveData<Boolean>()
+    var libraryScrolledToTop = MutableLiveData<Boolean>()
+    fun changeDashboardScrolledToTop() {
+        dashboardScrolledToTop.value = when (dashboardScrolledToTop.value) {
+            false -> true
+            true -> false
+            else -> false
+        }
+    }
+
+    fun changeLibraryScrolledToTop() {
+        libraryScrolledToTop.value = when (libraryScrolledToTop.value) {
+            false -> true
+            true -> false
+            else -> false
+        }
+    }
+
     val selectedPageMainNavigation = MutableLiveData<Int>()
-    fun changeSelectedPageMainNavigation(index : Int){
+    fun changeSelectedPageMainNavigation(index: Int) {
         selectedPageMainNavigation.value = index
     }
 }

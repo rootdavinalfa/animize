@@ -16,8 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.ui.fragment.tabs.multiview.MultiView
-import ml.dvnlabs.animize.ui.fragment.tabs.multiview.MultiView.Companion.newInstance
+import ml.dvnlabs.animize.ui.fragment.tabs.MultiView
+import ml.dvnlabs.animize.ui.fragment.tabs.MultiView.Companion.newInstance
 
 class PackageMetaGenreHolder(private val context: Context, view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
     private val texts: TextView

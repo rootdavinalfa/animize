@@ -43,7 +43,7 @@ import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.database.PackageStarDBHelper
 import ml.dvnlabs.animize.model.GenrePackageList
 import ml.dvnlabs.animize.ui.activity.PackageView
-import ml.dvnlabs.animize.ui.fragment.tabs.multiview.MultiView
+import ml.dvnlabs.animize.ui.fragment.tabs.MultiView
 
 class GenrePackageListHolder(private val context: Context, view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, OnLongClickListener {
     private val episode: TextView

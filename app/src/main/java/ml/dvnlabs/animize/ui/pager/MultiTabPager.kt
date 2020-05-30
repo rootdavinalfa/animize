@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import ml.dvnlabs.animize.model.MetaGenreModel
-import ml.dvnlabs.animize.ui.fragment.tabs.multiview.MultiView
+import ml.dvnlabs.animize.ui.fragment.tabs.MultiView
 import java.util.*
 
 class MultiTabPager(fm: FragmentManager, private val numOfTabs: Int, meta: ArrayList<MetaGenreModel>) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
