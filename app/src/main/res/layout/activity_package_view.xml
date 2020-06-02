@@ -60,7 +60,7 @@
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:menu="@menu/package_toolbar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -79,7 +79,7 @@
             android:layout_height="100dp"
             android:layout_centerInParent="true"
             android:visibility="gone"
-            app:indicatorColor="@color/blacktrans2"
+            app:indicatorColor="@color/primaryLightColor"
             app:indicatorName="BallClipRotateIndicator" />
     </RelativeLayout>
 

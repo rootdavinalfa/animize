@@ -24,6 +24,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.takusemba.multisnaprecyclerview.MultiSnapHelper
 import com.yarolegovich.discretescrollview.DiscreteScrollView
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.driver.Api
@@ -67,11 +68,12 @@ class Search : Fragment() {
         title_pack = view.findViewById(R.id.search_pack_title)
         title_pack!!.visibility = View.GONE
         title_ep!!.visibility = View.GONE
+        val snapPackageSearch = MultiSnapHelper()
+        snapPackageSearch.attachToRecyclerView(packview!!)
         modeldata = ArrayList()
         pack_models = ArrayList()
         initHandler()
         searchTextListener()
-        // Inflate the layout for this fragment
         return view
     }
 
@@ -95,8 +97,6 @@ class Search : Fragment() {
             false
         })
         srch_txt!!.addTextChangedListener(object : TextWatcher {
-            var timing_text = 0
-            var handler = Handler()
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 search_handler!!.removeCallbacks(search_runnable!!)
@@ -116,12 +116,8 @@ class Search : Fragment() {
                         pack_models!!.clear()
                         adapter!!.notifyDataSetChanged()
                         package_adapter!!.notifyDataSetChanged()
-                        //System.out.println("TRIGGER2");
                     }
-                    /*search_text_count = search_text_count % 2;
-                    if(search_text_count == 0 || isReadyForNextReq){
-                        getSearch();
-                    }*/search_handler!!.postDelayed(search_runnable!!, 2000)
+                    search_handler!!.postDelayed(search_runnable!!, 2000)
                 } else {
                     title_pack!!.visibility = View.GONE
                     title_ep!!.visibility = View.GONE

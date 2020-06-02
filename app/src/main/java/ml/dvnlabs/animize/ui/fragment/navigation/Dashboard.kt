@@ -73,7 +73,7 @@ class Dashboard : Fragment() {
         } ?: throw Exception("Invalid")
 
         commonViewModel.dashboardScrolledToTop.observe(viewLifecycleOwner, Observer {
-            if (it){
+            if (it) {
                 scrollToTop()
             }
         })
@@ -202,7 +202,7 @@ class Dashboard : Fragment() {
     private val bannerRequest: Unit
         get() {
             val url = Api.url_banner
-            APINetworkRequest(requireActivity(), bannerRequestListener, url, CODE_GET_REQUEST, null,"BANNER")
+            APINetworkRequest(requireActivity(), bannerRequestListener, url, CODE_GET_REQUEST, null, "BANNER")
         }
     private val bannerRequestListener: FetchDataListener = object : FetchDataListener {
         override fun onFetchComplete(data: String?) {
@@ -246,21 +246,17 @@ class Dashboard : Fragment() {
             val adapterBanner = BannerAdapter(bannerListModels, requireActivity(), R.layout.rv_banner)
             binding!!.rvBanner.adapter = adapterBanner
             bannerScrolling = Handler()
-            bannerRunnable = object : Runnable {
-                var currentBanner = 0
-                override fun run() {
-                    currentBanner = binding!!.rvBanner.currentItem
-                    //System.out.println("Old:"+currentBanner+" To New:"+(currentBanner+1));
-                    if (adapterBanner.itemCount != 0 && bannerListModels.size == binding!!.rvBanner.adapter!!.itemCount) {
-                        if (bannerListModels.size - 1 > currentBanner) {
-                            binding!!.rvBanner.smoothScrollToPosition(currentBanner + 1)
-                            binding!!.rvBanner.setItemTransitionTimeMillis(250)
-                        } else {
-                            binding!!.rvBanner.smoothScrollToPosition(0)
-                            binding!!.rvBanner.setItemTransitionTimeMillis(250)
-                        }
-                        bannerScrolling!!.postDelayed(bannerRunnable!!, 5000)
+            bannerRunnable = Runnable {
+                val currentBanner = binding!!.rvBanner.currentItem
+                if (this.isVisible && bannerListModels.size == binding!!.rvBanner.adapter!!.itemCount) {
+                    if (bannerListModels.size - 1 > currentBanner) {
+                        binding!!.rvBanner.smoothScrollToPosition(currentBanner + 1)
+                        binding!!.rvBanner.setItemTransitionTimeMillis(250)
+                    } else {
+                        binding!!.rvBanner.smoothScrollToPosition(0)
+                        binding!!.rvBanner.setItemTransitionTimeMillis(250)
                     }
+                    bannerScrolling!!.postDelayed(bannerRunnable!!, 5000)
                 }
             }
             bannerScrolling!!.postDelayed(bannerRunnable!!, 5000)
@@ -272,7 +268,7 @@ class Dashboard : Fragment() {
     private val lastAnimeRequest: Unit
         get() {
             val url = Api.url_packagepage + "1"
-            APINetworkRequest(requireActivity(), lastAnimeRequestListener, url, CODE_GET_REQUEST, null,"ANIMELAST")
+            APINetworkRequest(requireActivity(), lastAnimeRequestListener, url, CODE_GET_REQUEST, null, "ANIMELAST")
         }
 
     private val lastAnimeRequestListener: FetchDataListener = object : FetchDataListener {
@@ -334,7 +330,7 @@ class Dashboard : Fragment() {
     private val lastEpisodeRequest: Unit
         get() {
             val url = Api.url_page + "1"
-            APINetworkRequest(requireActivity(), lastEpisodeRequestListener, url, CODE_GET_REQUEST, null,"EPISODELAST")
+            APINetworkRequest(requireActivity(), lastEpisodeRequestListener, url, CODE_GET_REQUEST, null, "EPISODELAST")
         }
 
     private val lastEpisodeRequestListener: FetchDataListener = object : FetchDataListener {
@@ -389,7 +385,7 @@ class Dashboard : Fragment() {
 
     /*End Of Request Section*/
 
-    private fun scrollToTop(){
+    private fun scrollToTop() {
         binding!!.dashboardScroll.fullScroll(View.FOCUS_UP)
         commonViewModel.changeDashboardScrolledToTop()
     }
@@ -398,7 +394,7 @@ class Dashboard : Fragment() {
         if (bannerScrolling != null) {
             bannerScrolling!!.removeCallbacks(bannerRunnable!!)
         }
-        RequestQueueVolley.getInstance(requireContext())!!.cancelRequestByTAG(listOf("BANNER","ANIMELAST","EPISODELAST"))
+        RequestQueueVolley.getInstance(requireContext())!!.cancelRequestByTAG(listOf("BANNER", "ANIMELAST", "EPISODELAST"))
         super.onPause()
     }
 }

@@ -15,8 +15,8 @@ import ml.dvnlabs.animize.database.model.UserLand
 
 class CommonViewModel : ViewModel() {
     var userLand: UserLand? = null
-    var dashboardScrolledToTop = MutableLiveData<Boolean>()
-    var libraryScrolledToTop = MutableLiveData<Boolean>()
+    var dashboardScrolledToTop : MutableLiveData<Boolean> = MutableLiveData(false)
+    var libraryScrolledToTop : MutableLiveData<Boolean> = MutableLiveData(false)
     fun changeDashboardScrolledToTop() {
         dashboardScrolledToTop.value = when (dashboardScrolledToTop.value) {
             false -> true
