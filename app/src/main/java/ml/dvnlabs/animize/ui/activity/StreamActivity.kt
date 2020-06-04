@@ -692,7 +692,7 @@ class StreamActivity : AppCompatActivity() {
     private fun readRecent() {
         GlobalScope.run {
             val recent = recentPlayDBHelper!!.readRecent(idanim!!)
-            var seeker : Long = 0
+            var seeker: Long = 0
             if (recent != null) {
                 if (getCurrentPlayTime() < recent.timestamp) {
                     seeker = recent.timestamp
@@ -711,14 +711,14 @@ class StreamActivity : AppCompatActivity() {
                 val episode = Integer.valueOf(modeldata!![0].episode)
                 val urlCover = modeldata!![0].cover
                 val timestamp = getCurrentPlayTime()
-                recentPlayDBHelper!!.updateRecent(packageId, packageName, idanim!!, episode, urlCover, timestamp)
+                recentPlayDBHelper!!.updateRecent(packageId, packageName, idanim!!, episode, urlCover, timestamp, PlayerManager.service!!.exoPlayer!!.duration)
             } else {
                 val packageId = modeldata!![0].pack
                 val packageName = modeldata!![0].name_anim
                 val episode = Integer.valueOf(modeldata!![0].episode)
                 val urlCover = modeldata!![0].cover
                 val timestamp = getCurrentPlayTime()
-                recentPlayDBHelper!!.addRecent(packageId, packageName, idanim, episode, urlCover, timestamp)
+                recentPlayDBHelper!!.addRecent(packageId, packageName, idanim, episode, urlCover, timestamp, PlayerManager.service!!.exoPlayer!!.duration)
             }
             updateRecent()
         }

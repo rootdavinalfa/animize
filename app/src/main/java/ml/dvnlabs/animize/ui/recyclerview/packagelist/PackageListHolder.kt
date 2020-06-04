@@ -10,31 +10,83 @@ package ml.dvnlabs.animize.ui.recyclerview.packagelist
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
+import ml.dvnlabs.animize.custom.ColorHelper
+import ml.dvnlabs.animize.database.RecentPlayDBHelper
 import ml.dvnlabs.animize.model.PlaylistModel
 import ml.dvnlabs.animize.ui.activity.StreamActivity
+import kotlin.math.floor
 
 class PackageListHolder(private val context: Context, view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
-    private val episode: TextView
-    private val id_anim: TextView
-    private val title: TextView
-    private val thumbnail: ImageView
+    private var recent: RecentPlayDBHelper? = null
+    private val episode: TextView = view.findViewById(R.id.rvTextEpisode)
+    private val thumbnail: ImageView = view.findViewById(R.id.rvAnimeImage)
     private var playlist_model: PlaylistModel? = null
-    fun bind_playlist(plm: PlaylistModel?) {
+    fun bindPlaylist(plm: PlaylistModel?) {
         playlist_model = plm
-        title.text = playlist_model!!.title
-        id_anim.text = playlist_model!!.id_anim
         val ep = context.getString(R.string.episode_text) + ": " + playlist_model!!.episode
         episode.text = ep
-        Glide.with(itemView).applyDefaultRequestOptions(RequestOptions().placeholder(R.drawable.ic_picture_light).error(R.drawable.ic_picture_light)).load(playlist_model!!.url_image).transition(DrawableTransitionOptions().crossFade()).apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).override(600, 200).fitCenter()).into(thumbnail)
+        GlobalScope.launch {
+            setupImage(playlist_model!!.id_anim)
+        }
+    }
+
+    private suspend fun setupImage(anmID: String) {
+        withContext(Dispatchers.IO) {
+            val recentPlay = recent!!.readRecent(anmID)
+            var max = 0L
+            var current = 0L
+
+            if (recentPlay != null) {
+                max = recentPlay.maxTime
+                current = recentPlay.timestamp
+                //println("ANMID : ${recentPlay.anmid} TIME : ${recentPlay.timestamp} MAX: ${recentPlay.maxTime}")
+            }
+
+            val percent = when(max){
+                0L ->{
+                    1F
+                }
+
+                else -> {
+                    floor((current.toDouble() / max.toDouble()) * 100).toFloat()
+                }
+            }
+            withContext(Dispatchers.Main) {
+                Glide.with(itemView)
+                        .asBitmap()
+                        .placeholder(R.drawable.ic_picture_light)
+                        .load(playlist_model!!.url_image)
+                        .transition(BitmapTransitionOptions.withCrossFade())
+                        .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).override(600, 200)
+                                .fitCenter()).into(object : CustomTarget<Bitmap>() {
+                            override fun onLoadCleared(placeholder: Drawable?) {
+                                thumbnail.background = placeholder
+                            }
+
+                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                thumbnail.setImageBitmap(resource)
+                                ColorHelper().filteringWithPercentage(ColorHelper.FILTER_VERTICAL, thumbnail, percent)
+                            }
+                        })
+            }
+        }
     }
 
     override fun onClick(v: View) {
@@ -46,10 +98,7 @@ class PackageListHolder(private val context: Context, view: View) : RecyclerView
     }
 
     init {
-        episode = view.findViewById<View>(R.id.playlist_episode) as TextView
-        id_anim = view.findViewById<View>(R.id.playlist_id) as TextView
-        title = view.findViewById<View>(R.id.playlist_title) as TextView
-        thumbnail = view.findViewById<View>(R.id.playlist_imgthumb) as ImageView
+        recent = RecentPlayDBHelper(context)
         itemView.setOnClickListener(this)
     }
 }

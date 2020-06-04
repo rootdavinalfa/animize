@@ -8,6 +8,7 @@
  */
 package ml.dvnlabs.animize.ui.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
@@ -17,16 +18,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.widget.NestedScrollView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -34,8 +27,6 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.google.android.material.appbar.AppBarLayout
-import com.wang.avi.AVLoadingIndicatorView
 import io.branch.referral.Branch
 import jp.wasabeef.glide.transformations.BlurTransformation
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
@@ -47,6 +38,7 @@ import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.database.InitInternalDBHelper
 import ml.dvnlabs.animize.database.PackageStarDBHelper
 import ml.dvnlabs.animize.database.RecentPlayDBHelper
+import ml.dvnlabs.animize.databinding.ActivityPackageViewBinding
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
 import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
@@ -56,7 +48,7 @@ import ml.dvnlabs.animize.ui.activity.MainActivity.Companion.setWindowFlag
 import ml.dvnlabs.animize.ui.fragment.information.CoverView
 import ml.dvnlabs.animize.ui.recyclerview.packagelist.PackageListAdapter
 import ml.dvnlabs.animize.ui.recyclerview.staggered.PackageMetaGenreAdapter
-import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
+import ml.dvnlabs.animize.view.AutoGridLayoutManager
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -65,38 +57,24 @@ import java.net.URLEncoder
 import java.util.*
 
 class PackageView : AppCompatActivity() {
-    private var collapsingToolbarLayout: CollapsingToolbarLayout? = null
-    private var appBarLayout: AppBarLayout? = null
-    private var notFoundContainer: RelativeLayout? = null
-    private var loadingcontainer: RelativeLayout? = null
-    private var coverToolbar: ImageView? = null
-    private var recentImg: ImageView? = null
     private var playlistModels: ArrayList<PlaylistModel>? = null
     private var modelinfo: ArrayList<PackageInfo>? = null
     var adapter: PackageListAdapter? = null
-    private var listview: RecyclerView? = null
-    private var genrelist: RecyclerView? = null
-    private var synops: TextView? = null
-    private var recentTitle: TextView? = null
-    private var recentEpisode: TextView? = null
-    private var rate: TextView? = null
-    private var animeid: TextView? = null
-    private var packageParent: CoordinatorLayout? = null
-    private var recentContainer: RelativeLayout? = null
     var pkganim: String? = null
     private var packStar: MenuItem? = null
     private var packShare: MenuItem? = null
     var packageStarDBHelper: PackageStarDBHelper? = null
     var recentPlayDBHelper: RecentPlayDBHelper? = null
-    private var container: NestedScrollView? = null
-    private var loading: AVLoadingIndicatorView? = null
     private var branch: Branch? = null
     var initInternalDBHelper: InitInternalDBHelper? = null
+
+    private lateinit var binding: ActivityPackageViewBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initInternalDBHelper = InitInternalDBHelper(this)
         if (initInternalDBHelper!!.userCount) {
-            setContentView(R.layout.activity_package_view)
+            binding = ActivityPackageViewBinding.inflate(layoutInflater)
+            setContentView(binding.root)
             //make translucent statusBar on kitkat devices
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             //make fully Android Transparent Status bar
@@ -110,7 +88,7 @@ class PackageView : AppCompatActivity() {
                 pkganim = intent.getStringExtra("package")
                 //intent.removeExtra("id_anim");
             }
-            assert(pkganim != null)
+            //assert(pkganim != null)
             if (pkganim!!.isNotEmpty()) {
 
                 //System.out.println(pkganim);
@@ -140,35 +118,21 @@ class PackageView : AppCompatActivity() {
         return true
     }
 
+    @SuppressLint("RestrictedApi")
     private fun initialize() {
-        val toolbar = findViewById<Toolbar>(R.id.pv_toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(binding.pvToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-        toolbar.title = ""
-        collapsingToolbarLayout = findViewById(R.id.pv_collapse_toolbar)
-        collapsingToolbarLayout!!.title = "Loading..."
-        listview = findViewById(R.id.packageview_list)
-        genrelist = findViewById(R.id.packageview_genrelist)
-        synops = findViewById(R.id.packageview_synopsis)
-        container = findViewById(R.id.packageview_container)
-        loading = findViewById(R.id.packageview_loading)
-        coverToolbar = findViewById(R.id.toolbar_cover)
-        packageParent = findViewById(R.id.package_parent)
-        recentContainer = findViewById(R.id.packageview_recent_container)
-        recentEpisode = findViewById(R.id.packageview_recent_episode)
-        recentTitle = findViewById(R.id.packageview_recent_title)
-        recentImg = findViewById(R.id.packageview_recent_img)
-        rate = findViewById(R.id.package_rate)
-        animeid = findViewById(R.id.package_animeid)
-        appBarLayout = findViewById(R.id.packageview_barlayout)
-        notFoundContainer = findViewById(R.id.packageview_notfoundcont)
-        loadingcontainer = findViewById(R.id.packageview_loading_container)
+        binding.pvToolbar.title = ""
+        binding.pvCollapseToolbar.title = "Loading..."
+
         modelinfo = ArrayList()
-        collapsingToolbarLayout!!.maxLines = 3
-        loadingcontainer!!.visibility = View.VISIBLE
-        container!!.visibility = View.GONE
-        appBarLayout!!.visibility = View.GONE
+        binding.pvCollapseToolbar.maxLines = 3
+        binding.packageviewLoadingContainer.visibility = View.VISIBLE
+        binding.packageviewContainer.visibility = View.GONE
+
+        binding.packageviewBarlayout.visibility = View.GONE
+
     }
 
     /*Function for refreshing activity data due to usage of multiview fragment*/
@@ -178,9 +142,9 @@ class PackageView : AppCompatActivity() {
             if (modelinfo!!.size > 0) {
                 modelinfo!!.clear()
             }
-            loadingcontainer!!.visibility = View.VISIBLE
-            container!!.visibility = View.GONE
-            appBarLayout!!.visibility = View.GONE
+            binding.packageviewLoadingContainer.visibility = View.VISIBLE
+            binding.packageviewContainer.visibility = View.GONE
+            binding.packageviewBarlayout.visibility = View.GONE
             getInfo()
         }
         initializeADSandDB()
@@ -298,12 +262,12 @@ class PackageView : AppCompatActivity() {
                     parserInfo(`object`.getJSONArray("anim"))
                 } else {
                     window.statusBarColor = Color.RED
-                    appBarLayout!!.visibility = View.GONE
-                    container!!.visibility = View.GONE
-                    loadingcontainer!!.visibility = View.GONE
-                    loading!!.visibility = View.GONE
-                    notFoundContainer!!.visibility = View.VISIBLE
-                    packageParent!!.background = null
+                    binding.packageviewBarlayout.visibility = View.GONE
+                    binding.packageviewContainer.visibility = View.GONE
+                    binding.packageviewLoadingContainer.visibility = View.GONE
+                    binding.packageviewLoading.visibility = View.GONE
+                    binding.packageviewNotfoundcont.visibility = View.VISIBLE
+                    binding.packageParent.background = null
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
@@ -312,10 +276,10 @@ class PackageView : AppCompatActivity() {
 
         override fun onFetchFailure(msg: String?) {}
         override fun onFetchStart() {
-            loading!!.visibility = View.VISIBLE
-            container!!.visibility = View.GONE
-            appBarLayout!!.visibility = View.GONE
-            notFoundContainer!!.visibility = View.GONE
+            binding.packageviewLoading.visibility = View.VISIBLE
+            binding.packageviewContainer.visibility = View.GONE
+            binding.packageviewBarlayout.visibility = View.GONE
+            binding.packageviewNotfoundcont.visibility = View.GONE
         }
     }
     var getplaylist: FetchDataListener = object : FetchDataListener {
@@ -323,11 +287,11 @@ class PackageView : AppCompatActivity() {
             try {
                 val `object` = JSONObject(data!!)
                 if (!`object`.getBoolean("error")) {
-                    loadingcontainer!!.visibility = View.GONE
-                    loading!!.visibility = View.GONE
-                    notFoundContainer!!.visibility = View.GONE
-                    appBarLayout!!.visibility = View.VISIBLE
-                    container!!.visibility = View.VISIBLE
+                    binding.packageviewLoadingContainer.visibility = View.GONE
+                    binding.packageviewLoading.visibility = View.GONE
+                    binding.packageviewNotfoundcont.visibility = View.GONE
+                    binding.packageviewBarlayout.visibility = View.VISIBLE
+                    binding.packageviewContainer.visibility = View.VISIBLE
                     parsePlayList(`object`.getJSONArray("anim"))
                 }
             } catch (e: JSONException) {
@@ -359,13 +323,13 @@ class PackageView : AppCompatActivity() {
                 }
                 modelinfo!!.add(PackageInfo(packages, nameAnim, synopsis, totalEP, rate, mal, genres, cover))
             }
-            collapsingToolbarLayout!!.title = modelinfo!![0].getName()
-            synops!!.text = modelinfo!![0].synopsis
+            binding.pvCollapseToolbar.title = modelinfo!![0].getName()
+            binding.packageviewSynopsis.text = modelinfo!![0].synopsis
             val adapterGenre = PackageMetaGenreAdapter(modelinfo!![0].genre, this, R.layout.rv_staggered)
             val spanStaggered = if (adapterGenre.itemCount < 7) 1 else 2
             val layoutManager = StaggeredGridLayoutManager(spanStaggered, StaggeredGridLayoutManager.HORIZONTAL)
-            genrelist!!.layoutManager = layoutManager
-            genrelist!!.adapter = adapterGenre
+            binding.packageviewGenrelist.layoutManager = layoutManager
+            binding.packageviewGenrelist.adapter = adapterGenre
             Glide.with(this)
                     .applyDefaultRequestOptions(RequestOptions()
                             .placeholder(R.drawable.ic_picture)
@@ -373,7 +337,7 @@ class PackageView : AppCompatActivity() {
                     .load(modelinfo!![0].cover)
                     .transition(DrawableTransitionOptions()
                             .crossFade()).apply(RequestOptions()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL).override(424, 600)).into(coverToolbar!!)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL).override(424, 600)).into(binding.toolbarCover)
             Glide.with(this)
                     .applyDefaultRequestOptions(RequestOptions()
                             .placeholder(R.drawable.ic_picture)
@@ -383,22 +347,22 @@ class PackageView : AppCompatActivity() {
                             .crossFade()).apply(RequestOptions()
                             .diskCacheStrategy(DiskCacheStrategy.ALL).override(424, 600)).into(object : CustomTarget<Drawable?>() {
                         override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable?>?) {
-                            packageParent!!.background = resource
+                            binding.packageParent.background = resource
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) {
-                            packageParent!!.background = placeholder
+                            binding.packageParent.background = placeholder
                         }
                     })
-            coverToolbar!!.setOnClickListener {
+            binding.toolbarCover.setOnClickListener {
                 val fm = supportFragmentManager
                 val alertDialog = CoverView()
                 alertDialog.setUrl(modelinfo!![0].cover)
                 alertDialog.show(fm, "coverview")
             }
-            rate!!.text = modelinfo!![0].rate
+            binding.packageRate.text = modelinfo!![0].rate
             val animeID = modelinfo!![0].pack + " / " + modelinfo!![0].mal
-            animeid!!.text = animeID
+            binding.packageAnimeid.text = animeID
             showRecent()
             invalidateOptionsMenu()
             getPlayList()
@@ -411,15 +375,15 @@ class PackageView : AppCompatActivity() {
         if (recentPlayDBHelper!!.isRecentPackAvail(pkganim!!)) {
             GlobalScope.launch { readRecent() }
         } else {
-            recentContainer!!.visibility = View.GONE
+            binding.packageviewRecentContainer.visibility = View.GONE
         }
     }
 
     private fun parsePlayList(playlist: JSONArray) {
         try {
             playlistModels = ArrayList()
-            val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
-            listview!!.layoutManager = layoutManager
+            val layoutManager = AutoGridLayoutManager(this, 500)
+            binding.packageviewList.layoutManager = layoutManager
             for (i in 0 until playlist.length()) {
                 val `object` = playlist.getJSONObject(i)
                 val urlImg = `object`.getString("thumbnail")
@@ -429,17 +393,17 @@ class PackageView : AppCompatActivity() {
                 val pkg = `object`.getString("package_anim")
                 playlistModels!!.add(PlaylistModel(urlImg, title, episode, idAnim, pkg))
             }
-            adapter = PackageListAdapter(playlistModels, this, R.layout.package_playlist_view)
-            listview!!.adapter = adapter
+            adapter = PackageListAdapter(playlistModels, this, R.layout.rv_anim_packageview_selector)
+            binding.packageviewList.adapter = adapter
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    private suspend fun readStarStatus(){
-        withContext(Dispatchers.IO){
+    private suspend fun readStarStatus() {
+        withContext(Dispatchers.IO) {
             val isStarred = packageStarDBHelper!!.isStarred(pkganim!!)
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 if (isStarred) {
                     packStar!!.setIcon(R.drawable.ic_star)
                 } else {
@@ -449,15 +413,15 @@ class PackageView : AppCompatActivity() {
         }
     }
 
-    private suspend fun changeStar(change : String){
-        withContext(Dispatchers.IO){
+    private suspend fun changeStar(change: String) {
+        withContext(Dispatchers.IO) {
             if (change == "UNSTAR") {
                 packageStarDBHelper!!.unStar(pkganim!!)
             } else if (change == "STAR") {
                 packageStarDBHelper!!.addStar(pkganim!!)
             }
             val isStarred = packageStarDBHelper!!.isStarred(pkganim!!)
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 val status: String = if (isStarred) {
                     packStar!!.setIcon(R.drawable.ic_star)
                     "Add to Star Success"
@@ -470,14 +434,14 @@ class PackageView : AppCompatActivity() {
         }
     }
 
-    private suspend fun readRecent(){
-        withContext(Dispatchers.IO){
+    private suspend fun readRecent() {
+        withContext(Dispatchers.IO) {
             val recentLand = recentPlayDBHelper!!.readRecentOnPackage(pkganim!!)
-            withContext(Dispatchers.Main){
-                recentContainer!!.visibility = View.VISIBLE
-                recentTitle!!.text = recentLand!!.packageName
+            withContext(Dispatchers.Main) {
+                binding.packageviewRecentContainer.visibility = View.VISIBLE
+                binding.packageviewRecentTitle.text = recentLand!!.packageName
                 val ep = "Episode: " + recentLand.episode
-                recentEpisode!!.text = ep
+                binding.packageviewRecentEpisode.text = ep
                 Glide.with(baseContext)
                         .applyDefaultRequestOptions(RequestOptions()
                                 .placeholder(R.drawable.ic_picture)
@@ -485,16 +449,8 @@ class PackageView : AppCompatActivity() {
                         .load(recentLand.urlCover).transform(RoundedCornersTransformation(10, 0))
                         .transition(DrawableTransitionOptions()
                                 .crossFade()).apply(RequestOptions()
-                                .diskCacheStrategy(DiskCacheStrategy.ALL).override(424, 600)).into(object : CustomTarget<Drawable?>() {
-                            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable?>?) {
-                                recentImg!!.background = resource
-                            }
-
-                            override fun onLoadCleared(placeholder: Drawable?) {
-                                recentImg!!.background = placeholder
-                            }
-                        })
-                recentContainer!!.setOnClickListener {
+                                .diskCacheStrategy(DiskCacheStrategy.ALL).override(424, 600)).into(binding.packageviewRecentImg)
+                binding.packageviewRecentContainer.setOnClickListener {
                     val intent = Intent(applicationContext, StreamActivity::class.java)
                     intent.putExtra("id_anim", recentLand.anmid)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

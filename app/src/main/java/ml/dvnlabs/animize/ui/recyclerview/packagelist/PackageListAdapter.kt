@@ -23,7 +23,7 @@ class PackageListAdapter(private val playlistdata: ArrayList<PlaylistModel>?, pr
 
     override fun onBindViewHolder(holder: PackageListHolder, position: Int) {
         val slm = playlistdata!![position]
-        holder.bind_playlist(slm)
+        holder.bindPlaylist(slm)
     }
 
     override fun getItemCount(): Int {

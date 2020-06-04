@@ -10,32 +10,28 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/package_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:id="@+id/package_parent"
-    tools:context=".ui.activity.PackageView">
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/packageview_barlayout"
         android:layout_width="match_parent"
         android:layout_height="280dp"
         android:background="@color/blacktrans"
-        android:fitsSystemWindows="true"
-        >
+        android:fitsSystemWindows="true">
 
-        <net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout
-            android:fitsSystemWindows="true"
-            android:theme="@style/CustomToolbarTheme"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/pv_collapse_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="@color/blacktrans"
+            android:fitsSystemWindows="true"
+            android:theme="@style/CustomToolbarTheme"
             app:collapsedTitleTextAppearance="@style/CollapsedAppBar"
+            app:contentScrim="@color/blacktrans"
             app:expandedTitleTextAppearance="@style/ExpandedAppBar"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:collapsedTitleGravity="top"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
@@ -53,18 +49,15 @@
                 app:layout_collapseMode="parallax"
                 app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed" />
 
-            <androidx.appcompat.widget.Toolbar
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/pv_toolbar"
                 android:layout_width="wrap_content"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:menu="@menu/package_toolbar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
-
-            </androidx.appcompat.widget.Toolbar>
-
-        </net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout>
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <RelativeLayout
@@ -84,11 +77,11 @@
     </RelativeLayout>
 
     <RelativeLayout
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
         android:id="@+id/packageview_notfoundcont"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="gone"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <ImageView
             android:id="@+id/packageview_notfoundcont_img"
@@ -125,12 +118,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 app:cardBackgroundColor="@color/blacktrans2"
-                app:cardCornerRadius="5dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:contentPadding="5dp">
 
@@ -149,8 +142,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/synopsis"
-                            android:textColor="@color/primaryLightColor"
-                            android:textSize="34sp" />
+                            android:textColor="@color/OverWhite"
+                            android:textSize="34sp"
+                            android:textStyle="bold" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -182,7 +176,7 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="3"
-                                android:textColor="@color/primaryLightColor"
+                                android:textColor="@color/OverWhite"
                                 android:textSize="22sp"
                                 tools:text="青春ぶた野郎はゆめを見てない、異世界にお母さんがすきですか？僕じゃないみたいからだよね。今すぐに帰ります。" />
 
@@ -220,7 +214,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 app:cardBackgroundColor="@color/blacktrans2"
-                app:cardCornerRadius="5dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -228,6 +221,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="horizontal">
+
                     <RelativeLayout
                         android:layout_width="50dp"
                         android:layout_height="55dp"
@@ -245,6 +239,7 @@
                             android:textStyle="bold"
                             tools:text="9.99" />
                     </RelativeLayout>
+
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
@@ -252,6 +247,7 @@
                         android:layout_marginTop="2dp"
                         android:layout_marginBottom="2dp"
                         android:background="@color/design_default_color_background" />
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -275,6 +271,7 @@
                             tools:text="2 days ago" />
 
                     </LinearLayout>
+
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
@@ -310,36 +307,17 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.card.MaterialCardView
-                app:cardCornerRadius="5dp"
-                android:padding="5dp"
-                android:layout_margin="5dp"
-                app:cardBackgroundColor="@color/blacktrans2"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/packageview_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:background="@color/blacktrans2"
+                tools:listitem="@layout/playlist_view">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:text="@string/videos"
-                        android:textColor="@color/primaryLightColor"
-                        android:textSize="30sp" />
+            </androidx.recyclerview.widget.RecyclerView>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/packageview_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        tools:listitem="@layout/playlist_view">
-
-                    </androidx.recyclerview.widget.RecyclerView>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

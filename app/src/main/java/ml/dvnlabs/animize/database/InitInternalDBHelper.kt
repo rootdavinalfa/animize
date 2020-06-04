@@ -42,6 +42,9 @@ class InitInternalDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABA
                 db.execSQL(RecentLand.CREATE_TABLE)
             }
         }
+        if (oldVersion == 3 && newVersion == 4){
+            db.execSQL("ALTER TABLE ${RecentLand.table_name} ADD COLUMN ${RecentLand.col_maxTime} INTEGER DEFAULT 0")
+        }
 
 
         // Create tables again

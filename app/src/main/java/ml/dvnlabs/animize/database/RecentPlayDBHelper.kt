@@ -23,7 +23,7 @@ class RecentPlayDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
 
     //Function for adding recent played
-    fun addRecent(package_id: String?, package_name: String?, anmid: String?, episode: Int, url_cover: String?, timestamp: Long) {
+    fun addRecent(package_id: String?, package_name: String?, anmid: String?, episode: Int, url_cover: String?, timestamp: Long,max : Long = 0) {
         val db = this.writableDatabase
         try {
             val values = ContentValues()
@@ -37,6 +37,7 @@ class RecentPlayDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE
             values.put(RecentLand.col_urlcover, url_cover)
             values.put(RecentLand.col_lasttimestamp, timestamp)
             values.put(RecentLand.col_lastmodified, System.currentTimeMillis())
+            values.put(RecentLand.col_maxTime,max)
             db.insert(RecentLand.table_name, null, values)
             db.close()
         } catch (e: SQLiteException) {
@@ -45,7 +46,7 @@ class RecentPlayDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE
     }
 
     //Function for updating recent
-    fun updateRecent(package_id: String?, package_name: String?, anmid: String, episode: Int, url_cover: String?, timestamp: Long) {
+    fun updateRecent(package_id: String?, package_name: String?, anmid: String, episode: Int, url_cover: String?, timestamp: Long,max : Long = 0) {
         val db = this.writableDatabase
         try {
             val values = ContentValues()
@@ -58,6 +59,7 @@ class RecentPlayDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE
             values.put(RecentLand.col_urlcover, url_cover)
             values.put(RecentLand.col_lasttimestamp, timestamp)
             values.put(RecentLand.col_lastmodified, System.currentTimeMillis())
+            values.put(RecentLand.col_maxTime,max)
             db.update(RecentLand.table_name, values, " " + RecentLand.col_anmid + "='" + anmid + "'", null)
             db.close()
         } catch (e: SQLiteException) {
@@ -106,7 +108,8 @@ class RecentPlayDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE
                     val cover = cursor.getString(cursor.getColumnIndex(RecentLand.col_urlcover))
                     val timestamp = cursor.getLong(cursor.getColumnIndex(RecentLand.col_lasttimestamp))
                     val modified = cursor.getLong(cursor.getColumnIndex(RecentLand.col_lastmodified))
-                    model!!.add(RecentLand(packageid, packagename, anmid, episode, cover, timestamp, modified))
+                    val max = cursor.getLong(cursor.getColumnIndex(RecentLand.col_maxTime))
+                    model!!.add(RecentLand(packageid, packagename, anmid, episode, cover, timestamp, modified, max))
                     cursor.moveToNext()
                 }
                 cursor.close()
@@ -135,7 +138,8 @@ class RecentPlayDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE
                     val cover = cursor.getString(cursor.getColumnIndex(RecentLand.col_urlcover))
                     val timestamp = cursor.getLong(cursor.getColumnIndex(RecentLand.col_lasttimestamp))
                     val modified = cursor.getLong(cursor.getColumnIndex(RecentLand.col_lastmodified))
-                    rec = RecentLand(packageid, packagename, anmid, episode, cover, timestamp, modified)
+                    val max = cursor.getLong(cursor.getColumnIndex(RecentLand.col_maxTime))
+                    rec = RecentLand(packageid, packagename, anmid, episode, cover, timestamp, modified,max)
                     cursor.moveToNext()
                 }
                 cursor.close()
@@ -166,9 +170,10 @@ class RecentPlayDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE
                     val cover = cursor.getString(cursor.getColumnIndex(RecentLand.col_urlcover))
                     val timestamp = cursor.getLong(cursor.getColumnIndex(RecentLand.col_lasttimestamp))
                     val modified = cursor.getLong(cursor.getColumnIndex(RecentLand.col_lastmodified))
+                    val max = cursor.getLong(cursor.getColumnIndex(RecentLand.col_maxTime))
                     //System.out.println("TIMESTAMP::"+timestamp);
                     //model.add(new recentland(packageid,packagename,anmid,episode,cover,timestamp));
-                    rec = RecentLand(packageid, packagename, anmid, episode, cover, timestamp, modified)
+                    rec = RecentLand(packageid, packagename, anmid, episode, cover, timestamp, modified,max)
                     cursor.moveToNext()
                 }
                 cursor.close()

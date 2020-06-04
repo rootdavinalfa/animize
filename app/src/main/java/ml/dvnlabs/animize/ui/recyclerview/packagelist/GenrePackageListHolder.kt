@@ -36,13 +36,13 @@ import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment
 import jp.wasabeef.glide.transformations.BlurTransformation
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.database.PackageStarDBHelper
 import ml.dvnlabs.animize.model.GenrePackageList
 import ml.dvnlabs.animize.ui.activity.PackageView
+import ml.dvnlabs.animize.ui.fragment.bottom.GenreSheet
 import ml.dvnlabs.animize.ui.fragment.tabs.MultiView
 
 class GenrePackageListHolder(private val context: Context, view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, OnLongClickListener {
@@ -96,8 +96,13 @@ class GenrePackageListHolder(private val context: Context, view: View) : Recycle
             val activity = context as AppCompatActivity
             if (activity is PackageView) {
                 val fragment = activity.getSupportFragmentManager().findFragmentByTag("genreFragment")
-                if (fragment is MultiView) {
-                    fragment.dismiss()
+                when (fragment) {
+                    is MultiView -> {
+                        fragment.dismiss()
+                    }
+                    is GenreSheet -> {
+                        fragment.dismiss()
+                    }
                 }
                 activity.refreshActivity(data!!.pack)
             } else {
@@ -130,11 +135,11 @@ class GenrePackageListHolder(private val context: Context, view: View) : Recycle
                         override fun onSheetShown(bottomSheet: BottomSheetMenuDialogFragment, `object`: Any?) {}
                         override fun onSheetItemSelected(bottomSheet: BottomSheetMenuDialogFragment, item: MenuItem, `object`: Any?) {
                             if (isStarred) {
-                                GlobalScope.launch {
+                                runBlocking {
                                     changeStar("UNSTAR")
                                 }
                             } else {
-                                GlobalScope.launch {
+                                runBlocking {
                                     changeStar("STAR")
                                 }
                             }

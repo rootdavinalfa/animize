@@ -16,8 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.ui.fragment.tabs.MultiView
-import ml.dvnlabs.animize.ui.fragment.tabs.MultiView.Companion.newInstance
+import ml.dvnlabs.animize.ui.fragment.bottom.GenreSheet
 
 class PackageMetaGenreHolder(private val context: Context, view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
     private val texts: TextView
@@ -30,13 +29,11 @@ class PackageMetaGenreHolder(private val context: Context, view: View) : Recycle
 
     override fun onClick(v: View) {
         val activity = context as AppCompatActivity
-        val multi: MultiView
         val bundle = Bundle()
-        multi = newInstance()
+        val multi = GenreSheet()
         bundle.putString("genre", genre)
         multi.arguments = bundle
         multi.show(activity.supportFragmentManager, "genreFragment")
-        //activity.getSupportFragmentManager().beginTransaction().add(multi,"genre").commit();
     }
 
     init {

@@ -9,5 +9,5 @@
 package ml.dvnlabs.animize.database
 
 internal object DBVersion {
-    const val DatabaseVer = 3
+    const val DatabaseVer = 4
 }
