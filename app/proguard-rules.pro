@@ -40,13 +40,7 @@
 -keep class com.wang.avi.** { *; }
 
 
--keep class com.heyzap.** {*;}
--keepclassmembers class com.heyzap.** {*;}
--keepclasseswithmembernames class com.heyzap.** {*;}
 
--keep class com.fyber.inneractive.** {*;}
--keepclassmembers class com.fyber.inneractive.** {*;}
--keepclasseswithmembernames class com.fyber.inneractive.** {*;}
 
 -dontwarn com.heyzap.**
 
@@ -102,3 +96,6 @@
 -dontwarn com.moat.**
 #skip AVID classes
 -keep class com.integralads.avid.library.** {*;}
+
+#NavHostFragment
+-keepnames class androidx.navigation.fragment.NavHostFragment

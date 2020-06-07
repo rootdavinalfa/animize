@@ -6,43 +6,49 @@
   ~ This program used for watching anime without ads.
   ~
   -->
-<merge xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.exoplayer2.ui.AspectRatioFrameLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@id/exo_content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center">
 
         <!-- Video surface will be inserted as the first child of the content frame. -->
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
+                android:id="@+id/exo_controller_lock"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:visibility="gone"
-                android:id="@+id/exo_controller_lock"
-                android:layout_margin="2dp"
-                android:padding="5dp"
-                android:elevation="10dp"
-                android:foreground="@drawable/ripple_forrounded"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/circle_blue_transparent"
+                android:backgroundTint="@color/blacktrans2"
                 android:clickable="true"
+                android:elevation="10dp"
                 android:focusable="true"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:foreground="?attr/actionBarItemBackground"
+                android:padding="10dp"
+                android:src="@drawable/ic_locked"
                 android:tint="@color/secondaryLightColor"
-                android:background="@color/blacktrans"
-                android:src="@drawable/ic_locked"/>
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <View
                 android:id="@id/exo_shutter"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/black" />
+                android:background="@android:color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.wang.avi.AVLoadingIndicatorView
                 android:id="@+id/exo_buffering"
@@ -56,11 +62,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@id/exo_artwork"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.exoplayer2.ui.SubtitleView
                 android:id="@id/exo_subtitles"
@@ -72,35 +82,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:textSize="26sp"
                 android:gravity="center"
                 android:padding="16dp"
-                android:textColor="@color/design_default_color_background" />
+                android:textColor="@color/design_default_color_background"
+                android:textSize="26sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
 
-                android:visibility="gone"
                 android:id="@+id/exo_seektime"
-                android:background="@drawable/round_layout"
-                android:backgroundTint="@color/blacktrans"
-                android:layout_centerInParent="true"
-                android:layout_below="@+id/exo_buffering"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:layout_below="@+id/exo_buffering"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="120dp"
+                android:background="@drawable/round_layout"
+                android:backgroundTint="@color/blacktrans"
+                android:text="Rewind : 10 Second"
                 android:textColor="@color/design_default_color_background"
-                android:text="Rewind : 10 Second"/>
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/exo_buffering" />
 
             <FrameLayout
                 android:id="@id/exo_overlay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
 
     <com.google.android.exoplayer2.ui.PlaybackControlView
         android:id="@id/exo_controller"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:visibility="visible" />
 
     <View
         android:id="@id/exo_controller_placeholder"

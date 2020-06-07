@@ -7,103 +7,100 @@
   ~
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#99070707"
-    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/blacktrans2">
 
     <LinearLayout
 
-        android:padding="7dp"
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout5"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/player_name"
             android:layout_width="match_parent"
-            android:layout_height="40sp">
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="asidhiashdih"
+            android:textColor="@color/design_default_color_background"
+            android:textSize="30sp" />
 
-            <TextView
-                android:id="@+id/player_name"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/anim_download"
-                android:ellipsize="marquee"
-                android:singleLine="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:scrollHorizontally="true"
-                android:marqueeRepeatLimit ="marquee_forever"
-                android:textColor="@color/design_default_color_background"
-                android:text="asidhiashdih"
-                android:textSize="30sp" />
-            <ImageView
-                android:foreground="@drawable/ripple_forrounded"
-                android:clickable="true"
-                android:focusable="true"
-                android:id="@+id/anim_download"
-                android:layout_centerInParent="true"
-                android:layout_alignParentEnd="true"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_cloud_download"
-                android:tint="@color/design_default_color_background"/>
-        </RelativeLayout>
-
-        <RelativeLayout
+        <TextView
+            android:id="@+id/player_episode"
             android:layout_width="match_parent"
-            android:layout_height="16sp">
-
-            <TextView
-                android:id="@+id/player_episode"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-
-                android:textColor="@color/design_default_color_background" />
-        </RelativeLayout>
-
-
-
+            android:layout_height="match_parent"
+            android:textColor="@color/design_default_color_background"
+            tools:text="EPISODE : 999" />
 
     </LinearLayout>
 
 
-    <ImageButton
-        android:id="@id/exo_play"
-        style="@style/ExoMediaButton.Play"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:animateLayoutChanges="true"
-        android:background="@drawable/ripple_forrounded"
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="170dp"
+        android:layout_marginTop="270dp"
+        android:layout_marginEnd="171dp"
+        android:layout_marginBottom="285dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
-        android:padding="20dp"
-        android:src="@drawable/ic_play_player" />
+        <ImageButton
+            android:id="@id/exo_play"
+            style="@style/ExoMediaButton.Play"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/circle_blue_transparent"
+            android:backgroundTint="@color/green"
+            android:foreground="?attr/actionBarItemBackground"
+            android:src="@drawable/ic_play_player" />
 
-    <ImageButton
-        android:id="@id/exo_pause"
-        style="@style/ExoMediaButton.Pause"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:animateLayoutChanges="true"
-        android:background="@drawable/ripple_forrounded"
-        android:padding="20dp"
-        android:src="@drawable/ic_pause_player" />
+        <ImageButton
+            android:id="@id/exo_pause"
+            style="@style/ExoMediaButton.Pause"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:animateLayoutChanges="true"
+            android:background="@drawable/circle_blue_transparent"
+            android:backgroundTint="@color/red"
+            android:foreground="?attr/actionBarItemBackground"
+            android:src="@drawable/ic_pause_player" />
+    </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@id/exo_position"
@@ -114,8 +111,8 @@
             android:paddingRight="4dp"
             android:textColor="#FFFFFFFF"
             android:textSize="14sp"
-            tools:text="00:00"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="00:00" />
 
         <com.google.android.exoplayer2.ui.DefaultTimeBar
             android:id="@id/exo_progress"
@@ -137,18 +134,18 @@
             android:paddingRight="4dp"
             android:textColor="#FFFFFFFF"
             android:textSize="14sp"
-            tools:text="22:22"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="22:22" />
 
         <LinearLayout
             android:id="@+id/exo_fullscreen_button"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="end"
+            android:background="@drawable/layoutrippleeffect"
             android:clickable="true"
             android:focusable="true"
             android:gravity="center"
-            android:background="@drawable/layoutrippleeffect"
             android:onClick="btnFullscreen">
 
             <ImageView
@@ -166,4 +163,4 @@
     </LinearLayout>
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

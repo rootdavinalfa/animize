@@ -41,6 +41,7 @@ import ml.dvnlabs.animize.database.RecentPlayDBHelper
 import ml.dvnlabs.animize.databinding.ActivityPackageViewBinding
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.util.network.RequestQueueVolley
 import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.PackageInfo
 import ml.dvnlabs.animize.model.PlaylistModel
@@ -101,6 +102,12 @@ class PackageView : AppCompatActivity() {
             val intent = Intent(this@PackageView, MainActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onPause() {
+        RequestQueueVolley.getInstance(this)!!.cancelRequestByTAG("PLAYLIST")
+        RequestQueueVolley.getInstance(this)!!.cancelRequestByTAG("INFO_PACKAGE")
+        super.onPause()
     }
 
     private fun initializeADSandDB() {
@@ -208,9 +215,7 @@ class PackageView : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-
-        when (id) {
+        when (item.itemId) {
             R.id.package_star -> {
                 if (packageStarDBHelper!!.isStarred(pkganim!!)) {
                     GlobalScope.launch {
@@ -246,15 +251,15 @@ class PackageView : AppCompatActivity() {
 
     private fun getPlayList() {
         val url = Api.url_playlist_play + pkganim
-        APINetworkRequest(this, getplaylist, url, CODE_GET_REQUEST, null)
+        APINetworkRequest(this, getplaylist, url, CODE_GET_REQUEST, null,"PLAYLIST")
     }
 
     private fun getInfo() {
         val url = Api.url_packageinfo + pkganim
-        APINetworkRequest(this, getInfo, url, CODE_GET_REQUEST, null)
+        APINetworkRequest(this, getInfo, url, CODE_GET_REQUEST, null,"INFO_PACKAGE")
     }
 
-    var getInfo: FetchDataListener = object : FetchDataListener {
+    private var getInfo: FetchDataListener = object : FetchDataListener {
         override fun onFetchComplete(data: String?) {
             try {
                 val `object` = JSONObject(data!!)
@@ -282,7 +287,7 @@ class PackageView : AppCompatActivity() {
             binding.packageviewNotfoundcont.visibility = View.GONE
         }
     }
-    var getplaylist: FetchDataListener = object : FetchDataListener {
+    private var getplaylist: FetchDataListener = object : FetchDataListener {
         override fun onFetchComplete(data: String?) {
             try {
                 val `object` = JSONObject(data!!)

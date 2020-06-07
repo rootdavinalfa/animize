@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020.
+  ~ Animize Devs
+  ~ Copyright 2019 - 2020
+  ~ Davin Alfarizky Putra Basudewa <dbasudewa@gmail.com>
+  ~ This program used for watching anime without ads.
+  ~
+  -->
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/OverWhite" android:state_selected="true"/>
+    <item android:color="#ffff" android:state_selected="false"/>
+</selector>

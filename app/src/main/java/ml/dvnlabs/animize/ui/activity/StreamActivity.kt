@@ -106,7 +106,6 @@ class StreamActivity : AppCompatActivity() {
     private var fs_btn: ImageView? = null
     private var video_artwork: ImageView? = null
     private var locker: ImageView? = null
-    private var anim_download: ImageView? = null
     private var ply_name: TextView? = null
     private var ply_episod: TextView? = null
     private var video_seektime: TextView? = null
@@ -136,9 +135,7 @@ class StreamActivity : AppCompatActivity() {
         if (getIntent().getStringExtra("id_anim") != null) {
             setIdAnim(intent.getStringExtra("id_anim"))
         }
-        if (!idanim!!.isEmpty()) {
-            println(idanim)
-        }
+
         playerManager = PlayerManager(this)
         if (PlayerManager.service == null) {
             playerManager!!.bind()
@@ -284,7 +281,6 @@ class StreamActivity : AppCompatActivity() {
         video_buffer = findViewById(R.id.exo_buffering)
         video_artwork = findViewById(R.id.exo_artwork)
         video_seektime = findViewById(R.id.exo_seektime)
-        anim_download = findViewById(R.id.anim_download)
         locker = findViewById(R.id.exo_controller_lock)
         ply_name = findViewById(R.id.player_name)
         ply_episod = findViewById(R.id.player_episode)

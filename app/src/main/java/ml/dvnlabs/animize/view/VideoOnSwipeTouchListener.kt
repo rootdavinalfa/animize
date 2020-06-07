@@ -48,6 +48,7 @@ open class VideoOnSwipeTouchListener(ctx: Context, playerView: PlayerView, playe
 
         override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
             if ((player.playbackState == Player.STATE_READY || player.playbackState == Player.STATE_BUFFERING) && !(mContext as StreamActivity).isLocked) {
+                handler.removeCallbacks(runnable)
                 val nowTime = player.currentPosition
                 isCounting = true
                 if (distanceX < 0) {
