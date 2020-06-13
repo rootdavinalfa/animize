@@ -12,7 +12,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ml.dvnlabs.animize.database.model.RecentLand
+import ml.dvnlabs.animize.database.legacy.model.RecentLand
 import java.util.*
 
 class RecentListAdapter(private val recentLands: ArrayList<RecentLand>?, private val mcontext: Context, private val itemResor: Int) : RecyclerView.Adapter<RecentListHolder>() {

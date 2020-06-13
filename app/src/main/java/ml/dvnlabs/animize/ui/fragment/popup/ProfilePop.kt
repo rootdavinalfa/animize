@@ -21,7 +21,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.InitInternalDBHelper
+import ml.dvnlabs.animize.database.legacy.InitInternalDBHelper
 import ml.dvnlabs.animize.ui.activity.MainActivity
 
 class ProfilePop : BottomSheetDialogFragment() {

@@ -17,6 +17,7 @@ import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import io.branch.referral.Branch
 import ml.dvnlabs.animize.checker.CheckNetwork
 import ml.dvnlabs.animize.checker.CheckNetwork.ConnectivityReceiverListener
+import ml.dvnlabs.animize.data.notification.StarredNotificationWorker
 import java.io.File
 import java.io.IOException
 
@@ -26,6 +27,9 @@ class AppController : Application() {
         mInstance = this
         // Initialize the Branch object
         Branch.getAutoInstance(this)
+
+        //Initialize WorkManager
+        StarredNotificationWorker.setupTaskPeriodic(this)
     }
 
     fun setConnectivityListener(listener: ConnectivityReceiverListener?) {

@@ -19,8 +19,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.model.RecentLand
+import ml.dvnlabs.animize.database.legacy.model.RecentLand
 import ml.dvnlabs.animize.ui.activity.StreamActivity
+import ml.dvnlabs.animize.util.FriendlyTime
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,33 +50,7 @@ class RecentListHolder(private val context: Context, view: View) : RecyclerView.
         val played = "Played On: " + format_date.format(date_modified)
 
         //Day for today,2 day ago
-        val day = format_date_friendly.format(date_modified)
-        val today = Integer.valueOf(format_date_friendly.format(System.currentTimeMillis()))
-        val friendly: String
-        val diff = System.currentTimeMillis() - rec.modified
-        val diffMinutes = diff / (60 * 1000) % 60
-        val diffHours = diff / (60 * 60 * 1000) % 24
-        val diffDays = diff / (24 * 60 * 60 * 1000)
-        //System.out.println("NAME: "+rec.getPackage_name()+" Episode:"+rec.getEpisode()+" Times:"+ diffDays+"/"+diffHours+"/"+diffMinutes);
-        friendly = if (Integer.valueOf(day) == today && Integer.valueOf(format_month.format(date_modified)) == Integer.valueOf(format_month.format(System.currentTimeMillis()))) {
-            if (diffMinutes <= 58 && diffHours == 0L) {
-                "Today, $diffMinutes Minutes ago"
-            } else {
-                "Today, $diffHours Hours ago"
-            }
-        } else {
-            if (diffDays < 1) {
-                "Yesterday, $diffHours Hours ago"
-            } else {
-                if (today - 1 == Integer.valueOf(day)) {
-                    //friendly = "Yesterday, "+ diffHours +" Hours ago";
-                    "Yesterday" + if (diffHours == 0L) "" else ", $diffHours Hours ago"
-                } else {
-                    diffDays.toString() + " Days " + if (diffHours == 0L) " Ago" else ", $diffHours Hours ago"
-                    //friendly = "Yesterday"+ (diffHours==0?"":", "+diffHours+" Hours ago");
-                }
-            }
-        }
+        val friendly = FriendlyTime().getFriendlyTime(date_modified,rec.modified)
         val format_playtime = "Last Time: " + format_timeplay.format(time_player)
         friendlytime.text = friendly
         playedon.text = played
@@ -85,8 +60,8 @@ class RecentListHolder(private val context: Context, view: View) : RecyclerView.
         episode.text = episodee
         Glide.with(context)
                 .applyDefaultRequestOptions(RequestOptions()
-                        .placeholder(R.drawable.ic_picture)
-                        .error(R.drawable.ic_picture))
+                        .placeholder(R.drawable.ic_picture_light)
+                        .error(R.drawable.ic_picture_light))
                 .load(recs!!.urlCover)
                 .transition(DrawableTransitionOptions()
                         .crossFade()).apply(RequestOptions()

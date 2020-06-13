@@ -6,10 +6,8 @@
  * This program used for watching anime without ads.
  *
  */
-package ml.dvnlabs.animize.driver.util.network.listener
+package ml.dvnlabs.animize.constant
 
-interface FetchDataListener {
-    fun onFetchComplete(data: String?)
-    fun onFetchFailure(msg: String?)
-    fun onFetchStart()
+internal object DBVersion {
+    const val DatabaseVer = 4
 }

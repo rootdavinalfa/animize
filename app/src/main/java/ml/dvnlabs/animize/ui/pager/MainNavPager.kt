@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import ml.dvnlabs.animize.ui.fragment.navigation.DashboardNavHost
 import ml.dvnlabs.animize.ui.fragment.navigation.Library
+import ml.dvnlabs.animize.ui.fragment.navigation.Updates
 
 class MainNavPager(fm: FragmentManager, var numOfTabs: Int) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     lateinit var currentFragment: Fragment
@@ -21,6 +22,7 @@ class MainNavPager(fm: FragmentManager, var numOfTabs: Int) : FragmentPagerAdapt
         currentFragment = when (position) {
             0 -> DashboardNavHost()
             1 -> Library()
+            2-> Updates()
             else -> DashboardNavHost()
         }
         return currentFragment

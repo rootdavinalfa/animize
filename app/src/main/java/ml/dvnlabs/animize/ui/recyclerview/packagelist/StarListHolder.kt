@@ -22,10 +22,10 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.facebook.shimmer.ShimmerFrameLayout
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.model.StarLand
+import ml.dvnlabs.animize.database.legacy.model.StarLand
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.StarredModel
 import ml.dvnlabs.animize.ui.activity.PackageView
 import ml.dvnlabs.animize.ui.recyclerview.interfaces.AddingQueue

@@ -35,14 +35,14 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.InitInternalDBHelper
-import ml.dvnlabs.animize.database.PackageStarDBHelper
-import ml.dvnlabs.animize.database.RecentPlayDBHelper
+import ml.dvnlabs.animize.database.legacy.InitInternalDBHelper
+import ml.dvnlabs.animize.database.legacy.PackageStarDBHelper
+import ml.dvnlabs.animize.database.legacy.RecentPlayDBHelper
 import ml.dvnlabs.animize.databinding.ActivityPackageViewBinding
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.network.RequestQueueVolley
-import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.network.RequestQueueVolley
+import ml.dvnlabs.animize.driver.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.PackageInfo
 import ml.dvnlabs.animize.model.PlaylistModel
 import ml.dvnlabs.animize.ui.activity.MainActivity.Companion.setWindowFlag
@@ -178,9 +178,11 @@ class PackageView : AppCompatActivity() {
                         // params are the deep linked params associated with the link      that the user clicked -> was re-directed to this app
                         // params will be empty if no data found
                         try {
-                            if (referringParams.getBoolean("+clicked_branch_link")) {
-                                pkganim = referringParams.getString("pack")
-                                getInfo()
+                            if (referringParams != null) {
+                                if (referringParams.getBoolean("+clicked_branch_link")) {
+                                    pkganim = referringParams.getString("pack")
+                                    getInfo()
+                                }
                             }
                         } catch (e: JSONException) {
                             e.printStackTrace()

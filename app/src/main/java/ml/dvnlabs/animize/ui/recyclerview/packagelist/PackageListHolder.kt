@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.custom.ColorHelper
-import ml.dvnlabs.animize.database.RecentPlayDBHelper
+import ml.dvnlabs.animize.database.legacy.RecentPlayDBHelper
 import ml.dvnlabs.animize.model.PlaylistModel
 import ml.dvnlabs.animize.ui.activity.StreamActivity
 import kotlin.math.floor

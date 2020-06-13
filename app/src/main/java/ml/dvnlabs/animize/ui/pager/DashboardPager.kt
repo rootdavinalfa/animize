@@ -14,22 +14,16 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import ml.dvnlabs.animize.ui.fragment.dashboard.Genre
 import ml.dvnlabs.animize.ui.fragment.dashboard.Home
+import ml.dvnlabs.animize.ui.fragment.navigation.Updates
 
 class DashboardPager(fm: FragmentManager?, private val numOfTabss: Int, private val mContext: Context) : FragmentPagerAdapter(fm!!, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> Home()
             1 -> Genre()
+            2-> Updates()
             else -> Home()
         }
-    }
-
-    override fun getPageTitle(position: Int): CharSequence? {
-        when (position) {
-            0 -> return "For U"
-            1 -> return "Genre"
-        }
-        return super.getPageTitle(position)
     }
 
     override fun getCount(): Int {

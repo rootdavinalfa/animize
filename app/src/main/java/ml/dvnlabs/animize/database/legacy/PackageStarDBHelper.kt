@@ -6,7 +6,7 @@
  * This program used for watching anime without ads.
  *
  */
-package ml.dvnlabs.animize.database
+package ml.dvnlabs.animize.database.legacy
 
 import android.content.ContentValues
 import android.content.Context
@@ -14,7 +14,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import ml.dvnlabs.animize.database.model.StarLand
+import ml.dvnlabs.animize.constant.DBVersion
+import ml.dvnlabs.animize.database.legacy.model.StarLand
 import java.util.*
 
 class PackageStarDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {

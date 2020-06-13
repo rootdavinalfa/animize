@@ -8,12 +8,14 @@
  */
 
 apply plugin: 'com.android.application'
+apply plugin: "androidx.navigation.safeargs"
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs"
+apply plugin: 'koin'
 
 android {
+
     buildFeatures {
         viewBinding = true
     }
@@ -27,6 +29,12 @@ android {
         versionName '0.0.1'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resValue("string", "app_names", "Animize")
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.incremental":"true"]
+            }
+        }
     }
     buildTypes {
         release {
@@ -50,16 +58,6 @@ android {
             debuggable true
             jniDebuggable true
             applicationIdSuffix '.debug'
-			//applicationId 'ml.dvnlabs.animize.debug'
-            //shrinkResources true
-
-            // Includes the default ProGuard rules files that are packaged with
-            // the Android Gradle plugin. To learn more, go to the section about
-            // R8 configuration files.
-            /*proguardFiles getDefaultProguardFile(
-                    'proguard-android-optimize.txt'),
-                    'proguard-rules.pro'*/
-            //minifyEnabled = true as com.android.builder.model.BuildType
             multiDexEnabled = true
             resValue("string", "app_names", "Animize-deb")
         }
@@ -71,9 +69,9 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = "1.8"
     }
-    
+
     buildToolsVersion '29.0.3'
     flavorDimensions "version"
     productFlavors {
@@ -82,36 +80,51 @@ android {
             minSdkVersion 22
             applicationIdSuffix '.ima'
             targetSdkVersion 28
-            versionCode 38
-            versionName '3-D4-'
+            versionCode 39
+            versionName '3-D5-'
             versionNameSuffix 'destroyer'
             applicationId 'ml.dvnlabs.animize'
             resValue("string", "app_names", "Animize")
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/atomicfu.kotlin_module'
+    }
 }
 
 dependencies {
+    //Koin injector
+    def koin_version= "2.1.6"
+    implementation "org.koin:koin-core:$koin_version"
+    // Koin AndroidX Scope feature
+    implementation "org.koin:koin-androidx-scope:$koin_version"
+    // Koin AndroidX ViewModel feature
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+
+
     //Core
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.core:core-ktx:1.4.0-alpha01'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta6'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test:runner:1.3.0-rc01'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-rc01'
-    implementation 'com.google.android.material:material:1.2.0-beta01'
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    implementation 'com.google.android.material:material:1.3.0-alpha01'
     implementation "org.jetbrains.anko:anko-commons:0.10.8"
-    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'org.greenrobot:eventbus:3.2.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     //Common
     implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.google.android.exoplayer:exoplayer:2.10.2'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'com.android.support:support-annotations:28.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0-rc01'
@@ -124,23 +137,28 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
-    implementation 'com.google.firebase:firebase-core:17.4.2'
+    implementation 'com.google.firebase:firebase-core:17.4.3'
     implementation 'jp.wasabeef:glide-transformations:4.0.1'
     implementation 'com.github.Kennyc1012:BottomSheetMenu:3.1.3'
-    implementation 'com.google.android.gms:play-services-basement:17.2.1'
+    implementation 'com.google.android.gms:play-services-basement:17.3.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'io.branch.sdk.android:library:2.+'
 
+
     def lifecycle_version = "2.2.0"
+    def arch_version = "2.1.0"
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
     // Saved state module for ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
-
+    // Annotation processor
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
     implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
+    // optional - Test helpers for LiveData
+    testImplementation "androidx.arch.core:core-testing:$arch_version"
 
     //Room Database
     def room_version = "2.2.5"
@@ -148,11 +166,18 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
+    // Test helpers
+    testImplementation "androidx.room:room-testing:$room_version"
 
     //Navigation Component
     def nav_version = "2.2.2"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    //Worker manager
+    def work_version = "2.3.4"
+    // Kotlin + coroutines
+    implementation "androidx.work:work-runtime-ktx:$work_version"
 }
 repositories {
     google()

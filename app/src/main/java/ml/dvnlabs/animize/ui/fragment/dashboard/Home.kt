@@ -24,8 +24,8 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.yarolegovich.discretescrollview.DiscreteScrollView
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.BannerListMdl
 import ml.dvnlabs.animize.model.HomeLastUploadModel
 import ml.dvnlabs.animize.model.PackageList

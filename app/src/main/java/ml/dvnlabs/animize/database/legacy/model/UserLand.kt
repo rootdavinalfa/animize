@@ -6,7 +6,7 @@
  * This program used for watching anime without ads.
  *
  */
-package ml.dvnlabs.animize.database.model
+package ml.dvnlabs.animize.database.legacy.model
 
 class UserLand(id_user: String?, name_user: String?, var email: String?, tokeen: String?) {
     var idUser: String? = id_user

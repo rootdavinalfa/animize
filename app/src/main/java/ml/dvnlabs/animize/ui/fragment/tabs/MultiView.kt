@@ -18,9 +18,9 @@ import androidx.fragment.app.DialogFragment
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.databinding.FragmentMultiviewBinding
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.network.RequestQueueVolley
-import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.network.RequestQueueVolley
+import ml.dvnlabs.animize.driver.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.GenrePackageList
 import ml.dvnlabs.animize.ui.recyclerview.packagelist.GenrePackageListAdapter
 import ml.dvnlabs.animize.view.AutoGridLayoutManager

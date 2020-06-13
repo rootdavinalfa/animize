@@ -22,14 +22,14 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.base.BaseActivity
-import ml.dvnlabs.animize.database.InitInternalDBHelper
+import ml.dvnlabs.animize.database.legacy.InitInternalDBHelper
 import ml.dvnlabs.animize.ui.pager.MainNavPager
 import ml.dvnlabs.animize.ui.viewmodel.CommonViewModel
 
 class AnimizeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemReselectedListener {
     private lateinit var commonVM: CommonViewModel
     private lateinit var initInternalDBHelper: InitInternalDBHelper
-    private val indexMain = mapOf(0 to R.id.nav_home, 1 to R.id.nav_library)
+    private val indexMain = mapOf(0 to R.id.nav_home, 1 to R.id.nav_library, 2 to R.id.nav_update)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,19 +38,18 @@ class AnimizeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSel
         changeStatusBar(this, R.color.colorPrimaryDark, false)
         commonVM = ViewModelProvider(this).get(CommonViewModel::class.java)
 
-
         runBlocking { readUser() }
         initLayout()
     }
 
     override fun onNavigationItemReselected(item: MenuItem) {
-        when(item.itemId){
-            R.id.nav_home->{
+        when (item.itemId) {
+            R.id.nav_home -> {
                 val navController = findNavController(R.id.dashboardNavHost)
                 navController.popBackStack(navController.graph.startDestination, false)
                 commonVM.changeDashboardScrolledToTop()
             }
-            R.id.nav_library->{
+            R.id.nav_library -> {
                 commonVM.changeLibraryScrolledToTop()
             }
         }
@@ -63,7 +62,7 @@ class AnimizeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSel
     }
 
     private fun initLayout() {
-        mainPager.adapter = MainNavPager(supportFragmentManager, 2)
+        mainPager.adapter = MainNavPager(supportFragmentManager, 3)
         mainBottomNavigation.setOnNavigationItemSelectedListener(this)
         mainBottomNavigation.setOnNavigationItemReselectedListener(this)
 
@@ -86,6 +85,9 @@ class AnimizeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSel
                 }
             }
             1 -> {
+                mainBottomNavigation.selectedItemId = R.id.nav_home
+            }
+            2 -> {
                 mainBottomNavigation.selectedItemId = R.id.nav_home
             }
             else -> {

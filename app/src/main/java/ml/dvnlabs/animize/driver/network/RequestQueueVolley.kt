@@ -7,7 +7,7 @@
  *
  */
 
-package ml.dvnlabs.animize.driver.util.network
+package ml.dvnlabs.animize.driver.network
 
 import android.content.Context
 import android.util.Log

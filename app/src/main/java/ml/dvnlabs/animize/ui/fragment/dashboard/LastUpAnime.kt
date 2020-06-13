@@ -21,9 +21,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.databinding.FragmentLastupListBinding
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.network.RequestQueueVolley
-import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.network.RequestQueueVolley
+import ml.dvnlabs.animize.driver.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.VideoListModel
 import ml.dvnlabs.animize.ui.activity.DashboardActivity
 import ml.dvnlabs.animize.ui.recyclerview.EndlessRecyclerScrollListener

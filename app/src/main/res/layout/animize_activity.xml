@@ -25,8 +25,8 @@
         android:id="@+id/mainBottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_rect_round_top_rl"
-        app:elevation="0dp"
+        android:background="@color/blackElev"
+        app:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/dash_bottom_nav" />

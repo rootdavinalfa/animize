@@ -6,7 +6,7 @@
  * This program used for watching anime without ads.
  *
  */
-package ml.dvnlabs.animize.database.model
+package ml.dvnlabs.animize.database.legacy.model
 
 class RecentLand {
     private var packageId: String? = null

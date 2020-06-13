@@ -12,7 +12,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ml.dvnlabs.animize.database.model.StarLand
+import ml.dvnlabs.animize.database.legacy.model.StarLand
 import ml.dvnlabs.animize.model.StarredModel
 import ml.dvnlabs.animize.ui.recyclerview.interfaces.AddingQueue
 import java.util.*

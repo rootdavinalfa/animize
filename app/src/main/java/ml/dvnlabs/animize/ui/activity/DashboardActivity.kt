@@ -36,7 +36,7 @@ import ml.dvnlabs.animize.app.AppController
 import ml.dvnlabs.animize.base.BaseActivity
 import ml.dvnlabs.animize.checker.CheckNetwork
 import ml.dvnlabs.animize.checker.CheckNetwork.ConnectivityReceiverListener
-import ml.dvnlabs.animize.database.InitInternalDBHelper
+import ml.dvnlabs.animize.database.legacy.InitInternalDBHelper
 import ml.dvnlabs.animize.ui.fragment.Global.Companion.addFragment
 import ml.dvnlabs.animize.ui.fragment.dashboard.LastUpAnime
 import ml.dvnlabs.animize.ui.fragment.dashboard.Search

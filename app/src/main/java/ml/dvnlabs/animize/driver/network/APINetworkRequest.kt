@@ -7,7 +7,7 @@
  *
  */
 
-package ml.dvnlabs.animize.driver.util.network
+package ml.dvnlabs.animize.driver.network
 
 import android.content.Context
 import com.android.volley.AuthFailureError
@@ -15,7 +15,7 @@ import com.android.volley.NoConnectionError
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
-import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.network.listener.FetchDataListener
 import java.util.*
 
 class APINetworkRequest(val context: Context, listen: FetchDataListener?, uri: String, REQUEST_CODE: Int, params: HashMap<String, String>?, TAG: String = DEFAULT_TAG) {

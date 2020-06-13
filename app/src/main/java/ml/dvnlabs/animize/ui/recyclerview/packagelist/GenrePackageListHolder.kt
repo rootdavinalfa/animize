@@ -36,10 +36,11 @@ import com.kennyc.bottomsheet.BottomSheetMenuDialogFragment
 import jp.wasabeef.glide.transformations.BlurTransformation
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.PackageStarDBHelper
+import ml.dvnlabs.animize.database.legacy.PackageStarDBHelper
 import ml.dvnlabs.animize.model.GenrePackageList
 import ml.dvnlabs.animize.ui.activity.PackageView
 import ml.dvnlabs.animize.ui.fragment.bottom.GenreSheet
@@ -135,11 +136,11 @@ class GenrePackageListHolder(private val context: Context, view: View) : Recycle
                         override fun onSheetShown(bottomSheet: BottomSheetMenuDialogFragment, `object`: Any?) {}
                         override fun onSheetItemSelected(bottomSheet: BottomSheetMenuDialogFragment, item: MenuItem, `object`: Any?) {
                             if (isStarred) {
-                                runBlocking {
+                                GlobalScope.launch {
                                     changeStar("UNSTAR")
                                 }
                             } else {
-                                runBlocking {
+                                GlobalScope.launch {
                                     changeStar("STAR")
                                 }
                             }

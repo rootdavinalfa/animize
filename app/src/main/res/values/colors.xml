@@ -31,8 +31,9 @@
     <color name="red">#EE3636</color>
     <color name="redTrans">#83EE3636</color>
     <color name="primaryDarkColorTrans">#C356BAEB</color>
-    <color name="yellow">#FFEB3B</color>
+    <color name="yellow">#CAB500</color>
     <color name="OverWhite">#CFCFCF</color>
+    <color name="blackElev">#171717</color>
     <color name="blacktrans">#6A000000</color>
     <color name="blacktrans3">#00171717</color>
     <color name="blacktrans2">#B5000000</color>

@@ -27,8 +27,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.wang.avi.AVLoadingIndicatorView
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.driver.Api
-import ml.dvnlabs.animize.driver.util.network.APINetworkRequest
-import ml.dvnlabs.animize.driver.util.network.listener.FetchDataListener
+import ml.dvnlabs.animize.driver.network.APINetworkRequest
+import ml.dvnlabs.animize.driver.network.listener.FetchDataListener
 import ml.dvnlabs.animize.ui.activity.MainActivity
 import org.json.JSONException
 import org.json.JSONObject

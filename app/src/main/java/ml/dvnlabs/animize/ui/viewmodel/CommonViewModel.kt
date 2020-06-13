@@ -11,7 +11,7 @@ package ml.dvnlabs.animize.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ml.dvnlabs.animize.database.model.UserLand
+import ml.dvnlabs.animize.database.legacy.model.UserLand
 
 class CommonViewModel : ViewModel() {
     var userLand: UserLand? = null
