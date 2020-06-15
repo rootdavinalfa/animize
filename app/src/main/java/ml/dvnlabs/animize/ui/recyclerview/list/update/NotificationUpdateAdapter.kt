@@ -46,8 +46,8 @@ class NotificationUpdateAdapter(
     override fun onBindViewHolder(holder: NotificationUpdateViewHolder, position: Int) {
         val notify = notificationList[position]
         //holder.receivedON.visibility = View.GONE
-        val synchronized = Date(notify.synchronized)
-        holder.receivedON.text = "Received On: ${FriendlyTime().getFriendlyTime(synchronized,notify.synchronized)}"
+        val synchronized = Date(notify.synchronized.toLong())
+        holder.receivedON.text = "Received On: ${FriendlyTime().getFriendlyTime(synchronized,notify.synchronized.toLong())}"
         holder.title.text = notify.nameCatalogue
         holder.episode.text = "Episode: ${notify.episode}"
         Glide.with(context!!)

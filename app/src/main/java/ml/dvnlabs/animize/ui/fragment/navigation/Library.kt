@@ -15,17 +15,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.ui.pager.LibraryPager
 import ml.dvnlabs.animize.ui.viewmodel.CommonViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class Library : Fragment() {
     private var tabLayout: TabLayout? = null
     private var pager: ViewPager? = null
-    private lateinit var commonViewModel : CommonViewModel
+    private val commonViewModel: CommonViewModel by sharedViewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_library, container, false)
@@ -40,9 +40,6 @@ class Library : Fragment() {
         pager?.adapter = adapter
         pager?.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
 
-        commonViewModel = activity?.run {
-            ViewModelProvider(this)[CommonViewModel::class.java]
-        } ?: throw Exception("Invalid")
 
         commonViewModel.libraryScrolledToTop.observe(viewLifecycleOwner, Observer {
             if (it){

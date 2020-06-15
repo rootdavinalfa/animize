@@ -22,9 +22,9 @@ data class StarredNotification(
         @ColumnInfo(name = "anm_id") var animeID: String,
         @ColumnInfo(name = "episode") var episode: Int = 1,
         @ColumnInfo(name = "thumbnail") var thumbnailURL: String,
-        @ColumnInfo(name = "synchronized_time") var synchronized: Long = System.currentTimeMillis(),
         @ColumnInfo(name = "opened") var opened: Boolean = false,
-        @ColumnInfo(name = "notification_posted") var posted: Boolean = false
+        @ColumnInfo(name = "notification_posted") var posted: Boolean = false,
+        @ColumnInfo(name = "synchronized_time") var synchronized: String = System.currentTimeMillis().toString()
 ) {
-    constructor() : this(0, "", "", "", 1, "", System.currentTimeMillis(), false, false)
+    constructor() : this(0, "", "", "", 1, "", false, false, System.currentTimeMillis().toString())
 }

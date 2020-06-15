@@ -99,7 +99,7 @@ class PackageStarDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABAS
             if (count > 0) {
                 return true
             }
-            db.close()
+            //db.close()
             return false
         } catch (e: SQLiteException) {
             Log.e("Error Get: ", e.message!!)

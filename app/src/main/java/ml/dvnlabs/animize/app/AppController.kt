@@ -18,6 +18,9 @@ import io.branch.referral.Branch
 import ml.dvnlabs.animize.checker.CheckNetwork
 import ml.dvnlabs.animize.checker.CheckNetwork.ConnectivityReceiverListener
 import ml.dvnlabs.animize.data.notification.StarredNotificationWorker
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 import java.io.File
 import java.io.IOException
 
@@ -25,6 +28,13 @@ class AppController : Application() {
     override fun onCreate() {
         super.onCreate()
         mInstance = this
+        //Initialize Koin
+        startKoin {
+            androidLogger()
+            androidContext(this@AppController)
+            modules(AppModule)
+        }
+
         // Initialize the Branch object
         Branch.getAutoInstance(this)
 

@@ -41,6 +41,7 @@ import ml.dvnlabs.animize.ui.viewmodel.DataRequestViewModel
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class Dashboard : Fragment() {
     private var binding: FragmentDashboardBinding? = null
@@ -48,7 +49,7 @@ class Dashboard : Fragment() {
     private var bannerRunnable: Runnable? = null
 
     private lateinit var dataViewModel: DataRequestViewModel
-    private lateinit var commonViewModel: CommonViewModel
+    private val commonViewModel: CommonViewModel by sharedViewModel()
 
     companion object {
         private const val CODE_GET_REQUEST = 1024
@@ -68,9 +69,6 @@ class Dashboard : Fragment() {
             ViewModelProvider(this)[DataRequestViewModel::class.java]
         } ?: throw Exception("Invalid")
 
-        commonViewModel = activity?.run {
-            ViewModelProvider(this)[CommonViewModel::class.java]
-        } ?: throw Exception("Invalid")
 
         commonViewModel.dashboardScrolledToTop.observe(viewLifecycleOwner, Observer {
             if (it) {

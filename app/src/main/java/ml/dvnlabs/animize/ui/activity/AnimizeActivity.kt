@@ -13,7 +13,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.animize_activity.*
@@ -25,9 +24,10 @@ import ml.dvnlabs.animize.base.BaseActivity
 import ml.dvnlabs.animize.database.legacy.InitInternalDBHelper
 import ml.dvnlabs.animize.ui.pager.MainNavPager
 import ml.dvnlabs.animize.ui.viewmodel.CommonViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AnimizeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener, BottomNavigationView.OnNavigationItemReselectedListener {
-    private lateinit var commonVM: CommonViewModel
+    private val commonVM: CommonViewModel by viewModel()
     private lateinit var initInternalDBHelper: InitInternalDBHelper
     private val indexMain = mapOf(0 to R.id.nav_home, 1 to R.id.nav_library, 2 to R.id.nav_update)
 
@@ -36,7 +36,6 @@ class AnimizeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSel
         setContentView(R.layout.animize_activity)
         initInternalDBHelper = InitInternalDBHelper(this)
         changeStatusBar(this, R.color.colorPrimaryDark, false)
-        commonVM = ViewModelProvider(this).get(CommonViewModel::class.java)
 
         runBlocking { readUser() }
         initLayout()

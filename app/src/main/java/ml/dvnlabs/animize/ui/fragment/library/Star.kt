@@ -17,7 +17,6 @@ import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +28,7 @@ import ml.dvnlabs.animize.database.legacy.PackageStarDBHelper
 import ml.dvnlabs.animize.ui.recyclerview.packagelist.StarListAdapter
 import ml.dvnlabs.animize.ui.viewmodel.CommonViewModel
 import ml.dvnlabs.animize.view.AutoGridLayoutManager
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class Star : Fragment() {
     private var packageStarDBHelper: PackageStarDBHelper? = null
@@ -38,7 +38,7 @@ class Star : Fragment() {
     private var autoGridLayoutManager: AutoGridLayoutManager? = null
     private var voided: RelativeLayout? = null
     private var refreshLayout: SwipeRefreshLayout? = null
-    private lateinit var commonViewModel: CommonViewModel
+    private val commonViewModel: CommonViewModel by sharedViewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -50,9 +50,6 @@ class Star : Fragment() {
         packageStarDBHelper = PackageStarDBHelper(activity)
         refreshList()
         swipeRefresh()
-        commonViewModel = activity?.run {
-            ViewModelProvider(this)[CommonViewModel::class.java]
-        } ?: throw Exception("Invalid")
 
         commonViewModel.libraryScrolledToTop.observe(viewLifecycleOwner, Observer {
             if (it){
