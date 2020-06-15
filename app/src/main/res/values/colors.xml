@@ -33,6 +33,8 @@
     <color name="primaryDarkColorTrans">#C356BAEB</color>
     <color name="yellow">#CAB500</color>
     <color name="OverWhite">#CFCFCF</color>
+    <color name="white">#FFF</color>
+    <color name="disabled">#6D6D6D</color>
     <color name="blackElev">#171717</color>
     <color name="blacktrans">#6A000000</color>
     <color name="blacktrans3">#00171717</color>

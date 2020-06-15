@@ -14,6 +14,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -21,10 +22,16 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.rv_update.view.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.database.notification.StarredNotification
+import ml.dvnlabs.animize.database.notification.StarredNotificationDatabase
 import ml.dvnlabs.animize.ui.activity.StreamActivity
 import ml.dvnlabs.animize.util.FriendlyTime
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 import java.util.*
 
 class NotificationUpdateAdapter(
@@ -48,6 +55,11 @@ class NotificationUpdateAdapter(
         //holder.receivedON.visibility = View.GONE
         val synchronized = Date(notify.synchronized.toLong())
         holder.receivedON.text = "Received On: ${FriendlyTime().getFriendlyTime(synchronized,notify.synchronized.toLong())}"
+
+        if (notify.opened){
+            holder.title.setTextColor(ContextCompat.getColor(context!!,R.color.disabled))
+            holder.episode.setTextColor(ContextCompat.getColor(context!!,R.color.disabled))
+        }
         holder.title.text = notify.nameCatalogue
         holder.episode.text = "Episode: ${notify.episode}"
         Glide.with(context!!)
@@ -68,7 +80,8 @@ class NotificationUpdateAdapter(
     }
 
 
-    inner class NotificationUpdateViewHolder(view: View) : RecyclerView.ViewHolder(view),View.OnClickListener {
+    inner class NotificationUpdateViewHolder(view: View) : RecyclerView.ViewHolder(view),View.OnClickListener,KoinComponent {
+        private val starredRoom: StarredNotificationDatabase by inject { parametersOf(context) }
         val receivedON = view.updateReceivedOn
         val image = view.updateThumbnail
         val title = view.updateAnimeTitle
@@ -78,6 +91,10 @@ class NotificationUpdateAdapter(
         }
 
         override fun onClick(v: View?) {
+
+            GlobalScope.launch {
+                starredRoom.starredNotificationDAO().notificationOpened(notificationList[absoluteAdapterPosition].animeID)
+            }
             val intent = Intent(context!!.applicationContext, StreamActivity::class.java)
             intent.putExtra("id_anim",notificationList[absoluteAdapterPosition].animeID)
             context!!.startActivity(intent)

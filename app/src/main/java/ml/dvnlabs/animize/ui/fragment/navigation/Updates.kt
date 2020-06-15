@@ -19,7 +19,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.data.notification.StarredNotificationWorker
-import ml.dvnlabs.animize.database.notification.StarredNotificationDatabase
 import ml.dvnlabs.animize.databinding.FragmentUpdatesBinding
 import ml.dvnlabs.animize.ui.recyclerview.list.update.NotificationUpdateAdapter
 import ml.dvnlabs.animize.ui.viewmodel.ListViewModel
@@ -28,14 +27,9 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class Updates : Fragment() {
     private val listVM : ListViewModel by sharedViewModel()
     private var binding: FragmentUpdatesBinding? = null
-    private var starredRoom: StarredNotificationDatabase? = null
     private var adapter: NotificationUpdateAdapter? = null
     private var layoutManager: LinearLayoutManager? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        starredRoom = StarredNotificationDatabase.getDatabase(requireContext())
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         inflater.inflate(R.layout.fragment_updates, container, false)
@@ -48,7 +42,6 @@ class Updates : Fragment() {
         binding!!.updateToolbar.title = "Updates"
 
         listVM.listNotification.observe(viewLifecycleOwner, Observer {
-            println("SIZE DATA: ${it.size}")
             adapter?.setNotification(it)
         })
 

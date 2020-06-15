@@ -64,28 +64,30 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
         withContext(Dispatchers.IO) {
             val sqLiteStarredPKG = starredSQLite.starredList
             val observerHelper = sqLiteStarredPKG?.toFlowable()
-            val roomPKG = Flowable.fromArray(starredRoom.starredNotificationDAO().getStarredNotificationList())
+            val roomPKG = starredRoom.starredNotificationDAO().getStarredNotificationList().toFlowable()
             observerHelper?.subscribeOn(Schedulers.computation())?.doOnComplete {
-                currentProgress = 0
+                //currentProgress = 0
                 cancelNotificationProgress()
             }?.doOnNext {
+                currentProgress += 1
+                maxProgress = sqLiteStarredPKG.size
                 createNotificationProgress(title = "Updating Data...",
-                        description = "Synchronizing ${it.packageid} "
+                        description = "Synchronizing "
                 )
             }?.subscribe {
-                println("PKG SYNC: ${it.packageid}")
-                maxProgress = sqLiteStarredPKG.size
-                APINetworkRequest(applicationContext, listener, "${Api.url_playlist_play}${it.packageid}", APINetworkRequest.CODE_GET_REQUEST, null)
+                runBlocking {
+                    delay(1500)
+                    println("PKG SYNC: ${it.packageid}")
+                    APINetworkRequest(applicationContext, listener, "${Api.url_playlist_play}${it.packageid}", APINetworkRequest.CODE_GET_REQUEST, null)
+                }
             }
 
             roomPKG.subscribeOn(Schedulers.computation()).subscribe {
-                for (i in it) {
-                    GlobalScope.launch {
-                        if (starredRoom.starredNotificationDAO().checkPKGID(i.packageID) > 0
-                                && !starredSQLite.isStarred(i.packageID)) {
-                            println("DELETED ${i.packageID}")
-                            starredRoom.starredNotificationDAO().deletePKGID(i.packageID)
-                        }
+                GlobalScope.launch {
+                    if (starredRoom.starredNotificationDAO().checkPKGID(it.packageID) > 0
+                            && !starredSQLite.isStarred(it.packageID)) {
+                        println("DELETED ${it.packageID}")
+                        starredRoom.starredNotificationDAO().deletePKGID(it.packageID)
                     }
                 }
             }
@@ -114,7 +116,6 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
 
     private fun parsePlaylist(playlist: JSONArray) {
         try {
-            currentProgress += 1
             val temp = ArrayList<TemporaryDataAnime>()
             for (i in 0 until playlist.length()) {
                 val `object` = playlist.getJSONObject(i)
@@ -164,7 +165,6 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
                                     imgURL = i.thumbnailURL
                             )
                         }
-
                     }
                 }
             }
@@ -174,22 +174,25 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
     private fun createNotificationProgress(title: String, description: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
-                    NotificationChannel(Notification.NOTIFICATION_CHANNEL_ID_LOADING, Notification.NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
+                    NotificationChannel(Notification.NOTIFICATION_CHANNEL_ID_LOADING, "Sync", NotificationManager.IMPORTANCE_DEFAULT)
             notificationManager.createNotificationChannel(notificationChannel)
         }
+        println("CURRENT: $currentProgress MAX: $maxProgress")
 
         val notificationBuilder = NotificationCompat.Builder(applicationContext, Notification.NOTIFICATION_CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(description)
-                .setSmallIcon(R.drawable.ic_refresh_light).setProgress(maxProgress, currentProgress, false)
+                .setSmallIcon(R.drawable.ic_refresh_light)
+                .setProgress(maxProgress, currentProgress, false)
                 .setOnlyAlertOnce(true)
+                .setOngoing(true)
         notificationManager.notify(Notification.NOTIFICATION_ID_SYNCHRONIZE, notificationBuilder.build())
     }
 
     private fun createNotification(title: String, description: String, imgURL: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
-                    NotificationChannel(Notification.NOTIFICATION_CHANNEL_ID, Notification.NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
+                    NotificationChannel(Notification.NOTIFICATION_CHANNEL_ID, Notification.NOTIFICATION_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH)
             notificationManager.createNotificationChannel(notificationChannel)
         }
         Glide.with(context)
