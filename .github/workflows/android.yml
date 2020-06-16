@@ -33,7 +33,7 @@ jobs:
       id: slug
       run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
     - name: Releasing using Hub
-      uses: ShaunLWM/action-release-debugapk@master
+      uses: konteru/action-release-debugapk@master
       env:
        GITHUB_TOKEN: ${{ secrets.TOKEN }}
        APP_FOLDER: app
