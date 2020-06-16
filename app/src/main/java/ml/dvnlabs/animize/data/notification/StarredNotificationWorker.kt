@@ -72,7 +72,7 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
                 currentProgress += 1
                 maxProgress = sqLiteStarredPKG.size
                 createNotificationProgress(title = "Updating Data...",
-                        description = "Synchronizing "
+                        description = "Synchronizing ${it.packageid}"
                 )
             }?.subscribe {
                 runBlocking {
@@ -135,8 +135,10 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
                         packageID = i.packageID,
                         episode = i.episode,
                         animeID = i.animeID,
-                        thumbnailURL = i.thumbnailURL
+                        thumbnailURL = i.thumbnailURL,
+                        syncTime = System.currentTimeMillis()
                 )
+                println(System.currentTimeMillis())
 
                 GlobalScope.launch {
                     starredRoom.starredNotificationDAO().newNotification(notification)
@@ -155,15 +157,16 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
             val flows = Flowable.fromArray(starredRoom.starredNotificationDAO().getStarredNotificationListNotOpenedAndNotPosted())
             flows.subscribeOn(Schedulers.single()).subscribe {
                 for (i in it) {
-                    GlobalScope.launch(Dispatchers.IO) {
-                        starredRoom.starredNotificationDAO().notificationPosted(i.animeID)
-                        delay(2000)
-                        withContext(Dispatchers.Main) {
-                            createNotification(
-                                    title = i.nameCatalogue.take(65),
-                                    description = "Updated to episode: ${i.episode}",
-                                    imgURL = i.thumbnailURL
-                            )
+                    GlobalScope.launch {
+                        if (starredRoom.starredNotificationDAO().isPosted(i.animeID) == 0) {
+                            starredRoom.starredNotificationDAO().notificationPosted(i.animeID)
+                            withContext(Dispatchers.Main) {
+                                createNotification(
+                                        title = i.nameCatalogue.take(65),
+                                        description = "Updated to episode: ${i.episode}",
+                                        imgURL = i.thumbnailURL
+                                )
+                            }
                         }
                     }
                 }
@@ -222,7 +225,7 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
 
     companion object {
         private const val TAG = "EpisodeUpdater"
-        private const val DEFAULT_INTERVAL = 30
+        private const val DEFAULT_INTERVAL = 60
 
         fun setupTaskImmediately(context: Context) {
             val constraints: Constraints = Constraints.Builder()

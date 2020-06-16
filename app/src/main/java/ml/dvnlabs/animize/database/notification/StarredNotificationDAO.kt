@@ -19,6 +19,9 @@ interface StarredNotificationDAO {
     @Query("SELECT COUNT(*) FROM starred_notification WHERE pkg_id = :pkkID")
     suspend fun checkPKGID(pkkID: String): Int
 
+    @Query("SELECT COUNT(*) FROM starred_notification WHERE anm_id = :anmID AND notification_posted = 1")
+    suspend fun isPosted(anmID: String): Int
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun newNotification(starredNotification: StarredNotification)
 
@@ -29,13 +32,13 @@ interface StarredNotificationDAO {
     suspend fun deleteALL()
 
 
-    @Query("SELECT * FROM starred_notification ORDER BY uid DESC")
+    @Query("SELECT * FROM starred_notification ORDER BY syncTime DESC")
     suspend fun getStarredNotificationList(): List<StarredNotification>
 
-    @Query("SELECT * FROM starred_notification WHERE opened = 0 ORDER BY uid DESC")
+    @Query("SELECT * FROM starred_notification WHERE opened = 0 ORDER BY syncTime DESC")
     suspend fun getStarredNotificationListNotOpened(): List<StarredNotification>
 
-    @Query("SELECT * FROM starred_notification WHERE opened = 0 AND notification_posted = 0 ORDER BY uid DESC")
+    @Query("SELECT * FROM starred_notification WHERE opened = 0 AND notification_posted = 0 ORDER BY syncTime DESC")
     suspend fun getStarredNotificationListNotOpenedAndNotPosted(): List<StarredNotification>
 
     @Query("UPDATE starred_notification SET opened = 1 WHERE anm_id = :anmID")

@@ -16,7 +16,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "starred_notification", indices = [Index(value = ["anm_id"], unique = true)])
 data class StarredNotification(
-        @PrimaryKey(autoGenerate = true) var uid: Int = 0,
+        @PrimaryKey(autoGenerate = true) var uid: Long = 0,
         @ColumnInfo(name = "name_catalogue") var nameCatalogue: String,
         @ColumnInfo(name = "pkg_id") var packageID: String,
         @ColumnInfo(name = "anm_id") var animeID: String,
@@ -24,7 +24,7 @@ data class StarredNotification(
         @ColumnInfo(name = "thumbnail") var thumbnailURL: String,
         @ColumnInfo(name = "opened") var opened: Boolean = false,
         @ColumnInfo(name = "notification_posted") var posted: Boolean = false,
-        @ColumnInfo(name = "synchronized_time") var synchronized: String = System.currentTimeMillis().toString()
+        @ColumnInfo(typeAffinity = ColumnInfo.INTEGER) var syncTime: Long = 0
 ) {
-    constructor() : this(0, "", "", "", 1, "", false, false, System.currentTimeMillis().toString())
+    constructor() : this(0, "", "", "", 1, "", false, false, 0)
 }

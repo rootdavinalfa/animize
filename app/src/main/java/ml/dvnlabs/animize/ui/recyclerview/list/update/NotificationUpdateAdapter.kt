@@ -51,32 +51,14 @@ class NotificationUpdateAdapter(
     }
 
     override fun onBindViewHolder(holder: NotificationUpdateViewHolder, position: Int) {
-        val notify = notificationList[position]
-        //holder.receivedON.visibility = View.GONE
-        val synchronized = Date(notify.synchronized.toLong())
-        holder.receivedON.text = "Received On: ${FriendlyTime().getFriendlyTime(synchronized,notify.synchronized.toLong())}"
-
-        if (notify.opened){
-            holder.title.setTextColor(ContextCompat.getColor(context!!,R.color.disabled))
-            holder.episode.setTextColor(ContextCompat.getColor(context!!,R.color.disabled))
-        }
-        holder.title.text = notify.nameCatalogue
-        holder.episode.text = "Episode: ${notify.episode}"
-        Glide.with(context!!)
-                .applyDefaultRequestOptions(RequestOptions()
-                        .placeholder(R.drawable.ic_picture_light)
-                        .error(R.drawable.ic_picture_light))
-                .load(notify.thumbnailURL)
-                .transform(RoundedCorners(5))
-                .transition(DrawableTransitionOptions()
-                        .crossFade()).apply(RequestOptions()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)).into(holder.image)
+        holder.bindItem()
     }
 
     internal fun setNotification(notification : List<StarredNotification>){
-        this.notificationList = notification
-        notifyDataSetChanged()
-
+        if (this.notificationList != notification){
+            this.notificationList = notification
+            notifyDataSetChanged()
+        }
     }
 
 
@@ -88,6 +70,33 @@ class NotificationUpdateAdapter(
         val episode = view.updateAnimeEpisode
         init {
            view.setOnClickListener(this)
+        }
+
+        fun bindItem(){
+            val notify = notificationList[absoluteAdapterPosition]
+            //holder.receivedON.visibility = View.GONE
+            val synchronized = Date(notify.syncTime)
+            receivedON.text = "Received On: ${FriendlyTime().getFriendlyTime(synchronized, notify.syncTime)}"
+
+            if (notify.opened){
+                println("POSITION: $absoluteAdapterPosition")
+                title.setTextColor(ContextCompat.getColor(context!!,R.color.disabled))
+                episode.setTextColor(ContextCompat.getColor(context!!,R.color.disabled))
+            }else{
+                title.setTextColor(ContextCompat.getColor(context!!,R.color.white))
+                episode.setTextColor(ContextCompat.getColor(context!!,R.color.white))
+            }
+            title.text = notify.nameCatalogue
+            episode.text = "Episode: ${notify.episode}"
+            Glide.with(context!!)
+                    .applyDefaultRequestOptions(RequestOptions()
+                            .placeholder(R.drawable.ic_picture_light)
+                            .error(R.drawable.ic_picture_light))
+                    .load(notify.thumbnailURL)
+                    .transform(RoundedCorners(5))
+                    .transition(DrawableTransitionOptions()
+                            .crossFade()).apply(RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)).into(image)
         }
 
         override fun onClick(v: View?) {

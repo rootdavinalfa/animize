@@ -14,7 +14,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [StarredNotification::class], version = 1)
+@Database(entities = [StarredNotification::class], version = 1,exportSchema = false)
 abstract class StarredNotificationDatabase : RoomDatabase() {
     abstract fun starredNotificationDAO(): StarredNotificationDAO
 
