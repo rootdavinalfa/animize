@@ -138,8 +138,6 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
                         thumbnailURL = i.thumbnailURL,
                         syncTime = System.currentTimeMillis()
                 )
-                println(System.currentTimeMillis())
-
                 GlobalScope.launch {
                     starredRoom.starredNotificationDAO().newNotification(notification)
                     notificationPush()

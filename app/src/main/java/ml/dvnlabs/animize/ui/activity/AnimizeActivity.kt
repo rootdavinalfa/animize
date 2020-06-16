@@ -62,6 +62,7 @@ class AnimizeActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSel
 
     private fun initLayout() {
         mainPager.adapter = MainNavPager(supportFragmentManager, 3)
+        mainPager.offscreenPageLimit = 2
         mainBottomNavigation.setOnNavigationItemSelectedListener(this)
         mainBottomNavigation.setOnNavigationItemReselectedListener(this)
 

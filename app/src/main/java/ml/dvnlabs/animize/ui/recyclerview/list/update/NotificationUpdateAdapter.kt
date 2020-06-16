@@ -14,7 +14,9 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -55,10 +57,10 @@ class NotificationUpdateAdapter(
     }
 
     internal fun setNotification(notification : List<StarredNotification>){
-        if (this.notificationList != notification){
-            this.notificationList = notification
-            notifyDataSetChanged()
-        }
+        val diffCallback = NotificationDiff(notification,this.notificationList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        this.notificationList = notification
+        diffResult.dispatchUpdatesTo(this)
     }
 
 
@@ -108,6 +110,30 @@ class NotificationUpdateAdapter(
             intent.putExtra("id_anim",notificationList[absoluteAdapterPosition].animeID)
             context!!.startActivity(intent)
         }
+    }
+
+    inner class NotificationDiff(private val newList: List<StarredNotification>, private val oldList: List<StarredNotification>) : DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].animeID == newList[newItemPosition].animeID
+        }
+
+        override fun getOldListSize(): Int {
+            return oldList.size
+        }
+
+        override fun getNewListSize(): Int {
+            return newList.size
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+
+        @Nullable
+        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+            return super.getChangePayload(oldItemPosition, newItemPosition)
+        }
+
     }
 
 }
