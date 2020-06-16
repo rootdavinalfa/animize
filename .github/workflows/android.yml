@@ -2,9 +2,9 @@ name: Check Animize CI
 
 on:
   push:
-    branches: [ animize-beta ]
+    branches: [ master ]
   pull_request:
-    branches: [ animize-beta ]
+    branches: [ master ]
 
 jobs:
   build:
@@ -29,9 +29,12 @@ jobs:
       run: chmod +x ./gradlew
     - name: Build with Gradle
       run: ./gradlew build
+    - name: Get short SHA
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
     - name: Releasing using Hub
       uses: ShaunLWM/action-release-debugapk@master
       env:
        GITHUB_TOKEN: ${{ secrets.TOKEN }}
        APP_FOLDER: app
-       RELEASE_TITLE: Animize Build ${{ github.sha }}
+       RELEASE_TITLE: Animize Release v${{ steps.today.outputs.date }}-${{ steps.slug.outputs.sha8 }}
