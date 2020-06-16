@@ -5,6 +5,7 @@
 
 trigger:
 - animize-beta
+- master
 
 pool:
   vmImage: 'macos-latest'
