@@ -21,14 +21,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <com.etebarian.meowbottomnavigation.MeowBottomNavigation
         android:id="@+id/mainBottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blackElev"
         app:elevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/dash_bottom_nav" />
+        app:mbn_backgroundBottomColor="@color/colorPrimaryDark"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

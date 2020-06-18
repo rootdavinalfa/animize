@@ -56,7 +56,6 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
     override suspend fun doWork(): Result {
         Log.i(TAG, "Doing EpisodeUpdater work! ><")
         getLocalInformation()
-        notificationPush()
         return Result.success()
     }
 
@@ -68,6 +67,9 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
             observerHelper?.subscribeOn(Schedulers.computation())?.doOnComplete {
                 //currentProgress = 0
                 cancelNotificationProgress()
+                GlobalScope.launch {
+                    notificationPush()
+                }
             }?.doOnNext {
                 currentProgress += 1
                 maxProgress = sqLiteStarredPKG.size
