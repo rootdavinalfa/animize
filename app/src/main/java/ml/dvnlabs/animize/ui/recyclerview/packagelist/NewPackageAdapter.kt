@@ -43,7 +43,7 @@ class NewPackageAdapter(val context: Context, val model: ArrayList<PackageList>?
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (model!![position].pack == null) {
+        return if (model?.get(position)  == null) {
             VIEW_TYPE_LOADING
         } else {
             VIEW_TYPE_CONTENT
