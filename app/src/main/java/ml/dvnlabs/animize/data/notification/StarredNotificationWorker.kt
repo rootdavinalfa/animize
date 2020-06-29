@@ -24,7 +24,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.kotlin.toFlowable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.*
@@ -154,23 +154,23 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
 
     private suspend fun notificationPush() {
         withContext(Dispatchers.IO) {
-            val flows = Flowable.fromArray(starredRoom.starredNotificationDAO().getStarredNotificationListNotOpenedAndNotPosted())
-            flows.subscribeOn(Schedulers.single()).subscribe {
-                for (i in it) {
-                    GlobalScope.launch {
-                        if (starredRoom.starredNotificationDAO().isPosted(i.animeID) == 0) {
-                            starredRoom.starredNotificationDAO().notificationPosted(i.animeID)
-                            withContext(Dispatchers.Main) {
-                                createNotification(
-                                        title = i.nameCatalogue.take(65),
-                                        description = "Updated to episode: ${i.episode}",
-                                        imgURL = i.thumbnailURL
-                                )
+            val push = starredRoom.starredNotificationDAO().getStarredNotificationListNotOpenedAndNotPosted().toFlowable()
+            push.subscribeOn(AndroidSchedulers.mainThread())
+                    .delay(1,TimeUnit.SECONDS)
+                    .doOnNext {
+                        createNotification(
+                                title = it.nameCatalogue.take(65),
+                                description = "Updated to episode: ${it.episode}",
+                                imgURL = it.thumbnailURL
+                        )
+                    }
+                    .subscribe {
+                        GlobalScope.launch {
+                            if (starredRoom.starredNotificationDAO().isPosted(it.animeID)==0){
+                                starredRoom.starredNotificationDAO().notificationPosted(it.animeID)
                             }
                         }
                     }
-                }
-            }
         }
     }
 
