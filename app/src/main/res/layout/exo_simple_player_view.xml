@@ -26,10 +26,10 @@
                 android:layout_height="55dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:background="@drawable/circle_blue_transparent"
-                android:backgroundTint="@color/blacktrans2"
+                android:backgroundTint="@color/blackTrans"
                 android:clickable="true"
                 android:elevation="10dp"
                 android:focusable="true"
@@ -90,26 +90,28 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-
                 android:id="@+id/exo_seektime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/exo_buffering"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="120dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
                 android:background="@drawable/round_layout"
                 android:backgroundTint="@color/blacktrans"
                 android:text="Rewind : 10 Second"
                 android:textColor="@color/design_default_color_background"
                 android:textSize="14sp"
                 android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/exo_buffering" />
 
             <FrameLayout
                 android:id="@id/exo_overlay"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
 

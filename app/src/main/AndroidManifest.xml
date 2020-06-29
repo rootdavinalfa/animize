@@ -46,7 +46,7 @@
             android:name="ml.dvnlabs.animize.ui.activity.PackageView"
             android:configChanges="orientation|keyboard"
             android:launchMode="singleTask"
-            android:parentActivityName="ml.dvnlabs.animize.ui.activity.DashboardActivity"
+            android:parentActivityName="ml.dvnlabs.animize.ui.activity.AnimizeActivity"
             android:theme="@style/AppThemePackageView">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -70,18 +70,18 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ml.dvnlabs.animize.ui.activity.DashboardActivity" />
+                android:value="ml.dvnlabs.animize.ui.activity.AnimizeActivity" />
         </activity>
         <activity
             android:name="ml.dvnlabs.animize.ui.activity.StreamActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:keepScreenOn="true"
             android:label="Animize Player"
-            android:parentActivityName="ml.dvnlabs.animize.ui.activity.DashboardActivity"
+            android:parentActivityName="ml.dvnlabs.animize.ui.activity.AnimizeActivity"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ml.dvnlabs.animize.ui.activity.DashboardActivity" />
+                android:value="ml.dvnlabs.animize.ui.activity.AnimizeActivity" />
         </activity>
         <activity
             android:name="ml.dvnlabs.animize.ui.activity.DashboardActivity"

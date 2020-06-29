@@ -14,6 +14,7 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
+    app:cardBackgroundColor="@color/colorPrimaryDark"
     android:foreground="@drawable/layoutrippleeffect"
     android:layout_margin="5dp"
     app:cardCornerRadius="5dp"

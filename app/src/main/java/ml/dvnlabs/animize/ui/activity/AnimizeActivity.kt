@@ -64,6 +64,7 @@ class AnimizeActivity : BaseActivity(){
         mainBottomNavigation.add(MeowBottomNavigation.Model(R.id.nav_home,R.drawable.ic_home))
         mainBottomNavigation.add(MeowBottomNavigation.Model(R.id.nav_library,R.drawable.ic_library))
         mainBottomNavigation.add(MeowBottomNavigation.Model(R.id.nav_update,R.drawable.ic_featured))
+        mainBottomNavigation.show(R.id.nav_home)
         mainBottomNavigation.setOnClickMenuListener {
             onNavigationItemSelected(it)
         }
