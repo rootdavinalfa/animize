@@ -9,11 +9,9 @@
 package ml.dvnlabs.animize.ui.fragment.library
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,35 +31,18 @@ class Recent : Fragment() {
         inflater.inflate(R.layout.fragment_recent, container, false)
         binding = FragmentRecentBinding.inflate(inflater)
 
-        val layoutManager = LinearLayoutManager(requireActivity())
+        val layoutManager = LinearLayoutManager(requireContext())
         adapter = RecentListAdapter(R.layout.rv_recentview)
         binding?.recentList?.layoutManager = layoutManager
         binding?.recentList?.adapter = adapter
         listVM.listRecent.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                binding?.recentVoid?.visibility = View.GONE
-                adapter?.setRecentLand(it)
-            }else{
+            if (it.isNullOrEmpty()) {
                 binding?.recentVoid?.visibility = View.VISIBLE
+            } else {
+                binding?.recentVoid?.visibility = View.GONE
             }
+            adapter?.setRecentPlayed(it)
         })
-        swipeRefresh()
         return binding?.root
-    }
-
-
-    private fun swipeRefresh() {
-        binding?.recentRefresh?.setOnRefreshListener {
-            // To keep animateView for 4 seconds
-            Handler().postDelayed({ // Stop animateView (This will be after 3 seconds)
-                binding?.recentRefresh?.isRefreshing = false
-            }, 2000) // Delay in millis
-        }
-        binding?.recentRefresh?.setColorSchemeColors(
-                ContextCompat.getColor(requireContext(),android.R.color.holo_blue_bright),
-                ContextCompat.getColor(requireContext(),android.R.color.holo_green_light),
-                ContextCompat.getColor(requireContext(),android.R.color.holo_orange_light),
-                ContextCompat.getColor(requireContext(),android.R.color.holo_red_light)
-        )
     }
 }

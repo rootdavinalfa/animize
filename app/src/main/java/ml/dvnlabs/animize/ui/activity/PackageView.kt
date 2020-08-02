@@ -20,6 +20,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -35,9 +36,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
+import ml.dvnlabs.animize.database.ModernDatabase
 import ml.dvnlabs.animize.database.legacy.InitInternalDBHelper
 import ml.dvnlabs.animize.database.legacy.PackageStarDBHelper
-import ml.dvnlabs.animize.database.legacy.RecentPlayDBHelper
 import ml.dvnlabs.animize.databinding.ActivityPackageViewBinding
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.network.APINetworkRequest
@@ -53,6 +54,7 @@ import ml.dvnlabs.animize.view.AutoGridLayoutManager
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import org.koin.android.ext.android.inject
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 import java.util.*
@@ -65,7 +67,8 @@ class PackageView : AppCompatActivity() {
     private var packStar: MenuItem? = null
     private var packShare: MenuItem? = null
     var packageStarDBHelper: PackageStarDBHelper? = null
-    var recentPlayDBHelper: RecentPlayDBHelper? = null
+    private val modernDB: ModernDatabase by inject()
+
     private var branch: Branch? = null
     var initInternalDBHelper: InitInternalDBHelper? = null
 
@@ -112,7 +115,6 @@ class PackageView : AppCompatActivity() {
 
     private fun initializeADSandDB() {
         packageStarDBHelper = PackageStarDBHelper(this)
-        recentPlayDBHelper = RecentPlayDBHelper(this)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -209,7 +211,7 @@ class PackageView : AppCompatActivity() {
         packStar = menu.findItem(R.id.package_star)
         packShare = menu.findItem(R.id.package_share)
         if (packageStarDBHelper!!.isAvail) {
-            GlobalScope.launch {
+            lifecycleScope.launch {
                 readStarStatus()
             }
         }
@@ -253,12 +255,12 @@ class PackageView : AppCompatActivity() {
 
     private fun getPlayList() {
         val url = Api.url_playlist_play + pkganim
-        APINetworkRequest(this, getplaylist, url, CODE_GET_REQUEST, null,"PLAYLIST")
+        APINetworkRequest(this, getplaylist, url, CODE_GET_REQUEST, null, "PLAYLIST")
     }
 
     private fun getInfo() {
         val url = Api.url_packageinfo + pkganim
-        APINetworkRequest(this, getInfo, url, CODE_GET_REQUEST, null,"INFO_PACKAGE")
+        APINetworkRequest(this, getInfo, url, CODE_GET_REQUEST, null, "INFO_PACKAGE")
     }
 
     private var getInfo: FetchDataListener = object : FetchDataListener {
@@ -379,10 +381,12 @@ class PackageView : AppCompatActivity() {
     }
 
     private fun showRecent() {
-        if (recentPlayDBHelper!!.isRecentPackAvail(pkganim!!)) {
-            GlobalScope.launch { readRecent() }
-        } else {
-            binding.packageviewRecentContainer.visibility = View.GONE
+        lifecycleScope.launch {
+            if (modernDB.recentPlayedDAO().getRecentByPackageID(pkganim!!) != null) {
+                readRecent()
+            } else {
+                binding.packageviewRecentContainer.visibility = View.GONE
+            }
         }
     }
 
@@ -443,10 +447,10 @@ class PackageView : AppCompatActivity() {
 
     private suspend fun readRecent() {
         withContext(Dispatchers.IO) {
-            val recentLand = recentPlayDBHelper!!.readRecentOnPackage(pkganim!!)
+            val recentLand = modernDB.recentPlayedDAO().getRecentByPackageID(pkganim!!)
             withContext(Dispatchers.Main) {
                 binding.packageviewRecentContainer.visibility = View.VISIBLE
-                binding.packageviewRecentTitle.text = recentLand!!.packageName
+                binding.packageviewRecentTitle.text = recentLand!!.packageID
                 val ep = "Episode: " + recentLand.episode
                 binding.packageviewRecentEpisode.text = ep
                 Glide.with(baseContext)
@@ -459,7 +463,7 @@ class PackageView : AppCompatActivity() {
                                 .diskCacheStrategy(DiskCacheStrategy.ALL).override(424, 600)).into(binding.packageviewRecentImg)
                 binding.packageviewRecentContainer.setOnClickListener {
                     val intent = Intent(applicationContext, StreamActivity::class.java)
-                    intent.putExtra("id_anim", recentLand.anmid)
+                    intent.putExtra("id_anim", recentLand.animeID)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     applicationContext.startActivity(intent)
                 }

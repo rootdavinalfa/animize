@@ -9,6 +9,7 @@
 
 package ml.dvnlabs.animize.app
 
+import ml.dvnlabs.animize.database.ModernDatabase
 import ml.dvnlabs.animize.database.legacy.PackageStarDBHelper
 import ml.dvnlabs.animize.database.legacy.RecentPlayDBHelper
 import ml.dvnlabs.animize.database.notification.StarredNotificationDatabase
@@ -19,9 +20,10 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val AppModule = module{
+val AppModule = module {
     single { RecentPlayDBHelper(androidContext()) }
     single { PackageStarDBHelper(androidContext()) }
+    single { ModernDatabase.getDatabase(androidContext()) }
     single { StarredNotificationDatabase.getDatabase(androidContext()) }
     viewModel { CommonViewModel() }
     viewModel { ListViewModel(androidApplication()) }

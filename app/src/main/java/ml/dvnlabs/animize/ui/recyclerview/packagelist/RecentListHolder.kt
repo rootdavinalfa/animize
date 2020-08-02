@@ -19,7 +19,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.legacy.model.RecentLand
+import ml.dvnlabs.animize.database.RecentPlayed
 import ml.dvnlabs.animize.ui.activity.StreamActivity
 import ml.dvnlabs.animize.util.FriendlyTime
 import java.text.SimpleDateFormat
@@ -32,8 +32,8 @@ class RecentListHolder(private val context: Context, view: View) : RecyclerView.
     private val lasttime: TextView
     private val playedon: TextView
     private val cover: ImageView
-    private var recs: RecentLand? = null
-    fun bind_recent(rec: RecentLand) {
+    private var recs: RecentPlayed? = null
+    fun bind_recent(rec: RecentPlayed) {
         recs = rec
         val date_modified = Date(rec.modified)
         val time_player = Date(rec.timestamp)
@@ -50,11 +50,11 @@ class RecentListHolder(private val context: Context, view: View) : RecyclerView.
         val played = "Played On: " + format_date.format(date_modified)
 
         //Day for today,2 day ago
-        val friendly = FriendlyTime().getFriendlyTime(date_modified,rec.modified)
+        val friendly = FriendlyTime().getFriendlyTime(date_modified, rec.modified)
         val format_playtime = "Last Time: " + format_timeplay.format(time_player)
         friendlytime.text = friendly
         playedon.text = played
-        name.text = rec.packageName
+        name.text = rec.name
         lasttime.text = format_playtime
         val episodee = "Episode: " + rec.episode
         episode.text = episodee
@@ -71,7 +71,7 @@ class RecentListHolder(private val context: Context, view: View) : RecyclerView.
     override fun onClick(v: View) {
         if (recs != null) {
             val intent = Intent(context.applicationContext, StreamActivity::class.java)
-            intent.putExtra("id_anim", recs!!.anmid)
+            intent.putExtra("id_anim", recs!!.animeID)
             context.startActivity(intent)
         }
     }

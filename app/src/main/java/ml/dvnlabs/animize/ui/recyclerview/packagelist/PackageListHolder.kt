@@ -22,10 +22,7 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.custom.ColorHelper
 import ml.dvnlabs.animize.database.legacy.RecentPlayDBHelper
@@ -47,7 +44,7 @@ class PackageListHolder(private val context: Context, view: View) : RecyclerView
         }
     }
 
-    private suspend fun setupImage(anmID: String) {
+    private fun setupImage(anmID: String) = CoroutineScope(Dispatchers.Main).launch {
         withContext(Dispatchers.IO) {
             val recentPlay = recent!!.readRecent(anmID)
             var max = 0L
@@ -59,8 +56,8 @@ class PackageListHolder(private val context: Context, view: View) : RecyclerView
                 //println("ANMID : ${recentPlay.anmid} TIME : ${recentPlay.timestamp} MAX: ${recentPlay.maxTime}")
             }
 
-            val percent = when(max){
-                0L ->{
+            val percent = when (max) {
+                0L -> {
                     1F
                 }
 

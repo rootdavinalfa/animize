@@ -15,7 +15,6 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import android.util.Log
 import ml.dvnlabs.animize.player.PlayerService.PlayerBinder
-import ml.dvnlabs.animize.ui.activity.StreamActivity
 import org.greenrobot.eventbus.EventBus
 
 class PlayerManager
@@ -47,16 +46,15 @@ class PlayerManager
             val playerBinder = binder as PlayerBinder
             service = playerBinder.service
             isServiceBound = true
-            (context as StreamActivity).getVideo()
-            Log.e("BINDER STATUS:", "OK")
+            Log.i("BINDER STATUS:", "OK")
             //service = ((PlayerService.PlayerBinder) binder).getService();
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
-            Log.e(context.packageName, "ServiceConnection::onServiceDisconnected() called")
+            Log.i(context.packageName, "ServiceConnection::onServiceDisconnected() called")
             service = null
             isServiceBound = false
-            Log.e("BINDER STATUS:", "DC")
+            Log.i("BINDER STATUS:", "DC")
         }
     }
 

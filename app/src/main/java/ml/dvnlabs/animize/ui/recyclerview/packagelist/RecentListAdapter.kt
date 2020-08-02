@@ -13,10 +13,10 @@ import android.view.ViewGroup
 import androidx.annotation.Nullable
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ml.dvnlabs.animize.database.legacy.model.RecentLand
+import ml.dvnlabs.animize.database.RecentPlayed
 
 class RecentListAdapter(private val itemResor: Int) : RecyclerView.Adapter<RecentListHolder>() {
-    private var recentLands = ArrayList<RecentLand>()
+    private var recentLands = emptyList<RecentPlayed>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecentListHolder {
         val view = LayoutInflater.from(parent.context).inflate(itemResor, parent, false)
         return RecentListHolder(parent.context, view)
@@ -32,16 +32,16 @@ class RecentListAdapter(private val itemResor: Int) : RecyclerView.Adapter<Recen
         return recentLands.size
     }
 
-    fun setRecentLand(recent : ArrayList<RecentLand>){
+    fun setRecentPlayed(recent: List<RecentPlayed>) {
         val diffCallback = RecentDiff(recent, this.recentLands)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         this.recentLands = recent
         diffResult.dispatchUpdatesTo(this)
     }
 
-    inner class RecentDiff(private val newList: ArrayList<RecentLand>, private val oldList: ArrayList<RecentLand>) : DiffUtil.Callback() {
+    inner class RecentDiff(private val newList: List<RecentPlayed>, private val oldList: List<RecentPlayed>) : DiffUtil.Callback() {
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].anmid == newList[newItemPosition].anmid && oldList[oldItemPosition].modified == newList[newItemPosition].modified
+            return oldList[oldItemPosition].animeID == newList[newItemPosition].animeID && oldList[oldItemPosition].modified == newList[newItemPosition].modified
         }
 
         override fun getOldListSize(): Int {

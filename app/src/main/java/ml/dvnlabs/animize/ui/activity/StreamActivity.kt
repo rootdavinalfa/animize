@@ -26,6 +26,7 @@ import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -39,9 +40,10 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import ml.dvnlabs.animize.R
+import ml.dvnlabs.animize.database.ModernDatabase
+import ml.dvnlabs.animize.database.RecentPlayed
 import ml.dvnlabs.animize.database.legacy.InitInternalDBHelper
 import ml.dvnlabs.animize.database.legacy.PackageStarDBHelper
-import ml.dvnlabs.animize.database.legacy.RecentPlayDBHelper
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.network.APINetworkRequest
 import ml.dvnlabs.animize.driver.network.RequestQueueVolley
@@ -62,6 +64,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import org.koin.android.ext.android.inject
 import java.util.*
 
 class StreamActivity : AppCompatActivity() {
@@ -69,7 +72,7 @@ class StreamActivity : AppCompatActivity() {
 
     private var packageStarDBHelper: PackageStarDBHelper? = null
     private var initInternalDBHelper: InitInternalDBHelper? = null
-    private var recentPlayDBHelper: RecentPlayDBHelper? = null
+    private val modernDB: ModernDatabase by inject()
 
     private var updateRecent: Runnable? = null
     private var handlerPlayerRecent: Handler? = null
@@ -136,14 +139,12 @@ class StreamActivity : AppCompatActivity() {
             setIdAnim(intent.getStringExtra("id_anim"))
         }
 
-        playerManager = PlayerManager(this)
-        if (PlayerManager.service == null) {
-            playerManager!!.bind()
-        }
+
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         packageStarDBHelper = PackageStarDBHelper(this)
         initInternalDBHelper = InitInternalDBHelper(this)
-        recentPlayDBHelper = RecentPlayDBHelper(this)
+        handlerPlayerRecent = Handler()
+        getVideo()
     }
 
     override fun onStop() {
@@ -183,12 +184,9 @@ class StreamActivity : AppCompatActivity() {
                 isLocked = false
             }
             if (!isFullscreen) {
-                if (PlayerManager.service != null && playerManager!!.isServiceBound) {
-                    playerManager!!.unbind()
-                    if (!modeldata!!.isEmpty()) {
-                        modeldata!!.clear()
-                    }
-                    //idanim = null;
+                PlayerManager.service?.exoPlayer?.playWhenReady = false
+                if (modeldata!!.isNotEmpty()) {
+                    modeldata!!.clear()
                 }
                 val pref = applicationContext.getSharedPreferences("aPlay", 0)
                 if (pref != null) {
@@ -583,8 +581,8 @@ class StreamActivity : AppCompatActivity() {
                 .placeholder(R.drawable.ic_picture_light).error(R.drawable.ic_picture_light))
                 .load(modeldata!![0].url_thmb)
                 .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter()).into(video_artwork!!)
-        if (handlerPlayerRecent != null) {
-            handlerPlayerRecent!!.removeCallbacks(updateRecent!!)
+        updateRecent?.let {
+            handlerPlayerRecent?.removeCallbacks(it)
         }
         readRecent()
     }
@@ -670,8 +668,7 @@ class StreamActivity : AppCompatActivity() {
                 updateRecent = Runnable {
                     updatingRecent()
                 }
-                handlerPlayerRecent = Handler()
-                handlerPlayerRecent!!.postDelayed(updateRecent!!, 2000)
+                handlerPlayerRecent!!.postDelayed(updateRecent!!, 500)
             }
         }
     }
@@ -684,15 +681,12 @@ class StreamActivity : AppCompatActivity() {
         PlayerManager.service!!.exoPlayer!!.seekTo(position)
     }
 
-    @UiThread
     private fun readRecent() {
-        GlobalScope.run {
-            val recent = recentPlayDBHelper!!.readRecent(idanim!!)
+        lifecycleScope.launch {
+            val recent = idanim?.let { modernDB.recentPlayedDAO().getRecentByAnimeID(it) }
             var seeker: Long = 0
             if (recent != null) {
-                if (getCurrentPlayTime() < recent.timestamp) {
-                    seeker = recent.timestamp
-                }
+                seeker = recent.timestamp
             }
             seekPlayer(seeker)
             updateRecent()
@@ -700,21 +694,29 @@ class StreamActivity : AppCompatActivity() {
     }
 
     private fun updatingRecent() {
-        GlobalScope.run {
-            if (recentPlayDBHelper!!.isRecentAvail(idanim!!)) {
+        lifecycleScope.launch {
+            if (modernDB.recentPlayedDAO().getRecentByAnimeID(idanim!!) != null) {
                 val packageId = modeldata!![0].pack
-                val packageName = modeldata!![0].name_anim
                 val episode = Integer.valueOf(modeldata!![0].episode)
                 val urlCover = modeldata!![0].cover
                 val timestamp = getCurrentPlayTime()
-                recentPlayDBHelper!!.updateRecent(packageId, packageName, idanim!!, episode, urlCover, timestamp, PlayerManager.service!!.exoPlayer!!.duration)
+                modernDB.recentPlayedDAO().updateRecent(packageId, idanim!!, episode, urlCover, timestamp, PlayerManager.service!!.exoPlayer!!.duration)
             } else {
                 val packageId = modeldata!![0].pack
                 val packageName = modeldata!![0].name_anim
                 val episode = Integer.valueOf(modeldata!![0].episode)
                 val urlCover = modeldata!![0].cover
                 val timestamp = getCurrentPlayTime()
-                recentPlayDBHelper!!.addRecent(packageId, packageName, idanim, episode, urlCover, timestamp, PlayerManager.service!!.exoPlayer!!.duration)
+                modernDB.recentPlayedDAO().newRecent(RecentPlayed(
+                        packageID = packageId,
+                        name = packageName,
+                        animeID = idanim!!,
+                        episode = episode,
+                        urlCover = urlCover,
+                        timestamp = timestamp,
+                        duration = PlayerManager.service!!.exoPlayer!!.duration,
+                        modified = System.currentTimeMillis()
+                ))
             }
             updateRecent()
         }
