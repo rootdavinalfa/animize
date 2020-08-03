@@ -37,10 +37,10 @@
         tools:replace="android:label">
         <activity
             android:name="ml.dvnlabs.animize.ui.activity.WebView"
-            android:parentActivityName="ml.dvnlabs.animize.ui.activity.DashboardActivity">
+            android:parentActivityName="ml.dvnlabs.animize.ui.activity.AnimizeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ml.dvnlabs.animize.ui.activity.DashboardActivity" />
+                android:value="ml.dvnlabs.animize.ui.activity.AnimizeActivity" />
         </activity>
         <activity
             android:name="ml.dvnlabs.animize.ui.activity.PackageView"
@@ -84,16 +84,6 @@
                 android:value="ml.dvnlabs.animize.ui.activity.AnimizeActivity" />
         </activity>
         <activity
-            android:name="ml.dvnlabs.animize.ui.activity.DashboardActivity"
-            android:configChanges="orientation|keyboard"
-            android:label="Dashboard"
-            android:parentActivityName="ml.dvnlabs.animize.ui.activity.MainActivity"
-            android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="ml.dvnlabs.animize.ui.activity.MainActivity" />
-        </activity>
-        <activity
             android:name="ml.dvnlabs.animize.ui.activity.AnimizeActivity"
             android:configChanges="orientation|keyboard"
             android:label="@string/app_name"
@@ -107,11 +97,11 @@
             android:name="ml.dvnlabs.animize.ui.activity.settings"
             android:configChanges="orientation|keyboard"
             android:label="Animize Settings"
-            android:parentActivityName="ml.dvnlabs.animize.ui.activity.DashboardActivity"
+            android:parentActivityName="ml.dvnlabs.animize.ui.activity.AnimizeActivity"
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ml.dvnlabs.animize.ui.activity.DashboardActivity" />
+                android:value="ml.dvnlabs.animize.ui.activity.AnimizeActivity" />
         </activity>
         <activity
             android:name="ml.dvnlabs.animize.ui.activity.MainActivity"

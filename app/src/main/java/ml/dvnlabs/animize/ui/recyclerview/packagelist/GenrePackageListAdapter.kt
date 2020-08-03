@@ -23,7 +23,7 @@ class GenrePackageListAdapter(private val packagelists: ArrayList<GenrePackageLi
 
     override fun onBindViewHolder(holder: GenrePackageListHolder, position: Int) {
         val slm = packagelists!![position]
-        holder.bind_playlist(slm)
+        holder.bindPlaylist(slm)
     }
 
     override fun getItemCount(): Int {

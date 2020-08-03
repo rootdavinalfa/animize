@@ -40,22 +40,26 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.legacy.PackageStarDBHelper
+import ml.dvnlabs.animize.database.Anime
+import ml.dvnlabs.animize.database.AnimizeDatabase
 import ml.dvnlabs.animize.model.GenrePackageList
 import ml.dvnlabs.animize.ui.activity.PackageView
 import ml.dvnlabs.animize.ui.fragment.bottom.GenreSheet
 import ml.dvnlabs.animize.ui.fragment.tabs.MultiView
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 
-class GenrePackageListHolder(private val context: Context, view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, OnLongClickListener {
-    private val episode: TextView
-    private val rate: TextView
-    private val mal: TextView
-    private val title: TextView
-    private val thumbnail: ImageView
-    private val container: CardView
+class GenrePackageListHolder(private val context: Context, view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, OnLongClickListener, KoinComponent {
+    private val episode: TextView = view.findViewById(R.id.genrepackage_episode)
+    private val rate: TextView = view.findViewById(R.id.genrepackages_rate)
+    private val mal: TextView = view.findViewById(R.id.genrepackage_mal)
+    private val title: TextView = view.findViewById(R.id.genrepackage_name)
+    private val thumbnail: ImageView = view.findViewById(R.id.genrepackage_cover)
+    private val container: CardView = view.findViewById(R.id.genrepack_container)
     private var data: GenrePackageList? = null
-    private val packageStarDBHelper: PackageStarDBHelper
-    fun bind_playlist(plm: GenrePackageList?) {
+    private val animizeDB: AnimizeDatabase by inject { parametersOf(context) }
+    fun bindPlaylist(plm: GenrePackageList?) {
         data = plm
         title.text = data!!.getName()
         val ep_string = data!!.now + " " + context.getString(R.string.string_of) + " " + data!!.tot
@@ -118,37 +122,45 @@ class GenrePackageListHolder(private val context: Context, view: View) : Recycle
 
     override fun onLongClick(v: View): Boolean {
         if (data != null) {
-            val isStarred: Boolean
+            var isStarred: Boolean
             val activity = context as AppCompatActivity
             @SuppressLint("RestrictedApi") val menu: Menu = MenuBuilder(context)
-            if (packageStarDBHelper.isStarred(data!!.pack)) {
-                isStarred = true
-                menu.add(0, Menu.FIRST, 0, "UnStar This Package").setIcon(R.drawable.ic_star_nofill)
-            } else {
-                isStarred = false
-                menu.add(0, Menu.FIRST, 0, "Star This Package").setIcon(R.drawable.ic_star)
-            }
-            BottomSheetMenuDialogFragment.Builder(context)
-                    .dark()
-                    .setMenu(menu)
-                    .setTitle("What do you want ?")
-                    .setListener(object : BottomSheetListener {
-                        override fun onSheetShown(bottomSheet: BottomSheetMenuDialogFragment, `object`: Any?) {}
-                        override fun onSheetItemSelected(bottomSheet: BottomSheetMenuDialogFragment, item: MenuItem, `object`: Any?) {
-                            if (isStarred) {
-                                GlobalScope.launch {
-                                    changeStar("UNSTAR")
-                                }
-                            } else {
-                                GlobalScope.launch {
-                                    changeStar("STAR")
+            GlobalScope.launch {
+                animizeDB.animeDAO().newAnime(Anime(
+                        packageID = data!!.pack,
+                        packageName = null,
+                        episodeTotal = 0,
+                        updatedOn = System.currentTimeMillis()
+                ))
+                if (animizeDB.animeDAO().isAnimeStarred(data!!.pack)) {
+                    isStarred = true
+                    menu.add(0, Menu.FIRST, 0, "UnStar This Package").setIcon(R.drawable.ic_star_nofill)
+                } else {
+                    isStarred = false
+                    menu.add(0, Menu.FIRST, 0, "Star This Package").setIcon(R.drawable.ic_star)
+                }
+                BottomSheetMenuDialogFragment.Builder(context)
+                        .dark()
+                        .setMenu(menu)
+                        .setTitle("What do you want ?")
+                        .setListener(object : BottomSheetListener {
+                            override fun onSheetShown(bottomSheet: BottomSheetMenuDialogFragment, `object`: Any?) {}
+                            override fun onSheetItemSelected(bottomSheet: BottomSheetMenuDialogFragment, item: MenuItem, `object`: Any?) {
+                                if (isStarred) {
+                                    GlobalScope.launch {
+                                        changeStar("UNSTAR")
+                                    }
+                                } else {
+                                    GlobalScope.launch {
+                                        changeStar("STAR")
+                                    }
                                 }
                             }
-                        }
 
-                        override fun onSheetDismissed(bottomSheet: BottomSheetMenuDialogFragment, `object`: Any?, dismissEvent: Int) {}
-                    })
-                    .show(activity.supportFragmentManager, "select_package")
+                            override fun onSheetDismissed(bottomSheet: BottomSheetMenuDialogFragment, `object`: Any?, dismissEvent: Int) {}
+                        })
+                        .show(activity.supportFragmentManager, "select_package")
+            }
         }
         return true
     }
@@ -156,12 +168,12 @@ class GenrePackageListHolder(private val context: Context, view: View) : Recycle
     private suspend fun changeStar(change: String) {
         withContext(Dispatchers.IO) {
             if (change == "UNSTAR") {
-                packageStarDBHelper.unStar(data!!.pack)
+                animizeDB.animeDAO().changeStarred(data!!.pack, false)
             } else if (change == "STAR") {
-                packageStarDBHelper.addStar(data!!.pack)
+                animizeDB.animeDAO().changeStarred(data!!.pack, true)
             }
 
-            val status = if (packageStarDBHelper.isStarred(data!!.pack)) {
+            val status = if (animizeDB.animeDAO().isAnimeStarred(data!!.pack)) {
                 "Add to Star Success"
             } else {
                 "Remove Star Success"
@@ -173,14 +185,7 @@ class GenrePackageListHolder(private val context: Context, view: View) : Recycle
     }
 
     init {
-        episode = view.findViewById(R.id.genrepackage_episode)
-        title = view.findViewById(R.id.genrepackage_name)
-        thumbnail = view.findViewById(R.id.genrepackage_cover)
-        rate = view.findViewById(R.id.genrepackages_rate)
-        mal = view.findViewById(R.id.genrepackage_mal)
-        container = view.findViewById(R.id.genrepack_container)
         itemView.setOnClickListener(this)
         itemView.setOnLongClickListener(this)
-        packageStarDBHelper = PackageStarDBHelper(context)
     }
 }

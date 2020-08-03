@@ -21,12 +21,14 @@ import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.button.MaterialButton
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.legacy.InitInternalDBHelper
+import ml.dvnlabs.animize.database.AnimizeDatabase
+import ml.dvnlabs.animize.database.User
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.network.APINetworkRequest
 import ml.dvnlabs.animize.driver.network.listener.FetchDataListener
@@ -35,6 +37,7 @@ import org.jetbrains.anko.alert
 import org.jetbrains.anko.indeterminateProgressDialog
 import org.json.JSONException
 import org.json.JSONObject
+import org.koin.android.ext.android.inject
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -45,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     private var registerButton: MaterialButton? = null
     private var progressDialogs: ProgressDialog? = null
 
-    private var initInternalDBHelper: InitInternalDBHelper? = null
+    private val animizeDB: AnimizeDatabase by inject()
 
     private var tokeen: String = ""
 
@@ -67,20 +70,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        initializa()
+        initialize()
     }
 
-    private fun initializa() {
-        initInternalDBHelper = InitInternalDBHelper(this)
+    private fun initialize() = CoroutineScope(Dispatchers.Main).launch {
 
         //Check is internal DB user exist or not,if exist dont initialize view for mainActivity
-        if (!initInternalDBHelper!!.userCount) {
-            println("OnCREATE NULL DB")
+        if (animizeDB.userDAO().countUser() == 0) {
+            Log.e(this@MainActivity.javaClass.simpleName, "USER NOT FOUND!")
             setTheme(R.style.AppTheme)
             window.decorView.systemUiVisibility = (
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-            setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
+            setWindowFlag(this@MainActivity, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
             window.statusBarColor = Color.TRANSPARENT
             window.setFlags(
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -89,7 +91,7 @@ class MainActivity : AppCompatActivity() {
             setContentView(R.layout.activity_main)
             initViews()
         } else {
-            println("OnCREATE DB")
+            Log.i(this@MainActivity.javaClass.simpleName, "USING USER!")
             val intent = Intent(this@MainActivity, AnimizeActivity::class.java)
             startActivity(intent)
         }
@@ -117,8 +119,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loginFunc(id: String, name: String, email: String) {
-        GlobalScope.launch(Dispatchers.Main) {
-            initInternalDBHelper!!.insertUser(tokeen, id, email, name)
+        lifecycleScope.launch(Dispatchers.Main) {
+            animizeDB.userDAO().newUser(User(
+                    idUser = id,
+                    email = email,
+                    nameUser = name,
+                    accessToken = tokeen
+            ))
         }
         val intent = Intent(this, AnimizeActivity::class.java)
         startActivity(intent)

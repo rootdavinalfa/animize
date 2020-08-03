@@ -10,10 +10,17 @@
 package ml.dvnlabs.animize.database
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(indices = [Index(value = ["animeID"], unique = true)])
+@Entity(indices = [Index(value = ["animeID"], unique = true), Index(value = ["packageID"])],
+        foreignKeys = [ForeignKey(
+                entity = Anime::class,
+                parentColumns = ["packageID"],
+                childColumns = ["packageID"],
+                onDelete = ForeignKey.CASCADE)])
+
 data class RecentPlayed(
         @PrimaryKey(autoGenerate = true)
         val id: Long = 0,

@@ -31,14 +31,13 @@ import com.bumptech.glide.request.transition.Transition
 import io.branch.referral.Branch
 import jp.wasabeef.glide.transformations.BlurTransformation
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.ModernDatabase
-import ml.dvnlabs.animize.database.legacy.InitInternalDBHelper
-import ml.dvnlabs.animize.database.legacy.PackageStarDBHelper
+import ml.dvnlabs.animize.database.Anime
+import ml.dvnlabs.animize.database.AnimizeDatabase
 import ml.dvnlabs.animize.databinding.ActivityPackageViewBinding
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.network.APINetworkRequest
@@ -66,23 +65,25 @@ class PackageView : AppCompatActivity() {
     var pkganim: String? = null
     private var packStar: MenuItem? = null
     private var packShare: MenuItem? = null
-    var packageStarDBHelper: PackageStarDBHelper? = null
-    private val modernDB: ModernDatabase by inject()
+
+    private val animizeDB: AnimizeDatabase by inject()
 
     private var branch: Branch? = null
-    var initInternalDBHelper: InitInternalDBHelper? = null
 
     private lateinit var binding: ActivityPackageViewBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initInternalDBHelper = InitInternalDBHelper(this)
-        if (initInternalDBHelper!!.userCount) {
+        initD()
+    }
+
+    private fun initD() = CoroutineScope(Dispatchers.Main).launch {
+        if (animizeDB.userDAO().countUser() != 0) {
             binding = ActivityPackageViewBinding.inflate(layoutInflater)
             setContentView(binding.root)
             //make translucent statusBar on kitkat devices
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             //make fully Android Transparent Status bar
-            setWindowFlag(this, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
+            setWindowFlag(this@PackageView, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
             window.statusBarColor = Color.TRANSPARENT
             pkganim = ""
             initialize()
@@ -94,12 +95,14 @@ class PackageView : AppCompatActivity() {
             }
             //assert(pkganim != null)
             if (pkganim!!.isNotEmpty()) {
-
-                //System.out.println(pkganim);
-                //initializeADSandDB();
+                animizeDB.animeDAO().newAnime(Anime(
+                        packageID = pkganim!!,
+                        packageName = null,
+                        episodeTotal = 0,
+                        updatedOn = System.currentTimeMillis()
+                ))
                 getInfo()
             }
-            initializeADSandDB()
             branch = Branch.getInstance()
         } else {
             val intent = Intent(this@PackageView, MainActivity::class.java)
@@ -111,10 +114,6 @@ class PackageView : AppCompatActivity() {
         RequestQueueVolley.getInstance(this)!!.cancelRequestByTAG("PLAYLIST")
         RequestQueueVolley.getInstance(this)!!.cancelRequestByTAG("INFO_PACKAGE")
         super.onPause()
-    }
-
-    private fun initializeADSandDB() {
-        packageStarDBHelper = PackageStarDBHelper(this)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -156,13 +155,12 @@ class PackageView : AppCompatActivity() {
             binding.packageviewBarlayout.visibility = View.GONE
             getInfo()
         }
-        initializeADSandDB()
     }
 
     override fun onBackPressed() {
         if (isTaskRoot) {
             finish()
-            val intent = Intent(this@PackageView, DashboardActivity::class.java)
+            val intent = Intent(this@PackageView, AnimizeActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         } else {
@@ -172,35 +170,38 @@ class PackageView : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (initInternalDBHelper!!.userCount) {
-            // Branch init
-            if (branch != null) {
-                branch!!.initSession({ referringParams, error ->
-                    if (error == null) {
-                        // params are the deep linked params associated with the link      that the user clicked -> was re-directed to this app
-                        // params will be empty if no data found
-                        try {
-                            if (referringParams != null) {
-                                if (referringParams.getBoolean("+clicked_branch_link")) {
-                                    pkganim = referringParams.getString("pack")
-                                    getInfo()
+        CoroutineScope(Dispatchers.Main).launch {
+            if (animizeDB.userDAO().countUser() != 0) {
+                // Branch init
+                if (branch != null) {
+                    branch?.initSession({ referringParams, error ->
+                        if (error == null) {
+                            // params are the deep linked params associated with the link      that the user clicked -> was re-directed to this app
+                            // params will be empty if no data found
+                            try {
+                                if (referringParams != null) {
+                                    if (referringParams.getBoolean("+clicked_branch_link")) {
+                                        pkganim = referringParams.getString("pack")
+                                        getInfo()
+                                    }
                                 }
+                            } catch (e: JSONException) {
+                                e.printStackTrace()
                             }
-                        } catch (e: JSONException) {
-                            e.printStackTrace()
+                        } else {
+                            Log.e("BRANCH SDKE", error.message)
                         }
-                    } else {
-                        Log.e("BRANCH SDKE", error.message)
+                    }, this@PackageView.intent.data, this@PackageView)
+                }
+                pkganim?.let {
+                    if (it.isNotEmpty()) {
+                        invalidateOptionsMenu()
                     }
-                }, this.intent.data, this)
+                }
+            } else {
+                val intent = Intent(this@PackageView, MainActivity::class.java)
+                startActivity(intent)
             }
-            if (pkganim!!.isNotEmpty()) {
-                showRecent()
-                invalidateOptionsMenu()
-            }
-        } else {
-            val intent = Intent(this@PackageView, MainActivity::class.java)
-            startActivity(intent)
         }
     }
 
@@ -210,10 +211,8 @@ class PackageView : AppCompatActivity() {
         menuInflater.inflate(R.menu.package_toolbar, menu)
         packStar = menu.findItem(R.id.package_star)
         packShare = menu.findItem(R.id.package_share)
-        if (packageStarDBHelper!!.isAvail) {
-            lifecycleScope.launch {
-                readStarStatus()
-            }
+        lifecycleScope.launch {
+            readStarStatus()
         }
         return super.onPrepareOptionsMenu(menu)
     }
@@ -221,12 +220,10 @@ class PackageView : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.package_star -> {
-                if (packageStarDBHelper!!.isStarred(pkganim!!)) {
-                    GlobalScope.launch {
+                lifecycleScope.launch {
+                    if (animizeDB.animeDAO().isAnimeStarred(pkganim!!)) {
                         changeStar("UNSTAR")
-                    }
-                } else {
-                    GlobalScope.launch {
+                    } else {
                         changeStar("STAR")
                     }
                 }
@@ -382,7 +379,7 @@ class PackageView : AppCompatActivity() {
 
     private fun showRecent() {
         lifecycleScope.launch {
-            if (modernDB.recentPlayedDAO().getRecentByPackageID(pkganim!!) != null) {
+            if (animizeDB.recentPlayedDAO().getRecentByPackageID(pkganim!!) != null) {
                 readRecent()
             } else {
                 binding.packageviewRecentContainer.visibility = View.GONE
@@ -406,6 +403,17 @@ class PackageView : AppCompatActivity() {
             }
             adapter = PackageListAdapter(playlistModels, this, R.layout.rv_anim_packageview_selector)
             binding.packageviewList.adapter = adapter
+            lifecycleScope.launch {
+                if (animizeDB.animeDAO().getAnimeByPackageID(modelinfo!![0].pack) != null) {
+                    animizeDB.animeDAO().updateAnime(
+                            packageID = modelinfo!![0].pack,
+                            episodeTotal = modelinfo!![0].tot.toInt(),
+                            updatedOn = System.currentTimeMillis(),
+                            currentEpisode = playlistModels!!.size,
+                            packageName = modelinfo!![0].getName()
+                    )
+                }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -413,7 +421,7 @@ class PackageView : AppCompatActivity() {
 
     private suspend fun readStarStatus() {
         withContext(Dispatchers.IO) {
-            val isStarred = packageStarDBHelper!!.isStarred(pkganim!!)
+            val isStarred = animizeDB.animeDAO().isAnimeStarred(pkganim!!)
             withContext(Dispatchers.Main) {
                 if (isStarred) {
                     packStar!!.setIcon(R.drawable.ic_star)
@@ -427,11 +435,11 @@ class PackageView : AppCompatActivity() {
     private suspend fun changeStar(change: String) {
         withContext(Dispatchers.IO) {
             if (change == "UNSTAR") {
-                packageStarDBHelper!!.unStar(pkganim!!)
+                animizeDB.animeDAO().changeStarred(pkganim!!, false)
             } else if (change == "STAR") {
-                packageStarDBHelper!!.addStar(pkganim!!)
+                animizeDB.animeDAO().changeStarred(pkganim!!, true)
             }
-            val isStarred = packageStarDBHelper!!.isStarred(pkganim!!)
+            val isStarred = animizeDB.animeDAO().isAnimeStarred(pkganim!!)
             withContext(Dispatchers.Main) {
                 val status: String = if (isStarred) {
                     packStar!!.setIcon(R.drawable.ic_star)
@@ -447,7 +455,7 @@ class PackageView : AppCompatActivity() {
 
     private suspend fun readRecent() {
         withContext(Dispatchers.IO) {
-            val recentLand = modernDB.recentPlayedDAO().getRecentByPackageID(pkganim!!)
+            val recentLand = animizeDB.recentPlayedDAO().getRecentByPackageID(pkganim!!)
             withContext(Dispatchers.Main) {
                 binding.packageviewRecentContainer.visibility = View.VISIBLE
                 binding.packageviewRecentTitle.text = recentLand!!.packageID

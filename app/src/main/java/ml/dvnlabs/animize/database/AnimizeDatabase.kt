@@ -15,25 +15,27 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [RecentPlayed::class], version = 1, exportSchema = false)
-abstract class ModernDatabase : RoomDatabase() {
+@Database(entities = [RecentPlayed::class, Anime::class, User::class], version = 1, exportSchema = false)
+abstract class AnimizeDatabase : RoomDatabase() {
     abstract fun recentPlayedDAO(): RecentPlayedDAO
+    abstract fun userDAO(): UserDAO
+    abstract fun animeDAO(): AnimeDAO
 
     companion object {
         @Volatile
-        private var INSTANCE: ModernDatabase? = null
+        private var INSTANCE: AnimizeDatabase? = null
 
         fun getDatabase(
                 context: Context
-        ): ModernDatabase {
+        ): AnimizeDatabase {
             // if the INSTANCE is not null, then return it,
             // if it is, then create the database
             return INSTANCE
                     ?: synchronized(this) {
                         val instance = Room.databaseBuilder(
                                 context.applicationContext,
-                                ModernDatabase::class.java,
-                                "modern_database.db"
+                                AnimizeDatabase::class.java,
+                                "animize.db"
                         )
                                 .build()
                         INSTANCE = instance

@@ -25,7 +25,6 @@ import ml.dvnlabs.animize.driver.network.APINetworkRequest
 import ml.dvnlabs.animize.driver.network.RequestQueueVolley
 import ml.dvnlabs.animize.driver.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.VideoListModel
-import ml.dvnlabs.animize.ui.activity.DashboardActivity
 import ml.dvnlabs.animize.ui.recyclerview.EndlessRecyclerScrollListener
 import ml.dvnlabs.animize.ui.recyclerview.list.VideoListAdapter
 import org.json.JSONArray
@@ -145,7 +144,6 @@ class LastUpAnime : Fragment(), View.OnClickListener {
         }
 
         override fun onFetchFailure(msg: String?) {
-            (activity as DashboardActivity?)!!.snackError(msg!!, 1)
             binding!!.errorImage.visibility = View.VISIBLE
             binding!!.loadingRetry.visibility = View.VISIBLE
             binding!!.loadingErrortxt.visibility = View.VISIBLE

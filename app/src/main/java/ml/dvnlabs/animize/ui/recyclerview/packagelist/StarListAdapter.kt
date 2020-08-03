@@ -12,22 +12,22 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ml.dvnlabs.animize.database.legacy.model.StarLand
+import ml.dvnlabs.animize.database.Anime
 import ml.dvnlabs.animize.model.StarredModel
 import ml.dvnlabs.animize.ui.recyclerview.interfaces.AddingQueue
 import java.util.*
 
-class StarListAdapter(private var packageLists: ArrayList<StarLand>?, private val mContext: Context, private val itemResor: Int) : RecyclerView.Adapter<StarListHolder>(), AddingQueue {
+class StarListAdapter(private var packageLists: List<Anime>, private val mContext: Context, private val itemResor: Int) : RecyclerView.Adapter<StarListHolder>(), AddingQueue {
     override val queue: ArrayList<requestQueue?>?
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StarListHolder {
         val view = LayoutInflater.from(mContext).inflate(itemResor, parent, false)
-        return StarListHolder(mContext, view, this, packageLists!!.size)
+        return StarListHolder(mContext, view, this, packageLists.size)
     }
 
     override fun onBindViewHolder(holder: StarListHolder, position: Int) {
         holder.setIsRecyclable(false)
         //System.out.println("CDATA:POS:"+position+":PKG:"+this.packagelists.get(position).getPackageid());
-        val slm = packageLists!![holder.absoluteAdapterPosition]
+        val slm = packageLists[holder.absoluteAdapterPosition]
         holder.bindPlaylist(slm)
     }
 

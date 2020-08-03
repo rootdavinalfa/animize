@@ -21,11 +21,14 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.legacy.InitInternalDBHelper
+import ml.dvnlabs.animize.database.AnimizeDatabase
+import ml.dvnlabs.animize.database.notification.StarredNotificationDatabase
 import ml.dvnlabs.animize.ui.activity.MainActivity
+import org.koin.android.ext.android.inject
 
 class ProfilePop : BottomSheetDialogFragment() {
-    private var initInternalDBHelper: InitInternalDBHelper? = null
+    private val animizeDB: AnimizeDatabase by inject()
+    private val recentDB: StarredNotificationDatabase by inject()
     private var textname: TextView? = null
     private var textEmail: TextView? = null
     private var btnLogout: Button? = null
@@ -36,7 +39,6 @@ class ProfilePop : BottomSheetDialogFragment() {
         btnLogout = view.findViewById<View>(R.id.dash_profile_button_logout) as Button
         textEmail = view.findViewById<View>(R.id.dash_profile_tv_email) as TextView
         textname = view.findViewById<View>(R.id.dash_profile_tv_name) as TextView
-        initInternalDBHelper = InitInternalDBHelper(context)
 
         GlobalScope.launch {
             readUser()
@@ -52,21 +54,23 @@ class ProfilePop : BottomSheetDialogFragment() {
         }
     }
 
-    private suspend fun signOutDatabase(){
-        withContext(Dispatchers.IO){
-            initInternalDBHelper!!.signOut()
-            withContext(Dispatchers.Main){
+    private suspend fun signOutDatabase() {
+        withContext(Dispatchers.IO) {
+            animizeDB.animeDAO().deleteAll()
+            animizeDB.userDAO().deleteUser()
+            recentDB.starredNotificationDAO().deleteALL()
+            withContext(Dispatchers.Main) {
                 val intent = Intent(context, MainActivity::class.java)
                 startActivity(intent)
             }
         }
     }
 
-    private suspend fun readUser(){
-        withContext(Dispatchers.IO){
-            val usl = initInternalDBHelper!!.user
-            withContext(Dispatchers.Main){
-                textEmail!!.text = usl!!.email
+    private suspend fun readUser() {
+        withContext(Dispatchers.IO) {
+            val usl = animizeDB.userDAO().getUser()
+            withContext(Dispatchers.Main) {
+                textEmail!!.text = usl.email
                 textname!!.text = usl.nameUser
             }
         }

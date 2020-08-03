@@ -22,16 +22,22 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.custom.ColorHelper
-import ml.dvnlabs.animize.database.legacy.RecentPlayDBHelper
+import ml.dvnlabs.animize.database.AnimizeDatabase
 import ml.dvnlabs.animize.model.PlaylistModel
 import ml.dvnlabs.animize.ui.activity.StreamActivity
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 import kotlin.math.floor
 
-class PackageListHolder(private val context: Context, view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
-    private var recent: RecentPlayDBHelper? = null
+class PackageListHolder(private val context: Context, view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, KoinComponent {
+    private val animizeDB: AnimizeDatabase by inject { parametersOf(context) }
     private val episode: TextView = view.findViewById(R.id.rvTextEpisode)
     private val thumbnail: ImageView = view.findViewById(R.id.rvAnimeImage)
     private var playlist_model: PlaylistModel? = null
@@ -39,19 +45,17 @@ class PackageListHolder(private val context: Context, view: View) : RecyclerView
         playlist_model = plm
         val ep = context.getString(R.string.episode_text) + ": " + playlist_model!!.episode
         episode.text = ep
-        GlobalScope.launch {
-            setupImage(playlist_model!!.id_anim)
-        }
+        setupImage(playlist_model!!.id_anim)
     }
 
     private fun setupImage(anmID: String) = CoroutineScope(Dispatchers.Main).launch {
         withContext(Dispatchers.IO) {
-            val recentPlay = recent!!.readRecent(anmID)
+            val recentPlay = animizeDB.recentPlayedDAO().getRecentByAnimeID(anmID)
             var max = 0L
             var current = 0L
 
             if (recentPlay != null) {
-                max = recentPlay.maxTime
+                max = recentPlay.duration
                 current = recentPlay.timestamp
                 //println("ANMID : ${recentPlay.anmid} TIME : ${recentPlay.timestamp} MAX: ${recentPlay.maxTime}")
             }
@@ -68,18 +72,19 @@ class PackageListHolder(private val context: Context, view: View) : RecyclerView
             withContext(Dispatchers.Main) {
                 Glide.with(itemView)
                         .asBitmap()
-                        .placeholder(R.drawable.ic_picture_light)
                         .load(playlist_model!!.url_image)
                         .transition(BitmapTransitionOptions.withCrossFade())
-                        .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).override(600, 200)
-                                .fitCenter()).into(object : CustomTarget<Bitmap>() {
+                        .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).override(600, 200))
+                        .into(object : CustomTarget<Bitmap>() {
                             override fun onLoadCleared(placeholder: Drawable?) {
-                                thumbnail.background = placeholder
+                                thumbnail.background = null
                             }
 
                             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                                 thumbnail.setImageBitmap(resource)
-                                ColorHelper().filteringWithPercentage(ColorHelper.FILTER_VERTICAL, thumbnail, percent)
+                                thumbnail.post {
+                                    ColorHelper().filteringWithPercentage(ColorHelper.FILTER_VERTICAL, thumbnail, percent)
+                                }
                             }
                         })
             }
@@ -95,7 +100,6 @@ class PackageListHolder(private val context: Context, view: View) : RecyclerView
     }
 
     init {
-        recent = RecentPlayDBHelper(context)
         itemView.setOnClickListener(this)
     }
 }

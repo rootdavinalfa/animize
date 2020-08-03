@@ -22,7 +22,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.facebook.shimmer.ShimmerFrameLayout
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.legacy.model.StarLand
+import ml.dvnlabs.animize.database.Anime
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.network.APINetworkRequest
 import ml.dvnlabs.animize.driver.network.listener.FetchDataListener
@@ -33,76 +33,76 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-class StarListHolder(context : Context, view: View, listener : AddingQueue, private val sizePackageList : Int): RecyclerView.ViewHolder(view), View.OnClickListener {
+class StarListHolder(context: Context, view: View, listener: AddingQueue, private val sizePackageList: Int) : RecyclerView.ViewHolder(view), View.OnClickListener {
     private val mContext = context
     private val episode: TextView = view.findViewById(R.id.star_episode)
     private val rate: TextView = view.findViewById(R.id.star_rate)
-    private var mal:TextView = view.findViewById(R.id.star_mal)
+    private var mal: TextView = view.findViewById(R.id.star_mal)
     private val title: TextView = view.findViewById(R.id.star_name)
     private val thumbnail: ImageView = view.findViewById(R.id.star_cover)
 
-    private var data: StarLand? = null
+    private var data: Anime? = null
     private val loading: ShimmerFrameLayout = view.findViewById(R.id.rv_shimmer_recent)
     private val recent_layout: LinearLayout = view.findViewById(R.id.rv_item_recent)
-    private var pkgid : String? = null
+    private var pkgid: String? = null
     private var listeners = listener
     //private lateinit var listener : addingQueue
 
-    private var starmodel : StarredModel? = null
-    private var ready  = StarListAdapter.readyStars
+    private var starmodel: StarredModel? = null
+    private var ready = StarListAdapter.readyStars
 
     init {
         itemView.setOnClickListener(this)
     }
 
-    fun bindPlaylist(model : StarLand){
+    fun bindPlaylist(model: Anime) {
         println(ready.size)
         data = model
-        pkgid = data!!.packageid
+        pkgid = data!!.packageID
         //println(ready.size)
-        if (ready.size != 0){
-            for (i in ready){
+        if (ready.size != 0) {
+            for (i in ready) {
                 if (i.pos == absoluteAdapterPosition) {
                     //println("USE READY")
                     starmodel = i.model
                     copyData()
                 }
             }
-            if (ready.size < sizePackageList){
+            if (ready.size < sizePackageList) {
                 makeRequest(pkgid!!)
             }
-        }else{
+        } else {
             makeRequest(pkgid!!)
         }
 
     }
 
-    private fun makeRequest(pkg : String){
-        val url : String = Api.url_packageinfo+pkg
+    private fun makeRequest(pkg: String) {
+        val url: String = Api.url_packageinfo + pkg
         APINetworkRequest(mContext, fetchPackage, url, 1024, null)
         listeners.addQueue(pkgid!!, absoluteAdapterPosition)
     }
 
-    private val fetchPackage : FetchDataListener = object : FetchDataListener{
+    private val fetchPackage: FetchDataListener = object : FetchDataListener {
         override fun onFetchComplete(data: String?) {
             loading.stopShimmer()
-            loading.visibility= View.GONE
+            loading.visibility = View.GONE
             recent_layout.visibility = View.VISIBLE
             try {
                 val objects = JSONObject(data!!)
-                if (!objects.getBoolean("error")){
+                if (!objects.getBoolean("error")) {
                     listeners.removeQueue(absoluteAdapterPosition)
 
                     addToArrayPackage(objects.getJSONArray("anim"))
                 }
-            }catch (e : JSONException){
+            } catch (e: JSONException) {
                 e.printStackTrace()
             }
         }
 
         override fun onFetchFailure(msg: String?) {
             val queue = listeners.queue
-            for (i in 0 until queue!!.size){
+            for (i in 0 until queue!!.size) {
                 if (queue[i]!!.pos == absoluteAdapterPosition) {
                     makeRequest(queue[i]!!.pkg)
                 }
@@ -160,14 +160,13 @@ class StarListHolder(context : Context, view: View, listener : AddingQueue, priv
 
 
     override fun onClick(v: View?) {
-        if (data != null){
+        if (data != null) {
             val intent = Intent(mContext, PackageView::class.java)
-            intent.putExtra("package", data!!.packageid)
+            intent.putExtra("package", data!!.packageID)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             mContext.startActivity(intent)
         }
     }
-
 
 
 }

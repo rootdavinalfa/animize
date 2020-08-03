@@ -96,6 +96,7 @@ class RecentPlayDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE
             val nowTimestamp = System.currentTimeMillis()
             //Max Days is 15 days
             val maxTimestamp = nowTimestamp - 24 * 60 * 60 * 1000 * 15
+            Log.e("MAX:", maxTimestamp.toString())
             val selectquery = "SELECT * FROM " + RecentLand.table_name + " WHERE " + RecentLand.col_lastmodified + " >= " + maxTimestamp + " ORDER BY " + RecentLand.col_lastmodified + " DESC"
             val db = this.readableDatabase
             val cursor = db.rawQuery(selectquery, null)

@@ -37,13 +37,11 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.material.card.MaterialCardView
 import com.wang.avi.AVLoadingIndicatorView
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.ModernDatabase
+import ml.dvnlabs.animize.database.Anime
+import ml.dvnlabs.animize.database.AnimizeDatabase
 import ml.dvnlabs.animize.database.RecentPlayed
-import ml.dvnlabs.animize.database.legacy.InitInternalDBHelper
-import ml.dvnlabs.animize.database.legacy.PackageStarDBHelper
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.network.APINetworkRequest
 import ml.dvnlabs.animize.driver.network.RequestQueueVolley
@@ -70,9 +68,7 @@ import java.util.*
 class StreamActivity : AppCompatActivity() {
     private val CODE_GET_REQUEST = 1024
 
-    private var packageStarDBHelper: PackageStarDBHelper? = null
-    private var initInternalDBHelper: InitInternalDBHelper? = null
-    private val modernDB: ModernDatabase by inject()
+    private val animizeDB: AnimizeDatabase by inject()
 
     private var updateRecent: Runnable? = null
     private var handlerPlayerRecent: Handler? = null
@@ -141,8 +137,6 @@ class StreamActivity : AppCompatActivity() {
 
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        packageStarDBHelper = PackageStarDBHelper(this)
-        initInternalDBHelper = InitInternalDBHelper(this)
         handlerPlayerRecent = Handler()
         getVideo()
     }
@@ -584,6 +578,16 @@ class StreamActivity : AppCompatActivity() {
         updateRecent?.let {
             handlerPlayerRecent?.removeCallbacks(it)
         }
+        lifecycleScope.launch {
+            if (animizeDB.animeDAO().getAnimeByPackageID(modeldata!![0].pack) == null) {
+                animizeDB.animeDAO().newAnime(Anime(
+                        packageID = modeldata!![0].pack,
+                        packageName = modeldata!![0].name_anim,
+                        episodeTotal = modeldata!![0].total_ep_anim.toInt(),
+                        updatedOn = System.currentTimeMillis()
+                ))
+            }
+        }
         readRecent()
     }
 
@@ -615,8 +619,14 @@ class StreamActivity : AppCompatActivity() {
 
     @UiThread
     private fun readStar() {
-        GlobalScope.launch {
-            val starred = packageStarDBHelper!!.isStarred(modeldata!![0].pack)
+        lifecycleScope.launch {
+            animizeDB.animeDAO().newAnime(Anime(
+                    packageID = modeldata!![0].pack,
+                    packageName = null,
+                    episodeTotal = 0,
+                    updatedOn = System.currentTimeMillis()
+            ))
+            val starred = animizeDB.animeDAO().isAnimeStarred(modeldata!![0].pack)
             if (starred) {
                 detailsAdd!!.setImageResource(R.drawable.ic_star)
             } else {
@@ -628,15 +638,15 @@ class StreamActivity : AppCompatActivity() {
     @UiThread
     private fun changeStar() {
         var status: String
-        GlobalScope.run {
+        lifecycleScope.launch {
             val packageAnim = modeldata!![0].pack
-            val starred = packageStarDBHelper!!.isStarred(packageAnim)
+            val starred = animizeDB.animeDAO().isAnimeStarred(packageAnim)
             status = if (starred) {
-                packageStarDBHelper!!.unStar(packageAnim)
+                animizeDB.animeDAO().changeStarred(packageAnim, false)
                 detailsAdd!!.setImageResource(R.drawable.ic_add)
                 "Remove Star Success"
             } else {
-                packageStarDBHelper!!.addStar(packageAnim)
+                animizeDB.animeDAO().changeStarred(packageAnim, true)
                 detailsAdd!!.setImageResource(R.drawable.ic_star)
                 "Add to Star Success"
             }
@@ -646,15 +656,13 @@ class StreamActivity : AppCompatActivity() {
 
     @UiThread
     private fun readUser() {
-        GlobalScope.run {
-            val user = initInternalDBHelper!!.user
-            if (user != null) {
-                val preferences = applicationContext.getSharedPreferences("aPlay", Context.MODE_PRIVATE)
-                val editor = preferences.edit()
-                editor.putString("idUser", user.idUser)
-                editor.putString("token", user.token)
-                editor.apply()
-            }
+        lifecycleScope.launch {
+            val user = animizeDB.userDAO().getUser()
+            val preferences = applicationContext.getSharedPreferences("aPlay", Context.MODE_PRIVATE)
+            val editor = preferences.edit()
+            editor.putString("idUser", user.idUser)
+            editor.putString("token", user.accessToken)
+            editor.apply()
         }
     }
 
@@ -683,7 +691,7 @@ class StreamActivity : AppCompatActivity() {
 
     private fun readRecent() {
         lifecycleScope.launch {
-            val recent = idanim?.let { modernDB.recentPlayedDAO().getRecentByAnimeID(it) }
+            val recent = idanim?.let { animizeDB.recentPlayedDAO().getRecentByAnimeID(it) }
             var seeker: Long = 0
             if (recent != null) {
                 seeker = recent.timestamp
@@ -695,19 +703,19 @@ class StreamActivity : AppCompatActivity() {
 
     private fun updatingRecent() {
         lifecycleScope.launch {
-            if (modernDB.recentPlayedDAO().getRecentByAnimeID(idanim!!) != null) {
+            if (animizeDB.recentPlayedDAO().getRecentByAnimeID(idanim!!) != null) {
                 val packageId = modeldata!![0].pack
                 val episode = Integer.valueOf(modeldata!![0].episode)
                 val urlCover = modeldata!![0].cover
                 val timestamp = getCurrentPlayTime()
-                modernDB.recentPlayedDAO().updateRecent(packageId, idanim!!, episode, urlCover, timestamp, PlayerManager.service!!.exoPlayer!!.duration)
+                animizeDB.recentPlayedDAO().updateRecent(packageId, idanim!!, episode, urlCover, timestamp, PlayerManager.service!!.exoPlayer!!.duration)
             } else {
                 val packageId = modeldata!![0].pack
                 val packageName = modeldata!![0].name_anim
                 val episode = Integer.valueOf(modeldata!![0].episode)
                 val urlCover = modeldata!![0].cover
                 val timestamp = getCurrentPlayTime()
-                modernDB.recentPlayedDAO().newRecent(RecentPlayed(
+                animizeDB.recentPlayedDAO().newRecent(RecentPlayed(
                         packageID = packageId,
                         name = packageName,
                         animeID = idanim!!,
