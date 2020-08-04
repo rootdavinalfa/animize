@@ -401,7 +401,7 @@ class PackageView : AppCompatActivity() {
                 val pkg = `object`.getString("package_anim")
                 playlistModels!!.add(PlaylistModel(urlImg, title, episode, idAnim, pkg))
             }
-            adapter = PackageListAdapter(playlistModels, this, R.layout.rv_anim_packageview_selector)
+            adapter = PackageListAdapter(playlistModels, this, R.layout.rv_episode_item)
             binding.packageviewList.adapter = adapter
             lifecycleScope.launch {
                 if (animizeDB.animeDAO().getAnimeByPackageID(modelinfo!![0].pack) != null) {

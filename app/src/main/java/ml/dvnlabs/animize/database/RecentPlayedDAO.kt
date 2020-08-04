@@ -31,4 +31,7 @@ interface RecentPlayedDAO {
     @Query("SELECT * FROM RecentPlayed WHERE packageID = :packageID LIMIT 0,1")
     suspend fun getRecentByPackageID(packageID: String): RecentPlayed?
 
+    @Query("DELETE FROM RecentPlayed")
+    suspend fun deleteAll()
+
 }

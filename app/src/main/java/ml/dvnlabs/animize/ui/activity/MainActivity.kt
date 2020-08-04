@@ -11,7 +11,9 @@ package ml.dvnlabs.animize.ui.activity
 
 import android.app.Activity
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +23,9 @@ import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.work.WorkManager
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +37,7 @@ import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.network.APINetworkRequest
 import ml.dvnlabs.animize.driver.network.listener.FetchDataListener
 import ml.dvnlabs.animize.ui.fragment.Register
+import ml.dvnlabs.animize.util.MigrationHelper
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.indeterminateProgressDialog
 import org.json.JSONException
@@ -54,8 +59,11 @@ class MainActivity : AppCompatActivity() {
 
 
     private val TAG = MainActivity::class.java.simpleName
+    private var migratedPref: SharedPreferences? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        migratedPref = this.getSharedPreferences("dbStatus", Context.MODE_PRIVATE)
         //initializa();
         Log.e("INITIALIZE:", "dvnlabs.xyz 2020,Animize Loader.Animize Team 2019.")
         Log.e("MESSAGE:", """
@@ -74,8 +82,30 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initialize() = CoroutineScope(Dispatchers.Main).launch {
+        var migrated = false
+        migratedPref?.let {
+            migrated = it.getBoolean("migrated", false)
+        }
 
-        //Check is internal DB user exist or not,if exist dont initialize view for mainActivity
+        if (migrated) {
+            checkUser()
+        } else {
+            MigrationHelper.setupTaskImmediately(this@MainActivity)
+            WorkManager.getInstance(this@MainActivity).getWorkInfosByTagLiveData(MigrationHelper.TAG).distinctUntilChanged().observe(this@MainActivity, androidx.lifecycle.Observer {
+                val currentStatus = it?.getOrNull(0)
+                lifecycleScope.launch {
+                    if (currentStatus?.state?.isFinished!! && animizeDB.userDAO().countUser() == 0) {
+                        checkUser()
+                    } else {
+                        checkUser()
+                    }
+                }
+            })
+        }
+    }
+
+    private fun checkUser() = CoroutineScope(Dispatchers.Main).launch {
+        //Check is user exist or not,if exist don't initialize view for mainActivity
         if (animizeDB.userDAO().countUser() == 0) {
             Log.e(this@MainActivity.javaClass.simpleName, "USER NOT FOUND!")
             setTheme(R.style.AppTheme)

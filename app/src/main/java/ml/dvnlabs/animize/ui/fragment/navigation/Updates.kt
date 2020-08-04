@@ -18,10 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.data.notification.StarredNotificationWorker
 import ml.dvnlabs.animize.databinding.FragmentUpdatesBinding
 import ml.dvnlabs.animize.ui.recyclerview.list.update.NotificationUpdateAdapter
 import ml.dvnlabs.animize.ui.viewmodel.ListViewModel
+import ml.dvnlabs.animize.util.notification.StarredNotificationWorker
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class Updates : Fragment() {

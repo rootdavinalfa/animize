@@ -10,24 +10,15 @@ package ml.dvnlabs.animize.ui.recyclerview.packagelist
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.view.View
-import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.custom.ColorHelper
 import ml.dvnlabs.animize.database.AnimizeDatabase
 import ml.dvnlabs.animize.model.PlaylistModel
 import ml.dvnlabs.animize.ui.activity.StreamActivity
@@ -38,8 +29,8 @@ import kotlin.math.floor
 
 class PackageListHolder(private val context: Context, view: View) : RecyclerView.ViewHolder(view), View.OnClickListener, KoinComponent {
     private val animizeDB: AnimizeDatabase by inject { parametersOf(context) }
-    private val episode: TextView = view.findViewById(R.id.rvTextEpisode)
-    private val thumbnail: ImageView = view.findViewById(R.id.rvAnimeImage)
+    private val episode: TextView = view.findViewById(R.id.rvText)
+    private val progress: ProgressBar = view.findViewById(R.id.rvProgress)
     private var playlist_model: PlaylistModel? = null
     fun bindPlaylist(plm: PlaylistModel?) {
         playlist_model = plm
@@ -60,34 +51,16 @@ class PackageListHolder(private val context: Context, view: View) : RecyclerView
                 //println("ANMID : ${recentPlay.anmid} TIME : ${recentPlay.timestamp} MAX: ${recentPlay.maxTime}")
             }
 
-            val percent = when (max) {
+            val percent: Int = when (max) {
                 0L -> {
-                    1F
+                    0
                 }
 
                 else -> {
-                    floor((current.toDouble() / max.toDouble()) * 100).toFloat()
+                    floor((current.toDouble() / max.toDouble()) * 100).toInt()
                 }
             }
-            withContext(Dispatchers.Main) {
-                Glide.with(itemView)
-                        .asBitmap()
-                        .load(playlist_model!!.url_image)
-                        .transition(BitmapTransitionOptions.withCrossFade())
-                        .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL).override(600, 200))
-                        .into(object : CustomTarget<Bitmap>() {
-                            override fun onLoadCleared(placeholder: Drawable?) {
-                                thumbnail.background = null
-                            }
-
-                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                thumbnail.setImageBitmap(resource)
-                                thumbnail.post {
-                                    ColorHelper().filteringWithPercentage(ColorHelper.FILTER_VERTICAL, thumbnail, percent)
-                                }
-                            }
-                        })
-            }
+            progress.progress = percent
         }
     }
 

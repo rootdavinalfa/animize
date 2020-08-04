@@ -7,7 +7,7 @@
  *
  */
 
-package ml.dvnlabs.animize.data.notification
+package ml.dvnlabs.animize.util.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -249,10 +249,14 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
 
         fun setupTaskPeriodic(context: Context, interval: Int = DEFAULT_INTERVAL) {
             if (interval > 0) {
+                val constraints: Constraints = Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build()
                 val request = PeriodicWorkRequestBuilder<StarredNotificationWorker>(
                         interval.toLong(), TimeUnit.MINUTES,
                         10, TimeUnit.MINUTES
                 )
+                        .setConstraints(constraints)
                         .addTag(TAG)
                         .build()
 

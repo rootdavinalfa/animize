@@ -35,7 +35,7 @@ interface AnimeDAO {
     suspend fun newAnime(anime: Anime)
 
     @Query("UPDATE Anime SET episodeTotal = :episodeTotal, currentEpisode = :currentEpisode, updatedOn = :updatedOn, packageName = :packageName WHERE packageID = :packageID")
-    suspend fun updateAnime(packageID: String, episodeTotal: Int, currentEpisode: Int, updatedOn: Long, packageName: String)
+    suspend fun updateAnime(packageID: String, episodeTotal: Int = 0, currentEpisode: Int = 0, updatedOn: Long = 0, packageName: String? = null)
 
     @Query("DELETE FROM Anime")
     suspend fun deleteAll()
