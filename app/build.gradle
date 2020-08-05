@@ -97,6 +97,7 @@ dependencies {
     //RxKotlin
     implementation("io.reactivex.rxjava3:rxkotlin:3.0.0")
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation fileTree(dir: 'src/main/libs', include: ['*.aar', '*.jar'], exclude: [])
 
     //Koin injector
     def koin_version= "2.1.6"

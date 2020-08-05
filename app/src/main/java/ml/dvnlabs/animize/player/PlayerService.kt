@@ -25,10 +25,7 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
@@ -50,7 +47,7 @@ class PlayerService : Service(), AudioManager.OnAudioFocusChangeListener, Player
 
     var exoPlayer: SimpleExoPlayer? = null
     private var mediaSession: MediaSessionCompat? = null
-    
+
     private var transportControls: MediaControllerCompat.TransportControls? = null
     private var audioManager: AudioManager? = null
     private var status: String? = null
@@ -89,13 +86,13 @@ class PlayerService : Service(), AudioManager.OnAudioFocusChangeListener, Player
         mediaSession!!.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
         mediaSession!!.setCallback(mediasSessionCallback)
 
-        val bandwidthMeter = DefaultBandwidthMeter()
+        /*val bandwidthMeter = DefaultBandwidthMeter.getSingletonInstance(this)
         val videoTrackSelectionFactory = AdaptiveTrackSelection.Factory(bandwidthMeter)
-        val trackSelector = DefaultTrackSelector(videoTrackSelectionFactory)
-        val loadControl = DefaultLoadControl()
-
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl)
-        //exoPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory,trackSelector,loadControl);
+        val trackSelector = DefaultTrackSelector(videoTrackSelectionFactory)*/
+        //Prefer FFmpeg over default codec for audio
+        val rendererFactory = DefaultRenderersFactory(this)
+                .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER)
+        exoPlayer = SimpleExoPlayer.Builder(this, rendererFactory).build()
         exoPlayer!!.addListener(this)
         status = PlaybackStatus.IDLE
     }
