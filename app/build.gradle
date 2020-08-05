@@ -80,8 +80,8 @@ android {
             minSdkVersion 22
             applicationIdSuffix '.ima'
             targetSdkVersion 28
-            versionCode 39
-            versionName '3-D5-'
+            versionCode 40
+            versionName '3-D6-'
             versionNameSuffix 'destroyer'
             applicationId 'ml.dvnlabs.animize'
             resValue("string", "app_names", "Animize")
@@ -97,6 +97,7 @@ dependencies {
     //RxKotlin
     implementation("io.reactivex.rxjava3:rxkotlin:3.0.0")
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation fileTree(dir: 'src/main/libs', include: ['*.aar', '*.jar'], exclude: [])
 
     //Koin injector
     def koin_version= "2.1.6"
@@ -110,16 +111,16 @@ dependencies {
     //Core
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.core:core-ktx:1.5.0-alpha01'
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8'
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.7'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta7'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-rc1'
     testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test:runner:1.3.0-rc01'
+    androidTestImplementation 'androidx.test:runner:1.3.0-rc02'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.2.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.google.android.material:material:1.3.0-alpha01'
+    implementation 'com.google.android.material:material:1.3.0-alpha02'
     implementation "org.jetbrains.anko:anko-commons:0.10.8"
     implementation 'org.greenrobot:eventbus:3.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
@@ -128,11 +129,11 @@ dependencies {
     implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
-    implementation 'com.google.android.exoplayer:exoplayer:2.10.2'
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.7'
     implementation 'com.android.support:support-annotations:28.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0-rc01'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha03'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha05'
     implementation 'com.github.takusemba:multisnaprecyclerview:2.0.2'
     implementation 'io.cabriole:decorator:1.1.0'
     implementation 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
@@ -141,7 +142,7 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
-    implementation 'com.google.firebase:firebase-core:17.4.3'
+    implementation 'com.google.firebase:firebase-core:17.4.4'
     implementation 'jp.wasabeef:glide-transformations:4.0.1'
     implementation 'com.github.Kennyc1012:BottomSheetMenu:3.1.3'
     implementation 'com.etebarian:meow-bottom-navigation:1.2.0'
@@ -175,12 +176,12 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
 
     //Navigation Component
-    def nav_version = "2.2.2"
+    def nav_version = "2.3.0"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     //Worker manager
-    def work_version = "2.3.4"
+    def work_version = "2.4.0"
     // Kotlin + coroutines
     implementation "androidx.work:work-runtime-ktx:$work_version"
 }

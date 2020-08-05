@@ -43,7 +43,7 @@ class InitInternalDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABA
                 db.execSQL(RecentLand.CREATE_TABLE)
             }
         }
-        if (oldVersion == 3 && newVersion == 4){
+        if (oldVersion == 3 && newVersion == 4) {
             db.execSQL("ALTER TABLE ${RecentLand.table_name} ADD COLUMN ${RecentLand.col_maxTime} INTEGER DEFAULT 0")
         }
 
@@ -71,6 +71,16 @@ class InitInternalDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABA
 
             //long id_db = db.insert(userland.table_name,null,values);
             db.insert(UserLand.table_name, null, values)
+            db.close()
+        } catch (e: SQLiteException) {
+            e.printStackTrace()
+        }
+    }
+
+    fun deleteUser() {
+        try {
+            val db = this.writableDatabase
+            db.delete(UserLand.table_name, null, null)
             db.close()
         } catch (e: SQLiteException) {
             e.printStackTrace()
@@ -113,13 +123,13 @@ class InitInternalDBHelper(context: Context?) : SQLiteOpenHelper(context, DATABA
 
                 //if(cursor!=null)
                 //cursor.moveToFirst();
-                var userland : UserLand? = null
+                var userland: UserLand? = null
                 if (cursor != null && cursor.moveToFirst()) {
                     val email = cursor.getString(cursor.getColumnIndex(UserLand.col_email))
                     val idUser = cursor.getString(cursor.getColumnIndex(UserLand.col_id_user))
                     val nameUser = cursor.getString(cursor.getColumnIndex(UserLand.col_name_user))
                     val token = cursor.getString(cursor.getColumnIndex(UserLand.col_access_token))
-                    userland = UserLand(idUser,nameUser,email,token)
+                    userland = UserLand(idUser, nameUser, email, token)
                     cursor.close()
                 }
                 db.close()

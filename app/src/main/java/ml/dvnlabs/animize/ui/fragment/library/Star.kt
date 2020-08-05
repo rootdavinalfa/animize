@@ -19,19 +19,21 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
-import ml.dvnlabs.animize.database.legacy.PackageStarDBHelper
+import ml.dvnlabs.animize.database.AnimizeDatabase
 import ml.dvnlabs.animize.ui.recyclerview.packagelist.StarListAdapter
 import ml.dvnlabs.animize.ui.viewmodel.CommonViewModel
 import ml.dvnlabs.animize.view.AutoGridLayoutManager
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 
-class Star : Fragment() {
-    private var packageStarDBHelper: PackageStarDBHelper? = null
+class Star : Fragment(), KoinComponent {
+    private val animizeDB: AnimizeDatabase by inject { parametersOf(context) }
     private var counter = 0
     private var rvStarred: RecyclerView? = null
     private var adapter: StarListAdapter? = null
@@ -47,27 +49,24 @@ class Star : Fragment() {
         rvStarred = view.findViewById(R.id.star_list)
         voided = view.findViewById(R.id.starred_void)
         refreshLayout = view.findViewById(R.id.starred_refresh)
-        packageStarDBHelper = PackageStarDBHelper(activity)
         refreshList()
         swipeRefresh()
 
         commonViewModel.libraryScrolledToTop.observe(viewLifecycleOwner, Observer {
-            if (it){
+            if (it) {
                 scrollToTop()
             }
         })
         return view
     }
 
-    private fun refreshList() {
-        if (packageStarDBHelper!!.isAvail) {
+    private fun refreshList() = CoroutineScope(Dispatchers.Main).launch {
+        if (animizeDB.animeDAO().getAllStarredAnime().isNotEmpty()) {
             voided!!.visibility = View.GONE
             if (adapter != null) {
                 adapter!!.notifyDataSetChanged()
             }
-            GlobalScope.launch {
-                getStarredPackage()
-            }
+            getStarredPackage()
         } else {
             voided!!.visibility = View.VISIBLE
         }
@@ -83,29 +82,22 @@ class Star : Fragment() {
             }, 2000) // Delay in millis
         }
         refreshLayout!!.setColorSchemeColors(
-                ContextCompat.getColor(requireContext(),android.R.color.holo_blue_bright),
-                ContextCompat.getColor(requireContext(),android.R.color.holo_green_light),
-                ContextCompat.getColor(requireContext(),android.R.color.holo_orange_light),
-                ContextCompat.getColor(requireContext(),android.R.color.holo_red_light)
+                ContextCompat.getColor(requireContext(), android.R.color.holo_blue_bright),
+                ContextCompat.getColor(requireContext(), android.R.color.holo_green_light),
+                ContextCompat.getColor(requireContext(), android.R.color.holo_orange_light),
+                ContextCompat.getColor(requireContext(), android.R.color.holo_red_light)
         )
     }
 
-    private suspend fun getStarredPackage(){
-        withContext(Dispatchers.IO){
-            val pa = packageStarDBHelper!!.starredList
-            withContext(Dispatchers.Main){
-                if (pa!!.isNotEmpty()) {
-                    autoGridLayoutManager = AutoGridLayoutManager(activity, 500)
-                    adapter = StarListAdapter(pa, requireContext(), R.layout.rv_starredpackage)
-                    rvStarred!!.adapter = adapter
-                    rvStarred!!.layoutManager = autoGridLayoutManager
-                } else {
-                    voided!!.visibility = View.VISIBLE
-                }
-            }
-        }
+    private suspend fun getStarredPackage() {
+        val pa = animizeDB.animeDAO().getAllStarredAnime()
+        autoGridLayoutManager = AutoGridLayoutManager(requireContext(), 500)
+        adapter = StarListAdapter(pa, requireContext(), R.layout.rv_starredpackage)
+        rvStarred!!.adapter = adapter
+        rvStarred!!.layoutManager = autoGridLayoutManager
     }
-    private fun scrollToTop(){
+
+    private fun scrollToTop() {
         rvStarred!!.smoothScrollToPosition(0)
         commonViewModel.changeLibraryScrolledToTop()
     }

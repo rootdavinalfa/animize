@@ -17,7 +17,8 @@ import com.google.android.exoplayer2.upstream.cache.SimpleCache
 import io.branch.referral.Branch
 import ml.dvnlabs.animize.checker.CheckNetwork
 import ml.dvnlabs.animize.checker.CheckNetwork.ConnectivityReceiverListener
-import ml.dvnlabs.animize.data.notification.StarredNotificationWorker
+import ml.dvnlabs.animize.player.PlayerManager
+import ml.dvnlabs.animize.util.notification.StarredNotificationWorker
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -25,6 +26,7 @@ import java.io.File
 import java.io.IOException
 
 class AppController : Application() {
+    private var playerManager: PlayerManager? = null
     override fun onCreate() {
         super.onCreate()
         mInstance = this
@@ -40,6 +42,16 @@ class AppController : Application() {
 
         //Initialize WorkManager
         StarredNotificationWorker.setupTaskPeriodic(this)
+
+        playerManager = PlayerManager(this)
+        if (PlayerManager.service == null) {
+            playerManager?.bind()
+        }
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        playerManager?.unbind()
     }
 
     fun setConnectivityListener(listener: ConnectivityReceiverListener?) {
@@ -71,7 +83,7 @@ class AppController : Application() {
         fun setVideoCache(): SimpleCache? {
             if (sDownloadCache == null) {
                 val databaseProvider: DatabaseProvider = ExoDatabaseProvider(mInstance!!)
-                sDownloadCache = SimpleCache(File(mInstance!!.cacheDir, "anim"), LeastRecentlyUsedCacheEvictor(max_cache_size),databaseProvider) //17MB
+                sDownloadCache = SimpleCache(File(mInstance!!.cacheDir, "anim"), LeastRecentlyUsedCacheEvictor(max_cache_size), databaseProvider) //17MB
             }
             return sDownloadCache
         }

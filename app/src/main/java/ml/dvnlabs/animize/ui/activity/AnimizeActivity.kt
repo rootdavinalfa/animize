@@ -12,30 +12,32 @@ package ml.dvnlabs.animize.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import kotlinx.android.synthetic.main.animize_activity.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.base.BaseActivity
-import ml.dvnlabs.animize.database.legacy.InitInternalDBHelper
+import ml.dvnlabs.animize.database.AnimizeDatabase
 import ml.dvnlabs.animize.ui.pager.MainNavPager
 import ml.dvnlabs.animize.ui.viewmodel.CommonViewModel
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AnimizeActivity : BaseActivity(){
+class AnimizeActivity : BaseActivity() {
     private val commonVM: CommonViewModel by viewModel()
-    private lateinit var initInternalDBHelper: InitInternalDBHelper
+    private val animizeDB: AnimizeDatabase by inject()
     private val indexMain = mapOf(0 to R.id.nav_home, 1 to R.id.nav_library, 2 to R.id.nav_update)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.animize_activity)
-        initInternalDBHelper = InitInternalDBHelper(this)
+
         changeStatusBar(this, R.color.colorPrimaryDark, false)
-        runBlocking { readUser() }
+        lifecycleScope.launch { readUser() }
         initLayout()
     }
 
@@ -61,9 +63,10 @@ class AnimizeActivity : BaseActivity(){
     private fun initLayout() {
         mainPager.adapter = MainNavPager(supportFragmentManager, 3)
         mainPager.offscreenPageLimit = 2
-        mainBottomNavigation.add(MeowBottomNavigation.Model(R.id.nav_home,R.drawable.ic_home))
-        mainBottomNavigation.add(MeowBottomNavigation.Model(R.id.nav_library,R.drawable.ic_library))
-        mainBottomNavigation.add(MeowBottomNavigation.Model(R.id.nav_update,R.drawable.ic_featured))
+        mainBottomNavigation.add(MeowBottomNavigation.Model(R.id.nav_home, R.drawable.ic_home))
+        mainBottomNavigation.add(MeowBottomNavigation.Model(R.id.nav_library, R.drawable.ic_library))
+        mainBottomNavigation.add(MeowBottomNavigation.Model(R.id.nav_update, R.drawable.ic_featured))
+        mainBottomNavigation.show(R.id.nav_home)
         mainBottomNavigation.setOnClickMenuListener {
             onNavigationItemSelected(it)
         }
@@ -110,7 +113,7 @@ class AnimizeActivity : BaseActivity(){
 
     private suspend fun readUser() {
         withContext(Dispatchers.IO) {
-            commonVM.userLand = initInternalDBHelper.user
+            commonVM.userLand = animizeDB.userDAO().getUser()
         }
     }
 }

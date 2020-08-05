@@ -9,6 +9,7 @@
 package ml.dvnlabs.animize.driver
 
 object Api {
+    //private const val url_base = "http://10.0.2.2/animize/"
     //private const val url_base = "http://192.168.1.200/animize/"
     private const val url_base = "https://api.dvnlabs.xyz/animize/"
     const val api_animlist = url_base + "anim/list/all"

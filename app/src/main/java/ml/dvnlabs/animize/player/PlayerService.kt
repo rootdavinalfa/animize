@@ -19,15 +19,13 @@ import android.os.IBinder
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.text.TextUtils
+import android.util.Log
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.source.TrackGroupArray
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
@@ -49,7 +47,7 @@ class PlayerService : Service(), AudioManager.OnAudioFocusChangeListener, Player
 
     var exoPlayer: SimpleExoPlayer? = null
     private var mediaSession: MediaSessionCompat? = null
-    
+
     private var transportControls: MediaControllerCompat.TransportControls? = null
     private var audioManager: AudioManager? = null
     private var status: String? = null
@@ -88,13 +86,13 @@ class PlayerService : Service(), AudioManager.OnAudioFocusChangeListener, Player
         mediaSession!!.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
         mediaSession!!.setCallback(mediasSessionCallback)
 
-        val bandwidthMeter = DefaultBandwidthMeter()
+        /*val bandwidthMeter = DefaultBandwidthMeter.getSingletonInstance(this)
         val videoTrackSelectionFactory = AdaptiveTrackSelection.Factory(bandwidthMeter)
-        val trackSelector = DefaultTrackSelector(videoTrackSelectionFactory)
-        val loadControl = DefaultLoadControl()
-
-        exoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl)
-        //exoPlayer = ExoPlayerFactory.newSimpleInstance(renderersFactory,trackSelector,loadControl);
+        val trackSelector = DefaultTrackSelector(videoTrackSelectionFactory)*/
+        //Prefer FFmpeg over default codec for audio
+        val rendererFactory = DefaultRenderersFactory(this)
+                .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER)
+        exoPlayer = SimpleExoPlayer.Builder(this, rendererFactory).build()
         exoPlayer!!.addListener(this)
         status = PlaybackStatus.IDLE
     }
@@ -162,11 +160,11 @@ class PlayerService : Service(), AudioManager.OnAudioFocusChangeListener, Player
         }
     }
 
-    override fun onTimelineChanged(timeline: Timeline?, manifest: Any?, reason: Int) {
+    override fun onTimelineChanged(timeline: Timeline, manifest: Any?, reason: Int) {
 
     }
 
-    override fun onTracksChanged(trackGroups: TrackGroupArray?, trackSelections: TrackSelectionArray?) {
+    override fun onTracksChanged(trackGroups: TrackGroupArray, trackSelections: TrackSelectionArray) {
 
     }
 
@@ -175,12 +173,12 @@ class PlayerService : Service(), AudioManager.OnAudioFocusChangeListener, Player
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-        when (playbackState) {
-            Player.STATE_BUFFERING -> status = PlaybackStatus.LOADING
-            Player.STATE_ENDED -> status = PlaybackStatus.STOPPED
-            Player.STATE_IDLE -> status = PlaybackStatus.IDLE
-            Player.STATE_READY -> status = if (playWhenReady) PlaybackStatus.PLAYING else PlaybackStatus.PAUSED
-            else -> status = PlaybackStatus.IDLE
+        status = when (playbackState) {
+            Player.STATE_BUFFERING -> PlaybackStatus.LOADING
+            Player.STATE_ENDED -> PlaybackStatus.STOPPED
+            Player.STATE_IDLE -> PlaybackStatus.IDLE
+            Player.STATE_READY -> if (playWhenReady) PlaybackStatus.PLAYING else PlaybackStatus.PAUSED
+            else -> PlaybackStatus.IDLE
         }
 
         if (status != PlaybackStatus.IDLE)
@@ -198,10 +196,10 @@ class PlayerService : Service(), AudioManager.OnAudioFocusChangeListener, Player
 
     }
 
-    override fun onPlayerError(error: ExoPlaybackException?) {
+    override fun onPlayerError(error: ExoPlaybackException) {
         val errorDetails: String?
         //EventBus.getDefault().post(PlaybackStatus.ERROR);
-        when (error!!.type) {
+        when (error.type) {
             ExoPlaybackException.TYPE_OUT_OF_MEMORY -> {
             }
             ExoPlaybackException.TYPE_REMOTE -> {
@@ -226,7 +224,7 @@ class PlayerService : Service(), AudioManager.OnAudioFocusChangeListener, Player
 
     }
 
-    override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters?) {
+    override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
 
     }
 
@@ -272,7 +270,7 @@ class PlayerService : Service(), AudioManager.OnAudioFocusChangeListener, Player
     }
 
     fun init(streamUrl: String) {
-        this.streamUrl = streamUrl
+        Log.i("PlayerService", streamUrl)
 
         val mediaSource = buildMediaSource(Uri.parse(streamUrl))
 
@@ -284,14 +282,7 @@ class PlayerService : Service(), AudioManager.OnAudioFocusChangeListener, Player
     fun playOrPause(uri: String?) {
         //Log.e("STREAM-OK:",urli);
         if (uri != null) {
-            println("OK")
-            if (streamUrl != null && streamUrl == uri) {
-                play()
-            } else {
-                //Log.e("Service",urli);
-                init(uri)
-
-            }
+            init(uri)
         }
 
     }

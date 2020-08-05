@@ -11,11 +11,11 @@ package ml.dvnlabs.animize.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ml.dvnlabs.animize.database.legacy.model.UserLand
+import ml.dvnlabs.animize.database.User
 
 class CommonViewModel : ViewModel() {
-    var userLand: UserLand? = null
-    var dashboardScrolledToTop : MutableLiveData<Boolean> = MutableLiveData(false)
+    var userLand: User? = null
+    var dashboardScrolledToTop: MutableLiveData<Boolean> = MutableLiveData(false)
     var libraryScrolledToTop : MutableLiveData<Boolean> = MutableLiveData(false)
     fun changeDashboardScrolledToTop() {
         dashboardScrolledToTop.value = when (dashboardScrolledToTop.value) {

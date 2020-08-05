@@ -7,7 +7,7 @@
  *
  */
 
-package ml.dvnlabs.animize.data.notification
+package ml.dvnlabs.animize.util.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -24,13 +24,14 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.toFlowable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.*
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.constant.Notification
-import ml.dvnlabs.animize.database.legacy.PackageStarDBHelper
+import ml.dvnlabs.animize.database.AnimizeDatabase
 import ml.dvnlabs.animize.database.notification.StarredNotification
 import ml.dvnlabs.animize.database.notification.StarredNotificationDatabase
 import ml.dvnlabs.animize.driver.Api
@@ -45,8 +46,10 @@ import org.koin.core.parameter.parametersOf
 import java.util.concurrent.TimeUnit
 
 class StarredNotificationWorker(val context: Context, workerParams: WorkerParameters) : CoroutineWorker(context, workerParams), KoinComponent {
-    private val starredSQLite: PackageStarDBHelper by inject { parametersOf(applicationContext) }
     private val starredRoom: StarredNotificationDatabase by inject { parametersOf(applicationContext) }
+    private val animizeDB: AnimizeDatabase by inject { parametersOf(applicationContext) }
+
+    private var notificationSubscriber: Disposable? = null
 
     private val notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -61,34 +64,32 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
 
     private suspend fun getLocalInformation() {
         withContext(Dispatchers.IO) {
-            val sqLiteStarredPKG = starredSQLite.starredList
-            val observerHelper = sqLiteStarredPKG?.toFlowable()
+            notificationPush()
+            val recentListLocal = animizeDB.animeDAO().getAllStarredAnime()
+            val observerHelper = recentListLocal.toFlowable()
             val roomPKG = starredRoom.starredNotificationDAO().getStarredNotificationList().toFlowable()
-            observerHelper?.subscribeOn(Schedulers.computation())?.doOnComplete {
+            println("WORKER: ${recentListLocal.size}")
+            observerHelper.subscribeOn(Schedulers.io())?.doOnComplete {
                 //currentProgress = 0
                 cancelNotificationProgress()
-                GlobalScope.launch {
-                    notificationPush()
-                }
             }?.doOnNext {
                 currentProgress += 1
-                maxProgress = sqLiteStarredPKG.size
+                maxProgress = recentListLocal.size
                 createNotificationProgress(title = "Updating Data...",
-                        description = "Synchronizing ${it.packageid}"
+                        description = "Synchronizing ${it.packageID}"
                 )
             }?.subscribe {
                 runBlocking {
                     delay(1500)
-                    println("PKG SYNC: ${it.packageid}")
-                    APINetworkRequest(applicationContext, listener, "${Api.url_playlist_play}${it.packageid}", APINetworkRequest.CODE_GET_REQUEST, null)
+                    println("PKG SYNC: ${it.packageID}")
+                    APINetworkRequest(applicationContext, listener, "${Api.url_playlist_play}${it.packageID}", APINetworkRequest.CODE_GET_REQUEST, null)
                 }
             }
 
             roomPKG.subscribeOn(Schedulers.computation()).subscribe {
                 GlobalScope.launch {
                     if (starredRoom.starredNotificationDAO().checkPKGID(it.packageID) > 0
-                            && !starredSQLite.isStarred(it.packageID)) {
-                        println("DELETED ${it.packageID}")
+                            && !animizeDB.animeDAO().isAnimeStarred(it.packageID)) {
                         starredRoom.starredNotificationDAO().deletePKGID(it.packageID)
                     }
                 }
@@ -142,7 +143,6 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
                 )
                 GlobalScope.launch {
                     starredRoom.starredNotificationDAO().newNotification(notification)
-                    notificationPush()
                 }
             }
             //Don't forget to clear temp, because we don't need on next data sequence
@@ -154,22 +154,30 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
 
     private suspend fun notificationPush() {
         withContext(Dispatchers.IO) {
-            val push = starredRoom.starredNotificationDAO().getStarredNotificationListNotOpenedAndNotPosted().toFlowable()
-            push.subscribeOn(AndroidSchedulers.mainThread())
-                    .delay(1,TimeUnit.SECONDS)
-                    .doOnNext {
-                        createNotification(
-                                title = it.nameCatalogue.take(65),
-                                description = "Updated to episode: ${it.episode}",
-                                imgURL = it.thumbnailURL
-                        )
+            notificationSubscriber = Observable.create<List<StarredNotification>> {
+                Schedulers.single().schedulePeriodicallyDirect({
+                    GlobalScope.launch {
+                        val starred = starredRoom.starredNotificationDAO().getStarredNotificationListNotOpenedAndNotPosted()
+                        delay(500)
+                        it.onNext(starred)
                     }
-                    .subscribe {
-                        GlobalScope.launch {
-                            if (starredRoom.starredNotificationDAO().isPosted(it.animeID)==0){
-                                starredRoom.starredNotificationDAO().notificationPosted(it.animeID)
+                }, 0, 500, TimeUnit.MILLISECONDS)
+
+            }.repeat().subscribeOn(Schedulers.computation())
+                    .distinctUntilChanged().subscribe {
+                        for (i in it) {
+                            createNotification(
+                                    title = i.nameCatalogue.take(65),
+                                    description = "Updated to episode: ${i.episode}",
+                                    imgURL = i.thumbnailURL
+                            )
+                            GlobalScope.launch {
+                                if (starredRoom.starredNotificationDAO().isPosted(i.animeID) == 0) {
+                                    starredRoom.starredNotificationDAO().notificationPosted(i.animeID)
+                                }
                             }
                         }
+
                     }
         }
     }
@@ -241,10 +249,14 @@ class StarredNotificationWorker(val context: Context, workerParams: WorkerParame
 
         fun setupTaskPeriodic(context: Context, interval: Int = DEFAULT_INTERVAL) {
             if (interval > 0) {
+                val constraints: Constraints = Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build()
                 val request = PeriodicWorkRequestBuilder<StarredNotificationWorker>(
                         interval.toLong(), TimeUnit.MINUTES,
                         10, TimeUnit.MINUTES
                 )
+                        .setConstraints(constraints)
                         .addTag(TAG)
                         .build()
 

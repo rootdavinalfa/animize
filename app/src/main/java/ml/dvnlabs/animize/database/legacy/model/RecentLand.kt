@@ -9,7 +9,7 @@
 package ml.dvnlabs.animize.database.legacy.model
 
 class RecentLand {
-    private var packageId: String? = null
+    var packageId: String? = null
         private set
     var packageName: String? = null
         private set
