@@ -11,26 +11,19 @@ package ml.dvnlabs.animize.ui.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import io.branch.referral.Branch
-import jp.wasabeef.glide.transformations.BlurTransformation
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,14 +31,13 @@ import kotlinx.coroutines.withContext
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.database.Anime
 import ml.dvnlabs.animize.database.AnimizeDatabase
-import ml.dvnlabs.animize.databinding.ActivityPackageViewBinding
+import ml.dvnlabs.animize.databinding.ActivityPackageBinding
 import ml.dvnlabs.animize.driver.Api
 import ml.dvnlabs.animize.driver.network.APINetworkRequest
 import ml.dvnlabs.animize.driver.network.RequestQueueVolley
 import ml.dvnlabs.animize.driver.network.listener.FetchDataListener
 import ml.dvnlabs.animize.model.PackageInfo
 import ml.dvnlabs.animize.model.PlaylistModel
-import ml.dvnlabs.animize.ui.activity.MainActivity.Companion.setWindowFlag
 import ml.dvnlabs.animize.ui.fragment.information.CoverView
 import ml.dvnlabs.animize.ui.recyclerview.packagelist.PackageListAdapter
 import ml.dvnlabs.animize.ui.recyclerview.staggered.PackageMetaGenreAdapter
@@ -63,14 +55,12 @@ class PackageView : AppCompatActivity() {
     private var modelinfo: ArrayList<PackageInfo>? = null
     var adapter: PackageListAdapter? = null
     var pkganim: String? = null
-    private var packStar: MenuItem? = null
-    private var packShare: MenuItem? = null
 
     private val animizeDB: AnimizeDatabase by inject()
 
     private var branch: Branch? = null
 
-    private lateinit var binding: ActivityPackageViewBinding
+    private lateinit var binding: ActivityPackageBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initD()
@@ -78,13 +68,9 @@ class PackageView : AppCompatActivity() {
 
     private fun initD() = CoroutineScope(Dispatchers.Main).launch {
         if (animizeDB.userDAO().countUser() != 0) {
-            binding = ActivityPackageViewBinding.inflate(layoutInflater)
+            binding = ActivityPackageBinding.inflate(layoutInflater)
             setContentView(binding.root)
-            //make translucent statusBar on kitkat devices
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            //make fully Android Transparent Status bar
-            setWindowFlag(this@PackageView, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
-            window.statusBarColor = Color.TRANSPARENT
+
             pkganim = ""
             initialize()
             val intent = intent
@@ -103,6 +89,7 @@ class PackageView : AppCompatActivity() {
                 ))
                 getInfo()
             }
+            readStarStatus()
             branch = Branch.getInstance()
         } else {
             val intent = Intent(this@PackageView, MainActivity::class.java)
@@ -128,25 +115,47 @@ class PackageView : AppCompatActivity() {
 
     @SuppressLint("RestrictedApi")
     private fun initialize() {
-        setSupportActionBar(binding.pvToolbar)
+        setSupportActionBar(binding.packageViewToolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-        binding.pvToolbar.title = ""
-        binding.pvCollapseToolbar.title = "Loading..."
-
+        binding.packageViewToolbar.title = ""
         modelinfo = ArrayList()
-        binding.pvCollapseToolbar.maxLines = 3
-        binding.packageviewLoadingContainer.visibility = View.VISIBLE
         binding.packageviewContainer.visibility = View.GONE
+        binding.packageViewShare.setOnClickListener {
+            if (modelinfo != null) {
+                // Add data to the intent, the receiving app will decide
+                // what to do with it.
+                var urlShare: String? = null
+                try {
+                    urlShare = "https://animize.app.link/share/package?pack=" + pkganim + "&titname=" + URLEncoder.encode(modelinfo!![0].getName(), "utf-8")
+                } catch (e: UnsupportedEncodingException) {
+                    e.printStackTrace()
+                }
+                val sendIntent = Intent(Intent.ACTION_SEND)
+                sendIntent.putExtra(Intent.EXTRA_TEXT, urlShare)
+                //Here we're setting the title of the content
+                sendIntent.putExtra(Intent.EXTRA_TITLE, "Share " + modelinfo!![0].getName() + " to your friend!")
+                sendIntent.type = "text/plain"
+                // Show the ShareSheet
+                startActivity(Intent.createChooser(sendIntent, null))
+            }
+        }
 
-        binding.packageviewBarlayout.visibility = View.GONE
-
+        binding.packageViewStar.setOnClickListener {
+            lifecycleScope.launch {
+                if (animizeDB.animeDAO().isAnimeStarred(pkganim!!)) {
+                    changeStar("UNSTAR")
+                } else {
+                    changeStar("STAR")
+                }
+            }
+        }
     }
 
     /*Function for refreshing activity data due to usage of multiview fragment*/
     fun refreshActivity(pkgid: String?) {
         pkganim = pkgid
-        if (!pkganim!!.isEmpty()) {
+        if (pkganim!!.isNotEmpty()) {
             if (modelinfo!!.size > 0) {
                 modelinfo!!.clear()
             }
@@ -193,61 +202,11 @@ class PackageView : AppCompatActivity() {
                         }
                     }, this@PackageView.intent.data, this@PackageView)
                 }
-                pkganim?.let {
-                    if (it.isNotEmpty()) {
-                        invalidateOptionsMenu()
-                    }
-                }
             } else {
                 val intent = Intent(this@PackageView, MainActivity::class.java)
                 startActivity(intent)
             }
         }
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        menu.clear()
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.package_toolbar, menu)
-        packStar = menu.findItem(R.id.package_star)
-        packShare = menu.findItem(R.id.package_share)
-        lifecycleScope.launch {
-            readStarStatus()
-        }
-        return super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.package_star -> {
-                lifecycleScope.launch {
-                    if (animizeDB.animeDAO().isAnimeStarred(pkganim!!)) {
-                        changeStar("UNSTAR")
-                    } else {
-                        changeStar("STAR")
-                    }
-                }
-                return true
-            }
-            R.id.package_share -> if (modelinfo != null) {
-                // Add data to the intent, the receiving app will decide
-                // what to do with it.
-                var urlShare: String? = null
-                try {
-                    urlShare = "https://animize.app.link/share/package?pack=" + pkganim + "&titname=" + URLEncoder.encode(modelinfo!![0].getName(), "utf-8")
-                } catch (e: UnsupportedEncodingException) {
-                    e.printStackTrace()
-                }
-                val sendIntent = Intent(Intent.ACTION_SEND)
-                sendIntent.putExtra(Intent.EXTRA_TEXT, urlShare)
-                //Here we're setting the title of the content
-                sendIntent.putExtra(Intent.EXTRA_TITLE, "Share " + modelinfo!![0].getName() + " to your friend!")
-                sendIntent.type = "text/plain"
-                // Show the ShareSheet
-                startActivity(Intent.createChooser(sendIntent, null))
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun getPlayList() {
@@ -273,7 +232,6 @@ class PackageView : AppCompatActivity() {
                     binding.packageviewLoadingContainer.visibility = View.GONE
                     binding.packageviewLoading.visibility = View.GONE
                     binding.packageviewNotfoundcont.visibility = View.VISIBLE
-                    binding.packageParent.background = null
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
@@ -329,13 +287,23 @@ class PackageView : AppCompatActivity() {
                 }
                 modelinfo!!.add(PackageInfo(packages, nameAnim, synopsis, totalEP, rate, mal, genres, cover))
             }
-            binding.pvCollapseToolbar.title = modelinfo!![0].getName()
-            binding.packageviewSynopsis.text = modelinfo!![0].synopsis
+            binding.packageViewToolbar.title = modelinfo!![0].getName()
+            binding.packageViewTitle.text = modelinfo!![0].getName()
+            binding.packageViewSynopsis.text = modelinfo!![0].synopsis
+            binding.packageViewMal.text = "MAL ID: ${modelinfo!![0].mal}"
             val adapterGenre = PackageMetaGenreAdapter(modelinfo!![0].genre, this, R.layout.rv_staggered)
             val spanStaggered = if (adapterGenre.itemCount < 7) 1 else 2
             val layoutManager = StaggeredGridLayoutManager(spanStaggered, StaggeredGridLayoutManager.HORIZONTAL)
-            binding.packageviewGenrelist.layoutManager = layoutManager
-            binding.packageviewGenrelist.adapter = adapterGenre
+            binding.packageViewGenreList.layoutManager = layoutManager
+            binding.packageViewGenreList.adapter = adapterGenre
+            Glide.with(this)
+                    .applyDefaultRequestOptions(RequestOptions()
+                            .placeholder(R.drawable.ic_picture)
+                            .error(R.drawable.ic_picture))
+                    .load(modelinfo!![0].cover).transform(RoundedCorners(15))
+                    .transition(DrawableTransitionOptions()
+                            .crossFade()).apply(RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL).override(424, 600)).into(binding.packageViewCover)
             Glide.with(this)
                     .applyDefaultRequestOptions(RequestOptions()
                             .placeholder(R.drawable.ic_picture)
@@ -343,32 +311,17 @@ class PackageView : AppCompatActivity() {
                     .load(modelinfo!![0].cover)
                     .transition(DrawableTransitionOptions()
                             .crossFade()).apply(RequestOptions()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL).override(424, 600)).into(binding.toolbarCover)
-            Glide.with(this)
-                    .applyDefaultRequestOptions(RequestOptions()
-                            .placeholder(R.drawable.ic_picture)
-                            .error(R.drawable.ic_picture))
-                    .load(modelinfo!![0].cover).transform(BlurTransformation(10, 3))
-                    .transition(DrawableTransitionOptions()
-                            .crossFade()).apply(RequestOptions()
-                            .diskCacheStrategy(DiskCacheStrategy.ALL).override(424, 600)).into(object : CustomTarget<Drawable?>() {
-                        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable?>?) {
-                            binding.packageParent.background = resource
-                        }
-
-                        override fun onLoadCleared(placeholder: Drawable?) {
-                            binding.packageParent.background = placeholder
-                        }
-                    })
-            binding.toolbarCover.setOnClickListener {
+                            .diskCacheStrategy(DiskCacheStrategy.ALL).override(424, 600))
+                    .into(binding.packageViewBackDrop)
+            binding.packageViewCover.setOnClickListener {
                 val fm = supportFragmentManager
                 val alertDialog = CoverView()
                 alertDialog.setUrl(modelinfo!![0].cover)
                 alertDialog.show(fm, "coverview")
             }
-            binding.packageRate.text = modelinfo!![0].rate
-            val animeID = modelinfo!![0].pack + " / " + modelinfo!![0].mal
-            binding.packageAnimeid.text = animeID
+            binding.packageViewRating.text = "Rating ${modelinfo!![0].rate}"
+            val animeID = "Package ID: ${modelinfo!![0].pack}"
+            binding.packageViewAnmID.text = animeID
             showRecent()
             invalidateOptionsMenu()
             getPlayList()
@@ -382,7 +335,7 @@ class PackageView : AppCompatActivity() {
             if (animizeDB.recentPlayedDAO().getRecentByPackageID(pkganim!!) != null) {
                 readRecent()
             } else {
-                binding.packageviewRecentContainer.visibility = View.GONE
+                binding.packageViewResume.visibility = View.GONE
             }
         }
     }
@@ -424,9 +377,11 @@ class PackageView : AppCompatActivity() {
             val isStarred = animizeDB.animeDAO().isAnimeStarred(pkganim!!)
             withContext(Dispatchers.Main) {
                 if (isStarred) {
-                    packStar!!.setIcon(R.drawable.ic_star)
+                    binding.packageViewStar.chipIcon = this@PackageView.getDrawable(R.drawable.ic_star)
+                    binding.packageViewStar.text = "Starred"
                 } else {
-                    packStar!!.setIcon(R.drawable.ic_star_nofill)
+                    binding.packageViewStar.chipIcon = this@PackageView.getDrawable(R.drawable.ic_star_nofill)
+                    binding.packageViewStar.text = "Not Starred"
                 }
             }
         }
@@ -442,10 +397,12 @@ class PackageView : AppCompatActivity() {
             val isStarred = animizeDB.animeDAO().isAnimeStarred(pkganim!!)
             withContext(Dispatchers.Main) {
                 val status: String = if (isStarred) {
-                    packStar!!.setIcon(R.drawable.ic_star)
+                    binding.packageViewStar.chipIcon = this@PackageView.getDrawable(R.drawable.ic_star)
+                    binding.packageViewStar.text = "Starred"
                     "Add to Star Success"
                 } else {
-                    packStar!!.setIcon(R.drawable.ic_star_nofill)
+                    binding.packageViewStar.chipIcon = this@PackageView.getDrawable(R.drawable.ic_star_nofill)
+                    binding.packageViewStar.text = "Not Starred"
                     "Remove Star Success"
                 }
                 Toast.makeText(applicationContext, status, Toast.LENGTH_SHORT).show()
@@ -457,21 +414,14 @@ class PackageView : AppCompatActivity() {
         withContext(Dispatchers.IO) {
             val recentLand = animizeDB.recentPlayedDAO().getRecentByPackageID(pkganim!!)
             withContext(Dispatchers.Main) {
-                binding.packageviewRecentContainer.visibility = View.VISIBLE
-                binding.packageviewRecentTitle.text = recentLand!!.packageID
-                val ep = "Episode: " + recentLand.episode
-                binding.packageviewRecentEpisode.text = ep
-                Glide.with(baseContext)
-                        .applyDefaultRequestOptions(RequestOptions()
-                                .placeholder(R.drawable.ic_picture)
-                                .error(R.drawable.ic_picture))
-                        .load(recentLand.urlCover).transform(RoundedCornersTransformation(10, 0))
-                        .transition(DrawableTransitionOptions()
-                                .crossFade()).apply(RequestOptions()
-                                .diskCacheStrategy(DiskCacheStrategy.ALL).override(424, 600)).into(binding.packageviewRecentImg)
-                binding.packageviewRecentContainer.setOnClickListener {
+                binding.packageViewResume.visibility = View.VISIBLE
+                val ep = "Episode: " + (recentLand?.episode ?: 1)
+                binding.packageViewResume.text = ep
+                binding.packageViewResume.setOnClickListener {
                     val intent = Intent(applicationContext, StreamActivity::class.java)
-                    intent.putExtra("id_anim", recentLand.animeID)
+                    if (recentLand != null) {
+                        intent.putExtra("id_anim", recentLand.animeID)
+                    }
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     applicationContext.startActivity(intent)
                 }
