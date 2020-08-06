@@ -13,9 +13,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
 
-@Database(entities = [RecentPlayed::class, Anime::class, User::class], version = 1, exportSchema = false)
+@Database(entities = [RecentPlayed::class, Anime::class, User::class], version = 2, exportSchema = false)
 abstract class AnimizeDatabase : RoomDatabase() {
     abstract fun recentPlayedDAO(): RecentPlayedDAO
     abstract fun userDAO(): UserDAO
@@ -36,12 +38,18 @@ abstract class AnimizeDatabase : RoomDatabase() {
                                 context.applicationContext,
                                 AnimizeDatabase::class.java,
                                 "animize.db"
-                        )
+                        ).addMigrations(migrate1To2)
                                 .build()
                         INSTANCE = instance
                         // return instance
                         instance
                     }
+        }
+
+        val migrate1To2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE Anime ADD COLUMN starredOn INTEGER NOT NULL DEFAULT 0")
+            }
         }
     }
 }

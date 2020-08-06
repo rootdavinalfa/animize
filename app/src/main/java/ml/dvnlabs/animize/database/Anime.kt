@@ -22,5 +22,6 @@ data class Anime(
         var episodeTotal: Int = 0,
         var currentEpisode: Int = 0,
         var updatedOn: Long = 0,
-        var isStarred: Boolean = false
+        var isStarred: Boolean = false,
+        var starredOn: Long = 0 // Add on database version 2
 )

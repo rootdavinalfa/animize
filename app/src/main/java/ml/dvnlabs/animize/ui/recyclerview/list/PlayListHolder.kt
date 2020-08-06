@@ -29,7 +29,7 @@ class PlayListHolder(private val context: Context, view: View) : RecyclerView.Vi
     private val thumbnail: ImageView
     private val now_sign: View
     private var playlist_model: PlaylistModel? = null
-    fun bind_playlist(plm: PlaylistModel?, now: Int, pos: Int) {
+    fun bindPlaylist(plm: PlaylistModel?, now: Int, pos: Int) {
         playlist_model = plm
         title.text = playlist_model!!.title
         id_anim.text = playlist_model!!.id_anim
@@ -49,7 +49,6 @@ class PlayListHolder(private val context: Context, view: View) : RecyclerView.Vi
     override fun onClick(v: View) {
         if (playlist_model != null) {
             (context as StreamActivity).setIdAnim(playlist_model!!.id_anim)
-            context.getVideo()
         }
     }
 
