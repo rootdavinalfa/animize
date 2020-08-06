@@ -25,7 +25,7 @@ class PlayListAdapter(data: ArrayList<PlaylistModel>, private val mcontext: Cont
 
     override fun onBindViewHolder(holder: PlayListHolder, position: Int) {
         val slm = playlistdata!![position]
-        holder.bind_playlist(slm, now, holder.absoluteAdapterPosition)
+        holder.bindPlaylist(slm, now, holder.absoluteAdapterPosition)
     }
 
     override fun getItemCount(): Int {

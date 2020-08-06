@@ -98,7 +98,7 @@
                 android:layout_marginEnd="32dp"
                 android:background="@drawable/round_layout"
                 android:backgroundTint="@color/blacktrans"
-                android:text="Rewind : 10 Second sadusfau safsaf"
+                android:text="Rewind : 10 Second sajfgug fsafa saf"
                 android:textColor="@color/design_default_color_background"
                 android:textSize="14sp"
                 android:visibility="gone"

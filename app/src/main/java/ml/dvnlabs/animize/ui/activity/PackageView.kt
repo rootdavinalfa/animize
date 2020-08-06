@@ -412,7 +412,7 @@ class PackageView : AppCompatActivity() {
 
     private suspend fun readRecent() {
         withContext(Dispatchers.IO) {
-            val recentLand = animizeDB.recentPlayedDAO().getRecentByPackageID(pkganim!!)
+            val recentLand = animizeDB.recentPlayedDAO().getLimitedRecentByPackageID(pkganim!!, 1)
             withContext(Dispatchers.Main) {
                 binding.packageViewResume.visibility = View.VISIBLE
                 val ep = "Episode: " + (recentLand?.episode ?: 1)

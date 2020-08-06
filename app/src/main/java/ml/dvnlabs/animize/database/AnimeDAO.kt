@@ -19,7 +19,7 @@ interface AnimeDAO {
     @Query("SELECT * FROM Anime")
     suspend fun getAllAnime(): List<Anime>
 
-    @Query("SELECT * FROM Anime WHERE isStarred = 1")
+    @Query("SELECT * FROM Anime WHERE isStarred = 1 ORDER BY starredOn DESC")
     suspend fun getAllStarredAnime(): List<Anime>
 
     @Query("SELECT * FROM Anime WHERE packageID = :packageID")
@@ -28,8 +28,8 @@ interface AnimeDAO {
     @Query("SELECT isStarred FROM Anime WHERE packageID = :packageID")
     suspend fun isAnimeStarred(packageID: String): Boolean
 
-    @Query("UPDATE Anime SET isStarred = :starred WHERE packageID = :packageID")
-    suspend fun changeStarred(packageID: String, starred: Boolean)
+    @Query("UPDATE Anime SET isStarred = :starred , starredOn = :modified WHERE packageID = :packageID")
+    suspend fun changeStarred(packageID: String, starred: Boolean, modified: Long = System.currentTimeMillis())
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun newAnime(anime: Anime)

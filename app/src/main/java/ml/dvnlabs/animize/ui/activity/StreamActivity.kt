@@ -31,12 +31,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.material.card.MaterialCardView
 import com.wang.avi.AVLoadingIndicatorView
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import ml.dvnlabs.animize.R
 import ml.dvnlabs.animize.database.Anime
@@ -321,6 +322,7 @@ class StreamActivity : AppCompatActivity() {
 
     fun setIdAnim(idanim: String?) {
         this.idanim = idanim
+        getVideo()
     }
 
     @Subscribe
@@ -339,7 +341,10 @@ class StreamActivity : AppCompatActivity() {
         println("ERROR:" + error.error)
     }
 
-    fun getVideo() {
+    private fun getVideo() {
+        updateRecent?.let {
+            handlerPlayerRecent?.removeCallbacks(it)
+        }
         val urlNEW = Api.api_animplay + idanim
         APINetworkRequest(this, getVideo, urlNEW, CODE_GET_REQUEST, null)
     }
@@ -671,13 +676,12 @@ class StreamActivity : AppCompatActivity() {
 
     private fun updateRecent() {
         if (PlayerManager.service != null) {
-            val playbackState = PlayerManager.service!!.exoPlayer!!.playbackState
-            if (playbackState == Player.STATE_READY || PlayerManager.service!!.exoPlayer!!.playbackState == Player.STATE_BUFFERING) {
+            if (updateRecent == null) {
                 updateRecent = Runnable {
                     updatingRecent()
                 }
-                handlerPlayerRecent!!.postDelayed(updateRecent!!, 500)
             }
+            handlerPlayerRecent!!.postDelayed(updateRecent!!, 500)
         }
     }
 
@@ -686,18 +690,21 @@ class StreamActivity : AppCompatActivity() {
     }
 
     private fun seekPlayer(position: Long) {
+        Log.i("Seeking to:", position.toString())
         PlayerManager.service!!.exoPlayer!!.seekTo(position)
     }
 
     private fun readRecent() {
         lifecycleScope.launch {
-            val recent = idanim?.let { animizeDB.recentPlayedDAO().getRecentByAnimeID(it) }
-            var seeker: Long = 0
-            if (recent != null) {
-                seeker = recent.timestamp
+            val recent = flow {
+                emit(idanim?.let { animizeDB.recentPlayedDAO().getRecentByAnimeID(it) })
             }
-            seekPlayer(seeker)
-            updateRecent()
+            recent.collect {
+                val seeker: Long = it?.timestamp ?: 0
+                Log.i("Read Recent", "REQUESTED ANIM:${idanim} ID ANIM: ${it?.animeID} EP: ${it?.episode} TSTAMP:${it?.timestamp}")
+                seekPlayer(seeker)
+                updateRecent()
+            }
         }
     }
 

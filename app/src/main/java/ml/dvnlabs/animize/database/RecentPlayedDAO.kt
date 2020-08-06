@@ -25,11 +25,14 @@ interface RecentPlayedDAO {
     @Query("SELECT * FROM RecentPlayed ORDER BY modified DESC")
     suspend fun getRecentList(): List<RecentPlayed>
 
-    @Query("SELECT * FROM RecentPlayed WHERE animeID = :animeID LIMIT 0,1")
+    @Query("SELECT * FROM RecentPlayed WHERE animeID = :animeID ORDER BY modified LIMIT 0,1")
     suspend fun getRecentByAnimeID(animeID: String): RecentPlayed?
 
-    @Query("SELECT * FROM RecentPlayed WHERE packageID = :packageID LIMIT 0,1")
+    @Query("SELECT * FROM RecentPlayed WHERE packageID = :packageID ORDER BY modified LIMIT 0,1")
     suspend fun getRecentByPackageID(packageID: String): RecentPlayed?
+
+    @Query("SELECT * FROM RecentPlayed WHERE packageID = :packageID ORDER BY modified DESC LIMIT 0,:max")
+    suspend fun getLimitedRecentByPackageID(packageID: String, max: Int = 5): RecentPlayed?
 
     @Query("DELETE FROM RecentPlayed")
     suspend fun deleteAll()
