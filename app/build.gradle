@@ -20,11 +20,11 @@ android {
         viewBinding = true
     }
 
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId 'ml.dvnlabs.animize'
         minSdkVersion 22
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName '0.0.1'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -72,16 +72,16 @@ android {
         jvmTarget = "1.8"
     }
 
-    buildToolsVersion '29.0.3'
+    buildToolsVersion '30.0.3'
     flavorDimensions "version"
     productFlavors {
         ima {
             dimension "version"
             minSdkVersion 22
             applicationIdSuffix '.ima'
-            targetSdkVersion 28
-            versionCode 41
-            versionName '3-D6-01-'
+            targetSdkVersion 30
+            versionCode 42
+            versionName '3-D6-02-'
             versionNameSuffix 'destroyer'
             applicationId 'ml.dvnlabs.animize'
             resValue("string", "app_names", "Animize")
